@@ -23,8 +23,8 @@
   "institutional_use": {
     "problem": "La información catastral puede quedar rezagada respecto de edificaciones y ocupaciones existentes. La AMDC necesita medir esa diferencia de manera sistemática para orientar actualización, regularización y mejoramiento de barrios.",
     "institutions": [
-      "Universidad Nacional Autónoma de Honduras (UNAH)",
       "Alcaldía Municipal del Distrito Central (AMDC)",
+      "Universidad Nacional Autónoma de Honduras (UNAH)",
       "Secretaría de Gobernación, Justicia y Descentralización (SEGOB)"
     ],
     "primary_user": "AMDC: Dirección de Ordenamiento Territorial (responsable del Atlas Municipal), Catastro Municipal y la unidad de acceso a la tierra y regularización.\nInstituto de la Propiedad (regularización y titulación) y SEGOB (asistencia técnica a municipios).\nUNAH (Atlas Urbano).\nEtapa de réplica: toda la población, con énfasis en las personas y organizaciones interesadas en temas urbanos.",
@@ -95,17 +95,17 @@
     }
   },
   "links": {
-    "repository": null,
-    "website": null,
+    "repository": "https://github.com/copernicuscentroamerica/urbano-hn-distrito-central",
+    "website": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/",
     "demo": null,
-    "documentation": null,
-    "issue_tracker": null
+    "documentation": "https://github.com/copernicuscentroamerica/urbano-hn-distrito-central#readme",
+    "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-hn-distrito-central/issues"
   },
   "governance": {
     "technical_owner": null,
     "content_owner": null,
     "update_frequency": null,
-    "content_updated_at": null
+    "content_updated_at": "2026-11-10"
   },
   "provenance": {
     "sources": [
@@ -192,10 +192,55 @@
           "S24"
         ],
         "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/governance/content_updated_at",
+        "status": "declarado",
+        "source_ids": [
+          "S24"
+        ],
+        "note": "Actualización metodológica y de equipo técnico registrada durante la jornada de trabajo del 10 de noviembre de 2026."
+      },
+      {
+        "pointer": "/team",
+        "status": "declarado",
+        "source_ids": [
+          "S24"
+        ],
+        "note": "Integrantes del equipo técnico confirmados por AMDC, UNAH y SEGOB."
       }
     ]
   },
-  "team": [],
+  "team": [
+    {
+      "name": "Mario Baide",
+      "role": "Profesor Investigador",
+      "institution": "Universidad Nacional Autónoma de Honduras (UNAH)",
+      "github_username": "mariobaidemunoz-del",
+      "profile_url": "https://github.com/mariobaidemunoz-del"
+    },
+    {
+      "name": "Mario Javier Matamoros Rosales",
+      "role": "Profesor Investigador",
+      "institution": "Universidad Nacional Autónoma de Honduras (UNAH)",
+      "github_username": "mariomr16-sudo",
+      "profile_url": "https://github.com/mariomr16-sudo"
+    },
+    {
+      "name": "Jonathán Ramírez",
+      "role": "Analista en Planificación Urbana",
+      "institution": "Alcaldía Municipal del Distrito Central (AMDC)",
+      "github_username": null,
+      "profile_url": null
+    },
+    {
+      "name": "Ana Maritza Irías",
+      "role": "Especialista institucional",
+      "institution": "Secretaría de Gobernación, Justicia y Descentralización (SEGOB)",
+      "github_username": null,
+      "profile_url": null
+    }
+  ],
   "data_sources": [
     {
       "title": "Sentinel-2 / óptico multiespectral (composites de estación seca, índices)",

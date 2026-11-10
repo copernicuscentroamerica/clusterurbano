@@ -89,11 +89,11 @@
     }
   },
   "links": {
-    "repository": null,
-    "website": null,
+    "repository": "https://github.com/copernicuscentroamerica/urbano-sv-la-union",
+    "website": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/",
     "demo": null,
-    "documentation": null,
-    "issue_tracker": null
+    "documentation": "https://github.com/copernicuscentroamerica/urbano-sv-la-union#readme",
+    "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-sv-la-union/issues"
   },
   "governance": {
     "technical_owner": null,

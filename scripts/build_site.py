@@ -24,8 +24,10 @@ from site_common import (
     compute_site_context,
     esc,
     format_spanish_date,
+    render_hero_team,
     render_project_institutions_band,
     render_regional_institutional_band,
+    render_team_section_html,
     render_upper_institutional_bar,
 )
 
@@ -140,7 +142,7 @@ def render_hub_shell(
   <title>{esc(page_title)} · Comunidad Urbana Copernicus Centroamérica</title>
   <meta name="description" content="Comunidad de Práctica del Clúster de Asentamientos Humanos Copernicus Centroamérica · Fase II. Proyectos, ejercicio práctico Colab/GEE, geovisores GeoLibre, seguimiento y Atlas Urbano Regional.">
   {robots_meta}
-  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.0.2">
+  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.0.3">
   {maplibre_head}
 </head>
 <body>
@@ -201,7 +203,7 @@ def render_hub_shell(
     </div>
   </footer>
 
-  <script src="{html.escape(ctx.site_url('assets/js/ui.js'), quote=True)}?v=2.0.2"></script>
+  <script src="{html.escape(ctx.site_url('assets/js/ui.js'), quote=True)}?v=2.0.3"></script>
   {maplibre_scripts}
 </body>
 </html>
@@ -248,6 +250,12 @@ def build_project_card_html(ctx: SiteContext, item: dict[str, Any]) -> str:
                 logo_imgs.append(f'<img src="{html.escape(lsrc, quote=True)}" alt="{lalt}" height="24" style="height:24px;width:auto;max-width:74px;object-fit:contain;display:block;background:#FFFFFF;padding:2px 5px;border:1px solid #E2E8F4;border-radius:4px;" loading="lazy">')
 
     logos_strip_right = f'<div class="card-inst-strip-logos" style="display:flex;align-items:center;gap:0.35rem;flex-wrap:wrap;">{"".join(logo_imgs)}</div>' if logo_imgs else ""
+    team_names = [esc(m.get("name", "")) for m in (p.get("team") or []) if isinstance(m, dict) and m.get("name")]
+    team_card_html = (
+        f'<p style="font-size:0.84rem;color:var(--c-brand-blue);margin:0 0 0.25rem;">'
+        f'<strong>Equipo técnico:</strong> {", ".join(team_names)}</p>'
+        if team_names else ""
+    )
 
     return f"""
     <article class="card" data-filter-item
@@ -270,6 +278,7 @@ def build_project_card_html(ctx: SiteContext, item: dict[str, Any]) -> str:
         </div>
         {logos_strip_right}
       </div>
+      {team_card_html}
       <p style="font-size:0.85rem;color:var(--c-text-muted);"><strong>Territorio:</strong> {esc(p['territory']['label'])}</p>
       <p>{esc(p['summary'])}</p>
       <div class="tag-list">{tags_html}</div>
@@ -592,6 +601,7 @@ git remote add upstream https://github.com/{effective_slug}.git"""
           {sync_badge}
         </div>
         <h1>{esc(p['title'])}</h1>
+        {render_hero_team(p)}
         <p class="hero-lead">{esc(p['summary'])}</p>
         <div class="hero-actions">
           {site_btn}
@@ -631,6 +641,8 @@ git remote add upstream https://github.com/{effective_slug}.git"""
         </div>
       </div>
     </section>
+
+    {render_team_section_html(p)}
 
     <section class="section">
       <div class="grid-2">

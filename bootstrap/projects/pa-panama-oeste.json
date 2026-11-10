@@ -86,17 +86,17 @@
     }
   },
   "links": {
-    "repository": null,
-    "website": null,
+    "repository": "https://github.com/copernicuscentroamerica/urbano-pa-panama-oeste",
+    "website": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/",
     "demo": null,
-    "documentation": null,
-    "issue_tracker": null
+    "documentation": "https://github.com/copernicuscentroamerica/urbano-pa-panama-oeste#readme",
+    "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-pa-panama-oeste/issues"
   },
   "governance": {
     "technical_owner": null,
     "content_owner": null,
     "update_frequency": null,
-    "content_updated_at": null
+    "content_updated_at": "2026-11-10"
   },
   "provenance": {
     "sources": [
@@ -297,10 +297,41 @@
           "S02"
         ],
         "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/team",
+        "status": "declarado",
+        "source_ids": [
+          "S01"
+        ],
+        "note": "Integrantes del equipo técnico del MIVIOT confirmadas por las autoras en el repositorio."
+      },
+      {
+        "pointer": "/governance/content_updated_at",
+        "status": "declarado",
+        "source_ids": [
+          "S01"
+        ],
+        "note": "Actualización de equipo técnico registrada el 10 de noviembre de 2026."
       }
     ]
   },
-  "team": [],
+  "team": [
+    {
+      "name": "Yennifer Cedeño",
+      "role": "Equipo técnico",
+      "institution": "Ministerio de Vivienda y Ordenamiento Territorial (MIVIOT)",
+      "github_username": "ycedenopa",
+      "profile_url": "https://github.com/ycedenopa"
+    },
+    {
+      "name": "Amelia Batista",
+      "role": "Equipo técnico",
+      "institution": "Ministerio de Vivienda y Ordenamiento Territorial (MIVIOT)",
+      "github_username": "batistamelia-blip",
+      "profile_url": "https://github.com/batistamelia-blip"
+    }
+  ],
   "data_sources": [
     {
       "title": "Sentinel-2 / óptico multiespectral",

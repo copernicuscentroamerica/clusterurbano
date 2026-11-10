@@ -10,9 +10,16 @@ Contar con indicadores trazables y un kit replicable que conecte el trabajo muni
 
 ## Instituciones participantes
 
-- Universidad Nacional Autónoma de Honduras (UNAH)
 - Alcaldía Municipal del Distrito Central (AMDC)
+- Universidad Nacional Autónoma de Honduras (UNAH)
 - Secretaría de Gobernación, Justicia y Descentralización (SEGOB)
+
+## Integrantes del equipo
+
+- **Mario Baide** · Profesor Investigador, UNAH
+- **Mario Matamoros** · Profesor Investigador, UNAH
+- **Jonathan Ramirez** · Analista en Planificación Urbana, AMDC
+- **Ana Maritza Irías** · SEGOB
 
 ## Territorio
 

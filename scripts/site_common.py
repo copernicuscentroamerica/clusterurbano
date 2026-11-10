@@ -457,3 +457,69 @@ def render_project_institutions_band(
       </div>
     </section>
     """
+
+
+def render_hero_team(manifest: dict[str, Any]) -> str:
+    """
+    Renderiza en la cabecera (Hero) la lista de integrantes del equipo técnico
+    registrados en manifest['team'].
+    """
+    team_members = [m for m in (manifest.get("team") or []) if isinstance(m, dict) and m.get("name")]
+    if not team_members:
+        return ""
+    items_html: list[str] = []
+    for m in team_members:
+        name = esc(m["name"])
+        inst = m.get("institution")
+        gh = m.get("github_username")
+        label = f"{name} <span style='opacity:0.88;font-weight:500;'>({esc(inst)})</span>" if inst else name
+        if gh:
+            url = html.escape(m.get("profile_url") or f"https://github.com/{gh}", quote=True)
+            items_html.append(
+                f'<a href="{url}" target="_blank" rel="noopener noreferrer" '
+                f'style="color:#FFFFFF;text-decoration:underline;text-decoration-color:rgba(255,200,0,0.75);">{label}</a>'
+            )
+        else:
+            items_html.append(f'<span style="color:#FFFFFF;">{label}</span>')
+    joined = (", ".join(items_html[:-1]) + " y " + items_html[-1]) if len(items_html) > 1 else items_html[0]
+    return (
+        f'<p class="hero-team" style="margin:0.15rem 0 0.9rem;font-size:1.05rem;line-height:1.45;'
+        f'color:var(--c-accent-yellow,#FFC800);font-weight:700;">'
+        f'Integrantes del equipo: <span style="font-weight:600;">{joined}</span></p>'
+    )
+
+
+def render_team_section_html(manifest: dict[str, Any]) -> str:
+    """
+    Renderiza un bloque destacado con los integrantes del equipo técnico y su afiliación.
+    """
+    team_members = [m for m in (manifest.get("team") or []) if isinstance(m, dict) and m.get("name")]
+    if not team_members:
+        return ""
+    rows: list[str] = []
+    for m in team_members:
+        name = esc(m["name"])
+        role = m.get("role")
+        inst = m.get("institution")
+        gh = m.get("github_username")
+        gh_html = ""
+        if gh:
+            url = html.escape(m.get("profile_url") or f"https://github.com/{gh}", quote=True)
+            gh_html = f' · <a href="{url}" target="_blank" rel="noopener noreferrer">@{esc(gh)} ↗</a>'
+        rows.append(
+            f"<li><strong>{name}</strong>"
+            + (f" — {esc(inst)}" if inst else "")
+            + (f" <small style='color:var(--c-text-muted);'>({esc(role)})</small>" if role else "")
+            + gh_html
+            + "</li>"
+        )
+    return f"""
+    <section class="section">
+      <div class="card" style="border-left:4px solid var(--c-accent-yellow,#FFC800);">
+        <span class="badge badge-ok">Equipo técnico</span>
+        <h3 style="margin:0.4rem 0 0.5rem;font-size:1.15rem;color:var(--c-brand-blue,#000A62);">Integrantes de la iniciativa</h3>
+        <ul style="margin:0;padding-left:1.25rem;line-height:1.75;">{"".join(rows)}</ul>
+      </div>
+    </section>
+    """
+

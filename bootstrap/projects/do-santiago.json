@@ -88,17 +88,17 @@
     }
   },
   "links": {
-    "repository": null,
-    "website": null,
+    "repository": "https://github.com/copernicuscentroamerica/urbano-do-santiago",
+    "website": "https://copernicuscentroamerica.github.io/urbano-do-santiago/",
     "demo": "https://claude.ai/artifact/CeTpKKh4j3n7BTKmXQCFEe",
-    "documentation": null,
-    "issue_tracker": null
+    "documentation": "https://github.com/copernicuscentroamerica/urbano-do-santiago#readme",
+    "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-do-santiago/issues"
   },
   "governance": {
     "technical_owner": null,
     "content_owner": null,
     "update_frequency": null,
-    "content_updated_at": null
+    "content_updated_at": "2026-11-10"
   },
   "provenance": {
     "sources": [
@@ -193,10 +193,48 @@
           "S22"
         ],
         "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/governance/content_updated_at",
+        "status": "declarado",
+        "source_ids": [
+          "S21"
+        ],
+        "note": "Fecha de actualización registrada tras incorporar los parámetros de corrida verificados para el mosaico Sentinel-2 L2A."
+      },
+      {
+        "pointer": "/team",
+        "status": "declarado",
+        "source_ids": [
+          "S21"
+        ],
+        "note": "Integrantes del equipo técnico registrados en los forks y contribuciones del repositorio oficial."
       }
     ]
   },
-  "team": [],
+  "team": [
+    {
+      "name": "Klaus Wiese",
+      "role": "Equipo técnico",
+      "institution": "Consejo para el Desarrollo Estratégico de Santiago (CDES)",
+      "github_username": "klauswiese",
+      "profile_url": "https://github.com/klauswiese"
+    },
+    {
+      "name": "Iveth Cruz",
+      "role": "Equipo técnico",
+      "institution": "Ayuntamiento del Municipio de Santiago",
+      "github_username": "ivethcruza",
+      "profile_url": "https://github.com/ivethcruza"
+    },
+    {
+      "name": "Ariel Russell",
+      "role": "Equipo técnico",
+      "institution": "Equipo técnico local de Santiago",
+      "github_username": "arielrussell",
+      "profile_url": "https://github.com/arielrussell"
+    }
+  ],
   "data_sources": [
     {
       "title": "Sentinel-2 L2A (10 m), 2018–2026: huella urbana y cambio (clasificación y proyección)",

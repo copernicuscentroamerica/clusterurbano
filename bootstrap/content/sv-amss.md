@@ -1,5 +1,11 @@
 # AMSS: expansión urbana y transformación del suelo
 
+## Integrantes del equipo técnico (OPAMSS)
+
+- **Fabio Gracias** ([@fabiogracias1979-svg](https://github.com/fabiogracias1979-svg))
+- **Fernando Aguilar** ([@fernando70](https://github.com/fernando70))
+- **Tatiana Miranda**
+
 La iniciativa integra información de expansión urbana, permisos de construcción y valores del suelo para examinar las transformaciones del Área Metropolitana de San Salvador y apoyar sus instrumentos de planificación y gestión territorial.
 
 ## Propósito

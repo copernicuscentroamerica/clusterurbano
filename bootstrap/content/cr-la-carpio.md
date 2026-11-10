@@ -4,50 +4,32 @@ La iniciativa propone reunir información territorial y ambiental de La Carpio p
 
 ## Propósito
 
-La Carpio presenta crecimiento y ocupación urbana informal, limitaciones de servicios y espacios públicos y exposición a amenazas. Las instituciones requieren una base común para conocer esas condiciones y priorizar intervenciones.
-
-Ofrecer mapas, indicadores y una metodología compartida que pueda utilizarse en mesas interinstitucionales y adaptarse a otros asentamientos.
+Ofrecer mapas, indicadores y una metodología compartida que pueda utilizarse en La Carpio y adaptarse a otros asentamientos informales del país.
 
 ## Instituciones participantes
 
-- Municipalidad de San José
-- Instituto Nacional de Vivienda y Urbanismo (INVU)
-- Ministerio de Vivienda y Asentamientos Humanos (MIVAH)
+- Municipalidad de San José (Jaqueline Vargas Bogantes)
+- Instituto Nacional de Vivienda y Urbanismo — INVU (Rodolfo Bolaños Bermúdez y Emiler Segura López)
+- Ministerio de Vivienda y Asentamientos Humanos — MIVAH (Victoria Delgado Fernández y Jonnathan Obando Artiaga)
+
+## Integrantes del equipo técnico
+
+- **Jonnathan Obando Artiaga** — Ministerio de Vivienda y Asentamientos Humanos (MIVAH)
+- **Victoria Delgado Fernández** — Ministerio de Vivienda y Asentamientos Humanos (MIVAH)
+- **Emiler Segura López** — Instituto Nacional de Vivienda y Urbanismo (INVU)
+- **Rodolfo Bolaños Bermúdez** — Instituto Nacional de Vivienda y Urbanismo (INVU)
+- **Jaqueline Vargas Bogantes** — Municipalidad de San José
 
 ## Territorio
 
-Gran Área Metropolitana, San José, Uruca, Asentamiento Informal La Carpio.
+Área de estudio: asentamiento informal La Carpio, ubicado en el distrito de La Uruca, cantón de San José, Costa Rica.
 
-## Usuario y decisión
+Referencia geográfica del taller: 9°57'46.27"N, 84°09'58.13"O; superficie aproximada de 67 hectáreas (0.67 km²), entre los ríos Virilla al norte y Torres al sur.
 
-Municipalidad de San José (Gerencia de Gestión Municipal y Desarrollo Urbano, Dirección de Desarrollo Urbano, Alcaldía Municipal), Ministerio de Vivienda y Asentamientos Humanos (Dirección de Gestión Integrada del Territorio, Dirección de Vivienda y Asentamientos Humanos), Instituto Nacional de Vivienda y Urbanismo (Departamento de Urbanismo).
+## Qué busca resolver
 
-Implementación del Plan Maestro de Intervención Urbanística Integral de La Carpio
+La Carpio concentra alta densidad habitacional, déficits de infraestructura y servicios, problemas ambientales y exposición a amenazas hidrometeorológicas y geomorfológicas en laderas cercanas a los ríos Virilla y Torres. Las instituciones requieren una línea base geoespacial común para priorizar inversiones, dar seguimiento al Plan Maestro y coordinar acciones con la comunidad.
 
-## Producto mínimo viable previsto
+## Usuarios principales
 
-Una línea base organizada y mapas preliminares de La Carpio, articulados con un visor y tablero inicial que permita consultar la información disponible y sus limitaciones.
-
-Alcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.
-
-## Método previsto y datos
-
-El método previsto empieza por reunir y normalizar la cartografía de La Carpio, documentar el sistema de referencia y contrastar insumos municipales, imágenes satelitales y otros levantamientos disponibles. Con esa base se propone preparar capas de diagnóstico y un tablero para apoyar el Plan Maestro de Intervención Urbanística Integral. El perímetro de trabajo y la disponibilidad de cada insumo deben acordarse con el equipo.
-
-## Contribución prevista al Atlas
-
-Ficha territorial e indicadores de La Carpio que apoyen la intervención urbana, con metadatos comunes y posibilidad de comparación una vez homologadas las variables y escalas.
-
-## Estado de la documentación
-
-Existe un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.
-
-## Participación
-
-El repositorio oficial de esta iniciativa se encuentra activo y abierto a la colaboración técnica. Las personas e instituciones participantes trabajan sobre una copia personal (*fork*) vinculada en Google Antigravity, integran capas geoespaciales en `geovisor/capas/` o ejecutan el ejercicio práctico en Google Colab / Google Earth Engine, y envían sus mejoras mediante una solicitud de cambios (*Pull Request*) para revisión técnica antes de su publicación.
-
-## Precedencia documental e identificación
-
-**Perfil documental que orienta esta iniciativa:** *Evaluación estratégica y prospectiva del asentamiento informal La Carpio como insumo para la construcción del Plan Maestro de Intervención Urbanística Integral, San José, Costa Rica* (ficha `S13`).
-
-**Articulación del expediente:** El repositorio reúne la presentación institucional (`S12`), el perfil técnico (`S13`), las historias de usuario (`S14`–`S16`) y el backlog Scrum (`S17`).
+Dirección de Gestión de Asentamientos Humanos del MIVAH, Unidad de Gestión del Proyecto en el INVU, Departamento de Desarrollo Urbano de la Municipalidad de San José, comités comunales y entidades de emergencia.

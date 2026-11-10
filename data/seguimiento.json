@@ -1,19 +1,19 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-11-10T12:52:25Z",
+  "generated_at": "2026-11-10T20:20:53Z",
   "source_system": "github",
   "overall_state": "ok",
   "projects": [
     {
       "project_id": "pa-panama-oeste",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T12:52:25Z",
+      "last_success_at": "2026-11-10T20:20:53Z",
       "source_updated_at": "2026-11-10T12:37:07Z",
       "error_code": null,
       "metrics": {
         "open_tasks": 3,
         "completed_tasks": 0,
-        "in_review_tasks": 0,
+        "in_review_tasks": 1,
         "blocked_tasks": 1
       },
       "tasks": [
@@ -24,14 +24,14 @@
           "issue_number": 1,
           "issue_url": "https://github.com/copernicuscentroamerica/urbano-pa-panama-oeste/issues/1",
           "title": "[S27-r4 / TS-101.1] Validar geometrías de los tres polígonos piloto KML/GeoJSON en EPSG:4326 y publicar en Geovisor",
-          "workflow_status": "En curso",
+          "workflow_status": "En revisión",
           "issue_state": "OPEN",
           "completion_reason": null,
           "blocked": false,
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 1 · Línea base y datos",
-          "due_date": "2026-11-11",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/aplicacion/"
           ],
@@ -51,7 +51,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": "2026-11-12",
+          "due_date": null,
           "evidence_urls": [
             "https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED"
           ],
@@ -71,7 +71,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": "2026-11-12",
+          "due_date": null,
           "evidence_urls": [],
           "source_updated_at": "2026-11-10T12:37:07Z"
         }
@@ -80,7 +80,7 @@
     {
       "project_id": "sv-amss",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T12:52:25Z",
+      "last_success_at": "2026-11-10T20:20:53Z",
       "source_updated_at": "2026-11-10T12:41:43Z",
       "error_code": null,
       "metrics": {
@@ -104,7 +104,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 1 · Línea base y datos",
-          "due_date": "2026-11-10",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-sv-amss/pmv/"
           ],
@@ -124,7 +124,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": "2026-11-11",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-sv-amss/aplicacion/"
           ],
@@ -135,7 +135,7 @@
     {
       "project_id": "cr-la-carpio",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T12:52:25Z",
+      "last_success_at": "2026-11-10T20:20:53Z",
       "source_updated_at": "2026-11-10T12:41:59Z",
       "error_code": null,
       "metrics": {
@@ -159,7 +159,7 @@
           "assignees": [],
           "priority": "Media",
           "iteration": "Sprint 1 · Línea base y datos",
-          "due_date": "2026-11-10",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/aplicacion/"
           ],
@@ -179,7 +179,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 1 · Línea base y datos",
-          "due_date": "2026-11-11",
+          "due_date": null,
           "evidence_urls": [],
           "source_updated_at": "2026-11-10T12:41:59Z"
         }
@@ -188,7 +188,7 @@
     {
       "project_id": "sv-la-union",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T12:52:25Z",
+      "last_success_at": "2026-11-10T20:20:53Z",
       "source_updated_at": "2026-11-10T12:42:15Z",
       "error_code": null,
       "metrics": {
@@ -212,7 +212,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 1 · Línea base y datos",
-          "due_date": "2026-11-11",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-sv-la-union/aplicacion/"
           ],
@@ -232,7 +232,7 @@
           "assignees": [],
           "priority": "Media",
           "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": "2026-11-12",
+          "due_date": null,
           "evidence_urls": [],
           "source_updated_at": "2026-11-10T12:42:15Z"
         }
@@ -241,7 +241,7 @@
     {
       "project_id": "gt-bethania",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T12:52:25Z",
+      "last_success_at": "2026-11-10T20:20:53Z",
       "source_updated_at": "2026-11-10T12:42:28Z",
       "error_code": null,
       "metrics": {
@@ -265,7 +265,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 1 · Línea base y datos",
-          "due_date": "2026-11-11",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/"
           ],
@@ -285,7 +285,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": "2026-11-12",
+          "due_date": null,
           "evidence_urls": [],
           "source_updated_at": "2026-11-10T12:42:28Z"
         }
@@ -294,13 +294,13 @@
     {
       "project_id": "do-santiago",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T12:52:25Z",
+      "last_success_at": "2026-11-10T20:20:53Z",
       "source_updated_at": "2026-11-10T12:42:42Z",
       "error_code": null,
       "metrics": {
         "open_tasks": 2,
         "completed_tasks": 0,
-        "in_review_tasks": 0,
+        "in_review_tasks": 1,
         "blocked_tasks": 0
       },
       "tasks": [
@@ -311,14 +311,14 @@
           "issue_number": 1,
           "issue_url": "https://github.com/copernicuscentroamerica/urbano-do-santiago/issues/1",
           "title": "[PMV-AC1] Revisar y calibrar serie de expansión urbana Sentinel-2 (2018, 2021, 2024) en Santiago de los Caballeros",
-          "workflow_status": "En curso",
+          "workflow_status": "En revisión",
           "issue_state": "OPEN",
           "completion_reason": null,
           "blocked": false,
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": "2026-11-11",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-do-santiago/aplicacion/"
           ],
@@ -338,7 +338,7 @@
           "assignees": [],
           "priority": "Media",
           "iteration": "Sprint 3 · Geovisor y validación",
-          "due_date": "2026-11-12",
+          "due_date": null,
           "evidence_urls": [],
           "source_updated_at": "2026-11-10T12:42:42Z"
         }
@@ -347,13 +347,13 @@
     {
       "project_id": "gt-salud-metropolitana",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T12:52:25Z",
+      "last_success_at": "2026-11-10T20:20:53Z",
       "source_updated_at": "2026-11-10T12:42:56Z",
       "error_code": null,
       "metrics": {
         "open_tasks": 2,
         "completed_tasks": 0,
-        "in_review_tasks": 0,
+        "in_review_tasks": 1,
         "blocked_tasks": 0
       },
       "tasks": [
@@ -364,14 +364,14 @@
           "issue_number": 1,
           "issue_url": "https://github.com/copernicuscentroamerica/urbano-gt-salud-metropolitana/issues/1",
           "title": "[PMV-AC1] Publicar límite de los 17 municipios metropolitanos y protocolo base de variables ambientales",
-          "workflow_status": "En curso",
+          "workflow_status": "En revisión",
           "issue_state": "OPEN",
           "completion_reason": null,
           "blocked": false,
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 1 · Línea base y datos",
-          "due_date": "2026-11-11",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-gt-salud-metropolitana/aplicacion/"
           ],
@@ -391,7 +391,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": "2026-11-12",
+          "due_date": null,
           "evidence_urls": [],
           "source_updated_at": "2026-11-10T12:42:56Z"
         }
@@ -400,7 +400,7 @@
     {
       "project_id": "hn-distrito-central",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T12:52:25Z",
+      "last_success_at": "2026-11-10T20:20:53Z",
       "source_updated_at": "2026-11-10T12:43:08Z",
       "error_code": null,
       "metrics": {
@@ -424,7 +424,7 @@
           "assignees": [],
           "priority": "Alta",
           "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": "2026-11-11",
+          "due_date": null,
           "evidence_urls": [
             "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/aplicacion/"
           ],
@@ -444,7 +444,7 @@
           "assignees": [],
           "priority": "Media",
           "iteration": "Sprint 3 · Geovisor y validación",
-          "due_date": "2026-11-12",
+          "due_date": null,
           "evidence_urls": [],
           "source_updated_at": "2026-11-10T12:43:08Z"
         }
