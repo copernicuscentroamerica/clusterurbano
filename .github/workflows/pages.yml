@@ -1,4 +1,4 @@
-name: Validar y publicar sitio
+name: Validar, sincronizar monitoreo y publicar portal
 
 on:
   push:
@@ -6,13 +6,15 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
 
 permissions:
   contents: read
 
 jobs:
   validar:
-    name: Validar sitio
+    name: Validar y sincronizar portal
     runs-on: ubuntu-latest
     env:
       PAGES_SITE_MODE: ${{ vars.PAGES_SITE_MODE || 'preview' }}
@@ -33,11 +35,20 @@ jobs:
       - name: Validar fuentes
         run: python3 scripts/validate.py --source
 
-      - name: Resolver catálogo local del hub
+      - name: Resolver catálogo y seguimiento en Pull Request (modo offline sin secretos)
+        if: github.event_name == 'pull_request'
         run: |
-          if [ -f data/projects.registry.json ]; then
-            python3 scripts/sync_catalog.py --offline
-          fi
+          python3 scripts/sync_catalog.py --offline
+          python3 scripts/export_progress.py --offline
+
+      - name: Sincronizar en línea las 8 iniciativas canónicas y su avance (main / horario / manual)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PROJECTS_TOKEN: ${{ secrets.GH_PROJECTS_TOKEN }}
+        run: |
+          python3 scripts/sync_catalog.py --online --previous-snapshot "https://copernicuscentroamerica.github.io/clusterurbano/data/projects.snapshot.json"
+          python3 scripts/export_progress.py
 
       - name: Construir sitio
         run: python3 scripts/build_site.py --output site
