@@ -110,7 +110,7 @@ def render_hub_shell(
         )
         maplibre_scripts = (
             '<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" crossorigin="anonymous"></script>\n'
-            f'  <script src="{html.escape(ctx.site_url("assets/js/geovisor.js"), quote=True)}"></script>'
+            f'  <script src="{html.escape(ctx.site_url("assets/js/geovisor.js"), quote=True)}?v=2.0.2"></script>'
         )
 
     hub_repo_url = (
@@ -130,7 +130,7 @@ def render_hub_shell(
         "<strong>Comunidad Urbana Copernicus Centroamérica</strong> · Clúster de Asentamientos Humanos · Fase II",
         f"Última sincronización: <strong>{esc(sync_label)}</strong> · {hub_repo_html}",
     )
-    regional_band_html = render_regional_institutional_band(ctx)
+    regional_band_html = render_regional_institutional_band(ctx, extra_class="is-footer-band")
 
     return f"""<!DOCTYPE html>
 <html lang="es">
@@ -140,7 +140,7 @@ def render_hub_shell(
   <title>{esc(page_title)} · Comunidad Urbana Copernicus Centroamérica</title>
   <meta name="description" content="Comunidad de Práctica del Clúster de Asentamientos Humanos Copernicus Centroamérica · Fase II. Proyectos, ejercicio práctico Colab/GEE, geovisores GeoLibre, seguimiento y Atlas Urbano Regional.">
   {robots_meta}
-  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}">
+  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.0.2">
   {maplibre_head}
 </head>
 <body>
@@ -168,7 +168,6 @@ def render_hub_shell(
   </header>
 
   {hero_html}
-  {regional_band_html}
 
   <main id="contenido-principal">
     <div class="container">
@@ -176,6 +175,7 @@ def render_hub_shell(
     </div>
   </main>
 
+  {regional_band_html}
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
@@ -201,7 +201,7 @@ def render_hub_shell(
     </div>
   </footer>
 
-  <script src="{html.escape(ctx.site_url('assets/js/ui.js'), quote=True)}"></script>
+  <script src="{html.escape(ctx.site_url('assets/js/ui.js'), quote=True)}?v=2.0.2"></script>
   {maplibre_scripts}
 </body>
 </html>
@@ -238,16 +238,16 @@ def build_project_card_html(ctx: SiteContext, item: dict[str, Any]) -> str:
         if isinstance(pl, dict) and pl.get("logo_path"):
             lsrc = ctx.site_url(f"assets/img/projects/{pid}/{pl['logo_path']}")
             lalt = esc(pl.get("alt_text") or pl.get("name"))
-            logo_imgs.append(f'<img src="{html.escape(lsrc, quote=True)}" alt="{lalt}" loading="lazy">')
+            logo_imgs.append(f'<img src="{html.escape(lsrc, quote=True)}" alt="{lalt}" height="24" style="height:24px;width:auto;max-width:74px;object-fit:contain;display:block;background:#FFFFFF;padding:2px 5px;border:1px solid #E2E8F4;border-radius:4px;" loading="lazy">')
         for b_inst in sorted(branding.get("institutions", []), key=lambda x: (int(x.get("order", 99)), str(x.get("id", "")))):
             if len(logo_imgs) >= 3:
                 break
             if isinstance(b_inst, dict) and b_inst.get("logo_path"):
                 lsrc = ctx.site_url(f"assets/img/projects/{pid}/{b_inst['logo_path']}")
                 lalt = esc(b_inst.get("alt_text") or b_inst.get("name"))
-                logo_imgs.append(f'<img src="{html.escape(lsrc, quote=True)}" alt="{lalt}" loading="lazy">')
+                logo_imgs.append(f'<img src="{html.escape(lsrc, quote=True)}" alt="{lalt}" height="24" style="height:24px;width:auto;max-width:74px;object-fit:contain;display:block;background:#FFFFFF;padding:2px 5px;border:1px solid #E2E8F4;border-radius:4px;" loading="lazy">')
 
-    logos_strip_right = f'<div class="card-inst-strip-logos">{"".join(logo_imgs)}</div>' if logo_imgs else ""
+    logos_strip_right = f'<div class="card-inst-strip-logos" style="display:flex;align-items:center;gap:0.35rem;flex-wrap:wrap;">{"".join(logo_imgs)}</div>' if logo_imgs else ""
 
     return f"""
     <article class="card" data-filter-item
@@ -613,14 +613,6 @@ git remote add upstream https://github.com/{effective_slug}.git"""
       <div class="status-cell"><div class="status-cell-label">Adopción</div>{badge_html(p['status']['adoption']['state'])}</div>
     </section>
 
-    {render_project_institutions_band(
-        ctx,
-        item.get("branding"),
-        p,
-        colaborar_href=(proj_site_url.rstrip("/") + "/colaborar/#anadir-actualizar-logos") if proj_site_url else None,
-        logo_url_prefix=f"assets/img/projects/{pid}/",
-    )}
-
     <section class="section">
       <div class="card" style="border-left:4px solid var(--c-brand-blue);">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.6rem;">
@@ -689,6 +681,14 @@ git remote add upstream https://github.com/{effective_slug}.git"""
         <ul>{lim_li}</ul>
       </div>
     </section>
+
+    {render_project_institutions_band(
+        ctx,
+        item.get("branding"),
+        p,
+        colaborar_href=(proj_site_url.rstrip("/") + "/colaborar/#anadir-actualizar-logos") if proj_site_url else None,
+        logo_url_prefix=f"assets/img/projects/{pid}/",
+    )}
     """
 
     return render_hub_shell(
