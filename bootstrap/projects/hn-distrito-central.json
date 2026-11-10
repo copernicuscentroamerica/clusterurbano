@@ -207,7 +207,7 @@
         "source_ids": [
           "S24"
         ],
-        "note": "Integrantes del equipo técnico confirmados por AMDC, UNAH y SEGOB."
+        "note": "Integrantes del equipo técnico confirmados mediante Pull Requests (#3 y #4) por representantes de UNAH, AMDC y SEGOB."
       }
     ]
   },
@@ -230,8 +230,8 @@
       "name": "Jonathán Ramírez",
       "role": "Analista en Planificación Urbana",
       "institution": "Alcaldía Municipal del Distrito Central (AMDC)",
-      "github_username": null,
-      "profile_url": null
+      "github_username": "jonathanjoya",
+      "profile_url": "https://github.com/jonathanjoya"
     },
     {
       "name": "Ana Maritza Irías",
