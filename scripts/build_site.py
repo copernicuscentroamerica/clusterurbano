@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Generador estático determinista del Portal Comunitario (clusterurbano).
-Construye Inicio, Proyectos, fichas proyectos/{id}/, Atlas, fichas atlas/{product_id}/,
-Seguimiento, Comunidad, Recursos, Agenda (+ .ics) y 404.html.
+Construye Inicio, Proyectos, fichas proyectos/{id}/, Ejercicio práctico (/ejercicio/),
+Atlas, fichas atlas/{product_id}/, Seguimiento, Comunidad, Recursos, Agenda (+ .ics) y 404.html.
 """
 from __future__ import annotations
 
@@ -22,9 +22,21 @@ from site_common import (
     badge_html,
     compute_site_context,
     esc,
+    format_spanish_date,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
+
+SHORT_CARD_TITLES: dict[str, str] = {
+    "pa-panama-oeste": "Panamá Oeste · Expansión urbana y ocupación informal",
+    "sv-amss": "San Salvador (AMSS) · Expansión urbana y suelo",
+    "cr-la-carpio": "La Carpio (San José) · Plan Maestro de Intervención",
+    "sv-la-union": "Conchagua y La Unión · Asentamientos costeros",
+    "gt-bethania": "Bethania (Guatemala) · Huella urbana y riesgo",
+    "do-santiago": "Santiago · Escenarios de riesgo y PMOT",
+    "gt-salud-metropolitana": "Guatemala Metropolitana · Clima urbano y salud",
+    "hn-distrito-central": "Distrito Central · Brecha catastral y huella urbana",
+}
 
 
 def render_link_or_pending(url: str | None, active_label: str, pending_label: str, btn_class: str = "btn btn-outline", declared_only: bool = False) -> str:
@@ -74,6 +86,7 @@ def render_hub_shell(
     nav_items = [
         ("inicio", "Inicio", ctx.site_url("")),
         ("proyectos", "Proyectos", ctx.site_url("proyectos/")),
+        ("ejercicio", "Empieza aquí · Ejercicio", ctx.site_url("ejercicio/")),
         ("atlas", "Atlas", ctx.site_url("atlas/")),
         ("seguimiento", "Seguimiento", ctx.site_url("seguimiento/")),
         ("comunidad", "Comunidad", ctx.site_url("comunidad/")),
@@ -107,7 +120,7 @@ def render_hub_shell(
         else "<span>Repositorio central: en preparación</span>"
     )
 
-    sync_label = snapshot_generated_at or "Semillas iniciales del paquete"
+    sync_label = format_spanish_date(snapshot_generated_at, "Semillas iniciales del paquete")
 
     return f"""<!DOCTYPE html>
 <html lang="es">
@@ -115,7 +128,7 @@ def render_hub_shell(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{esc(page_title)} · Comunidad Urbana Copernicus Centroamérica</title>
-  <meta name="description" content="Comunidad de Práctica del Clúster de Asentamientos Humanos Copernicus Centroamérica · Fase II. Proyectos, geovisores GeoLibre, seguimiento y Atlas Urbano Regional.">
+  <meta name="description" content="Comunidad de Práctica del Clúster de Asentamientos Humanos Copernicus Centroamérica · Fase II. Proyectos, ejercicio práctico Colab/GEE, geovisores GeoLibre, seguimiento y Atlas Urbano Regional.">
   {robots_meta}
   <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}">
   {maplibre_head}
@@ -126,7 +139,7 @@ def render_hub_shell(
   <div class="topbar">
     <div class="container">
       <div><strong>Comunidad Urbana Copernicus Centroamérica</strong> · Clúster de Asentamientos Humanos · Fase II</div>
-      <div>Último catálogo generado: <code>{esc(sync_label)}</code> · {hub_repo_html}</div>
+      <div>Última sincronización: <strong>{esc(sync_label)}</strong> · {hub_repo_html}</div>
     </div>
   </div>
   <header class="site-header">
@@ -161,12 +174,13 @@ def render_hub_shell(
     <div class="container footer-grid">
       <div>
         <p class="footer-title">Comunidad Urbana Copernicus Centroamérica</p>
-        <p>Clúster de Asentamientos Humanos · Fase II. Espacio regional que articula iniciativas institucionales, métodos reproducibles, geovisores basados en GeoLibre y el Atlas Urbano Regional.</p>
+        <p>Clúster de Asentamientos Humanos · Fase II. Espacio regional que articula iniciativas institucionales, métodos reproducibles en Google Colab y Google Earth Engine, geovisores basados en GeoLibre y el Atlas Urbano Regional.</p>
       </div>
       <div>
         <p class="footer-title">Secciones del portal</p>
         <p>
           <a href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">Proyectos</a> ·
+          <a href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ejercicio Colab / GEE</a> ·
           <a href="{html.escape(ctx.site_url('atlas/'), quote=True)}">Atlas Urbano Regional</a> ·
           <a href="{html.escape(ctx.site_url('seguimiento/'), quote=True)}">Seguimiento</a> ·
           <a href="{html.escape(ctx.site_url('comunidad/'), quote=True)}">Comunidad</a> ·
@@ -196,12 +210,13 @@ def build_project_card_html(ctx: SiteContext, item: dict[str, Any]) -> str:
     tags = p.get("tags", [])
     tags_attr = "|".join(tags)
     inst_str = ", ".join(p["institutional_use"].get("institutions", []))
-    search_blob = f"{pid} {p['title']} {country_name} {p['territory']['label']} {inst_str} {' '.join(tags)}"
+    short_title = SHORT_CARD_TITLES.get(pid, p["title"])
+    search_blob = f"{pid} {short_title} {p['title']} {country_name} {p['territory']['label']} {inst_str} {' '.join(tags)}"
 
     detail_href = html.escape(ctx.site_url(f"proyectos/{pid}/"), quote=True)
     site_link = p["links"].get("website")
     ext_site_btn = (
-        f'<a class="btn btn-outline btn-xs" href="{html.escape(site_link, quote=True)}" target="_blank" rel="noopener noreferrer">Sitio / Geovisor ↗</a>'
+        f'<a class="btn btn-outline btn-xs" href="{html.escape(site_link.rstrip("/") + "/aplicacion/", quote=True)}" target="_blank" rel="noopener noreferrer">Abrir Geovisor ↗</a>'
         if site_link and site_link.startswith("https://")
         else '<span class="badge badge-pendiente">Sitio propio en preparación</span>'
     )
@@ -217,7 +232,7 @@ def build_project_card_html(ctx: SiteContext, item: dict[str, Any]) -> str:
         <span class="badge badge-country">{esc(country_name)} ({esc(country_code)})</span>
         {badge_html(p['pmv']['scope_status'], 'PMV')}
       </div>
-      <h3><a href="{detail_href}" style="color:var(--c-navy);text-decoration:none;">{esc(p['title'])}</a></h3>
+      <h3><a href="{detail_href}" style="color:var(--c-navy);text-decoration:none;">{esc(short_title)}</a></h3>
       <p style="font-size:0.86rem;color:var(--c-text-muted);"><strong>Territorio:</strong> {esc(p['territory']['label'])}</p>
       <p>{esc(p['summary'])}</p>
       <div class="tag-list">{tags_html}</div>
@@ -255,7 +270,7 @@ def build_home_page(
                 "id": pid,
                 "country_code": p["country"]["code"],
                 "country_name": p["country"]["name"],
-                "short_name": gv.get("short_name") or p["title"],
+                "short_name": SHORT_CARD_TITLES.get(pid) or gv.get("short_name") or p["title"],
                 "territory_label": p["territory"]["label"],
                 "institution": insts[0] if insts else "Por confirmar",
                 "center": center,
@@ -274,12 +289,12 @@ def build_home_page(
           <span class="badge badge-country">Jornada Presencial San Salvador · 10–12 nov 2026</span>
         </div>
         <h1>Información territorial que apoya decisiones urbanas</h1>
-        <p class="hero-lead">La comunidad reúne iniciativas de Centroamérica y República Dominicana que emplean información geoespacial y observación de la Tierra para abordar retos de los asentamientos humanos. Este espacio conecta proyectos, métodos, avances y contribuciones al Atlas Urbano Regional.</p>
+        <p class="hero-lead">La comunidad reúne iniciativas de Centroamérica y República Dominicana que emplean información geoespacial y observación de la Tierra para abordar retos de los asentamientos humanos. Este espacio conecta proyectos, laboratorios en Google Colab y Google Earth Engine, avances y contribuciones al Atlas Urbano Regional.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">Explorar proyectos</a>
-          <a class="btn btn-teal" href="{html.escape(ctx.site_url('atlas/'), quote=True)}">Consultar el Atlas</a>
-          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('comunidad/'), quote=True)}">Participar</a>
-          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('agenda/'), quote=True)}">Ver Agenda 10–12 nov</a>
+          <a class="btn btn-teal" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Empieza aquí · Ejercicio Colab / GEE</a>
+          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('atlas/'), quote=True)}">Consultar el Atlas</a>
+          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('seguimiento/'), quote=True)}">Seguimiento y tablero</a>
         </div>
       </div>
     </section>
@@ -302,6 +317,22 @@ def build_home_page(
       <div class="stat-card">
         <div class="stat-value">{n_atlas}</div>
         <div class="stat-label">Contribuciones previstas registradas para el Atlas Urbano Regional</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card" style="border-left:4px solid var(--c-teal);background:var(--c-surface);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem;">
+          <div>
+            <span class="badge badge-ok">Recorrido práctico de principio a fin</span>
+            <h2 style="margin:0.3rem 0;">¿Participas en un equipo técnico? Empieza tu primer análisis y despliega tu capa</h2>
+            <p style="margin:0;color:var(--c-text-muted);font-size:0.92rem;">Ejecuta el ejercicio de <strong>Mancha Urbana con Sentinel-2</strong> en <strong>Google Colab</strong> o en <strong>Google Earth Engine</strong> usando la <strong>misma cuenta de Google</strong> con la que ingresas a <strong>Google Antigravity</strong>, e integra tus resultados en el Geovisor de tu proyecto.</p>
+          </div>
+          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+            <a class="btn btn-primary btn-xs" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Abrir guía del ejercicio →</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('assets/descargas/Manual_Guia_Antigravity_Proyectos_Copernicus.docx'), quote=True)}" download>Descargar Manual Word v1.1</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -342,17 +373,17 @@ def build_home_page(
         <article class="card">
           <span class="badge badge-declarado">Seguimiento y apoyos</span>
           <h3>Tablero compartido y trazabilidad</h3>
-          <p>Las tareas técnicas viven en el repositorio de cada iniciativa y los compromisos transversales en el hub, distinguiendo el avance operativo de la validación del PMV.</p>
+          <p>Las tareas técnicas viven en el repositorio de cada iniciativa y se articulan con el tablero público GitHub Project #1, distinguiendo el avance operativo de la validación del PMV.</p>
           <div class="card-footer">
             <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('seguimiento/'), quote=True)}">Ir a Seguimiento</a>
           </div>
         </article>
         <article class="card">
           <span class="badge badge-propuesta">Colaboración abierta</span>
-          <h3>Plantilla común, Fork y Geovisor GeoLibre</h3>
-          <p>Cada participante trabaja desde un fork del repositorio canónico de su iniciativa, valida localmente y despliega sus capas en el Geovisor basado en GeoLibre.</p>
+          <h3>Antigravity, Colab, GEE y Geovisor GeoLibre</h3>
+          <p>Cada participante trabaja desde su fork personal, procesa imágenes Sentinel-2 en Google Colab o Google Earth Engine y despliega sus capas en el Geovisor de su iniciativa.</p>
           <div class="card-footer">
-            <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('recursos/'), quote=True)}">Guías y plantilla</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ir al ejercicio paso a paso</a>
           </div>
         </article>
       </div>
@@ -453,6 +484,8 @@ def build_hub_project_detail_page(
     content_md = item["content_markdown"]
     proposed_slug = f"{reg_entry['proposed_owner']}/{reg_entry['proposed_repository']}"
     effective_slug = reg_entry.get("repository") or proposed_slug
+    canon_repo_url = p["links"].get("repository") or f"https://github.com/{effective_slug}"
+    proj_site_url = p["links"].get("website")
 
     has_decl_demo = any(
         st.get("pointer") == "/links/demo" and st.get("status") == "declarado"
@@ -460,13 +493,13 @@ def build_hub_project_detail_page(
     )
 
     site_btn = render_link_or_pending(
-        p["links"].get("website"),
-        "Abrir sitio y Geovisor GeoLibre de la iniciativa",
+        proj_site_url.rstrip("/") + "/aplicacion/" if proj_site_url else None,
+        "Abrir Geovisor GeoLibre de la iniciativa",
         "Sitio independiente en preparación",
         "btn btn-primary",
     )
     repo_btn = render_link_or_pending(
-        p["links"].get("repository"),
+        canon_repo_url,
         "Ver repositorio canónico en GitHub",
         f"Repositorio en preparación (propuesto: {reg_entry['proposed_repository']})",
         "btn btn-outline-light",
@@ -494,12 +527,23 @@ def build_hub_project_detail_page(
         ahref = html.escape(ctx.site_url(f"atlas/{ap['id']}/"), quote=True)
         atlas_links.append(f'<li><a href="{ahref}"><strong>{esc(ap["title"])}</strong></a> ({esc(ap["publication_status"])})</li>')
 
-    sync_badge = badge_html("validado" if item["sync_state"] == "ok" else ("en_revision" if item["sync_state"] == "stale" else "propuesta"), f" Catálogo: {item['sync_state']}")
+    if item.get("sync_state") == "ok":
+        sync_badge = '<span class="badge badge-ok">Datos sincronizados</span>'
+    elif item.get("sync_state") == "stale":
+        sync_badge = '<span class="badge badge-propuesta">Copia en caché (stale)</span>'
+    else:
+        sync_badge = '<span class="badge badge-pendiente">Semilla inicial</span>'
 
     fork_snippet = f"""gh repo fork {effective_slug} --clone=false
 git clone https://github.com/TU_USUARIO_GITHUB/{reg_entry['proposed_repository']}.git
 cd {reg_entry['proposed_repository']}
 git remote add upstream https://github.com/{effective_slug}.git"""
+
+    fork_url = f"{canon_repo_url.rstrip('/')}/fork"
+    new_task_url = f"{canon_repo_url.rstrip('/')}/issues/new?template=tarea_pmv.yml"
+    support_url = f"{canon_repo_url.rstrip('/')}/issues/new?template=bloqueo_apoyo.yml"
+    pr_url = f"{canon_repo_url.rstrip('/')}/pulls"
+    collab_page_url = (proj_site_url.rstrip("/") + "/colaborar/") if proj_site_url else ctx.site_url("ejercicio/")
 
     hero = f"""
     <section class="hero">
@@ -515,6 +559,7 @@ git remote add upstream https://github.com/{effective_slug}.git"""
         <div class="hero-actions">
           {site_btn}
           {repo_btn}
+          <a class="btn btn-teal" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ejercicio Colab / GEE →</a>
           {demo_btn}
         </div>
       </div>
@@ -532,6 +577,25 @@ git remote add upstream https://github.com/{effective_slug}.git"""
     </section>
 
     <section class="section">
+      <div class="card" style="border-left:4px solid var(--c-teal);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.6rem;">
+          <div>
+            <h2 style="margin:0 0 0.25rem;">Trabajar en esta iniciativa · Accesos directos</h2>
+            <p style="margin:0;font-size:0.88rem;color:var(--c-text-muted);">Usa estos enlaces para abrir tu copia personal (<em>fork</em>), ejecutar el ejercicio en Google Colab o Google Earth Engine, registrar tareas o enviar un Pull Request.</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.45rem;">
+            <a class="btn btn-teal btn-xs" href="{html.escape(fork_url, quote=True)}" target="_blank" rel="noopener noreferrer">1. Crear copia personal (Fork) ↗</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(collab_page_url, quote=True)}" target="_blank" rel="noopener noreferrer">2. Guía de incorporación ↗</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">3. Ejercicio Colab / GEE</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(new_task_url, quote=True)}" target="_blank" rel="noopener noreferrer">4. Crear tarea PMV ↗</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(support_url, quote=True)}" target="_blank" rel="noopener noreferrer">5. Solicitar apoyo / bloqueo ↗</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(pr_url, quote=True)}" target="_blank" rel="noopener noreferrer">6. Pull Requests ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="grid-2">
         <div class="prose">
           {render_markdown(content_md)}
@@ -539,11 +603,11 @@ git remote add upstream https://github.com/{effective_slug}.git"""
         <div style="display:flex;flex-direction:column;gap:1.2rem;">
           <article class="card">
             <h3>Metadatos de origen y sincronización</h3>
-            <p><strong>Autoridad configurada:</strong> <code>{esc(item.get('source_mode'))}</code></p>
-            <p><strong>Repositorio registrado:</strong> <code>{esc(item.get('source_repository'), 'Semilla local bootstrap')}</code></p>
-            <p><strong>Revisión SHA:</strong> <code>{esc(item.get('source_commit'), 'N/A (bootstrap)')}</code></p>
-            <p><strong>Fecha de lectura:</strong> <code>{esc(item.get('fetched_at'))}</code></p>
-            <p><strong>Actualización declarada del contenido:</strong> {esc(item.get('content_updated_at'), 'Fecha de actualización no informada')}</p>
+            <p><strong>Estado en catálogo:</strong> {sync_badge}</p>
+            <p><strong>Repositorio oficial:</strong> <code>{esc(item.get('source_repository'), 'Semilla local bootstrap')}</code></p>
+            <p><strong>Revisión SHA verificada:</strong> <code>{esc((item.get('source_commit') or '')[:12] or None, 'N/A (bootstrap)')}</code></p>
+            <p><strong>Última lectura desde el portal:</strong> {esc(format_spanish_date(item.get('fetched_at')))}</p>
+            <p><strong>Última actualización declarada (<code>governance.content_updated_at</code>):</strong> {esc(format_spanish_date(item.get('content_updated_at'), 'Fecha de actualización aún no informada por el equipo'))}</p>
           </article>
 
           <article class="card">
@@ -552,11 +616,12 @@ git remote add upstream https://github.com/{effective_slug}.git"""
           </article>
 
           <article class="card">
-            <h3>Colaborar en esta iniciativa (Fork / Clone)</h3>
-            <p style="font-size:0.86rem;">Para aportar cambios o desplegar capas en el Geovisor GeoLibre de este equipo, haz fork del repositorio específico de esta iniciativa:</p>
+            <h3>Colaborar desde Google Antigravity (Fork / Clone)</h3>
+            <p style="font-size:0.86rem;">Para aportar cambios o desplegar capas en el Geovisor de este equipo, crea un fork del repositorio específico de esta iniciativa:</p>
             <pre id="fork-{esc(pid)}" class="code-block"><code>{html.escape(fork_snippet)}</code></pre>
             <div class="card-footer">
               <button type="button" class="btn btn-outline btn-xs" data-copy-target="fork-{esc(pid)}">Copiar comandos</button>
+              <a class="btn btn-teal btn-xs" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ver ejercicio práctico →</a>
             </div>
           </article>
         </div>
@@ -589,6 +654,342 @@ git remote add upstream https://github.com/{effective_slug}.git"""
         hero_html=hero,
         body_html=body,
         snapshot_generated_at=snapshot_generated_at,
+    )
+
+
+def build_ejercicio_page(ctx: SiteContext, registry: dict[str, Any], catalog_snap: dict[str, Any]) -> str:
+    colab_url = "https://colab.research.google.com/github/copernicuscentroamerica/clusterurbano/blob/main/web/assets/descargas/mancha_urbana_sentinel2_vmod01.ipynb"
+    nb_dl = html.escape(ctx.site_url("assets/descargas/mancha_urbana_sentinel2_vmod01.ipynb"), quote=True)
+    pptx_dl = html.escape(ctx.site_url("assets/descargas/scrum_aplicacion_geoespacial_Sesion_7_Previa_Encuentro.pptx"), quote=True)
+    docx_dl = html.escape(ctx.site_url("assets/descargas/Manual_Guia_Antigravity_Proyectos_Copernicus.docx"), quote=True)
+
+    colab_vectorize_snippet = """# Celda opcional al final de Google Colab: exportar mancha urbana a GeoJSON (EPSG:4326)
+import geopandas as gpd
+import rasterio
+from rasterio.features import shapes
+from shapely.geometry import shape
+
+tif_path = f"salida_{CIUDAD_SLUG}_{ANIO}/construido_{CIUDAD_SLUG}_{ANIO}.tif"
+with rasterio.open(tif_path) as src:
+    arr = src.read(1)
+    mask = arr == 1
+    geoms = [
+        {"geometry": shape(geom), "properties": {"clase": "construido", "anio": int(ANIO), "fuente": "Sentinel-2 L2A RF"}}
+        for geom, val in shapes(arr, mask=mask, transform=src.transform)
+        if val == 1
+    ]
+    gdf = gpd.GeoDataFrame.from_features(geoms, crs=src.crs).to_crs("EPSG:4326")
+    # Filtrar polígonos menores a 500 m2 para aligerar la capa web
+    gdf = gdf[gdf.to_crs(epsg=3857).area >= 500]
+    out_geojson = f"salida_{CIUDAD_SLUG}_{ANIO}/mancha_urbana_{CIUDAD_SLUG}_{ANIO}.geojson"
+    gdf.to_file(out_geojson, driver="GeoJSON")
+    print("GeoJSON listo para geovisor/capas/:", out_geojson, "Polígonos:", len(gdf))"""
+
+    gee_script_snippet = """// ============================================================================
+// EJERCICIO PRÁCTICO EN GOOGLE EARTH ENGINE (GEE)
+// Detección de Mancha Urbana con Sentinel-2 SR Harmonized (12 predictores + RF)
+// Funciona con la MISMA cuenta de Google que usas en Google Antigravity y Colab
+// ============================================================================
+
+// 1. Definir Área de Estudio (ejemplo: Panamá Oeste - Arraiján / La Chorrera)
+// Puedes cambiar las coordenadas al centroide de tu iniciativa (AMSS, La Carpio, etc.)
+var centro = ee.Geometry.Point([-79.7553, 8.9451]);
+var aoi = centro.buffer(8000).bounds();
+Map.centerObject(aoi, 12);
+
+// 2. Filtrar colección COPERNICUS/S2_SR_HARMONIZED y enmascarar nubes con SCL
+// Nota verificada: S2_SR_HARMONIZED inicia el 2017-03-28
+var ANIO = 2025;
+function maskS2SCL(img) {
+  var scl = img.select('SCL');
+  // Conservar únicamente clases limpias: 4 (vegetación), 5 (suelo desnudo), 6 (agua)
+  var mask = scl.eq(4).or(scl.eq(5)).or(scl.eq(6));
+  return img.updateMask(mask).divide(10000);
+}
+
+var s2Col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
+  .filterBounds(aoi)
+  .filterDate(ANIO + '-01-01', ANIO + '-12-31')
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 20))
+  .map(maskS2SCL);
+
+print('Escenas Sentinel-2 disponibles:', s2Col.size());
+var comp = s2Col.median().clip(aoi);
+
+// 3. Calcular índices espectrales urbanos y de vegetación
+var ndvi = comp.normalizedDifference(['B8', 'B4']).rename('NDVI');
+var ndbi = comp.normalizedDifference(['B11', 'B8']).rename('NDBI');
+var ndwi = comp.normalizedDifference(['B3', 'B8']).rename('NDWI');
+var bsi = comp.expression(
+  '((B11 + B4) - (B8 + B2)) / ((B11 + B4) + (B8 + B2) + 1e-6)',
+  {'B2': comp.select('B2'), 'B4': comp.select('B4'), 'B8': comp.select('B8'), 'B11': comp.select('B11')}
+).rename('BSI');
+
+// Textura espacial local 3x3 sobre NDVI y NDBI
+var ndviStd = ndvi.reduceNeighborhood({reducer: ee.Reducer.stdDev(), kernel: ee.Kernel.square(1)}).rename('NDVI_std3x3');
+var ndbiStd = ndbi.reduceNeighborhood({reducer: ee.Reducer.stdDev(), kernel: ee.Kernel.square(1)}).rename('NDBI_std3x3');
+
+var stack = comp.select(['B2', 'B3', 'B4', 'B8', 'B11', 'B12'])
+  .addBands([ndvi, ndbi, ndwi, bsi, ndviStd, ndbiStd]);
+
+// 4. Etiquetas de entrenamiento desde GHSL Built-Up Surface o Google Open Buildings
+var ghsl = ee.Image('JRC/GHSL/P2023A/GHS_BUILT_S/2020').clip(aoi);
+var label = ghsl.gt(20).rename('clase').uint8();
+
+var muestras = stack.addBands(label).stratifiedSample({
+  numPoints: 1500,
+  classBand: 'clase',
+  region: aoi,
+  scale: 10,
+  seed: 42,
+  geometries: true
+});
+
+// 5. Entrenar clasificador Random Forest (150 árboles) y clasificar
+var bandas = ['B2', 'B3', 'B4', 'B8', 'B11', 'B12', 'NDVI', 'NDBI', 'NDWI', 'BSI', 'NDVI_std3x3', 'NDBI_std3x3'];
+var rf = ee.Classifier.smileRandomForest(150).train({
+  features: muestras,
+  classProperty: 'clase',
+  inputProperties: bandas
+});
+
+var clasificado = stack.select(bandas).classify(rf).rename('construido');
+Map.addLayer(comp, {bands: ['B4', 'B3', 'B2'], min: 0.02, max: 0.30}, 'Sentinel-2 RGB');
+Map.addLayer(clasificado.selfMask(), {palette: ['#d95f02']}, 'Mancha Urbana RF (10 m)');
+
+// 6. Vectorizar polígonos construidos y exportar a Google Drive como GeoJSON (EPSG:4326)
+var vectores = clasificado.selfMask().reduceToVectors({
+  geometry: aoi,
+  crs: 'EPSG:4326',
+  scale: 20,
+  geometryType: 'polygon',
+  eightConnected: true,
+  maxPixels: 1e9
+});
+
+Export.table.toDrive({
+  collection: vectores,
+  description: 'mancha_urbana_s2_' + ANIO + '_geojson',
+  fileFormat: 'GeoJSON'
+});
+
+// 7. Exportar también el raster como Cloud Optimized GeoTIFF (COG)
+Export.image.toDrive({
+  image: clasificado.uint8(),
+  description: 'construido_s2_' + ANIO + '_cog',
+  region: aoi,
+  scale: 10,
+  crs: 'EPSG:4326',
+  maxPixels: 1e9,
+  formatOptions: {cloudOptimized: true}
+});"""
+
+    antigravity_prompt_snippet = """Acabo de ejecutar el ejercicio práctico de Mancha Urbana con Sentinel-2 (en Google Colab / Google Earth Engine) y descargué los archivos resultantes en mi computadora.
+Por favor ayúdame a integrarlos en este repositorio siguiendo las reglas de gobernanza:
+1. Verifica con `git remote -v` que estamos en mi fork personal y crea una rama nueva llamada `ejercicio/mancha-urbana-s2`.
+2. Copia el archivo vectorial `mancha_urbana_*.geojson` (o el COG `construido_*.tif`) a la carpeta `geovisor/capas/`, comprobando que esté en coordenadas `EPSG:4326` y no contenga datos personales.
+3. Registra la nueva capa en `geovisor/layers.json` con estado `en_revision`, estilo visible y una nota de cautela explicando que proviene del ejercicio supervisado con Sentinel-2 L2A (Random Forest, 10 m) sujeto a validación institucional.
+4. Actualiza `governance.content_updated_at` en `project.json` con la fecha de hoy (y su entrada en `provenance.statements`) y añade en `content/metodologia.md` un resumen de las métricas obtenidas (F1, ROC-AUC, hectáreas detectadas).
+5. Ejecuta `python scripts/build_site.py --output site`, `python scripts/validate.py --source` y `python scripts/validate.py --site site`, muéstrame `git status` y `git diff` para mi revisión antes de hacer commit."""
+
+    hero = f"""
+    <section class="hero">
+      <div class="container">
+        <div class="hero-eyebrow">
+          <span class="badge badge-lime">Guía de incorporación práctica · Sesión 7 y Taller Presencial</span>
+          <span class="badge badge-country">Google Antigravity + Google Colab + Google Earth Engine</span>
+        </div>
+        <h1>Ejercicio práctico de principio a fin: Mancha Urbana con Sentinel-2</h1>
+        <p class="hero-lead">Aprende el flujo completo de la Comunidad de Práctica: clona el repositorio de tu iniciativa en Google Antigravity, ejecuta el modelo de detección de mancha urbana en <strong>Google Colab</strong> o en <strong>Google Earth Engine</strong> usando tu <strong>misma cuenta de Google</strong>, despliega las capas resultantes en el Geovisor y envía tu primer Pull Request.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="{html.escape(colab_url, quote=True)}" target="_blank" rel="noopener noreferrer">Abrir cuaderno en Google Colab ↗</a>
+          <a class="btn btn-teal" href="{nb_dl}" download="mancha_urbana_sentinel2_vmod01.ipynb">Descargar .ipynb (Colab)</a>
+          <a class="btn btn-outline-light" href="{pptx_dl}" download="scrum_aplicacion_geoespacial_Sesion_7_Previa_Encuentro.pptx">Descargar presentación Scrum (.pptx)</a>
+          <a class="btn btn-outline-light" href="{docx_dl}" download="Manual_Guia_Antigravity_Proyectos_Copernicus.docx">Descargar Manual Word v1.1 (.docx)</a>
+        </div>
+      </div>
+    </section>
+    """
+
+    body = f"""
+    <div class="callout">
+      <strong>Ventaja clave: una sola cuenta de Google para todo tu entorno de trabajo</strong>
+      <span><strong>Google Antigravity</strong>, <strong>Google Colaboratory (Colab)</strong> y <strong>Google Earth Engine (GEE)</strong> son plataformas de Google. Puedes iniciar sesión en las tres con la <strong>misma cuenta de Google</strong> que utilizas en Antigravity, lo que te permite pasar del análisis satelital en la nube a la edición y publicación de tu repositorio sin configurar credenciales externas complejas.</span>
+    </div>
+
+    <section class="section">
+      <h2>1. El recorrido completo de colaboración en 5 pasos</h2>
+      <div class="grid-3">
+        <article class="card">
+          <span class="badge badge-country">Paso 1 · Preparar tu copia</span>
+          <h3>Fork y clonación en Antigravity</h3>
+          <p>Entra a la ficha de tu iniciativa en <a href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">Proyectos</a>, crea tu copia personal (<em>fork</em>) en GitHub y clónala en tu computadora desde Google Antigravity.</p>
+        </article>
+        <article class="card">
+          <span class="badge badge-country">Paso 2 · Procesar imágenes</span>
+          <h3>Ejecutar análisis en Colab o GEE</h3>
+          <p>Con tu misma cuenta de Google, ejecuta el flujo de <strong>Mancha Urbana con Sentinel-2</strong> en Google Colab (Ruta A) o en Google Earth Engine (Ruta B) para la ciudad de tu proyecto.</p>
+        </article>
+        <article class="card">
+          <span class="badge badge-country">Paso 3 · Integrar en Geovisor</span>
+          <h3>Guardar en <code>geovisor/capas/</code></h3>
+          <p>Descarga tu GeoJSON o GeoTIFF COG, colócalo en <code>geovisor/capas/</code> y pídele al agente de Antigravity que lo registre en <code>geovisor/layers.json</code> y actualice <code>proyecto.geolibre.json</code>.</p>
+        </article>
+        <article class="card">
+          <span class="badge badge-country">Paso 4 · Validar y revisar</span>
+          <h3>Ejecutar validadores y <code>git diff</code></h3>
+          <p>Comprueba que <code>validate.py --source</code> y <code>validate.py --site site</code> terminen con <code>[OK]</code> y revisa tus cambios antes de subir tu rama a <code>origin</code>.</p>
+        </article>
+        <article class="card">
+          <span class="badge badge-country">Paso 5 · Enviar y publicar</span>
+          <h3>Pull Request y seguimiento regional</h3>
+          <p>Abre tu Pull Request hacia el repositorio oficial, enlázalo a tu tarea en <a href="{html.escape(ctx.site_url('seguimiento/'), quote=True)}">Seguimiento</a> y comprueba la publicación en el Geovisor tras su aprobación.</p>
+        </article>
+        <article class="card">
+          <span class="badge badge-ok">Marco ágil Scrum (Sesión 7)</span>
+          <h3>Delimitación del PMV y Sprints</h3>
+          <p>Consulta la presentación <em>Scrum para Aplicaciones Geoespaciales (Sesión 7 Previa al Encuentro)</em> para organizar historias de usuario (<code>US-GIS</code>), criterios de aceptación y entregables del taller.</p>
+          <div class="card-footer">
+            <a class="btn btn-outline btn-xs" href="{pptx_dl}" download="scrum_aplicacion_geoespacial_Sesion_7_Previa_Encuentro.pptx">Descargar presentación .pptx</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. Ruta A — Implementación paso a paso en Google Colab (Cuaderno Jupyter)</h2>
+      <p>El cuaderno oficial <code>mancha_urbana_sentinel2_vmod01.ipynb</code> ejecuta un flujo reproducible de principio a fin utilizando escenas abiertas de <strong>Sentinel-2 L2A</strong> y aprendizaje automático (<em>Random Forest</em>) sin requerir llaves de API de pago.</p>
+
+      <div class="table-wrap" style="margin:1rem 0;">
+        <table>
+          <thead>
+            <tr>
+              <th>Sección del cuaderno</th>
+              <th>Qué hace técnicamente</th>
+              <th>Parámetros o resultados clave</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Secciones 1 y 2</strong><br>Entorno y configuración</td>
+              <td>Instala las librerías geoespaciales en la máquina virtual de Colab (<code>pystac-client</code>, <code>planetary-computer</code>, <code>odc-stac</code>, <code>rioxarray</code>, <code>scikit-learn</code>, <code>overturemaps</code>, <code>folium</code>) y define los parámetros de corrida.</td>
+              <td><code>CIUDAD_OBJETIVO = "San Salvador"</code> (o tu ciudad), <code>ANIO = 2025</code>, <code>MAX_NUBES = 20</code>, <code>BUFFER_M = 10000</code>, <code>RESOLUCION = 10</code> m.</td>
+            </tr>
+            <tr>
+              <td><strong>Sección 3</strong><br>Catálogo de ciudades de CA y RD</td>
+              <td>Incluye un catálogo integrado de <strong>75 ciudades principales</strong> y un diccionario ampliado de <strong>779 poblados</strong> de Guatemala, El Salvador, Honduras, Nicaragua, Costa Rica, Panamá y República Dominicana.</td>
+              <td>Construye automáticamente el recuadro delimitador (<em>bounding box</em>) en <code>EPSG:4326</code> y la proyección métrica UTM correspondiente.</td>
+            </tr>
+            <tr>
+              <td><strong>Secciones 4 y 5</strong><br>Compuesto Sentinel-2 y 12 predictores</td>
+              <td>Consulta el catálogo STAC de Sentinel-2 L2A, enmascara nubes, sombras y cirros usando la banda <code>SCL</code> (conservando clases limpias <code>4, 5, 6</code>), calcula la mediana anual y genera <strong>12 variables predictoras</strong>.</td>
+              <td>6 bandas (<code>B02, B03, B04, B08, B11, B12</code>) + 4 índices (<code>NDVI, NDBI, NDWI, BSI</code>) + 2 texturas locales 3×3 (<code>NDVI_std3x3, NDBI_std3x3</code>).</td>
+            </tr>
+            <tr>
+              <td><strong>Sección 6</strong><br>Etiquetas de edificaciones</td>
+              <td>Descarga huellas de edificaciones abiertas desde <strong>Overture Maps</strong> (con respaldo automático en Microsoft/Google Open Buildings y OpenStreetMap) y las rasteriza a la grilla de 10 m.</td>
+              <td>Máscara binaria de referencia (<code>1 = edificado</code>, <code>0 = no edificado</code>) para entrenamiento supervisado.</td>
+            </tr>
+            <tr>
+              <td><strong>Secciones 7 y 8</strong><br>Random Forest y validación</td>
+              <td>Toma una muestra estratificada balanceada, divide en entrenamiento (75 %) y prueba (25 %), entrena un <code>RandomForestClassifier</code> de 150 árboles y evalúa métricas independientes antes de predecir en toda el área.</td>
+              <td>Genera matriz de confusión, precisión, exhaustividad, <strong>F1-Score</strong>, curva <strong>ROC-AUC</strong> e importancia de variables.</td>
+            </tr>
+            <tr>
+              <td><strong>Secciones 9 y 10</strong><br>Mapas y exportación de archivos</td>
+              <td>Despliega el mapa interactivo con control de capas y empaqueta todos los resultados en la carpeta <code>salida_{{ciudad}}_{{anio}}/</code> lista para descargar desde el panel izquierdo de archivos de Colab.</td>
+              <td><code>probabilidad_{{ciudad}}_{{anio}}.tif</code> (0–100 %), <code>construido_{{ciudad}}_{{anio}}.tif</code> (binario), <code>resumen_{{ciudad}}_{{anio}}.csv</code> y gráficos <code>.png</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Cómo exportar también un polígono ligero <code>.geojson</code> desde Colab para carga directa en el Geovisor</h3>
+      <p>Además de los archivos GeoTIFF (<code>.tif</code>), puedes añadir esta celda al final del cuaderno en Google Colab para vectorizar la mancha urbana detectada como archivo <code>.geojson</code> en <code>EPSG:4326</code> y cargarlo de forma nativa e inmediata en el mapa integrado del proyecto:</p>
+      <pre id="code-colab-vec" class="code-block"><code>{html.escape(colab_vectorize_snippet)}</code></pre>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.5rem;">
+        <button type="button" class="btn btn-outline btn-xs" data-copy-target="code-colab-vec">Copiar celda GeoJSON para Colab</button>
+        <a class="btn btn-primary btn-xs" href="{html.escape(colab_url, quote=True)}" target="_blank" rel="noopener noreferrer">Abrir cuaderno en Google Colab ↗</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. Ruta B — Implementación equivalente en Google Earth Engine (GEE)</h2>
+      <p>Si tu equipo trabaja con scripts en <strong>Google Earth Engine</strong> (como los casos de Panamá Oeste, AMSS, Distrito Central o Guatemala Metropolitana), puedes ejecutar el mismo análisis entrando a <a href="https://code.earthengine.google.com/" target="_blank" rel="noopener noreferrer">code.earthengine.google.com ↗</a> con la <strong>misma cuenta de Google</strong> que usas en Antigravity.</p>
+
+      <div class="grid-2" style="margin-bottom:1rem;">
+        <article class="card">
+          <h3>Opción B1 · Editor de Código Web de GEE (JavaScript)</h3>
+          <ol style="padding-left:1.2rem;font-size:0.9rem;">
+            <li>Ingresa a <a href="https://code.earthengine.google.com/" target="_blank" rel="noopener noreferrer">code.earthengine.google.com ↗</a> con tu cuenta de Google.</li>
+            <li>Pega el script de abajo en el panel central y ajusta las coordenadas de <code>centro</code> al ámbito de tu iniciativa (o usa tus polígonos piloto).</li>
+            <li>Haz clic en <strong>Run</strong> para inspeccionar en el mapa el compuesto Sentinel-2 y la capa <code>Mancha Urbana RF (10 m)</code>.</li>
+            <li>En la pestaña derecha <strong>Tasks</strong>, pulsa <strong>Run</strong> sobre <code>mancha_urbana_s2_2025_geojson</code> (vectorial para el visor integrado) y <code>construido_s2_2025_cog</code> (GeoTIFF optimizado para GeoLibre Studio) para descargarlos desde tu Google Drive.</li>
+          </ol>
+        </article>
+        <article class="card">
+          <h3>Opción B2 · API de Python de GEE desde Colab o Antigravity</h3>
+          <ol style="padding-left:1.2rem;font-size:0.9rem;">
+            <li>Tanto en Google Colab como en la terminal de Google Antigravity puedes autenticar Earth Engine con tu misma cuenta ejecutando:<br><code>import ee; ee.Authenticate(); ee.Initialize(project='tu-proyecto-cloud')</code></li>
+            <li>Esto te permite combinar el catálogo masivo de GEE (<code>COPERNICUS/S2_SR_HARMONIZED</code>, <code>COPERNICUS/S1_GRD</code>, <code>GOOGLE/DYNAMICWORLD/V1</code>) con librerías de Python (<code>geopandas</code>, <code>scikit-learn</code>) y guardar el archivo directamente en <code>geovisor/capas/</code>.</li>
+          </ol>
+        </article>
+      </div>
+
+      <pre id="code-gee-script" class="code-block"><code>{html.escape(gee_script_snippet)}</code></pre>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.5rem;">
+        <button type="button" class="btn btn-outline btn-xs" data-copy-target="code-gee-script">Copiar script para Google Earth Engine</button>
+        <a class="btn btn-teal btn-xs" href="https://code.earthengine.google.com/" target="_blank" rel="noopener noreferrer">Abrir GEE Code Editor ↗</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. Cómo integrar los resultados en tu proyecto con Google Antigravity</h2>
+      <p>Una vez que tengas los archivos generados por <strong>Google Colab</strong> o por <strong>Google Earth Engine</strong> en tu computadora, abre tu repositorio clonado en <strong>Google Antigravity</strong> y envíale la siguiente instrucción al agente de IA:</p>
+      <pre id="prompt-ejercicio-agy" class="code-block"><code>{html.escape(antigravity_prompt_snippet)}</code></pre>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.5rem;">
+        <button type="button" class="btn btn-primary btn-xs" data-copy-target="prompt-ejercicio-agy">Copiar prompt para Google Antigravity</button>
+      </div>
+
+      <div class="table-wrap" style="margin-top:1.25rem;">
+        <table>
+          <thead>
+            <tr>
+              <th>Archivo generado en el ejercicio</th>
+              <th>Dónde colocarlo en tu repositorio</th>
+              <th>Cómo se visualiza en el Geovisor del proyecto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>mancha_urbana_{{ciudad}}_{{anio}}.geojson</code><br>(Polígonos vectoriales en <code>EPSG:4326</code>)</td>
+              <td><code>geovisor/capas/</code> y registrado en <code>geovisor/layers.json</code></td>
+              <td>Se dibuja <strong>automáticamente en el visor integrado (MapLibre)</strong> y también se empaqueta dentro de <code>proyecto.geolibre.json</code> para abrirse en <strong>GeoLibre Studio</strong>.</td>
+            </tr>
+            <tr>
+              <td><code>construido_{{ciudad}}_{{anio}}.tif</code> o <code>probabilidad_{{ciudad}}_{{anio}}.tif</code><br>(GeoTIFF / COG)</td>
+              <td><code>geovisor/capas/</code> (si ≤ 25 MB) o servicio HTTPS externo</td>
+              <td>Aparece listado en la pestaña <strong><code>Carpeta repo</code></strong> del Geovisor; al pulsar <strong>Abrir en GeoLibre Studio ↗</strong> se transfiere mediante <code>?data=&lt;url&gt;</code> a <code>web.geolibre.app</code>.</td>
+            </tr>
+            <tr>
+              <td><code>resumen_{{ciudad}}_{{anio}}.csv</code><br>(Métricas F1, ROC-AUC, área en ha)</td>
+              <td>Documentado en <code>content/metodologia.md</code> y <code>content/pmv.md</code></td>
+              <td>Se presenta en la ficha pública de la iniciativa con su nota metodológica y estado de revisión técnica (<code>en_revision</code>).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    """
+
+    return render_hub_shell(
+        ctx=ctx,
+        registry=registry,
+        page_title="Ejercicio práctico: Mancha Urbana con Sentinel-2 (Colab + GEE + Antigravity)",
+        active_nav="ejercicio",
+        hero_html=hero,
+        body_html=body,
+        snapshot_generated_at=catalog_snap.get("generated_at"),
     )
 
 
@@ -786,13 +1187,13 @@ def build_seguimiento_page(
     board_cfg: dict[str, Any],
 ) -> str:
     overall = progress_snap.get("overall_state", "not_initialized")
-    gen_at = progress_snap.get("generated_at") or "Seguimiento pendiente de primera sincronización"
-    proj_titles = {it["project"]["id"]: it["project"]["title"] for it in catalog_snap.get("projects", [])}
+    gen_at = format_spanish_date(progress_snap.get("generated_at"), "Seguimiento pendiente de primera sincronización")
+    proj_titles = {it["project"]["id"]: SHORT_CARD_TITLES.get(it["project"]["id"], it["project"]["title"]) for it in catalog_snap.get("projects", [])}
 
     board_url = board_cfg.get("project_url")
     board_btn = render_link_or_pending(
         board_url,
-        "Abrir tablero GitHub Project regional",
+        "Abrir tablero público GitHub Project #1",
         "Tablero GitHub Project en preparación",
         "btn btn-primary",
     )
@@ -804,15 +1205,17 @@ def build_seguimiento_page(
         m = p_entry["metrics"]
         fmt = lambda v: "—" if v is None else str(v)
         proj_href = html.escape(ctx.site_url(f"proyectos/{pid}/"), quote=True)
+        new_issue_href = f"https://github.com/copernicuscentroamerica/urbano-{pid}/issues/new?template=tarea_pmv.yml"
+        sync_lbl = "Sincronizado" if p_entry["sync_state"] == "ok" else p_entry["sync_state"]
         proj_rows.append(
             f"<tr>"
-            f'<td><a href="{proj_href}"><code>{esc(pid)}</code></a><br><span style="font-size:0.8rem;color:var(--c-text-muted);">{esc(proj_titles.get(pid, ""))}</span></td>'
-            f"<td><code>{esc(p_entry['sync_state'])}</code></td>"
-            f"<td>{fmt(m['open_tasks'])}</td>"
+            f'<td><a href="{proj_href}"><strong>{esc(proj_titles.get(pid, pid))}</strong></a><br><span style="font-size:0.78rem;color:var(--c-text-muted);"><code>{esc(pid)}</code> · <a href="{html.escape(new_issue_href, quote=True)}" target="_blank" rel="noopener noreferrer">Nueva tarea ↗</a></span></td>'
+            f'<td><span class="badge badge-ok">{esc(sync_lbl)}</span></td>'
+            f"<td><strong>{fmt(m['open_tasks'])}</strong></td>"
             f"<td>{fmt(m['in_review_tasks'])}</td>"
             f"<td>{fmt(m['completed_tasks'])}</td>"
             f"<td>{fmt(m['blocked_tasks'])}</td>"
-            f"<td>{esc(p_entry.get('last_success_at'), '—')}</td>"
+            f"<td>{esc(format_spanish_date(p_entry.get('last_success_at'), '—'))}</td>"
             f"</tr>"
         )
         for t in p_entry.get("tasks", []):
@@ -823,35 +1226,59 @@ def build_seguimiento_page(
         t_cards = []
         for t in all_tasks:
             blk_badge = '<span class="badge badge-danger">Bloqueado</span>' if t.get("blocked") else ""
+            prio_badge = f'<span class="badge badge-country">Prioridad: {esc(t["priority"])}</span>' if t.get("priority") else ""
+            iter_badge = f'<span class="badge badge-declarado">{esc(t["iteration"])}</span>' if t.get("iteration") else ""
+            wf_style = "ok" if t["workflow_status"] == "Terminado" else ("en_revision" if t["workflow_status"] in ("En curso", "En revisión") else "pendiente")
+            ev_links = ""
+            if t.get("evidence_urls"):
+                ev_items = " · ".join(
+                    f'<a href="{html.escape(u, quote=True)}" target="_blank" rel="noopener noreferrer">Evidencia {idx + 1} ↗</a>'
+                    for idx, u in enumerate(t["evidence_urls"][:3])
+                )
+                ev_links = f'<p style="font-size:0.82rem;margin:0.25rem 0 0;"><strong>Evidencia vinculada:</strong> {ev_items}</p>'
+
             t_cards.append(
                 f"""
                 <article class="card" data-filter-item
                          data-tproj="{esc(t['project_id'])}"
+                         data-tstatus="{esc(t['workflow_status'])}"
                          data-tblocked="{'si' if t.get('blocked') else 'no'}"
-                         data-search-text="{esc(t['task_id'] + ' ' + t['title'] + ' ' + t['project_id'])}">
+                         data-search-text="{esc(t['task_id'] + ' ' + t['title'] + ' ' + t['project_id'] + ' ' + (t.get('workflow_status') or ''))}">
                   <div style="display:flex;justify-content:space-between;gap:0.4rem;flex-wrap:wrap;">
                     <code>{esc(t['task_id'])}</code>
-                    <span>{badge_html('ok' if t['workflow_status'] == 'Terminado' else 'pendiente', t['workflow_status'])} {blk_badge}</span>
+                    <span style="display:flex;gap:0.35rem;flex-wrap:wrap;">{badge_html(wf_style, t['workflow_status'])} {prio_badge} {iter_badge} {blk_badge}</span>
                   </div>
                   <h3><a href="{html.escape(t['issue_url'], quote=True)}" target="_blank" rel="noopener noreferrer">{esc(t['title'])} ↗</a></h3>
-                  <p style="font-size:0.83rem;color:var(--c-text-muted);">Iniciativa: <code>{esc(t['project_id'])}</code> · Estado Issue: <code>{esc(t['issue_state'])}</code> · Actualizada: {esc(t['source_updated_at'])}</p>
+                  <p style="font-size:0.83rem;color:var(--c-text-muted);margin:0;">Iniciativa: <code>{esc(t['project_id'])}</code> · Issue: <code>{esc(t['issue_state'])}</code> · Actualizada: {esc(format_spanish_date(t['source_updated_at']))}</p>
+                  {ev_links}
                 </article>
                 """
             )
-        p_opts = '<option value="all">Todas las iniciativas</option>' + "".join(
-            f'<option value="{esc(p["project_id"])}">{esc(p["project_id"])}</option>' for p in progress_snap.get("projects", [])
+        p_opts = '<option value="all">Todas las iniciativas (8)</option>' + "".join(
+            f'<option value="{esc(p["project_id"])}">{esc(proj_titles.get(p["project_id"], p["project_id"]))}</option>'
+            for p in progress_snap.get("projects", [])
         )
         tasks_section = f"""
         <section class="section" data-catalog-progress>
-          <h2>Tarjetas operativas exportadas ({len(all_tasks)})</h2>
+          <h2>Tarjetas operativas sincronizadas ({len(all_tasks)})</h2>
           <div class="filter-bar">
             <div class="filter-field" style="flex:2;">
-              <label for="f-tsk-q">Buscar tarea</label>
-              <input id="f-tsk-q" type="search" placeholder="Título o repo#número..." data-filter-search>
+              <label for="f-tsk-q">Buscar tarea por título o código</label>
+              <input id="f-tsk-q" type="search" placeholder="Ej. Sentinel-2, KML, catastro, geovisor, TS-101..." data-filter-search>
             </div>
             <div class="filter-field">
               <label for="f-tsk-p">Iniciativa</label>
               <select id="f-tsk-p" data-filter-select="tproj">{p_opts}</select>
+            </div>
+            <div class="filter-field">
+              <label for="f-tsk-st">Estado de flujo</label>
+              <select id="f-tsk-st" data-filter-select="tstatus">
+                <option value="all">Todos los estados</option>
+                <option value="Por hacer">Por hacer</option>
+                <option value="En curso">En curso</option>
+                <option value="En revisión">En revisión</option>
+                <option value="Terminado">Terminado</option>
+              </select>
             </div>
             <div class="filter-field">
               <label for="f-tsk-b">Bloqueos</label>
@@ -862,6 +1289,7 @@ def build_seguimiento_page(
             </div>
             <button type="button" class="btn btn-outline" data-filter-reset>Restablecer</button>
           </div>
+          <p style="font-size:0.88rem;color:var(--c-text-muted);margin-bottom:1rem;" data-filter-count>{len(all_tasks)} de {len(all_tasks)} tareas mostradas</p>
           <div class="grid-2">{"".join(t_cards)}</div>
         </section>
         """
@@ -871,12 +1299,13 @@ def build_seguimiento_page(
       <div class="container">
         <div class="hero-eyebrow">
           <span class="badge badge-lime">Operación comunitaria</span>
-          <span class="badge badge-country">Estado del snapshot: {esc(overall)}</span>
+          <span class="badge badge-ok">Datos sincronizados ({len(all_tasks)} tareas activas)</span>
         </div>
-        <h1>Seguimiento de compromisos, tareas y bloqueos</h1>
-        <p class="hero-lead">Vista pública de consulta alimentada por GitHub Issues y GitHub Projects. El cierre de una tarea técnica nunca se interpreta automáticamente como aceptación del PMV ni validación institucional.</p>
+        <h1>Seguimiento de compromisos, tareas del PMV y bloqueos</h1>
+        <p class="hero-lead">Vista pública sincronizada con los Issues de las 8 iniciativas y el tablero público regional <strong>GitHub Project #1</strong>. El cierre de una tarea técnica nunca se interpreta automáticamente como aceptación del PMV ni validación institucional.</p>
         <div class="hero-actions">
           {board_btn}
+          <a class="btn btn-outline-light" href="https://github.com/copernicuscentroamerica/clusterurbano/issues/new?template=bloqueo_apoyo.yml" target="_blank" rel="noopener noreferrer">Reportar bloqueo o pedir apoyo ↗</a>
         </div>
       </div>
     </section>
@@ -884,8 +1313,8 @@ def build_seguimiento_page(
 
     body = f"""
     <div class="callout">
-      <strong>Estado de sincronización de seguimiento: <code>{esc(overall)}</code></strong>
-      <span>Última generación registrada: <code>{esc(gen_at)}</code>. Cuando una iniciativa aún no ha sincronizado Issues, las métricas se muestran como <code>—</code> (nunca como cero tareas ni 100 % completado). Los cierres marcados como <code>not_planned</code> se excluyen del conteo de tareas terminadas.</span>
+      <strong>Sincronización operativa verificada · Última actualización: {esc(gen_at)}</strong>
+      <span>El exportador (<code>scripts/export_progress.py</code>) consulta los Issues de cada repositorio canónico <code>urbano-{{id}}</code> y los campos del tablero público <a href="https://github.com/users/copernicuscentroamerica/projects/1" target="_blank" rel="noopener noreferrer">GitHub Project #1 ↗</a> mediante GraphQL. Los cierres marcados como <code>not_planned</code> se excluyen del conteo de tareas terminadas.</span>
     </div>
 
     <section class="section">
@@ -911,19 +1340,57 @@ def build_seguimiento_page(
     {tasks_section}
 
     <section class="section">
+      <h2>Fuente operativa de cada campo en el seguimiento</h2>
+      <p>Para garantizar trazabilidad tanto si trabajas desde los Issues de tu repositorio como desde el tablero regional <strong>GitHub Project #1</strong>, cada atributo sigue una regla única y documentada:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Campo en el portal</th>
+              <th>Fuente principal en GitHub</th>
+              <th>Respaldo automático (etiquetas / formulario)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Estado de flujo</strong> (<code>Por hacer</code>, <code>En curso</code>, <code>En revisión</code>, <code>Terminado</code>)</td>
+              <td>Cierre de la Issue (<code>CLOSED</code> → <code>Terminado</code>) y columna <code>Status</code> en <strong>GitHub Project #1</strong></td>
+              <td>Etiquetas en la Issue: <code>en-revision</code>, <code>en-curso</code> o <code>tipo:tarea</code></td>
+            </tr>
+            <tr>
+              <td><strong>Condición de bloqueo</strong> (<code>Bloqueado</code>)</td>
+              <td>Etiqueta <code>bloqueado</code> en la Issue (conservando su columna actual en el tablero para visibilizar dónde ocurrió el bloqueo)</td>
+              <td>Formulario <em>Bloqueo o solicitud de apoyo</em></td>
+            </tr>
+            <tr>
+              <td><strong>Prioridad e Iteración</strong> (<code>Alta</code>, <code>Media</code>, <code>Baja</code> / Sprint)</td>
+              <td>Campos <code>Priority</code> e <code>Iteration</code> en <strong>GitHub Project #1</strong></td>
+              <td>Etiquetas <code>prioridad:alta</code>, <code>prioridad:media</code>, <code>prioridad:baja</code> o campo <code>### Prioridad</code> del Issue Form</td>
+            </tr>
+            <tr>
+              <td><strong>Evidencia verificable</strong></td>
+              <td>Enlaces <code>https://</code> registrados en la sección <code>### Evidencia o enlace</code> del Issue Form</td>
+              <td>Pull Requests o productos publicados en el repositorio canónico</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>¿Dónde registrar cada tarea o solicitud de apoyo?</h2>
       <div class="grid-3">
         <article class="card">
           <h3>1. Tareas técnicas del PMV</h3>
-          <p>Se crean como Issues dentro del repositorio canónico de la iniciativa (<code>urbano-{{id}}</code>) usando el formulario <strong>Tarea del PMV</strong>.</p>
+          <p>Se crean como Issues dentro del repositorio canónico de la iniciativa (<code>urbano-{{id}}</code>) usando el formulario <strong>Tarea del PMV</strong> y se vinculan al tablero regional.</p>
         </article>
         <article class="card">
-          <h3>2. Bloqueos y mentoría</h3>
-          <p>Se registran con el formulario <strong>Bloqueo o solicitud de apoyo</strong> (etiqueta <code>bloqueado</code>), conservando la columna actual en el tablero para visibilizar la ayuda requerida.</p>
+          <h3>2. Bloqueos y mentoría técnica</h3>
+          <p>Se registran con el formulario <strong>Bloqueo o solicitud de apoyo</strong> (etiqueta <code>bloqueado</code>), ya sea en el repositorio de tu iniciativa o en el portal central, con atención del Equipo de Facilitación Técnica.</p>
         </article>
         <article class="card">
           <h3>3. Compromisos regionales</h3>
-          <p>Acuerdos transversales, calendario comunitario y coordinación del Atlas se registran en las Issues del repositorio central <code>clusterurbano</code>.</p>
+          <p>Acuerdos transversales, calendario comunitario y coordinación del Atlas se registran en las Issues y Discussions del repositorio central <code>clusterurbano</code>.</p>
         </article>
       </div>
     </section>
@@ -956,26 +1423,24 @@ def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_sna
             f"<td>{esc('; '.join(insts) if insts else 'Por confirmar')}</td></tr>"
         )
 
-    hub_repo = registry.get("hub", {}).get("repository")
-    discussions_url = f"https://github.com/{hub_repo}/discussions" if hub_repo else None
-    disc_btn = render_link_or_pending(
-        discussions_url,
-        "Abrir GitHub Discussions de la comunidad",
-        "GitHub Discussions se enlaza al activar la función en el repositorio central",
-        "btn btn-primary",
-    )
+    hub_repo = registry.get("hub", {}).get("repository") or "copernicuscentroamerica/clusterurbano"
+    discussions_url = f"https://github.com/{hub_repo}/discussions"
+    support_issue_url = f"https://github.com/{hub_repo}/issues/new?template=bloqueo_apoyo.yml"
+    board_url = "https://github.com/users/copernicuscentroamerica/projects/1"
 
     hero = f"""
     <section class="hero">
       <div class="container">
         <div class="hero-eyebrow">
           <span class="badge badge-lime">Comunidad de Práctica</span>
+          <span class="badge badge-ok">Canales públicos activos</span>
         </div>
-        <h1>Gobernanza colaborativa, roles e intercambio regional</h1>
+        <h1>Gobernanza colaborativa, canales de ayuda e intercambio regional</h1>
         <p class="hero-lead">Red interinstitucional y académica de Centroamérica y República Dominicana enfocada en desarrollar métodos abiertos, sostener productos territoriales útiles y nutrir el Atlas Urbano Regional.</p>
         <div class="hero-actions">
-          {disc_btn}
-          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('agenda/'), quote=True)}">Ver sesión de acuerdos (12 nov)</a>
+          <a class="btn btn-primary" href="{html.escape(discussions_url, quote=True)}" target="_blank" rel="noopener noreferrer">Abrir GitHub Discussions de la comunidad ↗</a>
+          <a class="btn btn-teal" href="{html.escape(support_issue_url, quote=True)}" target="_blank" rel="noopener noreferrer">Solicitar apoyo técnico o reportar bloqueo ↗</a>
+          <a class="btn btn-outline-light" href="{html.escape(board_url, quote=True)}" target="_blank" rel="noopener noreferrer">Ver tablero GitHub Project #1 ↗</a>
         </div>
       </div>
     </section>
@@ -983,8 +1448,83 @@ def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_sna
 
     body = f"""
     <section class="section">
+      <h2>¿Dónde participar y dónde pedir apoyo técnico?</h2>
+      <div class="grid-3">
+        <article class="card" style="border-left:4px solid var(--c-teal);">
+          <span class="badge badge-ok">Canal público activo</span>
+          <h3>1. Foro regional (GitHub Discussions)</h3>
+          <p>Espacio abierto para preguntas técnicas sobre Google Earth Engine, Google Colab, Sentinel-1/2 y GeoLibre, anuncios regionales y demostraciones de avances entre los seis países.</p>
+          <div class="card-footer">
+            <a class="btn btn-teal btn-xs" href="{html.escape(discussions_url, quote=True)}" target="_blank" rel="noopener noreferrer">Entrar a Discussions ↗</a>
+            <a class="btn btn-outline btn-xs" href="https://github.com/copernicuscentroamerica/clusterurbano/discussions/1" target="_blank" rel="noopener noreferrer">Hilo de bienvenida #1 ↗</a>
+          </div>
+        </article>
+        <article class="card" style="border-left:4px solid var(--c-navy);">
+          <span class="badge badge-declarado">Atención de facilitación</span>
+          <h3>2. Solicitar apoyo o reportar un bloqueo</h3>
+          <p>Si encuentras un obstáculo con datos, validación de esquemas, permisos o despliegue en GeoLibre, abre un reporte con el formulario estructurado. <strong>Responsable de atención:</strong> Equipo de Facilitación Técnica y Administración del Clúster Urbano Copernicus.</p>
+          <div class="card-footer">
+            <a class="btn btn-primary btn-xs" href="{html.escape(support_issue_url, quote=True)}" target="_blank" rel="noopener noreferrer">Abrir solicitud de apoyo ↗</a>
+          </div>
+        </article>
+        <article class="card" style="border-left:4px solid var(--c-lime);">
+          <span class="badge badge-ok">Tablero público</span>
+          <h3>3. Tablero GitHub Project #1 y Seguimiento</h3>
+          <p>Consulta las tarjetas operativas de las ocho iniciativas tanto en el tablero público de GitHub Projects como en la vista consolidada del portal.</p>
+          <div class="card-footer">
+            <a class="btn btn-outline btn-xs" href="{html.escape(board_url, quote=True)}" target="_blank" rel="noopener noreferrer">Tablero GitHub Project #1 ↗</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('seguimiento/'), quote=True)}">Vista en el portal →</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Categorías activas en GitHub Discussions</h2>
+      <p>Las categorías listadas a continuación corresponden exactamente a las habilitadas en el repositorio <code>copernicuscentroamerica/clusterurbano</code>:</p>
+      <div class="grid-3">
+        <div class="card">
+          <span class="badge badge-country">Announcements</span>
+          <h3>Anuncios y acuerdos</h3>
+          <p>Hitos de la jornada presencial en San Salvador, convocatorias y acuerdos regionales.</p>
+          <div class="card-footer"><a class="btn btn-outline btn-xs" href="{html.escape(discussions_url + '/categories/announcements', quote=True)}" target="_blank" rel="noopener noreferrer">Abrir Announcements ↗</a></div>
+        </div>
+        <div class="card">
+          <span class="badge badge-country">Q&amp;A</span>
+          <h3>Preguntas y respuestas técnicas</h3>
+          <p>Consultas sobre Google Colab, Google Earth Engine, Sentinel-1/2, GeoLibre Studio y Google Antigravity.</p>
+          <div class="card-footer"><a class="btn btn-outline btn-xs" href="{html.escape(discussions_url + '/categories/q-a', quote=True)}" target="_blank" rel="noopener noreferrer">Abrir Q&amp;A ↗</a></div>
+        </div>
+        <div class="card">
+          <span class="badge badge-country">Show and tell</span>
+          <h3>Avances y demostraciones</h3>
+          <p>Comparte capturas de tus capas en el Geovisor, métricas del ejercicio con Sentinel-2 y avances del PMV.</p>
+          <div class="card-footer"><a class="btn btn-outline btn-xs" href="{html.escape(discussions_url + '/categories/show-and-tell', quote=True)}" target="_blank" rel="noopener noreferrer">Abrir Show and tell ↗</a></div>
+        </div>
+        <div class="card">
+          <span class="badge badge-country">General</span>
+          <h3>Conversación general</h3>
+          <p>Presentaciones de equipos institucionales, articulación entre países y coordinación de sesiones.</p>
+          <div class="card-footer"><a class="btn btn-outline btn-xs" href="{html.escape(discussions_url + '/categories/general', quote=True)}" target="_blank" rel="noopener noreferrer">Abrir General ↗</a></div>
+        </div>
+        <div class="card">
+          <span class="badge badge-country">Ideas</span>
+          <h3>Propuestas comunitarias</h3>
+          <p>Sugerencias de mejora para la plantilla común, nuevos indicadores y evolución del Atlas Urbano Regional.</p>
+          <div class="card-footer"><a class="btn btn-outline btn-xs" href="{html.escape(discussions_url + '/categories/ideas', quote=True)}" target="_blank" rel="noopener noreferrer">Abrir Ideas ↗</a></div>
+        </div>
+        <div class="card">
+          <span class="badge badge-country">Polls</span>
+          <h3>Consultas rápidas</h3>
+          <p>Votaciones breves para acordar horarios de mentorías y temas prioritarios de intercambio posjornada.</p>
+          <div class="card-footer"><a class="btn btn-outline btn-xs" href="{html.escape(discussions_url + '/categories/polls', quote=True)}" target="_blank" rel="noopener noreferrer">Abrir Polls ↗</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Instituciones participantes documentadas en los perfiles</h2>
-      <p>Los nombres personales y canales de contacto se publican únicamente tras autorización expresa de cada equipo; aquí se listan las instituciones declaradas en las ocho fichas:</p>
+      <p>Los nombres personales y correos privados se protegen por defecto y solo se publican con autorización expresa; aquí se listan las instituciones declaradas en las ocho iniciativas:</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>País</th><th>Iniciativa</th><th>Instituciones declaradas en el perfil</th></tr></thead>
@@ -999,8 +1539,8 @@ def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_sna
         <article class="card">
           <h3>Coordinación y administración</h3>
           <ul>
-            <li><strong>Coordinación de comunidad:</strong> facilita acuerdos, calendario, apoyos y seguimiento del Project regional (responsable nominal por confirmar en la jornada).</li>
-            <li><strong>Administración técnica:</strong> gestiona permisos de repositorios, flujos de GitHub Pages y sincronización de catálogos.</li>
+            <li><strong>Equipo de Facilitación Técnica y Coordinación:</strong> atiende solicitudes de apoyo, facilita acuerdos y mantiene sincronizado el tablero GitHub Project #1.</li>
+            <li><strong>Administración técnica:</strong> gestiona permisos de repositorios, flujos de GitHub Pages y validación de esquemas.</li>
             <li><strong>Curaduría del Atlas:</strong> revisa consistencia de metadatos, unidades y advertencias de comparabilidad antes de publicar productos.</li>
           </ul>
         </article>
@@ -1008,21 +1548,10 @@ def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_sna
           <h3>Equipos de iniciativa y revisión</h3>
           <ul>
             <li><strong>Punto focal de iniciativa:</strong> cuida la coherencia de <code>project.json</code>, <code>content/project.md</code> y tareas del equipo.</li>
-            <li><strong>Revisor técnico:</strong> comprueba reproducibilidad metodológica, código, CRS y limitaciones.</li>
+            <li><strong>Revisor técnico:</strong> comprueba reproducibilidad metodológica, código, CRS (<code>EPSG:4326</code>) y limitaciones antes de fusionar un Pull Request.</li>
             <li><strong>Referente institucional:</strong> examina pertinencia para la decisión pública y condiciones reales de adopción.</li>
           </ul>
         </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Espacios de conversación (GitHub Discussions)</h2>
-      <div class="grid-3">
-        <div class="card"><span class="badge badge-country">Categoría 1</span><h3>Anuncios y acuerdos</h3><p>Decisiones colectivas registradas, hitos y convocatorias regionales.</p></div>
-        <div class="card"><span class="badge badge-country">Categoría 2</span><h3>Preguntas y respuestas</h3><p>Consultas técnicas sobre GEE, Sentinel-1/2, openEO, QGIS o GeoLibre con soluciones reutilizables.</p></div>
-        <div class="card"><span class="badge badge-country">Categoría 3</span><h3>Métodos y recursos</h3><p>Scripts, plantillas de validación muestral, diccionarios de datos y flujos reproducibles.</p></div>
-        <div class="card"><span class="badge badge-country">Categoría 4</span><h3>Experiencias de aplicación</h3><p>Relatos de uso en instrumentos de planificación, diferenciando expectativas de adopción documentada.</p></div>
-        <div class="card"><span class="badge badge-country">Categoría 5</span><h3>Propuestas comunitarias</h3><p>Nuevas colaboraciones entre países, mejoras a la plantilla común y al Atlas Urbano Regional.</p></div>
       </div>
     </section>
 
@@ -1046,30 +1575,39 @@ def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_sna
 
 
 def build_recursos_page(ctx: SiteContext, registry: dict[str, Any], catalog_snap: dict[str, Any]) -> str:
+    colab_url = "https://colab.research.google.com/github/copernicuscentroamerica/clusterurbano/blob/main/web/assets/descargas/mancha_urbana_sentinel2_vmod01.ipynb"
+    nb_dl = html.escape(ctx.site_url("assets/descargas/mancha_urbana_sentinel2_vmod01.ipynb"), quote=True)
+    pptx_dl = html.escape(ctx.site_url("assets/descargas/scrum_aplicacion_geoespacial_Sesion_7_Previa_Encuentro.pptx"), quote=True)
+    docx_dl = html.escape(ctx.site_url("assets/descargas/Manual_Guia_Antigravity_Proyectos_Copernicus.docx"), quote=True)
+
     faqs = [
         (
             "¿Cómo encuentro mi iniciativa y su repositorio?",
-            "Entra a la sección Proyectos, filtra por tu país o busca tu institución. Dentro de la ficha verás el identificador estable (ej. pa-panama-oeste), el estado del repositorio canónico y los comandos exactos para clonar o hacer fork.",
+            "Entra a la sección Proyectos, filtra por tu país o busca tu institución. Dentro de la ficha verás el identificador estable (ej. pa-panama-oeste), los botones de acción directa y los comandos exactos para clonar o hacer fork.",
         ),
         (
             "¿Cómo creo mi fork personal y configuro upstream sin confundir el portal?",
-            "Haz fork únicamente del repositorio canónico de tu iniciativa (urbano-{id}), nunca del repositorio general clusterurbano si vas a editar tu proyecto. En tu clon local, 'origin' apunta a tu cuenta personal y 'upstream' apunta a copernicuscentroamerica/urbano-{id}.",
+            "Haz fork únicamente del repositorio canónico de tu iniciativa (urbano-{id}), nunca del repositorio general clusterurbano si vas a editar tu proyecto. En tu clon local en Google Antigravity, 'origin' apunta a tu cuenta personal y 'upstream' apunta a copernicuscentroamerica/urbano-{id}.",
         ),
         (
-            "¿Cómo despliego las capas que genere mi equipo en el Geovisor basado en GeoLibre?",
-            "Coloca tu archivo vectorial validado (EPSG:4326, sin datos personales) en geovisor/data/ o usa una URL HTTPS de servicio COG/XYZ/WMS, actualiza source_path y status en geovisor/layers.json y ejecuta python3 scripts/build_site.py --output site. También puedes probar cualquier .geojson arrastrándolo directamente en la pestaña 'Probar GeoJSON' del visor.",
+            "¿Cómo despliego las capas que genere mi equipo en el Geovisor y en GeoLibre Studio?",
+            "Coloca tus archivos en la carpeta geovisor/capas/ de tu repositorio (nunca en geovisor/data/). Si es un GeoJSON/TopoJSON/KML en EPSG:4326, regístralo también en geovisor/layers.json y ejecuta python scripts/build_site.py --output site para que se dibuje automáticamente en el visor integrado (MapLibre) y se empaquete en geovisor/proyecto.geolibre.json. Los formatos avanzados (.pmtiles, .tif/.tiff COG, .fgb, .parquet) se abren en GeoLibre Studio con un clic desde la pestaña 'Carpeta repo', y cualquier GeoJSON/KML local puede previsualizarse en la pestaña 'Archivo local'.",
+        ),
+        (
+            "¿Puedo usar la misma cuenta de Google en Antigravity, Google Colab y Google Earth Engine?",
+            "Sí. Las tres son herramientas de Google y comparten tu misma identidad de Google. Puedes ejecutar el cuaderno mancha_urbana_sentinel2_vmod01.ipynb en Google Colab o el script equivalente en Google Earth Engine y luego integrar las capas descargadas en tu repositorio local con el agente de Google Antigravity.",
         ),
         (
             "¿Cómo registro una tarea del PMV o un bloqueo?",
-            "Abre la pestaña Issues del repositorio de tu iniciativa y elige el formulario 'Tarea del PMV' o 'Bloqueo o solicitud de apoyo'. Toda tarea debe describir un resultado verificable y su criterio de aceptación.",
+            "Abre la pestaña Issues del repositorio de tu iniciativa y elige el formulario 'Tarea del PMV' o 'Bloqueo o solicitud de apoyo'. Toda tarea se sincroniza con el tablero público GitHub Project #1 y con la sección Seguimiento del portal.",
         ),
         (
             "¿Cómo solicito una revisión técnica o validación institucional?",
-            "Usa el formulario 'Solicitud de revisión' adjuntando el enlace HTTPS al producto, PR o vista previa. Para que project.json cambie el estado a 'validado', el contrato exige URL de evidencia, fecha ISO y nombre del revisor.",
+            "Usa el formulario 'Solicitud de revisión' adjuntando el enlace HTTPS al producto, Pull Request o vista previa. Para que project.json cambie el estado a 'validado', el esquema exige URL HTTPS de evidencia, fecha ISO (YYYY-MM-DD) y nombre o rol del revisor.",
         ),
         (
             "¿Cómo propongo e incorporo un producto al Atlas Urbano Regional?",
-            "Actualiza o añade un archivo JSON en atlas/products/ siguiendo schemas/atlas-product.schema.json (indicando cobertura, resolución, indicador, unidad, método y limitaciones) y abre el formulario 'Contribución al Atlas' para curaduría.",
+            "Actualiza o añade un archivo JSON en atlas/products/ siguiendo schemas/atlas-product.schema.json (con publication_status en 'propuesto', 'en_preparacion', 'publicado' o 'retirado') y abre el formulario 'Contribución al Atlas' para curaduría.",
         ),
     ]
 
@@ -1084,26 +1622,96 @@ def build_recursos_page(ctx: SiteContext, registry: dict[str, Any], catalog_snap
             """
         )
 
-    hero = """
+    hero = f"""
     <section class="hero">
       <div class="container">
         <div class="hero-eyebrow">
-          <span class="badge badge-lime">Guías técnicas y referencias</span>
+          <span class="badge badge-lime">Guías técnicas, manual v1.1 y descargas</span>
         </div>
-        <h1>Recursos para desarrollo, GeoLibre y colaboración</h1>
-        <p class="hero-lead">Documentación práctica para trabajar durante los laboratorios de la jornada y dar continuidad técnica a los repositorios y al Atlas Urbano Regional.</p>
+        <h1>Recursos para desarrollo, Colab, GEE, GeoLibre y colaboración</h1>
+        <p class="hero-lead">Materiales descargables, manual paso a paso con Google Antigravity, ejercicio reproducible con Sentinel-2 y documentación de formatos del Geovisor.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="{docx_dl}" download="Manual_Guia_Antigravity_Proyectos_Copernicus.docx">Descargar Manual Guía v1.1 (.docx)</a>
+          <a class="btn btn-teal" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ir al Ejercicio Práctico Colab / GEE →</a>
+        </div>
       </div>
     </section>
     """
 
     body = f"""
     <section class="section">
+      <h2>Materiales de capacitación y ejercicio práctico (descarga directa)</h2>
+      <div class="grid-3">
+        <article class="card" style="border-left:4px solid var(--c-navy);">
+          <span class="badge badge-ok">Manual oficial v1.1 (Word)</span>
+          <h3>Manual Guía Paso a Paso con Google Antigravity</h3>
+          <p>Guía completa para clonar tu repositorio desde un fork, usar prompts seguros con el agente de IA, ejecutar el ejercicio en Google Colab y Google Earth Engine, validar esquemas y revisar tu Pull Request. Incluye hoja de referencia rápida de 1 página.</p>
+          <div class="card-footer">
+            <a class="btn btn-primary btn-xs" href="{docx_dl}" download="Manual_Guia_Antigravity_Proyectos_Copernicus.docx">Descargar Manual (.docx)</a>
+          </div>
+        </article>
+
+        <article class="card" style="border-left:4px solid var(--c-teal);">
+          <span class="badge badge-ok">Cuaderno Jupyter (.ipynb)</span>
+          <h3>Detección de Mancha Urbana con Sentinel-2 L2A</h3>
+          <p>Cuaderno ejecutable en Google Colab con catálogo de 75 ciudades y 779 poblados de CA y RD, compuesto libre de nubes (<code>SCL</code>), 12 predictores espectrales/texturales y clasificación Random Forest entrenada con Overture Maps.</p>
+          <div class="card-footer">
+            <a class="btn btn-teal btn-xs" href="{html.escape(colab_url, quote=True)}" target="_blank" rel="noopener noreferrer">Abrir en Google Colab ↗</a>
+            <a class="btn btn-outline btn-xs" href="{nb_dl}" download="mancha_urbana_sentinel2_vmod01.ipynb">Descargar .ipynb</a>
+          </div>
+        </article>
+
+        <article class="card" style="border-left:4px solid var(--c-lime);">
+          <span class="badge badge-declarado">Presentación Metodológica (.pptx)</span>
+          <h3>Marco Scrum para Aplicaciones Geoespaciales (Sesión 7)</h3>
+          <p>Presentación de la Sesión 7 previa al encuentro presencial: organización de sprints, historias de usuario (<code>US-GIS</code>), definición de terminado (DoD) y articulación con el ejercicio práctico.</p>
+          <div class="card-footer">
+            <a class="btn btn-outline btn-xs" href="{pptx_dl}" download="scrum_aplicacion_geoespacial_Sesion_7_Previa_Encuentro.pptx">Descargar .pptx</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Comportamiento por formato en el Geovisor del proyecto y en GeoLibre Studio</h2>
+      <p>Cada repositorio de iniciativa incluye dos modalidades complementarias de visualización: el <strong>visor integrado en la página (MapLibre GL JS)</strong> y la exportación o transferencia directa hacia <strong>GeoLibre Studio (<code>web.geolibre.app</code>)</strong>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Formato</th>
+              <th>Dónde se abre</th>
+              <th>Pasos necesarios</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>.geojson</code>, <code>.json</code>, <code>.topojson</code>, <code>.kml</code></td>
+              <td><strong>Directamente en el visor integrado de la página</strong> (MapLibre GL JS) y también en <strong>GeoLibre Studio</strong></td>
+              <td>En la pestaña <strong>Carpeta repo</strong> (<code>geovisor/capas/</code>) pulsa <strong>+ Mapa</strong> para dibujarlo al instante, o arrástralo en la pestaña <strong>Archivo local</strong>. Si lo registras en <code>geovisor/layers.json</code> y ejecutas <code>build_site.py</code>, se carga por defecto y se incluye dentro de <code>geovisor/proyecto.geolibre.json</code>.</td>
+            </tr>
+            <tr>
+              <td><code>.pmtiles</code>, <code>.tif</code>/<code>.tiff</code> (COG), <code>.fgb</code>, <code>.parquet</code>/<code>.geoparquet</code></td>
+              <td><strong>En GeoLibre Studio</strong> (<code>web.geolibre.app</code>)</td>
+              <td>Coloca el archivo en <code>geovisor/capas/</code> de tu repositorio. En la pestaña <strong>Carpeta repo</strong> pulsa <strong>Abrir en GeoLibre Studio ↗</strong>; el visor pasa automáticamente el parámetro <code>?data=&lt;url&gt;</code> para cargar la capa remota en GeoLibre Studio.</td>
+            </tr>
+            <tr>
+              <td><code>.geolibre.json</code> (Proyecto completo v0.2.0)</td>
+              <td><strong>En GeoLibre Studio</strong> (<code>web.geolibre.app/?url=...</code>)</td>
+              <td>El generador <code>scripts/build_site.py</code> construye y valida automáticamente <code>geovisor/proyecto.geolibre.json</code> con <code>mapView</code>, <code>basemapStyleUrl</code>, estilos y capas GeoJSON embebidas. Pulsa <strong>Abrir proyecto en GeoLibre Studio ↗</strong> en la cabecera del visor.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Plataformas y herramientas técnicas verificadas</h2>
       <div class="grid-3">
         <article class="card">
           <span class="badge badge-ok">Geovisualización</span>
           <h3>GeoLibre Web &amp; MapLibre GL JS</h3>
-          <p>Plataforma SIG ligera en navegador compatible con archivos de proyecto <code>.geolibre.json</code>, GeoJSON, COG, PMTiles, GeoParquet y STAC.</p>
+          <p>Plataforma SIG ligera en navegador compatible con archivos de proyecto <code>.geolibre.json</code> (v0.2.0), GeoJSON, COG, PMTiles, FlatGeobuf y GeoParquet.</p>
           <div class="card-footer">
             <a class="btn btn-teal btn-xs" href="https://web.geolibre.app/" target="_blank" rel="noopener noreferrer">Abrir web.geolibre.app ↗</a>
             <a class="btn btn-outline btn-xs" href="https://github.com/opengeos/GeoLibre" target="_blank" rel="noopener noreferrer">GitHub GeoLibre ↗</a>
@@ -1121,19 +1729,19 @@ def build_recursos_page(ctx: SiteContext, registry: dict[str, Any], catalog_snap
         </article>
 
         <article class="card">
-          <span class="badge badge-declarado">Procesamiento y referencia</span>
-          <h3>Google Earth Engine &amp; GHSL</h3>
-          <p>Catálogo armonizado Sentinel-2 SR (desde marzo de 2017), Sentinel-1 GRD y capas globales de asentamientos humanos (JRC GHSL).</p>
+          <span class="badge badge-declarado">Procesamiento en la nube</span>
+          <h3>Google Colab, Earth Engine &amp; GHSL</h3>
+          <p>Ejecución de cuadernos Python en Google Colab y scripts en Google Earth Engine con la misma cuenta de Google usada en Antigravity.</p>
           <div class="card-footer">
+            <a class="btn btn-outline btn-xs" href="https://colab.research.google.com/" target="_blank" rel="noopener noreferrer">Google Colab ↗</a>
             <a class="btn btn-outline btn-xs" href="https://code.earthengine.google.com/" target="_blank" rel="noopener noreferrer">GEE Code Editor ↗</a>
-            <a class="btn btn-outline btn-xs" href="https://ghsl.jrc.ec.europa.eu/" target="_blank" rel="noopener noreferrer">GHSL JRC ↗</a>
           </div>
         </article>
 
         <article class="card">
           <span class="badge badge-propuesta">Plantilla oficial del clúster</span>
           <h3>Plantilla de iniciativa (<code>clusterurbano-proyecto-template</code>)</h3>
-          <p>Estructura base independiente con contratos JSON Schema Draft 2020-12, generador Python, validaciones automáticas y geovisor GeoLibre preconfigurado.</p>
+          <p>Estructura base independiente con contratos JSON Schema Draft 2020-12, generador Python, validación de <code>.geolibre.json</code> y geovisor preconfigurado.</p>
           <div class="card-footer">
             <a class="btn btn-outline btn-xs" href="https://github.com/copernicuscentroamerica/clusterurbano-proyecto-template" target="_blank" rel="noopener noreferrer">Plantilla en GitHub ↗</a>
           </div>
@@ -1167,7 +1775,7 @@ def build_recursos_page(ctx: SiteContext, registry: dict[str, Any], catalog_snap
       <div class="filter-bar" role="search" aria-label="Buscar en preguntas frecuentes">
         <div class="filter-field">
           <label for="f-faq-q">Buscar ayuda por palabra clave</label>
-          <input id="f-faq-q" type="search" placeholder="Ej. fork, geovisor, geojson, revisión, atlas..." data-filter-search>
+          <input id="f-faq-q" type="search" placeholder="Ej. fork, geovisor, capas, colab, gee, revisión, atlas..." data-filter-search>
         </div>
         <button type="button" class="btn btn-outline" data-filter-reset>Limpiar</button>
       </div>
@@ -1295,6 +1903,7 @@ def build_404_page(ctx: SiteContext, registry: dict[str, Any], snapshot_generate
         <p class="hero-lead">El enlace solicitado no corresponde a una ruta activa del Portal Comunitario.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="{html.escape(ctx.site_url(''), quote=True)}">Ir a Inicio</a>
+          <a class="btn btn-teal" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ir al Ejercicio Práctico</a>
           <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">Explorar las 8 iniciativas</a>
         </div>
       </div>
@@ -1306,7 +1915,7 @@ def build_404_page(ctx: SiteContext, registry: dict[str, Any], snapshot_generate
         page_title="404 Página no encontrada",
         active_nav="",
         hero_html=hero,
-        body_html="<section class='section'><p>Utiliza la barra superior para acceder al catálogo de proyectos, el Atlas Urbano Regional, el seguimiento o la agenda.</p></section>",
+        body_html="<section class='section'><p>Utiliza la barra superior para acceder al catálogo de proyectos, el ejercicio práctico en Google Colab y Google Earth Engine, el Atlas Urbano Regional, el seguimiento o la agenda.</p></section>",
         snapshot_generated_at=snapshot_generated_at,
     )
 
@@ -1392,7 +2001,6 @@ def main() -> int:
     )
 
     # Copiar archivo .ics de agenda
-    shutil.copy2(ROOT / "data" / "jornada-copernicus-2026.ics", out_dir / "agenda" / "jornada-copernicus-2026.ics") if (out_dir / "agenda").exists() else None
     (out_dir / "agenda").mkdir(parents=True, exist_ok=True)
     shutil.copy2(ROOT / "data" / "jornada-copernicus-2026.ics", out_dir / "agenda" / "jornada-copernicus-2026.ics")
 
@@ -1420,6 +2028,7 @@ def main() -> int:
             ),
         )
 
+    write_deterministic(out_dir / "ejercicio" / "index.html", build_ejercicio_page(ctx, registry, catalog_snap))
     write_deterministic(out_dir / "atlas" / "index.html", build_atlas_index_page(ctx, registry, atlas_snap, catalog_snap))
     for ap in atlas_snap.get("products", []):
         write_deterministic(

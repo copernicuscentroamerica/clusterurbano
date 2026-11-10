@@ -3,9 +3,10 @@
 Sincronizador del catálogo regional y del Atlas Urbano Regional (scripts/sync_catalog.py).
 Soporta:
   --offline : usa semillas bootstrap/ para entradas bootstrap y conserva snapshots canónicos locales válidos.
-  --online [--previous-snapshot URL] : consulta únicamente repositorios canónicos registrados en un SHA fijo,
-                                       valida contra JSON Schema Draft 2020-12 y conserva versiones previas
-                                       marcadas como 'stale' ante cualquier fallo parcial.
+  --online [--previous-snapshot URL] [--previous-atlas-snapshot URL] :
+              consulta únicamente repositorios canónicos registrados en un SHA fijo,
+              valida contra JSON Schema Draft 2020-12 y conserva versiones previas
+              marcadas como 'stale' ante cualquier fallo parcial.
 """
 from __future__ import annotations
 
@@ -40,7 +41,7 @@ def safe_http_get(url: str, accept: str = "application/json") -> tuple[int, byte
     if parsed.scheme != "https" or not parsed.netloc:
         raise ValueError("Solo se admiten consultas HTTPS válidas.")
     headers = {
-        "User-Agent": "CopernicusUrbanoHubSync/1.0",
+        "User-Agent": "CopernicusUrbanoHubSync/1.1",
         "Accept": accept,
     }
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
@@ -104,11 +105,14 @@ def validate_atlas_product(
                 raise ValueError(f"source_id '{sid}' no definido en producto Atlas.")
 
 
-def load_previous_snapshots(previous_url: str | None) -> tuple[dict[str, dict[str, Any]], dict[str, list[dict[str, Any]]]]:
+def load_previous_snapshots(
+    previous_url: str | None,
+    previous_atlas_url: str | None = None,
+) -> tuple[dict[str, dict[str, Any]], dict[str, list[dict[str, Any]]]]:
     prev_projects: dict[str, dict[str, Any]] = {}
     prev_atlas_by_proj: dict[str, list[dict[str, Any]]] = {}
 
-    # 1. Intentar snapshot remoto previo si fue configurado
+    # 1. Intentar snapshot remoto previo de proyectos si fue configurado
     if previous_url:
         try:
             _, raw = safe_http_get(previous_url)
@@ -118,7 +122,23 @@ def load_previous_snapshots(previous_url: str | None) -> tuple[dict[str, dict[st
                 if pid:
                     prev_projects[pid] = item
         except Exception as exc:
-            print(f"[AVISO] No se pudo recuperar snapshot remoto previo ({sanitize_error_code(exc)}); se usará copia local si existe.")
+            print(f"[AVISO] No se pudo recuperar snapshot remoto previo de proyectos ({sanitize_error_code(exc)}); se usará copia local si existe.")
+
+    # Inferir URL remota de atlas.snapshot.json si no fue provista explícitamente
+    inferred_atlas_url = previous_atlas_url
+    if not inferred_atlas_url and previous_url and previous_url.endswith("projects.snapshot.json"):
+        inferred_atlas_url = previous_url[: -len("projects.snapshot.json")] + "atlas.snapshot.json"
+
+    if inferred_atlas_url:
+        try:
+            _, raw_atlas = safe_http_get(inferred_atlas_url)
+            remote_asnap = json.loads(raw_atlas.decode("utf-8"))
+            for prod in remote_asnap.get("products", []):
+                pid = prod.get("project_id")
+                if pid:
+                    prev_atlas_by_proj.setdefault(pid, []).append(prod)
+        except Exception as exc:
+            print(f"[AVISO] No se pudo recuperar snapshot remoto previo del Atlas ({sanitize_error_code(exc)}); se usará copia local si existe.")
 
     # 2. Respaldo local en data/projects.snapshot.json y data/atlas.snapshot.json
     local_cat = ROOT / "data" / "projects.snapshot.json"
@@ -133,7 +153,7 @@ def load_previous_snapshots(previous_url: str | None) -> tuple[dict[str, dict[st
             pass
 
     local_atlas = ROOT / "data" / "atlas.snapshot.json"
-    if local_atlas.exists():
+    if not prev_atlas_by_proj and local_atlas.exists():
         try:
             asnap = json.loads(local_atlas.read_text(encoding="utf-8"))
             for prod in asnap.get("products", []):
@@ -247,7 +267,13 @@ def fetch_canonical_online(
     return cat_item, atlas_list
 
 
-def run_sync(*, online: bool, previous_snapshot_url: str | None = None, registry_path: Path | None = None) -> int:
+def run_sync(
+    *,
+    online: bool,
+    previous_snapshot_url: str | None = None,
+    previous_atlas_snapshot_url: str | None = None,
+    registry_path: Path | None = None,
+) -> int:
     checker = make_format_checker()
     reg_schema = json.loads((ROOT / "schemas" / "registry.schema.json").read_text(encoding="utf-8"))
     proj_schema = json.loads((ROOT / "schemas" / "project.schema.json").read_text(encoding="utf-8"))
@@ -273,7 +299,10 @@ def run_sync(*, online: bool, previous_snapshot_url: str | None = None, registry
     if geo_summary_file.exists():
         geovisor_map = json.loads(geo_summary_file.read_text(encoding="utf-8"))
 
-    prev_projects, prev_atlas_by_proj = load_previous_snapshots(previous_snapshot_url if online else None)
+    prev_projects, prev_atlas_by_proj = load_previous_snapshots(
+        previous_snapshot_url if online else None,
+        previous_atlas_snapshot_url if online else None,
+    )
 
     out_projects: list[dict[str, Any]] = []
     out_atlas_products: list[dict[str, Any]] = []
@@ -306,7 +335,6 @@ def run_sync(*, online: bool, previous_snapshot_url: str | None = None, registry
                     {"project_id": pid, "source_mode": "canonical", "sync_state": cached.get("sync_state", "ok"), "error_code": None}
                 )
             else:
-                # Recuperación bootstrap explícita sin alterar projects.registry.json
                 item, prods = load_bootstrap_entry(entry, proj_validator, atlas_validator, geovisor_map)
                 item["sync_state"] = "stale"
                 item["source_mode"] = "canonical"
@@ -377,11 +405,13 @@ def main() -> int:
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--offline", action="store_true", help="Resuelve únicamente desde bootstrap/snapshots locales sin red.")
     group.add_argument("--online", action="store_true", help="Consulta repositorios canónicos registrados en GitHub.")
-    parser.add_argument("--previous-snapshot", type=str, default=None, help="URL HTTPS opcional del último snapshot publicado.")
+    parser.add_argument("--previous-snapshot", type=str, default=None, help="URL HTTPS opcional del último snapshot de proyectos publicado.")
+    parser.add_argument("--previous-atlas-snapshot", type=str, default=None, help="URL HTTPS opcional del último snapshot del Atlas publicado.")
     args = parser.parse_args()
 
     prev_url = args.previous_snapshot or os.environ.get("PREVIOUS_CATALOG_SNAPSHOT_URL")
-    return run_sync(online=args.online, previous_snapshot_url=prev_url)
+    prev_atlas_url = args.previous_atlas_snapshot or os.environ.get("PREVIOUS_ATLAS_SNAPSHOT_URL")
+    return run_sync(online=args.online, previous_snapshot_url=prev_url, previous_atlas_snapshot_url=prev_atlas_url)
 
 
 if __name__ == "__main__":

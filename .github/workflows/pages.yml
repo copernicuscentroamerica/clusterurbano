@@ -47,8 +47,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_PROJECTS_TOKEN: ${{ secrets.GH_PROJECTS_TOKEN }}
         run: |
-          python3 scripts/sync_catalog.py --online --previous-snapshot "https://copernicuscentroamerica.github.io/clusterurbano/data/projects.snapshot.json"
-          python3 scripts/export_progress.py
+          python3 scripts/sync_catalog.py --online --previous-snapshot "https://copernicuscentroamerica.github.io/clusterurbano/data/projects.snapshot.json" --previous-atlas-snapshot "https://copernicuscentroamerica.github.io/clusterurbano/data/atlas.snapshot.json"
+          python3 scripts/export_progress.py --previous-snapshot "https://copernicuscentroamerica.github.io/clusterurbano/data/seguimiento.json"
 
       - name: Construir sitio
         run: python3 scripts/build_site.py --output site

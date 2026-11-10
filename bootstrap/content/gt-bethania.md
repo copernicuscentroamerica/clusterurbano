@@ -42,4 +42,10 @@ Existe un perfil de proyecto y los materiales enumerados en la sección de docum
 
 ## Participación
 
-La colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.
+El repositorio oficial de esta iniciativa se encuentra activo y abierto a la colaboración técnica. Las personas e instituciones participantes trabajan sobre una copia personal (*fork*) vinculada en Google Antigravity, integran capas geoespaciales en `geovisor/capas/` o ejecutan el ejercicio práctico en Google Colab / Google Earth Engine, y envían sus mejoras mediante una solicitud de cambios (*Pull Request*) para revisión técnica antes de su publicación.
+
+## Precedencia documental e identificación
+
+**Perfil documental que orienta esta iniciativa:** *Asentamientos en alto riesgo — Zona 7, colonia Bethania, Guatemala* (ficha técnica `S20` de UDEVIPO).
+
+**Articulación del expediente:** La caracterización territorial y el alcance del Producto Mínimo Viable provienen del documento de perfil `S20` enumerado en la sección de Documentación.

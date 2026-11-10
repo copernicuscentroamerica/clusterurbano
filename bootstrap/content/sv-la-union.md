@@ -45,4 +45,10 @@ Existe un perfil de proyecto y los materiales enumerados en la sección de docum
 
 ## Participación
 
-La colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.
+El repositorio oficial de esta iniciativa se encuentra activo y abierto a la colaboración técnica. Las personas e instituciones participantes trabajan sobre una copia personal (*fork*) vinculada en Google Antigravity, integran capas geoespaciales en `geovisor/capas/` o ejecutan el ejercicio práctico en Google Colab / Google Earth Engine, y envían sus mejoras mediante una solicitud de cambios (*Pull Request*) para revisión técnica antes de su publicación.
+
+## Precedencia documental e identificación
+
+**Perfil documental que orienta esta iniciativa:** *Análisis de Asentamientos Humanos en zona oriental sobre la Franja Costero Marina* (perfil focalizado `S19` para los distritos de Conchagua y La Unión).
+
+**Articulación del expediente:** El alcance territorial del Producto Mínimo Viable se concentra en los distritos de Conchagua y La Unión según la ficha `S19`, conservando el planteamiento regional más amplio de la franja costero-marina (`S18`) como antecedente contextual sin mezclar sus superficies ni geometrías.

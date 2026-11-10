@@ -234,6 +234,7 @@ def validate_site(site_dir: Path) -> list[str]:
         "index.html",
         "404.html",
         "proyectos/index.html",
+        "ejercicio/index.html",
         "seguimiento/index.html",
         "atlas/index.html",
         "comunidad/index.html",
@@ -247,6 +248,8 @@ def validate_site(site_dir: Path) -> list[str]:
         "assets/css/styles.css",
         "assets/js/ui.js",
         "assets/js/geovisor.js",
+        "assets/descargas/mancha_urbana_sentinel2_vmod01.ipynb",
+        "assets/descargas/scrum_aplicacion_geoespacial_Sesion_7_Previa_Encuentro.pptx",
     ]
     for pid in EXPECTED_IDS:
         required_routes.append(f"proyectos/{pid}/index.html")

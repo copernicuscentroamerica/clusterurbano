@@ -50,4 +50,10 @@ Existe un perfil de proyecto y los materiales enumerados en la sección de docum
 
 ## Participación
 
-La colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.
+El repositorio oficial de esta iniciativa se encuentra activo y abierto a la colaboración técnica. Las personas e instituciones participantes trabajan sobre una copia personal (*fork*) vinculada en Google Antigravity, integran capas geoespaciales en `geovisor/capas/` o ejecutan el ejercicio práctico en Google Colab / Google Earth Engine, y envían sus mejoras mediante una solicitud de cambios (*Pull Request*) para revisión técnica antes de su publicación.
+
+## Precedencia documental e identificación
+
+**Perfil documental que orienta esta iniciativa:** *Zonificación de Riesgo de Desastre orientada a Instrumentos de Ordenamiento Territorial: municipio de Santiago de los Caballeros* (revisión territorial actualizada `S22` del 14 de octubre de 2026).
+
+**Articulación del expediente:** El ámbito activo corresponde al municipio de Santiago de los Caballeros y sus 222 barrios/parajes (`S22`). El perfil previo sobre Gran Santo Domingo (`S21`) se conserva únicamente como antecedente documental de la evolución del equipo.

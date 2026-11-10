@@ -42,4 +42,10 @@ Existe un perfil de proyecto y los materiales enumerados en la sección de docum
 
 ## Participación
 
-La colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.
+El repositorio oficial de esta iniciativa se encuentra activo y abierto a la colaboración técnica. Las personas e instituciones participantes trabajan sobre una copia personal (*fork*) vinculada en Google Antigravity, integran capas geoespaciales en `geovisor/capas/` o ejecutan el ejercicio práctico en Google Colab / Google Earth Engine, y envían sus mejoras mediante una solicitud de cambios (*Pull Request*) para revisión técnica antes de su publicación.
+
+## Precedencia documental e identificación
+
+**Perfil documental que orienta esta iniciativa:** *Monitoreo multitemporal de expansión urbana y áreas potenciales de ocupación informal en Panamá Oeste* (ficha técnica `S28` y perfil inicial `S02` de MIVIOT).
+
+**Articulación del expediente:** Esta iniciativa integra en un único repositorio canónico la formulación institucional del Grupo 1 de Panamá (presentación `S01`, ficha `S02`, historias de usuario `S03`–`S07` y backlog `S08`) con el paquete técnico complementario del Grupo 9 (backlog `S27`, ficha `S28`, scripts de Google Earth Engine `S29`–`S32` y polígonos piloto `S33`–`S38`).

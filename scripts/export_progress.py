@@ -5,9 +5,12 @@ Exportador público de seguimiento operativo desde GitHub Issues y GitHub Projec
 
 Reglas críticas:
 - Identificador único global: owner/repo#numero.
+- Consulta tanto los Issues de cada repositorio canónico (y del hub) como los campos
+  del tablero regional GitHub Project v2 (Status, Prioridad, Iteración, Fecha objetivo)
+  mediante GraphQL cuando hay token o acceso disponible.
 - Excluye cierres 'not_planned' de los contadores de tareas completadas.
 - Estados desconocidos se mapean a 'Sin clasificar' (sin perder la tarjeta ni asignarla por defecto al primer proyecto).
-- Sin credenciales o en modo --offline mantiene 'not_initialized' con métricas null (nunca 0 ni 100%).
+- Sin credenciales o en modo --offline mantiene 'not_initialized' o el último snapshot válido.
 """
 from __future__ import annotations
 
@@ -31,6 +34,38 @@ ROOT = Path(__file__).resolve().parent.parent
 HTTP_TIMEOUT = 15
 
 VALID_WORKFLOW_STATUSES = {"Por hacer", "En curso", "En revisión", "Terminado", "Sin clasificar"}
+BOARD_STATUS_ALIASES = {
+    "todo": "Por hacer",
+    "to do": "Por hacer",
+    "por hacer": "Por hacer",
+    "por iniciar": "Por hacer",
+    "backlog": "Por hacer",
+    "in progress": "En curso",
+    "en curso": "En curso",
+    "en progreso": "En curso",
+    "in review": "En revisión",
+    "en revisión": "En revisión",
+    "en revision": "En revisión",
+    "review": "En revisión",
+    "done": "Terminado",
+    "terminado": "Terminado",
+    "completado": "Terminado",
+}
+PRIORITY_ALIASES = {
+    "alta": "Alta",
+    "high": "Alta",
+    "must": "Alta",
+    "p0": "Alta",
+    "p1": "Alta",
+    "media": "Media",
+    "medium": "Media",
+    "should": "Media",
+    "p2": "Media",
+    "baja": "Baja",
+    "low": "Baja",
+    "could": "Baja",
+    "p3": "Baja",
+}
 HTTPS_URL_RE = re.compile(r"https://[^\s)>\"]+")
 
 
@@ -69,6 +104,154 @@ def parse_issue_form_body(body: str | None) -> dict[str, str | None]:
     return sections
 
 
+def fetch_project_v2_board_metadata(
+    owner: str,
+    project_number: int,
+    token: str | None,
+) -> dict[str, dict[str, str | None]]:
+    """
+    Consulta mediante GitHub GraphQL API los ítems del Project v2 regional
+    y devuelve un mapa { "owner/repo#number": { "status", "priority", "iteration", "due_date" } }.
+    Si no hay token o la consulta falla, retorna {} de forma segura y continúa con Issues/etiquetas.
+    """
+    if not token:
+        return {}
+
+    query = """
+    query($owner: String!, $number: Int!, $cursor: String) {
+      user(login: $owner) {
+        projectV2(number: $number) {
+          items(first: 100, after: $cursor) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              content {
+                ... on Issue {
+                  number
+                  repository {
+                    nameWithOwner
+                  }
+                }
+              }
+              fieldValues(first: 20) {
+                nodes {
+                  ... on ProjectV2ItemFieldSingleSelectValue {
+                    name
+                    field {
+                      ... on ProjectV2FieldCommon {
+                        name
+                      }
+                    }
+                  }
+                  ... on ProjectV2ItemFieldIterationValue {
+                    title
+                    field {
+                      ... on ProjectV2FieldCommon {
+                        name
+                      }
+                    }
+                  }
+                  ... on ProjectV2ItemFieldDateValue {
+                    date
+                    field {
+                      ... on ProjectV2FieldCommon {
+                        name
+                      }
+                    }
+                  }
+                  ... on ProjectV2ItemFieldTextValue {
+                    text
+                    field {
+                      ... on ProjectV2FieldCommon {
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+    board_map: dict[str, dict[str, str | None]] = {}
+    cursor: str | None = None
+    for _ in range(10):
+        payload = json.dumps(
+            {"query": query, "variables": {"owner": owner, "number": project_number, "cursor": cursor}}
+        ).encode("utf-8")
+        req = urllib.request.Request(
+            "https://api.github.com/graphql",
+            data=payload,
+            headers={
+                "User-Agent": "CopernicusUrbanoProgressExporter/1.1",
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {token}",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+        except Exception:
+            break
+
+        items_obj = (
+            data.get("data", {})
+            .get("user", {})
+            .get("projectV2", {})
+            .get("items")
+        )
+        if not items_obj:
+            break
+
+        for node in items_obj.get("nodes") or []:
+            if not node:
+                continue
+            content = node.get("content") or {}
+            repo_slug = (content.get("repository") or {}).get("nameWithOwner")
+            issue_num = content.get("number")
+            if not repo_slug or not issue_num:
+                continue
+            task_key = f"{repo_slug}#{issue_num}"
+            meta: dict[str, str | None] = {
+                "status": None,
+                "priority": None,
+                "iteration": None,
+                "due_date": None,
+            }
+            for fv in (node.get("fieldValues") or {}).get("nodes") or []:
+                if not fv:
+                    continue
+                fname = ((fv.get("field") or {}).get("name") or "").strip().lower()
+                val_str = fv.get("name") or fv.get("title") or fv.get("date") or fv.get("text")
+                if not fname or not val_str:
+                    continue
+                if fname in ("status", "estado", "columna"):
+                    norm_st = BOARD_STATUS_ALIASES.get(str(val_str).strip().lower(), str(val_str).strip())
+                    meta["status"] = norm_st
+                elif fname in ("priority", "prioridad"):
+                    norm_pr = PRIORITY_ALIASES.get(str(val_str).strip().lower(), str(val_str).strip())
+                    meta["priority"] = norm_pr
+                elif fname in ("iteration", "iteración", "iteracion", "sprint"):
+                    meta["iteration"] = str(val_str).strip()
+                elif fname in ("target date", "due date", "fecha", "fecha objetivo", "fecha límite"):
+                    meta["due_date"] = str(val_str).strip()
+            board_map[task_key] = meta
+
+        page_info = items_obj.get("pageInfo") or {}
+        if page_info.get("hasNextPage") and page_info.get("endCursor"):
+            cursor = page_info["endCursor"]
+        else:
+            break
+
+    return board_map
+
+
 def normalize_task_record(
     *,
     issue: dict[str, Any],
@@ -99,19 +282,21 @@ def normalize_task_record(
     ]
     blocked = any("bloquead" in l or l == "blocked" for l in labels)
 
-    if board_status:
-        wf_status = board_status if board_status in VALID_WORKFLOW_STATUSES else "Sin clasificar"
+    # Precedencia transparente entre cierre de Issue, etiquetas de flujo y columna de GitHub Project:
+    if issue_state == "CLOSED":
+        wf_status = "Terminado" if completion_reason == "completed" else "Sin clasificar"
+    elif board_status in ("En revisión", "En curso", "Terminado"):
+        wf_status = board_status
+    elif any("revision" in l or "revisión" in l for l in labels):
+        wf_status = "En revisión"
+    elif any("curso" in l or "progreso" in l for l in labels):
+        wf_status = "En curso"
+    elif board_status in VALID_WORKFLOW_STATUSES:
+        wf_status = board_status
+    elif any("tipo:tarea" in l for l in labels):
+        wf_status = "Por hacer"
     else:
-        if issue_state == "CLOSED":
-            wf_status = "Terminado" if completion_reason == "completed" else "Sin clasificar"
-        elif any("revision" in l or "revisión" in l for l in labels):
-            wf_status = "En revisión"
-        elif any("curso" in l or "progreso" in l for l in labels):
-            wf_status = "En curso"
-        elif any("tipo:tarea" in l for l in labels):
-            wf_status = "Por hacer"
-        else:
-            wf_status = "Sin clasificar"
+        wf_status = "Sin clasificar"
 
     parsed_form = parse_issue_form_body(issue.get("body"))
     evidence_urls: list[str] = []
@@ -121,12 +306,38 @@ def normalize_task_record(
                 if u not in evidence_urls:
                     evidence_urls.append(u)
 
-    # Nota: la fecha propuesta en el formulario NO es compromiso confirmado; solo se usa board_due_date si existe y es fecha ISO
+    # Fecha objetivo: usa fecha confirmada en el tablero Project v2 (formato ISO YYYY-MM-DD)
     due_date: str | None = None
     if board_due_date and re.match(r"^\d{4}-\d{2}-\d{2}$", board_due_date):
         due_date = board_due_date
 
-    priority = board_priority if board_priority in ("Alta", "Media", "Baja") else None
+    # Prioridad: usa campo del tablero Project v2 o etiqueta/formulario normalizado
+    priority: str | None = None
+    if board_priority in ("Alta", "Media", "Baja"):
+        priority = board_priority
+    else:
+        for l in labels:
+            if l.startswith("prioridad:"):
+                cand = PRIORITY_ALIASES.get(l.split(":", 1)[1].strip(), "")
+                if cand in ("Alta", "Media", "Baja"):
+                    priority = cand
+                    break
+        if not priority:
+            for k, v in parsed_form.items():
+                if v and "prioridad" in k.lower():
+                    cand = PRIORITY_ALIASES.get(v.strip().lower(), "")
+                    if cand in ("Alta", "Media", "Baja"):
+                        priority = cand
+                        break
+
+    # Iteración: usa campo del tablero Project v2 o sección Sprint/Iteración en el cuerpo
+    iteration = board_iteration
+    if not iteration:
+        for k, v in parsed_form.items():
+            if v and ("sprint" in k.lower() or "iteraci" in k.lower()):
+                iteration = v.strip()[:60]
+                break
+
     assignees = [a["login"] for a in issue.get("assignees", []) if isinstance(a, dict) and a.get("login")]
 
     updated_at = issue.get("updated_at") or utc_now_iso()
@@ -143,7 +354,7 @@ def normalize_task_record(
         "blocked": blocked,
         "assignees": assignees,
         "priority": priority,
-        "iteration": board_iteration,
+        "iteration": iteration,
         "due_date": due_date,
         "evidence_urls": evidence_urls,
         "source_updated_at": updated_at,
@@ -159,7 +370,6 @@ def compute_metrics(tasks: list[dict[str, Any]]) -> dict[str, int]:
         if t["issue_state"] == "OPEN":
             open_tasks += 1
         elif t["issue_state"] == "CLOSED" and t["completion_reason"] == "completed":
-            # Excluye explícitamente completion_reason == 'not_planned'
             completed_tasks += 1
         if t["workflow_status"] == "En revisión" and t["issue_state"] == "OPEN":
             in_review_tasks += 1
@@ -179,7 +389,7 @@ def fetch_paginated_repo_issues(repo_slug: str, token: str | None) -> list[dict[
     while page <= 20:
         url = f"https://api.github.com/repos/{repo_slug}/issues?state=all&per_page=100&page={page}"
         headers = {
-            "User-Agent": "CopernicusUrbanoProgressExporter/1.0",
+            "User-Agent": "CopernicusUrbanoProgressExporter/1.1",
             "Accept": "application/vnd.github+json",
         }
         if token:
@@ -190,7 +400,6 @@ def fetch_paginated_repo_issues(repo_slug: str, token: str | None) -> list[dict[
         if not isinstance(batch, list) or not batch:
             break
         for item in batch:
-            # GitHub REST /issues incluye PRs; excluir entradas con 'pull_request'
             if "pull_request" not in item:
                 issues.append(item)
         if len(batch) < 100:
@@ -199,10 +408,38 @@ def fetch_paginated_repo_issues(repo_slug: str, token: str | None) -> list[dict[
     return issues
 
 
+def load_previous_progress_snapshot(out_path: Path, previous_url: str | None) -> dict[str, dict[str, Any]]:
+    prev_by_proj: dict[str, dict[str, Any]] = {}
+    if previous_url and previous_url.startswith("https://"):
+        try:
+            req = urllib.request.Request(
+                previous_url,
+                headers={"User-Agent": "CopernicusUrbanoProgressExporter/1.1", "Accept": "application/json"},
+            )
+            with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
+                remote_doc = json.loads(resp.read().decode("utf-8"))
+                for p in remote_doc.get("projects", []):
+                    if p.get("project_id"):
+                        prev_by_proj[p["project_id"]] = p
+        except Exception:
+            pass
+
+    if not prev_by_proj and out_path.exists():
+        try:
+            prev_doc = json.loads(out_path.read_text(encoding="utf-8"))
+            for p in prev_doc.get("projects", []):
+                if p.get("project_id"):
+                    prev_by_proj[p["project_id"]] = p
+        except Exception:
+            pass
+    return prev_by_proj
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Exporta snapshot público de seguimiento desde Issues/Projects.")
+    parser = argparse.ArgumentParser(description="Exporta snapshot público de seguimiento desde Issues y GitHub Projects v2.")
     parser.add_argument("--offline", action="store_true", help="Conserva snapshot local o inicial sin consultar red.")
     parser.add_argument("--output", type=str, default="data/seguimiento.json", help="Archivo JSON de salida.")
+    parser.add_argument("--previous-snapshot", type=str, default=None, help="URL HTTPS opcional del último snapshot publicado.")
     args = parser.parse_args()
 
     checker = make_format_checker()
@@ -225,14 +462,16 @@ def main() -> int:
         return 0
 
     token = os.environ.get("GH_PROJECTS_TOKEN") or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
-    prev_by_proj: dict[str, dict[str, Any]] = {}
-    if out_path.exists():
-        try:
-            prev_doc = json.loads(out_path.read_text(encoding="utf-8"))
-            for p in prev_doc.get("projects", []):
-                prev_by_proj[p["project_id"]] = p
-        except Exception:
-            pass
+    prev_url = args.previous_snapshot or os.environ.get("PREVIOUS_PROGRESS_SNAPSHOT_URL")
+    prev_by_proj = load_previous_progress_snapshot(out_path, prev_url)
+
+    # Consultar metadatos del tablero GitHub Project v2 regional si está configurado
+    board_cfg_path = ROOT / "data" / "project_board.config.json"
+    board_cfg = json.loads(board_cfg_path.read_text(encoding="utf-8")) if board_cfg_path.exists() else {}
+    board_number = int(board_cfg.get("project_number") or 1)
+    hub_repo = registry.get("hub", {}).get("repository") or "copernicuscentroamerica/clusterurbano"
+    board_owner = hub_repo.split("/")[0] if "/" in hub_repo else "copernicuscentroamerica"
+    board_meta_by_task = fetch_project_v2_board_metadata(board_owner, board_number, token)
 
     now_iso = utc_now_iso()
     proj_entries: list[dict[str, Any]] = []
@@ -241,7 +480,6 @@ def main() -> int:
 
     # También consultar Issues del hub clasificadas por project_id en el formulario
     hub_issues_by_proj: dict[str, list[tuple[str, dict[str, Any]]]] = {}
-    hub_repo = registry.get("hub", {}).get("repository")
     valid_pids = {p["id"] for p in registry["projects"]}
     if hub_repo:
         try:
@@ -284,7 +522,17 @@ def main() -> int:
 
             combined = [(repo_slug, i) for i in raw_issues] + hub_issues_by_proj.get(pid, [])
             for r_slug, iss in combined:
-                norm = normalize_task_record(issue=iss, repo_slug=r_slug, project_id=pid)
+                t_key = f"{r_slug}#{int(iss['number'])}"
+                b_meta = board_meta_by_task.get(t_key, {})
+                norm = normalize_task_record(
+                    issue=iss,
+                    repo_slug=r_slug,
+                    project_id=pid,
+                    board_status=b_meta.get("status"),
+                    board_priority=b_meta.get("priority"),
+                    board_iteration=b_meta.get("iteration"),
+                    board_due_date=b_meta.get("due_date"),
+                )
                 if norm["task_id"] in seen_task_ids:
                     continue
                 seen_task_ids.add(norm["task_id"])
@@ -360,7 +608,10 @@ def main() -> int:
     validator.validate(snapshot)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"[OK] Seguimiento exportado (overall_state='{overall}', ok={ok_count}/{len(proj_entries)}).")
+    print(
+        f"[OK] Seguimiento exportado (overall_state='{overall}', ok={ok_count}/{len(proj_entries)}, "
+        f"items_project_v2={len(board_meta_by_task)})."
+    )
     return 0
 
 
