@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "pa-panama-oeste",
+  "theme_version": "2.0.0-copernicus-2026",
+  "updated_at": "2026-11-10",
+  "notes": "Identidad local de Panamá Oeste (Arraiján y La Chorrera). Combina la institución principal declarada en ficha (MIVIOT, en formato textual legible mientras se incorpora su archivo vectorial) y los logos documentados en la presentación técnica del Grupo 1.",
+  "project_logo": null,
+  "institutions": [
+    {
+      "id": "miviot-panama",
+      "name": "Ministerio de Vivienda y Ordenamiento Territorial de Panamá (Dirección de Asentamientos Informales)",
+      "acronym": "MIVIOT",
+      "role": "Institución principal declarada en el perfil",
+      "logo_path": null,
+      "alt_text": "Ministerio de Vivienda y Ordenamiento Territorial de Panamá (MIVIOT)",
+      "url": "https://www.miviot.gob.pa/",
+      "order": 1,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "ppt-sica-pa",
+      "name": "Presidencia Pro Tempore del SICA",
+      "acronym": "PPT-SICA",
+      "role": "Marco de articulación regional documentado en presentación",
+      "logo_path": "branding/logos/logo-ppt-sica.png",
+      "alt_text": "Logo de la Presidencia Pro Tempore del SICA (PPT SICA)",
+      "url": "https://www.sica.int/",
+      "order": 2,
+      "aspect_hint": "vertical"
+    },
+    {
+      "id": "universidad-granada",
+      "name": "Universidad de Granada",
+      "acronym": "UGR",
+      "role": "Colaboración académica documentada en presentación",
+      "logo_path": "branding/logos/logo-universidad-granada.png",
+      "alt_text": "Logo de la Universidad de Granada",
+      "url": "https://www.ugr.es/",
+      "order": 3,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "4tech-gis",
+      "name": "4Tech GIS",
+      "acronym": "4Tech",
+      "role": "Soporte técnico geoespacial en presentación del caso",
+      "logo_path": "branding/logos/logo-4tech-gis.png",
+      "alt_text": "Logo de 4Tech GIS",
+      "url": null,
+      "order": 4,
+      "aspect_hint": "square"
+    }
+  ]
+}

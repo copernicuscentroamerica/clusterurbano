@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "sv-la-union",
+  "theme_version": "2.0.0-copernicus-2026",
+  "updated_at": "2026-11-10",
+  "project_logo": null,
+  "institutions": [
+    {
+      "id": "vdu-mivi-sv",
+      "name": "Viceministerio de Desarrollo Urbano — Ministerio de Vivienda",
+      "acronym": "VDU / MIVI",
+      "role": "Institución líder de ordenamiento y desarrollo urbano",
+      "url": "https://www.vivienda.gob.sv/",
+      "logo_path": null,
+      "alt_text": "Viceministerio de Desarrollo Urbano — Ministerio de Vivienda de El Salvador",
+      "order": 1,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "marn-sv",
+      "name": "Ministerio de Medio Ambiente y Recursos Naturales",
+      "acronym": "MARN",
+      "role": "Evaluación ambiental y monitoreo climático costero",
+      "url": "https://www.ambiente.gob.sv/",
+      "logo_path": null,
+      "alt_text": "Ministerio de Medio Ambiente y Recursos Naturales (MARN)",
+      "order": 2,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "alcaldia-la-union-sur",
+      "name": "Alcaldía Municipal de La Unión Sur",
+      "acronym": "La Unión Sur",
+      "role": "Gobierno local usuario de los insumos de planificación costera",
+      "url": null,
+      "logo_path": null,
+      "alt_text": "Alcaldía Municipal de La Unión Sur",
+      "order": 3,
+      "aspect_hint": "horizontal"
+    }
+  ],
+  "notes": "Las instituciones participantes del Grupo 5 se muestran en formato textual limpio hasta disponer de los archivos gráficos autorizados en branding/logos/."
+}

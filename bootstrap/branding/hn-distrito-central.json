@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "hn-distrito-central",
+  "theme_version": "2.0.0-copernicus-2026",
+  "updated_at": "2026-11-10",
+  "project_logo": null,
+  "institutions": [
+    {
+      "id": "amdc-hn",
+      "name": "Alcaldía Municipal del Distrito Central",
+      "acronym": "AMDC",
+      "role": "Gobierno municipal e institución líder de gestión del riesgo urbano",
+      "url": "https://www.amdc.hn/",
+      "logo_path": null,
+      "alt_text": "Alcaldía Municipal del Distrito Central (AMDC)",
+      "order": 1,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "copeco-hn",
+      "name": "Secretaría de Estado en los Despachos de Gestión de Riesgos y Contingencias Nacionales",
+      "acronym": "COPECO",
+      "role": "Rectoría nacional de gestión de riesgos y alerta temprana",
+      "url": "https://copeco.gob.hn/",
+      "logo_path": null,
+      "alt_text": "COPECO Honduras",
+      "order": 2,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "icf-ihcit-hn",
+      "name": "Instituto de Conservación Forestal / Instituto Hondureño de Ciencias de la Tierra (UNAH)",
+      "acronym": "ICF / IHCIT-UNAH",
+      "role": "Monitoreo geoespacial, susceptibilidad de laderas y recursos naturales",
+      "url": "https://ihcit.unah.edu.hn/",
+      "logo_path": null,
+      "alt_text": "ICF / IHCIT-UNAH",
+      "order": 3,
+      "aspect_hint": "horizontal"
+    }
+  ],
+  "notes": "La presentación original del Grupo 3 contiene únicamente los logos de la franja regional común (Global Gateway, UE, CCVAH, SISCA, SICA, Cooperación Alemana, GIZ y Copernicus LAC Chile). Las instituciones nacionales del Distrito Central se muestran en formato textual limpio hasta incorporar sus archivos oficiales en branding/logos/."
+}

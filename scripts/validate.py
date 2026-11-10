@@ -17,10 +17,23 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
-from site_common import make_format_checker, resolve_json_pointer
+from site_common import THEME_VERSION, make_format_checker, resolve_json_pointer
 
 ROOT = Path(__file__).resolve().parent.parent
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
+
+REQUIRED_BRAND_ASSETS = [
+    "logo-global-gateway.png",
+    "logo-union-europea.png",
+    "logo-ccvah.png",
+    "logo-sisca.png",
+    "logo-sica.png",
+    "logo-cooperacion-alemana.png",
+    "logo-giz.png",
+    "logo-copernicus-lac-chile.png",
+    "bg-trama-cartografica.png",
+    "onda-puntos-amarilla.png",
+]
 
 EXPECTED_IDS = [
     "pa-panama-oeste",
@@ -38,15 +51,21 @@ class LinkCollector(html.parser.HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.links: list[tuple[str, str]] = []
+        self.images_missing_alt: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attr_map = {k.lower(): (v or "") for k, v in attrs}
-        if tag.lower() == "a" and "href" in attr_map:
+        t = tag.lower()
+        if t == "a" and "href" in attr_map:
             self.links.append(("href", attr_map["href"]))
-        elif tag.lower() in ("link", "script", "img", "iframe"):
+        elif t in ("link", "script", "img", "iframe"):
             for key in ("href", "src"):
                 if key in attr_map and attr_map[key]:
                     self.links.append((key, attr_map[key]))
+            if t == "img":
+                alt_val = attr_map.get("alt", "").strip()
+                if not alt_val:
+                    self.images_missing_alt.append(attr_map.get("src", "<sin-src>"))
 
 
 def check_no_private_data(text: str, label: str, errors: list[str]) -> None:
@@ -69,7 +88,7 @@ def validate_source() -> list[str]:
 
     checker = make_format_checker()
 
-    # 1. Validar los 4 esquemas oficiales + esquemas derivados contra Draft 2020-12
+    # 1. Validar los esquemas oficiales + esquemas derivados contra Draft 2020-12
     schema_names = [
         "project.schema.json",
         "registry.schema.json",
@@ -77,6 +96,7 @@ def validate_source() -> list[str]:
         "progress-snapshot.schema.json",
         "catalog-snapshot.schema.json",
         "atlas-snapshot.schema.json",
+        "project-branding.schema.json",
     ]
     loaded_schemas: dict[str, Any] = {}
     for sname in schema_names:
@@ -95,6 +115,7 @@ def validate_source() -> list[str]:
     proj_val = Draft202012Validator(loaded_schemas["project.schema.json"], format_checker=checker)
     atlas_val = Draft202012Validator(loaded_schemas["atlas-product.schema.json"], format_checker=checker)
     prog_val = Draft202012Validator(loaded_schemas["progress-snapshot.schema.json"], format_checker=checker)
+    brand_val = Draft202012Validator(loaded_schemas["project-branding.schema.json"], format_checker=checker)
 
     # 2. Validar registro de proyectos
     registry = json.loads(reg_path.read_text(encoding="utf-8"))
@@ -152,6 +173,18 @@ def validate_source() -> list[str]:
             for verr in atlas_val.iter_errors(ap):
                 errors.append(f"[bootstrap/atlas/{pid}.json] {verr.message}")
 
+        bb_path = ROOT / "bootstrap" / "branding" / f"{pid}.json"
+        if not bb_path.exists():
+            errors.append(f"Falta identidad visual bootstrap en bootstrap/branding/{pid}.json")
+        else:
+            bb = json.loads(bb_path.read_text(encoding="utf-8"))
+            if bb.get("project_id") != pid:
+                errors.append(f"[bootstrap/branding/{pid}.json] project_id != '{pid}'.")
+            if bb.get("theme_version") != THEME_VERSION:
+                errors.append(f"[bootstrap/branding/{pid}.json] theme_version != '{THEME_VERSION}'.")
+            for verr in brand_val.iter_errors(bb):
+                errors.append(f"[bootstrap/branding/{pid}.json] {verr.message}")
+
     if sorted(all_groups) != [1, 2, 3, 4, 5, 6, 7, 8, 9]:
         errors.append(f"Los grupos fuente cubiertos {sorted(all_groups)} no representan los 9 grupos originales (1..9).")
 
@@ -194,6 +227,15 @@ def validate_source() -> list[str]:
         as_val = Draft202012Validator(loaded_schemas["atlas-snapshot.schema.json"], format_checker=checker)
         for verr in as_val.iter_errors(json.loads(atlas_snap_file.read_text(encoding="utf-8"))):
             errors.append(f"[atlas.snapshot.json] {verr.message}")
+
+    brand_assets_dir = ROOT / "web" / "assets" / "img" / "brand"
+    for req_asset in REQUIRED_BRAND_ASSETS:
+        if not (brand_assets_dir / req_asset).exists():
+            errors.append(f"[web/assets/img/brand] Falta recurso gráfico institucional común: {req_asset}")
+
+    doc_visual = ROOT / "docs" / "identidad-visual.md"
+    if not doc_visual.exists() or not doc_visual.read_text(encoding="utf-8").strip():
+        errors.append("Falta guía requerida docs/identidad-visual.md o está vacía.")
 
     if (ROOT / "fuentes").exists():
         errors.append("La carpeta privada 'fuentes/' no debe incluirse en el repositorio público del hub.")
@@ -274,6 +316,8 @@ def validate_site(site_dir: Path) -> list[str]:
         check_no_private_data(txt, str(hf.relative_to(site_dir)), errors)
         col = LinkCollector()
         col.feed(txt)
+        if col.images_missing_alt:
+            errors.append(f"[{hf.relative_to(site_dir)}] Imágenes sin atributo alt accesible: {col.images_missing_alt}")
         for attr_kind, href in col.links:
             h = href.strip()
             if h == "#":

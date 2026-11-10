@@ -5,8 +5,9 @@ Soporta:
   --offline : usa semillas bootstrap/ para entradas bootstrap y conserva snapshots canónicos locales válidos.
   --online [--previous-snapshot URL] [--previous-atlas-snapshot URL] :
               consulta únicamente repositorios canónicos registrados en un SHA fijo,
-              valida contra JSON Schema Draft 2020-12 y conserva versiones previas
-              marcadas como 'stale' ante cualquier fallo parcial.
+              valida contra JSON Schema Draft 2020-12 (incluyendo identidad visual local
+              branding/project-branding.json) y conserva versiones previas marcadas como
+              'stale' ante cualquier fallo parcial.
 """
 from __future__ import annotations
 
@@ -41,7 +42,7 @@ def safe_http_get(url: str, accept: str = "application/json") -> tuple[int, byte
     if parsed.scheme != "https" or not parsed.netloc:
         raise ValueError("Solo se admiten consultas HTTPS válidas.")
     headers = {
-        "User-Agent": "CopernicusUrbanoHubSync/1.1",
+        "User-Agent": "CopernicusUrbanoHubSync/1.2",
         "Accept": accept,
     }
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
@@ -105,6 +106,23 @@ def validate_atlas_product(
                 raise ValueError(f"source_id '{sid}' no definido en producto Atlas.")
 
 
+def load_local_bootstrap_branding(
+    pid: str,
+    branding_validator: Draft202012Validator | None,
+) -> dict[str, Any] | None:
+    b_path = ROOT / "bootstrap" / "branding" / f"{pid}.json"
+    if not b_path.exists():
+        return None
+    obj = json.loads(b_path.read_text(encoding="utf-8"))
+    if branding_validator is not None:
+        errs = list(branding_validator.iter_errors(obj))
+        if errs:
+            raise ValueError(f"Branding bootstrap inválido en {pid}: {errs[0].message}")
+    if obj.get("project_id") != pid:
+        raise ValueError(f"Branding bootstrap project_id '{obj.get('project_id')}' != '{pid}'.")
+    return obj
+
+
 def load_previous_snapshots(
     previous_url: str | None,
     previous_atlas_url: str | None = None,
@@ -112,7 +130,6 @@ def load_previous_snapshots(
     prev_projects: dict[str, dict[str, Any]] = {}
     prev_atlas_by_proj: dict[str, list[dict[str, Any]]] = {}
 
-    # 1. Intentar snapshot remoto previo de proyectos si fue configurado
     if previous_url:
         try:
             _, raw = safe_http_get(previous_url)
@@ -124,7 +141,6 @@ def load_previous_snapshots(
         except Exception as exc:
             print(f"[AVISO] No se pudo recuperar snapshot remoto previo de proyectos ({sanitize_error_code(exc)}); se usará copia local si existe.")
 
-    # Inferir URL remota de atlas.snapshot.json si no fue provista explícitamente
     inferred_atlas_url = previous_atlas_url
     if not inferred_atlas_url and previous_url and previous_url.endswith("projects.snapshot.json"):
         inferred_atlas_url = previous_url[: -len("projects.snapshot.json")] + "atlas.snapshot.json"
@@ -140,7 +156,6 @@ def load_previous_snapshots(
         except Exception as exc:
             print(f"[AVISO] No se pudo recuperar snapshot remoto previo del Atlas ({sanitize_error_code(exc)}); se usará copia local si existe.")
 
-    # 2. Respaldo local en data/projects.snapshot.json y data/atlas.snapshot.json
     local_cat = ROOT / "data" / "projects.snapshot.json"
     if not prev_projects and local_cat.exists():
         try:
@@ -171,6 +186,7 @@ def load_bootstrap_entry(
     proj_validator: Draft202012Validator,
     atlas_validator: Draft202012Validator,
     geovisor_map: dict[str, Any],
+    branding_validator: Draft202012Validator | None = None,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     pid = entry["id"]
     m_path = ROOT / entry["bootstrap_manifest"]
@@ -188,6 +204,8 @@ def load_bootstrap_entry(
         validate_atlas_product(ap, pid, atlas_validator)
         atlas_list.append(ap)
 
+    branding_obj = load_local_bootstrap_branding(pid, branding_validator)
+
     cat_item = {
         "project": manifest,
         "content_markdown": content_md,
@@ -198,6 +216,7 @@ def load_bootstrap_entry(
         "sync_state": "bootstrap",
         "source_mode": entry["source_mode"],
         "geovisor_summary": geovisor_map.get(pid),
+        "branding": branding_obj,
     }
     return cat_item, atlas_list
 
@@ -207,6 +226,7 @@ def fetch_canonical_online(
     proj_validator: Draft202012Validator,
     atlas_validator: Draft202012Validator,
     geovisor_map: dict[str, Any],
+    branding_validator: Draft202012Validator | None = None,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     pid = entry["id"]
     repo_slug = entry["repository"]
@@ -214,7 +234,7 @@ def fetch_canonical_online(
     if not repo_slug or not branch:
         raise ValueError("Entrada canonical sin repository o default_branch.")
 
-    # 1. Resolver SHA concreto de la rama
+    # 1. Resolver SHA concreto de la rama en el repositorio canónico (nunca de forks no integrados)
     commit_api = f"https://api.github.com/repos/{repo_slug}/commits/{urllib.parse.quote(branch, safe='')}"
     _, commit_raw = safe_http_get(commit_api, accept="application/vnd.github+json")
     commit_info = json.loads(commit_raw.decode("utf-8"))
@@ -232,6 +252,36 @@ def fetch_canonical_online(
     if EMAIL_RE.search(content_md) or "../fuentes/" in content_md:
         raise ValueError("Contenido remoto contiene correos o enlaces relativos prohibidos.")
     validate_project_manifest(manifest, pid, proj_validator)
+
+    # 2b. Sincronizar identidad visual aprobada (branding/project-branding.json y logos) desde el mismo SHA canónico
+    branding_obj = load_local_bootstrap_branding(pid, branding_validator)
+    try:
+        _, b_bytes = safe_http_get(f"{raw_base}/branding/project-branding.json", accept="text/plain")
+        remote_branding = json.loads(b_bytes.decode("utf-8"))
+        if branding_validator is not None:
+            errs = list(branding_validator.iter_errors(remote_branding))
+            if errs:
+                raise ValueError(f"branding/project-branding.json inválido en {pid}: {errs[0].message}")
+        if remote_branding.get("project_id") == pid:
+            branding_obj = remote_branding
+            # Sincronizar archivos gráficos referenciados hacia bootstrap/branding/logos/{pid}/branding/logos/
+            logo_paths: list[str] = []
+            pl = branding_obj.get("project_logo")
+            if isinstance(pl, dict) and pl.get("logo_path"):
+                logo_paths.append(str(pl["logo_path"]))
+            for inst in branding_obj.get("institutions", []):
+                if isinstance(inst, dict) and inst.get("logo_path"):
+                    logo_paths.append(str(inst["logo_path"]))
+            for lp in logo_paths:
+                if lp.startswith("branding/logos/"):
+                    fname = Path(lp).name
+                    _, logo_bytes = safe_http_get(f"{raw_base}/branding/logos/{urllib.parse.quote(fname)}", accept="*/*")
+                    local_logo_dst = ROOT / "bootstrap" / "branding" / "logos" / pid / "branding" / "logos" / fname
+                    local_logo_dst.parent.mkdir(parents=True, exist_ok=True)
+                    local_logo_dst.write_bytes(logo_bytes)
+    except urllib.error.HTTPError as he:
+        if he.code != 404:
+            raise
 
     # 3. Consultar productos en atlas/products/ en ese mismo SHA
     atlas_list: list[dict[str, Any]] = []
@@ -263,6 +313,7 @@ def fetch_canonical_online(
         "sync_state": "ok",
         "source_mode": "canonical",
         "geovisor_summary": geovisor_map.get(pid),
+        "branding": branding_obj,
     }
     return cat_item, atlas_list
 
@@ -278,10 +329,16 @@ def run_sync(
     reg_schema = json.loads((ROOT / "schemas" / "registry.schema.json").read_text(encoding="utf-8"))
     proj_schema = json.loads((ROOT / "schemas" / "project.schema.json").read_text(encoding="utf-8"))
     atlas_schema = json.loads((ROOT / "schemas" / "atlas-product.schema.json").read_text(encoding="utf-8"))
+    branding_schema_path = ROOT / "schemas" / "project-branding.schema.json"
 
     reg_validator = Draft202012Validator(reg_schema, format_checker=checker)
     proj_validator = Draft202012Validator(proj_schema, format_checker=checker)
     atlas_validator = Draft202012Validator(atlas_schema, format_checker=checker)
+    branding_validator = (
+        Draft202012Validator(json.loads(branding_schema_path.read_text(encoding="utf-8")), format_checker=checker)
+        if branding_schema_path.exists()
+        else None
+    )
 
     reg_file = registry_path or (ROOT / "data" / "projects.registry.json")
     registry = json.loads(reg_file.read_text(encoding="utf-8"))
@@ -315,7 +372,7 @@ def run_sync(
         smode = entry["source_mode"]
 
         if smode == "bootstrap":
-            item, prods = load_bootstrap_entry(entry, proj_validator, atlas_validator, geovisor_map)
+            item, prods = load_bootstrap_entry(entry, proj_validator, atlas_validator, geovisor_map, branding_validator)
             out_projects.append(item)
             out_atlas_products.extend(prods)
             atlas_sources_status.append(
@@ -329,13 +386,16 @@ def run_sync(
                 cached = dict(prev_projects[pid])
                 cached["source_mode"] = "canonical"
                 validate_project_manifest(cached["project"], pid, proj_validator)
+                local_br = load_local_bootstrap_branding(pid, branding_validator)
+                if local_br is not None:
+                    cached["branding"] = local_br
                 out_projects.append(cached)
                 out_atlas_products.extend(prev_atlas_by_proj.get(pid, []))
                 atlas_sources_status.append(
                     {"project_id": pid, "source_mode": "canonical", "sync_state": cached.get("sync_state", "ok"), "error_code": None}
                 )
             else:
-                item, prods = load_bootstrap_entry(entry, proj_validator, atlas_validator, geovisor_map)
+                item, prods = load_bootstrap_entry(entry, proj_validator, atlas_validator, geovisor_map, branding_validator)
                 item["sync_state"] = "stale"
                 item["source_mode"] = "canonical"
                 out_projects.append(item)
@@ -345,7 +405,7 @@ def run_sync(
                 )
         else:
             try:
-                item, prods = fetch_canonical_online(entry, proj_validator, atlas_validator, geovisor_map)
+                item, prods = fetch_canonical_online(entry, proj_validator, atlas_validator, geovisor_map, branding_validator)
                 out_projects.append(item)
                 out_atlas_products.extend(prods)
                 atlas_sources_status.append(
@@ -359,13 +419,15 @@ def run_sync(
                     stale_item = dict(prev_projects[pid])
                     stale_item["sync_state"] = "stale"
                     stale_item["source_mode"] = "canonical"
+                    if not stale_item.get("branding"):
+                        stale_item["branding"] = load_local_bootstrap_branding(pid, branding_validator)
                     out_projects.append(stale_item)
                     out_atlas_products.extend(prev_atlas_by_proj.get(pid, []))
                     atlas_sources_status.append(
                         {"project_id": pid, "source_mode": "canonical", "sync_state": "stale", "error_code": err_code}
                     )
                 else:
-                    fallback_item, prods = load_bootstrap_entry(entry, proj_validator, atlas_validator, geovisor_map)
+                    fallback_item, prods = load_bootstrap_entry(entry, proj_validator, atlas_validator, geovisor_map, branding_validator)
                     fallback_item["sync_state"] = "unavailable"
                     fallback_item["source_mode"] = "canonical"
                     out_projects.append(fallback_item)

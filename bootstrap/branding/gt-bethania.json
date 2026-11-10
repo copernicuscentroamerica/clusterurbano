@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "gt-bethania",
+  "theme_version": "2.0.0-copernicus-2026",
+  "updated_at": "2026-11-10",
+  "project_logo": null,
+  "institutions": [
+    {
+      "id": "muniguate-gt",
+      "name": "Municipalidad de Guatemala",
+      "acronym": "MuniGuate",
+      "role": "Gobierno municipal e institución líder de planificación territorial",
+      "url": "https://www.muniguate.com/",
+      "logo_path": null,
+      "alt_text": "Municipalidad de Guatemala",
+      "order": 1,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "segeplan-gt",
+      "name": "Secretaría de Planificación y Programación de la Presidencia",
+      "acronym": "SEGEPLAN",
+      "role": "Articulación de planificación territorial y políticas públicas",
+      "url": "https://www.segeplan.gob.gt/",
+      "logo_path": null,
+      "alt_text": "Secretaría de Planificación y Programación de la Presidencia (SEGEPLAN)",
+      "order": 2,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "conred-gt",
+      "name": "Coordinadora Nacional para la Reducción de Desastres",
+      "acronym": "CONRED",
+      "role": "Evaluación de amenazas socio-ambientales y gestión del riesgo",
+      "url": "https://conred.gob.gt/",
+      "logo_path": null,
+      "alt_text": "Coordinadora Nacional para la Reducción de Desastres (CONRED)",
+      "order": 3,
+      "aspect_hint": "horizontal"
+    }
+  ],
+  "notes": "Las instituciones participantes del Grupo 6 se muestran mediante tarjeta tipográfica institucional mientras se incorporan sus archivos oficiales en branding/logos/."
+}

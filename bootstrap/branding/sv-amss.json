@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "sv-amss",
+  "theme_version": "2.0.0-copernicus-2026",
+  "updated_at": "2026-11-10",
+  "project_logo": null,
+  "institutions": [
+    {
+      "id": "opamss-sv",
+      "name": "Oficina de Planificación del Área Metropolitana de San Salvador",
+      "acronym": "OPAMSS",
+      "role": "Institución líder de planificación urbana metropolitana",
+      "url": "https://opamss.org.sv/",
+      "logo_path": null,
+      "alt_text": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+      "order": 1,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "coamss-sv",
+      "name": "Consejo de Alcaldes del Área Metropolitana de San Salvador",
+      "acronym": "COAMSS",
+      "role": "Articulación municipal metropolitana (14 distritos del AMSS)",
+      "url": "https://opamss.org.sv/",
+      "logo_path": null,
+      "alt_text": "Consejo de Alcaldes del Área Metropolitana de San Salvador (COAMSS)",
+      "order": 2,
+      "aspect_hint": "horizontal"
+    }
+  ],
+  "notes": "OPAMSS y COAMSS se muestran mediante tarjeta tipográfica institucional mientras el equipo técnico incorpora sus archivos oficiales en branding/logos/."
+}

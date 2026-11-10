@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "do-santiago",
+  "theme_version": "2.0.0-copernicus-2026",
+  "updated_at": "2026-11-10",
+  "project_logo": null,
+  "institutions": [
+    {
+      "id": "mepyd-do",
+      "name": "Ministerio de Economía, Planificación y Desarrollo",
+      "acronym": "MEPyD",
+      "role": "Institución líder de ordenamiento territorial y planificación",
+      "url": "https://mepyd.gob.do/",
+      "logo_path": null,
+      "alt_text": "Ministerio de Economía, Planificación y Desarrollo (MEPyD)",
+      "order": 1,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "ayuntamiento-santiago-do",
+      "name": "Ayuntamiento del Municipio de Santiago",
+      "acronym": "Alcaldía de Santiago",
+      "role": "Gobierno local y gestión urbana municipal",
+      "url": "https://alcaldiadesantiago.gob.do/",
+      "logo_path": null,
+      "alt_text": "Ayuntamiento del Municipio de Santiago",
+      "order": 2,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "cdes-santiago-do",
+      "name": "Consejo para el Desarrollo Estratégico de Santiago",
+      "acronym": "CDES",
+      "role": "Articulación estratégica territorial y multisectorial",
+      "url": "https://cdes.org.do/",
+      "logo_path": null,
+      "alt_text": "Consejo para el Desarrollo Estratégico de Santiago (CDES)",
+      "order": 3,
+      "aspect_hint": "horizontal"
+    }
+  ],
+  "notes": "Las instituciones participantes del Grupo 7 se muestran en formato textual limpio hasta incorporar sus archivos gráficos oficiales en branding/logos/."
+}

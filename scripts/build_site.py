@@ -18,11 +18,15 @@ from typing import Any
 from markdown_lite import render_markdown
 from site_common import (
     TEMPLATE_VERSION,
+    THEME_VERSION,
     SiteContext,
     badge_html,
     compute_site_context,
     esc,
     format_spanish_date,
+    render_project_institutions_band,
+    render_regional_institutional_band,
+    render_upper_institutional_bar,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -121,6 +125,12 @@ def render_hub_shell(
     )
 
     sync_label = format_spanish_date(snapshot_generated_at, "Semillas iniciales del paquete")
+    upper_bar_html = render_upper_institutional_bar(
+        ctx,
+        "<strong>Comunidad Urbana Copernicus Centroamérica</strong> · Clúster de Asentamientos Humanos · Fase II",
+        f"Última sincronización: <strong>{esc(sync_label)}</strong> · {hub_repo_html}",
+    )
+    regional_band_html = render_regional_institutional_band(ctx)
 
     return f"""<!DOCTYPE html>
 <html lang="es">
@@ -136,12 +146,7 @@ def render_hub_shell(
 <body>
   <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
   {work_banner_html}
-  <div class="topbar">
-    <div class="container">
-      <div><strong>Comunidad Urbana Copernicus Centroamérica</strong> · Clúster de Asentamientos Humanos · Fase II</div>
-      <div>Última sincronización: <strong>{esc(sync_label)}</strong> · {hub_repo_html}</div>
-    </div>
-  </div>
+  {upper_bar_html}
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="{html.escape(ctx.site_url(''), quote=True)}">
@@ -163,6 +168,7 @@ def render_hub_shell(
   </header>
 
   {hero_html}
+  {regional_band_html}
 
   <main id="contenido-principal">
     <div class="container">
@@ -174,7 +180,7 @@ def render_hub_shell(
     <div class="container footer-grid">
       <div>
         <p class="footer-title">Comunidad Urbana Copernicus Centroamérica</p>
-        <p>Clúster de Asentamientos Humanos · Fase II. Espacio regional que articula iniciativas institucionales, métodos reproducibles en Google Colab y Google Earth Engine, geovisores basados en GeoLibre y el Atlas Urbano Regional.</p>
+        <p>Clúster de Asentamientos Humanos · Fase II. Espacio regional que articula iniciativas institucionales, métodos reproducibles en Google Colab y Google Earth Engine, geovisores basados en GeoLibre y el Atlas Urbano Regional (Tema común: <code>{esc(THEME_VERSION)}</code>).</p>
       </div>
       <div>
         <p class="footer-title">Secciones del portal</p>
@@ -190,7 +196,7 @@ def render_hub_shell(
       </div>
       <div>
         <p class="footer-title">Fuentes de verdad y trazabilidad</p>
-        <p>Cada iniciativa mantiene su manifiesto canónico <code>project.json</code> y su propio geovisor en su repositorio independiente. Este portal consulta registros autorizados y distingue datos declarados, propuestas y asuntos por confirmar.</p>
+        <p>Cada iniciativa mantiene su manifiesto canónico <code>project.json</code>, su identidad local <code>branding/project-branding.json</code> y su propio geovisor en su repositorio independiente. Este portal consulta registros autorizados y distingue datos declarados, propuestas y asuntos por confirmar.</p>
       </div>
     </div>
   </footer>
@@ -209,7 +215,9 @@ def build_project_card_html(ctx: SiteContext, item: dict[str, Any]) -> str:
     country_name = p["country"]["name"]
     tags = p.get("tags", [])
     tags_attr = "|".join(tags)
-    inst_str = ", ".join(p["institutional_use"].get("institutions", []))
+    inst_list = p["institutional_use"].get("institutions", [])
+    primary_inst = inst_list[0] if inst_list else "Institución por confirmar"
+    inst_str = ", ".join(inst_list)
     short_title = SHORT_CARD_TITLES.get(pid, p["title"])
     search_blob = f"{pid} {short_title} {p['title']} {country_name} {p['territory']['label']} {inst_str} {' '.join(tags)}"
 
@@ -222,6 +230,25 @@ def build_project_card_html(ctx: SiteContext, item: dict[str, Any]) -> str:
     )
     tags_html = "".join(f'<span class="tag">{esc(t)}</span>' for t in tags)
 
+    # Miniaturas de logos aprobados del proyecto o sus instituciones participantes (máx. 3)
+    branding = item.get("branding")
+    logo_imgs: list[str] = []
+    if isinstance(branding, dict):
+        pl = branding.get("project_logo")
+        if isinstance(pl, dict) and pl.get("logo_path"):
+            lsrc = ctx.site_url(f"assets/img/projects/{pid}/{pl['logo_path']}")
+            lalt = esc(pl.get("alt_text") or pl.get("name"))
+            logo_imgs.append(f'<img src="{html.escape(lsrc, quote=True)}" alt="{lalt}" loading="lazy">')
+        for b_inst in sorted(branding.get("institutions", []), key=lambda x: (int(x.get("order", 99)), str(x.get("id", "")))):
+            if len(logo_imgs) >= 3:
+                break
+            if isinstance(b_inst, dict) and b_inst.get("logo_path"):
+                lsrc = ctx.site_url(f"assets/img/projects/{pid}/{b_inst['logo_path']}")
+                lalt = esc(b_inst.get("alt_text") or b_inst.get("name"))
+                logo_imgs.append(f'<img src="{html.escape(lsrc, quote=True)}" alt="{lalt}" loading="lazy">')
+
+    logos_strip_right = f'<div class="card-inst-strip-logos">{"".join(logo_imgs)}</div>' if logo_imgs else ""
+
     return f"""
     <article class="card" data-filter-item
              data-country="{esc(country_code)}"
@@ -230,10 +257,20 @@ def build_project_card_html(ctx: SiteContext, item: dict[str, Any]) -> str:
              data-search-text="{esc(search_blob)}">
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.4rem;">
         <span class="badge badge-country">{esc(country_name)} ({esc(country_code)})</span>
-        {badge_html(p['pmv']['scope_status'], 'PMV')}
+        <div style="display:flex;flex-wrap:wrap;gap:0.3rem;">
+          {badge_html(p['status'].get('development'), 'Desarrollo')}
+          {badge_html(p['pmv']['scope_status'], 'PMV')}
+        </div>
       </div>
-      <h3><a href="{detail_href}" style="color:var(--c-navy);text-decoration:none;">{esc(short_title)}</a></h3>
-      <p style="font-size:0.86rem;color:var(--c-text-muted);"><strong>Territorio:</strong> {esc(p['territory']['label'])}</p>
+      <h3><a href="{detail_href}" style="color:var(--c-brand-blue);text-decoration:none;">{esc(short_title)}</a></h3>
+      <div class="card-inst-strip">
+        <div class="card-inst-strip-text">
+          <strong>Institución principal</strong>
+          <span>{esc(primary_inst)}</span>
+        </div>
+        {logos_strip_right}
+      </div>
+      <p style="font-size:0.85rem;color:var(--c-text-muted);"><strong>Territorio:</strong> {esc(p['territory']['label'])}</p>
       <p>{esc(p['summary'])}</p>
       <div class="tag-list">{tags_html}</div>
       <div class="card-footer">
@@ -576,16 +613,24 @@ git remote add upstream https://github.com/{effective_slug}.git"""
       <div class="status-cell"><div class="status-cell-label">Adopción</div>{badge_html(p['status']['adoption']['state'])}</div>
     </section>
 
+    {render_project_institutions_band(
+        ctx,
+        item.get("branding"),
+        p,
+        colaborar_href=(proj_site_url.rstrip("/") + "/colaborar/#anadir-actualizar-logos") if proj_site_url else None,
+        logo_url_prefix=f"assets/img/projects/{pid}/",
+    )}
+
     <section class="section">
-      <div class="card" style="border-left:4px solid var(--c-teal);">
+      <div class="card" style="border-left:4px solid var(--c-brand-blue);">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.6rem;">
           <div>
             <h2 style="margin:0 0 0.25rem;">Trabajar en esta iniciativa · Accesos directos</h2>
-            <p style="margin:0;font-size:0.88rem;color:var(--c-text-muted);">Usa estos enlaces para abrir tu copia personal (<em>fork</em>), ejecutar el ejercicio en Google Colab o Google Earth Engine, registrar tareas o enviar un Pull Request.</p>
+            <p style="margin:0;font-size:0.88rem;color:var(--c-text-muted);">Usa estos enlaces para abrir tu copia personal (<em>fork</em>), añadir o actualizar logos institucionales, ejecutar el ejercicio en Google Colab o Google Earth Engine, registrar tareas o enviar un Pull Request.</p>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:0.45rem;">
             <a class="btn btn-teal btn-xs" href="{html.escape(fork_url, quote=True)}" target="_blank" rel="noopener noreferrer">1. Crear copia personal (Fork) ↗</a>
-            <a class="btn btn-outline btn-xs" href="{html.escape(collab_page_url, quote=True)}" target="_blank" rel="noopener noreferrer">2. Guía de incorporación ↗</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(collab_page_url, quote=True)}" target="_blank" rel="noopener noreferrer">2. Guía de incorporación y logos ↗</a>
             <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">3. Ejercicio Colab / GEE</a>
             <a class="btn btn-outline btn-xs" href="{html.escape(new_task_url, quote=True)}" target="_blank" rel="noopener noreferrer">4. Crear tarea PMV ↗</a>
             <a class="btn btn-outline btn-xs" href="{html.escape(support_url, quote=True)}" target="_blank" rel="noopener noreferrer">5. Solicitar apoyo / bloqueo ↗</a>
@@ -1972,6 +2017,9 @@ def main() -> int:
 
     # Recursos estáticos
     shutil.copytree(ROOT / "web" / "assets", out_dir / "assets")
+    boot_logos_dir = ROOT / "bootstrap" / "branding" / "logos"
+    if boot_logos_dir.exists():
+        shutil.copytree(boot_logos_dir, out_dir / "assets" / "img" / "projects", dirs_exist_ok=True)
 
     # Publicar snapshots derivados en site/data/
     write_deterministic(
@@ -1990,6 +2038,7 @@ def main() -> int:
         "hub_id": "comunidad-urbana",
         "schema_version": "1.0.0",
         "template_version": TEMPLATE_VERSION,
+        "theme_version": THEME_VERSION,
         "base_path": ctx.base_path,
         "origin": ctx.origin,
         "effective_mode": ctx.effective_mode,

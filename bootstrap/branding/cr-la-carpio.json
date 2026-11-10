@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "cr-la-carpio",
+  "theme_version": "2.0.0-copernicus-2026",
+  "updated_at": "2026-11-10",
+  "project_logo": null,
+  "institutions": [
+    {
+      "id": "msj-cr",
+      "name": "Municipalidad de San José",
+      "acronym": "MSJ",
+      "role": "Gobierno local e institución líder de gestión urbana",
+      "url": "https://www.msj.go.cr/",
+      "logo_path": "branding/logos/logo-municipalidad-san-jose.png",
+      "alt_text": "Logo de la Municipalidad de San José (MSJ)",
+      "order": 1,
+      "aspect_hint": "vertical"
+    },
+    {
+      "id": "invu-cr",
+      "name": "Instituto Nacional de Vivienda y Urbanismo",
+      "acronym": "INVU",
+      "role": "Institución rectora de urbanismo y vivienda",
+      "url": "https://www.invu.go.cr/",
+      "logo_path": "branding/logos/logo-invu.png",
+      "alt_text": "Logo del Instituto Nacional de Vivienda y Urbanismo (INVU)",
+      "order": 2,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "mivah-cr",
+      "name": "Ministerio de Vivienda y Asentamientos Humanos",
+      "acronym": "MIVAH",
+      "role": "Ente rector sectorial de vivienda y asentamientos humanos",
+      "url": "https://www.mivah.go.cr/",
+      "logo_path": "branding/logos/logo-mivah.png",
+      "alt_text": "Logo del Ministerio de Vivienda y Asentamientos Humanos (MIVAH)",
+      "order": 3,
+      "aspect_hint": "horizontal"
+    },
+    {
+      "id": "ppt-sica-cr",
+      "name": "Presidencia Pro Tempore del SICA — Costa Rica",
+      "acronym": "PPT-SICA",
+      "role": "Articulación regional SICA",
+      "url": "https://www.sica.int/",
+      "logo_path": "branding/logos/logo-ppt-sica-cr.png",
+      "alt_text": "Logo de la Presidencia Pro Tempore del SICA Costa Rica",
+      "order": 4,
+      "aspect_hint": "vertical"
+    },
+    {
+      "id": "4tech-gis-cr",
+      "name": "4Tech GIS",
+      "acronym": "4Tech GIS",
+      "role": "Acompañamiento metodológico y geoespacial",
+      "url": null,
+      "logo_path": "branding/logos/logo-4tech-gis.png",
+      "alt_text": "Logo de 4Tech GIS",
+      "order": 5,
+      "aspect_hint": "square"
+    }
+  ],
+  "notes": "Incluye los 5 logotipos institucionales extraídos de la presentación original del Grupo 4 (La Carpio, Costa Rica). Se recomienda sustituir los PNG rasterizados por versiones SVG vectoriales cuando las instituciones los faciliten."
+}
