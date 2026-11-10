@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-11-10T20:23:52Z",
+  "generated_at": "2026-11-10T20:41:47Z",
   "source_system": "github",
   "overall_state": "ok",
   "projects": [
     {
       "project_id": "pa-panama-oeste",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:23:52Z",
+      "last_success_at": "2026-11-10T20:41:47Z",
       "source_updated_at": "2026-11-10T12:37:07Z",
       "error_code": null,
       "metrics": {
@@ -80,7 +80,7 @@
     {
       "project_id": "sv-amss",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:23:52Z",
+      "last_success_at": "2026-11-10T20:41:47Z",
       "source_updated_at": "2026-11-10T12:41:43Z",
       "error_code": null,
       "metrics": {
@@ -135,7 +135,7 @@
     {
       "project_id": "cr-la-carpio",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:23:52Z",
+      "last_success_at": "2026-11-10T20:41:47Z",
       "source_updated_at": "2026-11-10T12:41:59Z",
       "error_code": null,
       "metrics": {
@@ -188,7 +188,7 @@
     {
       "project_id": "sv-la-union",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:23:52Z",
+      "last_success_at": "2026-11-10T20:41:47Z",
       "source_updated_at": "2026-11-10T12:42:15Z",
       "error_code": null,
       "metrics": {
@@ -241,7 +241,7 @@
     {
       "project_id": "gt-bethania",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:23:52Z",
+      "last_success_at": "2026-11-10T20:41:47Z",
       "source_updated_at": "2026-11-10T12:42:28Z",
       "error_code": null,
       "metrics": {
@@ -294,7 +294,7 @@
     {
       "project_id": "do-santiago",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:23:52Z",
+      "last_success_at": "2026-11-10T20:41:47Z",
       "source_updated_at": "2026-11-10T12:42:42Z",
       "error_code": null,
       "metrics": {
@@ -347,7 +347,7 @@
     {
       "project_id": "gt-salud-metropolitana",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:23:52Z",
+      "last_success_at": "2026-11-10T20:41:47Z",
       "source_updated_at": "2026-11-10T12:42:56Z",
       "error_code": null,
       "metrics": {
@@ -400,7 +400,7 @@
     {
       "project_id": "hn-distrito-central",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:23:52Z",
+      "last_success_at": "2026-11-10T20:41:47Z",
       "source_updated_at": "2026-11-10T12:43:08Z",
       "error_code": null,
       "metrics": {
