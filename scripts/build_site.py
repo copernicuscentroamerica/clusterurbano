@@ -424,6 +424,7 @@ def build_home_page(
                 <label for="adv-project">1. Iniciativa / Proyecto del equipo *</label>
                 <select id="adv-project" data-adv-project required>
                   <option value="pa-panama-oeste" data-repo="copernicuscentroamerica/urbano-pa-panama-oeste">Panamá · Panamá Oeste (urbano-pa-panama-oeste)</option>
+                  <option value="pa-colon" data-repo="copernicuscentroamerica/clusterurbano">Panamá · Colón (pa-colon)</option>
                   <option value="sv-amss" data-repo="copernicuscentroamerica/urbano-sv-amss">El Salvador · AMSS OPAMSS (urbano-sv-amss)</option>
                   <option value="cr-la-carpio" data-repo="copernicuscentroamerica/urbano-cr-la-carpio">Costa Rica · La Carpio (urbano-cr-la-carpio)</option>
                   <option value="sv-la-union" data-repo="copernicuscentroamerica/urbano-sv-la-union">El Salvador · La Unión Sur (urbano-sv-la-union)</option>
