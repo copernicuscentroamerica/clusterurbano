@@ -142,7 +142,7 @@ def render_hub_shell(
   <title>{esc(page_title)} · Comunidad Urbana Copernicus Centroamérica</title>
   <meta name="description" content="Comunidad de Práctica del Clúster de Asentamientos Humanos Copernicus Centroamérica · Fase II. Proyectos, ejercicio práctico Colab/GEE, geovisores GeoLibre, seguimiento y Atlas Urbano Regional.">
   {robots_meta}
-  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.0.3">
+  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.0.4">
   {maplibre_head}
 </head>
 <body>
@@ -203,7 +203,7 @@ def render_hub_shell(
     </div>
   </footer>
 
-  <script src="{html.escape(ctx.site_url('assets/js/ui.js'), quote=True)}?v=2.0.3"></script>
+  <script src="{html.escape(ctx.site_url('assets/js/ui.js'), quote=True)}?v=2.0.4"></script>
   {maplibre_scripts}
 </body>
 </html>
@@ -338,7 +338,8 @@ def build_home_page(
         <p class="hero-lead">La comunidad reúne iniciativas de Centroamérica y República Dominicana que emplean información geoespacial y observación de la Tierra para abordar retos de los asentamientos humanos. Este espacio conecta proyectos, laboratorios en Google Colab y Google Earth Engine, avances y contribuciones al Atlas Urbano Regional.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">Explorar proyectos</a>
-          <a class="btn btn-teal" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Empieza aquí · Ejercicio Colab / GEE</a>
+          <a class="btn btn-teal" href="#solicitar-asesoria">Solicitar asesoría técnica</a>
+          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ejercicio Colab / GEE</a>
           <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('atlas/'), quote=True)}">Consultar el Atlas</a>
           <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('seguimiento/'), quote=True)}">Seguimiento y tablero</a>
         </div>
@@ -403,6 +404,108 @@ def build_home_page(
       </div>
       <div class="grid-3">
         {cards_html}
+      </div>
+    </section>
+
+    <section class="section" id="solicitar-asesoria" aria-labelledby="titulo-solicitar-asesoria">
+      <div class="card" style="border-top:4px solid var(--c-brand-blue);border-left:4px solid var(--c-accent-yellow);padding:1.5rem;">
+        <div class="section-header" style="margin-bottom:0.85rem;">
+          <div>
+            <span class="badge badge-lime">Mesa de ayuda y mentoría regional</span>
+            <h2 id="titulo-solicitar-asesoria" style="margin:0.35rem 0 0.2rem;">Solicitar asesoría técnica o acompañamiento metodológico</h2>
+            <p style="margin:0;color:var(--c-text-muted);font-size:0.94rem;">Describe el problema técnico, metodológico o geoespacial que tu equipo necesita resolver. El formulario estructura tu solicitud para registrarla directamente en el repositorio de tu proyecto (vinculada al tablero de <a href="{html.escape(ctx.site_url('seguimiento/'), quote=True)}">Seguimiento Regional</a>) y genera al instante un prompt técnico para avanzar en <strong>Google Antigravity</strong>.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" data-advisory-form-root style="align-items:start;gap:1.35rem;">
+          <form id="form-asesoria-equipos" onsubmit="return false;" style="display:flex;flex-direction:column;gap:0.85rem;background:var(--c-bg);padding:1.15rem;border:1px solid var(--c-border);border-radius:var(--radius-md);">
+            <div class="grid-2" style="gap:0.75rem;">
+              <div class="filter-field">
+                <label for="adv-project">1. Iniciativa / Proyecto del equipo *</label>
+                <select id="adv-project" data-adv-project required>
+                  <option value="pa-panama-oeste" data-repo="copernicuscentroamerica/urbano-pa-panama-oeste">Panamá · Panamá Oeste (urbano-pa-panama-oeste)</option>
+                  <option value="sv-amss" data-repo="copernicuscentroamerica/urbano-sv-amss">El Salvador · AMSS OPAMSS (urbano-sv-amss)</option>
+                  <option value="cr-la-carpio" data-repo="copernicuscentroamerica/urbano-cr-la-carpio">Costa Rica · La Carpio (urbano-cr-la-carpio)</option>
+                  <option value="sv-la-union" data-repo="copernicuscentroamerica/urbano-sv-la-union">El Salvador · La Unión Sur (urbano-sv-la-union)</option>
+                  <option value="gt-bethania" data-repo="copernicuscentroamerica/urbano-gt-bethania">Guatemala · Bethania (urbano-gt-bethania)</option>
+                  <option value="do-santiago" data-repo="copernicuscentroamerica/urbano-do-santiago">Rep. Dominicana · Santiago (urbano-do-santiago)</option>
+                  <option value="gt-salud-metropolitana" data-repo="copernicuscentroamerica/urbano-gt-salud-metropolitana">Guatemala · Salud Metropolitana (urbano-gt-salud-metropolitana)</option>
+                  <option value="hn-distrito-central" data-repo="copernicuscentroamerica/urbano-hn-distrito-central">Honduras · Distrito Central (urbano-hn-distrito-central)</option>
+                  <option value="regional-general" data-repo="copernicuscentroamerica/clusterurbano">Consulta transversal regional (clusterurbano)</option>
+                </select>
+              </div>
+              <div class="filter-field">
+                <label for="adv-author">2. Nombre e institución solicitante *</label>
+                <input id="adv-author" type="text" data-adv-author placeholder="Ej. Ana Maritza Irías · SEGOB / UNAH" required>
+              </div>
+            </div>
+
+            <div class="grid-2" style="gap:0.75rem;">
+              <div class="filter-field">
+                <label for="adv-category">3. Área temática de la asesoría *</label>
+                <select id="adv-category" data-adv-category>
+                  <option value="Procesamiento satelital (Sentinel-2 / DEM / LST en GEE o Colab)">Procesamiento satelital (Sentinel-2 / DEM / LST en GEE o Colab)</option>
+                  <option value="Cruce espacial, SIG y datos locales (Catastro, censos, amenazas)">Cruce espacial, SIG y datos locales (Catastro, censos, amenazas)</option>
+                  <option value="Publicación y estilo de capas en el Geovisor GeoLibre">Publicación y estilo de capas en el Geovisor GeoLibre</option>
+                  <option value="Flujo Git, Fork, Pull Request o configuración en Antigravity">Flujo Git, Fork, Pull Request o configuración en Antigravity</option>
+                  <option value="Delimitación del PMV, indicadores y criterios de aceptación">Delimitación del PMV, indicadores y criterios de aceptación</option>
+                  <option value="Estandarización de metadatos para el Atlas Urbano Regional">Estandarización de metadatos para el Atlas Urbano Regional</option>
+                </select>
+              </div>
+              <div class="filter-field">
+                <label for="adv-priority">4. Nivel de urgencia / impacto en el PMV *</label>
+                <select id="adv-priority" data-adv-priority>
+                  <option value="Media" data-label="prioridad:media">Prioridad Media · Orientación metodológica o revisión</option>
+                  <option value="Alta" data-label="prioridad:alta">Prioridad Alta · Paso técnico detenido en el equipo</option>
+                  <option value="Crítica (Bloqueo)" data-label="prioridad:alta">Bloqueo Crítico · Impide avanzar en el entregable del PMV</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="filter-field">
+              <label for="adv-problem">5. Problema específico que quieren resolver *</label>
+              <textarea id="adv-problem" rows="4" data-adv-problem placeholder="Describe con claridad qué problema técnico, metodológico o territorial busca resolver tu equipo y en qué paso se encuentran..." style="width:100%;padding:0.6rem 0.75rem;border:1px solid var(--c-border-strong);border-radius:var(--radius-sm);font-family:inherit;font-size:0.9rem;" required></textarea>
+            </div>
+
+            <div class="filter-field">
+              <label for="adv-context">6. Insumos, pruebas realizadas o enlace a tu fork / script (opcional)</label>
+              <textarea id="adv-context" rows="2" data-adv-context placeholder="Ej. Probamos el filtro SCL en GEE sobre el AOI municipal, pero tenemos dudas con el umbral de NDBI o la proyección del GeoJSON..." style="width:100%;padding:0.55rem 0.75rem;border:1px solid var(--c-border-strong);border-radius:var(--radius-sm);font-family:inherit;font-size:0.88rem;"></textarea>
+            </div>
+
+            <div class="filter-field">
+              <label for="adv-expected">7. Resultado concreto esperado de la asesoría *</label>
+              <input id="adv-expected" type="text" data-adv-expected placeholder="Ej. Definir el umbral óptimo, validar el cruce espacial y publicar la capa resultante en geovisor/capas/">
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:0.6rem;padding-top:0.35rem;">
+              <a id="adv-submit-github" data-adv-submit-github class="btn btn-primary btn-xs" href="https://github.com/copernicuscentroamerica/urbano-pa-panama-oeste/issues/new?template=02-bloqueo-apoyo.yml" target="_blank" rel="noopener noreferrer">1. Registrar solicitud en GitHub Issues ↗</a>
+              <a id="adv-submit-discussion" data-adv-submit-discussion class="btn btn-teal btn-xs" href="https://github.com/copernicuscentroamerica/clusterurbano/discussions/new?category=ayuda-tecnica-y-mentoria" target="_blank" rel="noopener noreferrer">2. Publicar en Foro de Mentoría ↗</a>
+              <button type="button" class="btn btn-outline btn-xs" data-copy-target="adv-markdown-preview">3. Copiar ficha para chat / correo</button>
+            </div>
+          </form>
+
+          <div style="display:flex;flex-direction:column;gap:0.9rem;">
+            <div class="card" style="background:#F8FAFF;border:1px solid var(--c-border);padding:1rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;margin-bottom:0.45rem;">
+                <span class="badge badge-declarado">Trazabilidad automática</span>
+                <small style="color:var(--c-text-muted);font-weight:600;" data-adv-target-repo-label>Destino: copernicuscentroamerica/urbano-pa-panama-oeste</small>
+              </div>
+              <h3 style="margin:0 0 0.35rem;font-size:1rem;">Vista previa del ticket estructurado</h3>
+              <p style="margin:0 0 0.55rem;font-size:0.83rem;color:var(--c-text-muted);">Al pulsar <strong>Registrar solicitud en GitHub Issues</strong>, se abrirá el repositorio oficial de tu proyecto con esta estructura lista para enviar y vinculada al tablero de seguimiento:</p>
+              <pre id="adv-markdown-preview" data-adv-markdown-preview style="margin:0;max-height:210px;overflow:auto;font-size:0.78rem;background:#0C1659;color:#FFFFFF;padding:0.75rem;border-radius:6px;white-space:pre-wrap;"></pre>
+            </div>
+
+            <div class="card" style="background:#FFFDF2;border:1px solid #E6C750;padding:1rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;margin-bottom:0.45rem;">
+                <span class="badge badge-lime">Asistencia inmediata con IA</span>
+                <button type="button" class="btn btn-outline btn-xs" data-copy-target="adv-antigravity-prompt">Copiar prompt para Antigravity</button>
+              </div>
+              <h3 style="margin:0 0 0.35rem;font-size:1rem;">Prompt sugerido para tu agente en Google Antigravity</h3>
+              <p style="margin:0 0 0.55rem;font-size:0.83rem;color:var(--c-text-muted);">Mientras el equipo de facilitación atiende tu solicitud, pega este prompt en el chat de <strong>Antigravity</strong> dentro de tu repositorio local para recibir apoyo técnico inmediato:</p>
+              <pre id="adv-antigravity-prompt" data-adv-antigravity-prompt style="margin:0;max-height:175px;overflow:auto;font-size:0.78rem;background:#000A62;color:#FFFFFF;padding:0.75rem;border-radius:6px;white-space:pre-wrap;"></pre>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -237,4 +237,118 @@
 
     updatePreviewAndSnippet();
   }
+
+  // 6. Formulario interactivo de Solicitud de Asesoría Técnica (en portada del portal #solicitar-asesoria)
+  var advRoot = document.querySelector("[data-advisory-form-root]");
+  if (advRoot) {
+    var projSel = advRoot.querySelector("[data-adv-project]");
+    var authorInp = advRoot.querySelector("[data-adv-author]");
+    var catSel = advRoot.querySelector("[data-adv-category]");
+    var prioSel = advRoot.querySelector("[data-adv-priority]");
+    var probTxt = advRoot.querySelector("[data-adv-problem]");
+    var ctxTxt = advRoot.querySelector("[data-adv-context]");
+    var expInp = advRoot.querySelector("[data-adv-expected]");
+    var ghBtn = advRoot.querySelector("[data-adv-submit-github]");
+    var discBtn = advRoot.querySelector("[data-adv-submit-discussion]");
+    var repoLbl = advRoot.querySelector("[data-adv-target-repo-label]");
+    var mdPreview = advRoot.querySelector("[data-adv-markdown-preview]");
+    var agyPrompt = advRoot.querySelector("[data-adv-antigravity-prompt]");
+
+    function updateAdvisoryOutputs() {
+      var projOpt = projSel && projSel.options[projSel.selectedIndex];
+      var pid = (projSel && projSel.value) || "pa-panama-oeste";
+      var projName = (projOpt && projOpt.text) || pid;
+      var repoSlug = (projOpt && projOpt.getAttribute("data-repo")) || "copernicuscentroamerica/clusterurbano";
+      var prioOpt = prioSel && prioSel.options[prioSel.selectedIndex];
+      var prioVal = (prioSel && prioSel.value) || "Media";
+      var prioLabel = (prioOpt && prioOpt.getAttribute("data-label")) || "prioridad:media";
+      var authorVal = (authorInp && authorInp.value.trim()) || "Equipo técnico de la iniciativa";
+      var catVal = (catSel && catSel.value) || "Procesamiento satelital y SIG";
+      var probVal = (probTxt && probTxt.value.trim()) || "(Describe aquí el problema específico que buscan resolver...)";
+      var ctxVal = (ctxTxt && ctxTxt.value.trim()) || "En revisión inicial por el equipo técnico.";
+      var expVal = (expInp && expInp.value.trim()) || "Destrabar el paso técnico e integrar el resultado en el repositorio del proyecto.";
+
+      if (repoLbl) {
+        repoLbl.textContent = "Destino: " + repoSlug;
+      }
+
+      var shortProb = probVal.replace(/\s+/g, " ").slice(0, 68);
+      if (probVal.indexOf("(Describe aquí") === 0) {
+        shortProb = catVal.slice(0, 58);
+      }
+      var issueTitle = "[Asesoría · " + pid + "] " + shortProb;
+
+      var mdBody = [
+        "### Proyecto",
+        pid + " (" + projName + ")",
+        "",
+        "### Solicitante e institución",
+        authorVal,
+        "",
+        "### Área temática de la asesoría",
+        catVal,
+        "",
+        "### Prioridad",
+        prioVal,
+        "",
+        "### Dificultad o bloqueo identificado (Problema a resolver)",
+        probVal,
+        "",
+        "### Intentos realizados e insumos disponibles",
+        ctxVal,
+        "",
+        "### Apoyo específico requerido (Resultado esperado)",
+        expVal
+      ].join("\n");
+
+      if (mdPreview) {
+        mdPreview.textContent = "Título: " + issueTitle + "\n\n" + mdBody;
+      }
+
+      if (ghBtn) {
+        var labelsParam = "bloqueado," + prioLabel;
+        var ghUrl =
+          "https://github.com/" +
+          repoSlug +
+          "/issues/new?labels=" +
+          encodeURIComponent(labelsParam) +
+          "&title=" +
+          encodeURIComponent(issueTitle) +
+          "&body=" +
+          encodeURIComponent(mdBody);
+        ghBtn.setAttribute("href", ghUrl);
+      }
+
+      if (discBtn) {
+        var discUrl =
+          "https://github.com/copernicuscentroamerica/clusterurbano/discussions/new?category=general&title=" +
+          encodeURIComponent(issueTitle) +
+          "&body=" +
+          encodeURIComponent(mdBody);
+        discBtn.setAttribute("href", discUrl);
+      }
+
+      if (agyPrompt) {
+        var promptText = [
+          "Estamos trabajando en el repositorio de la iniciativa " + pid + " (" + repoSlug + ").",
+          "Área técnica: " + catVal + ".",
+          "Problema que necesitamos resolver: " + probVal,
+          "Contexto / avances actuales: " + ctxVal,
+          "Meta esperada: " + expVal,
+          "",
+          "Por favor revisa los archivos de este repositorio (project.json, content/metodologia.md y geovisor/layers.json), proponnos una solución paso a paso verificable, actualiza o genera los scripts/capas necesarios y valida con python scripts/validate.py --source y --site."
+        ].join("\n");
+        agyPrompt.textContent = promptText;
+      }
+    }
+
+    [projSel, authorInp, catSel, prioSel, probTxt, ctxTxt, expInp].forEach(function (el) {
+      if (el) {
+        el.addEventListener("input", updateAdvisoryOutputs);
+        el.addEventListener("change", updateAdvisoryOutputs);
+      }
+    });
+
+    updateAdvisoryOutputs();
+  }
 })();
