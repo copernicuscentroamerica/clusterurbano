@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0.0",
+  "id": "pa-panama-oeste",
+  "title": "Título de demostración del contrato; sustituir por el título de la ficha",
+  "country": {
+    "code": "PA",
+    "name": "Panamá"
+  },
+  "source_groups": [
+    1,
+    9
+  ],
+  "summary": "Este objeto solo demuestra la forma del contrato y no es un registro publicable del proyecto.",
+  "territory": {
+    "label": "Panamá Oeste",
+    "administrative_units": [],
+    "geometry_url": null
+  },
+  "institutional_use": {
+    "problem": "Usar el problema documentado en la ficha de la iniciativa.",
+    "institutions": [],
+    "primary_user": null,
+    "decision_supported": null,
+    "expected_benefit": null
+  },
+  "pmv": {
+    "description": null,
+    "scope_status": "por_confirmar",
+    "acceptance_criteria": []
+  },
+  "status": {
+    "development": "por_confirmar",
+    "demo": "por_confirmar",
+    "technical_review": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "institutional_validation": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "adoption": {
+      "state": "no_documentada",
+      "evidence_url": null,
+      "date": null
+    }
+  },
+  "links": {
+    "repository": null,
+    "website": null,
+    "demo": null,
+    "documentation": null,
+    "issue_tracker": null
+  },
+  "governance": {
+    "technical_owner": null,
+    "content_owner": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "ejemplo-contrato",
+        "label": "Ejemplo sintáctico de este documento",
+        "locator": null,
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "",
+        "status": "propuesta",
+        "source_ids": [
+          "ejemplo-contrato"
+        ],
+        "note": "Fixture de contrato. No cargar en producción."
+      }
+    ]
+  },
+  "team": [],
+  "data_sources": [],
+  "methodology": null,
+  "expected_outputs": [],
+  "limitations": [],
+  "tags": []
+}

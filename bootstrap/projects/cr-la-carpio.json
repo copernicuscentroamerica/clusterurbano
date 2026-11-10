@@ -1,0 +1,355 @@
+{
+  "schema_version": "1.0.0",
+  "id": "cr-la-carpio",
+  "title": "Evaluación estratégica y prospectiva del asentamiento informal La Carpio como insumo para la construcción del Plan Maestro de Intervención Urbanística Integral, San José, Costa Rica.",
+  "country": {
+    "code": "CR",
+    "name": "Costa Rica"
+  },
+  "source_groups": [
+    3
+  ],
+  "summary": "La iniciativa propone reunir información territorial y ambiental de La Carpio para apoyar la formulación e implementación de su Plan Maestro de Intervención Urbanística Integral y el trabajo de las instituciones involucradas.",
+  "territory": {
+    "label": "Gran Área Metropolitana, San José, Uruca, Asentamiento Informal La Carpio.",
+    "administrative_units": [
+      "San José",
+      "Uruca",
+      "La Carpio"
+    ],
+    "geometry_url": null
+  },
+  "institutional_use": {
+    "problem": "La Carpio presenta crecimiento y ocupación urbana informal, limitaciones de servicios y espacios públicos y exposición a amenazas. Las instituciones requieren una base común para conocer esas condiciones y priorizar intervenciones.",
+    "institutions": [
+      "Municipalidad de San José",
+      "Instituto Nacional de Vivienda y Urbanismo (INVU)",
+      "Ministerio de Vivienda y Asentamientos Humanos (MIVAH)"
+    ],
+    "primary_user": "Municipalidad de San José (Gerencia de Gestión Municipal y Desarrollo Urbano, Dirección de Desarrollo Urbano, Alcaldía Municipal), Ministerio de Vivienda y Asentamientos Humanos (Dirección de Gestión Integrada del Territorio, Dirección de Vivienda y Asentamientos Humanos), Instituto Nacional de Vivienda y Urbanismo (Departamento de Urbanismo)",
+    "decision_supported": "Implementación del Plan Maestro de Intervención Urbanística Integral de La Carpio",
+    "expected_benefit": "Ofrecer mapas, indicadores y una metodología compartida que pueda utilizarse en mesas interinstitucionales y adaptarse a otros asentamientos."
+  },
+  "pmv": {
+    "description": "Una línea base organizada y mapas preliminares de La Carpio, articulados con un visor y tablero inicial que permita consultar la información disponible y sus limitaciones.",
+    "scope_status": "por_confirmar",
+    "acceptance_criteria": [
+      {
+        "id": "cr-la-carpio-AC-01",
+        "description": "Se acuerda y registra el polígono operativo, resolviendo la diferencia entre 63 ha narrativas y 48,2 ha del formulario.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "cr-la-carpio-AC-02",
+        "description": "Las capas disponibles tienen sistema de referencia, fuente, fecha y permisos de uso documentados; para visualización web se genera una exportación apropiada sin perder la referencia original.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "cr-la-carpio-AC-03",
+        "description": "El visor permite activar capas y filtros con una leyenda legible y distingue datos disponibles de información pendiente.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "cr-la-carpio-AC-04",
+        "description": "Los indicadores de vulnerabilidad y los escenarios documentan variables, pesos y supuestos antes de presentar clasificaciones.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "cr-la-carpio-AC-05",
+        "description": "La metodología y el responsable de actualización quedan documentados para una réplica posterior.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      }
+    ]
+  },
+  "status": {
+    "development": "por_confirmar",
+    "demo": "por_confirmar",
+    "technical_review": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "institutional_validation": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "adoption": {
+      "state": "no_documentada",
+      "evidence_url": null,
+      "date": null
+    }
+  },
+  "links": {
+    "repository": null,
+    "website": null,
+    "demo": null,
+    "documentation": null,
+    "issue_tracker": null
+  },
+  "governance": {
+    "technical_owner": null,
+    "content_owner": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "S12",
+        "label": "Book.xlsx",
+        "locator": "fuentes/S12_Book.md",
+        "url": null
+      },
+      {
+        "id": "S13",
+        "label": "Ficha_03_Costa_Rica_La_Carpio.docx",
+        "locator": "fuentes/S13_Ficha_03_Costa_Rica_La_Carpio.md",
+        "url": null
+      },
+      {
+        "id": "S14",
+        "label": "Ficha_HU_EPACR-GIS-01.pdf.docx",
+        "locator": "fuentes/S14_Ficha_HU_EPACR-GIS-01_pdf.md",
+        "url": null
+      },
+      {
+        "id": "S15",
+        "label": "Presentacion_solucion EPA-PIU LaCarpio COSTA RICA.pdf",
+        "locator": "fuentes/S15_Presentacion_solucion_EPA-PIU_LaCarpio_COSTA_RICA.md",
+        "url": null
+      },
+      {
+        "id": "S16",
+        "label": "Presentacion_solucion EPA-PIU LaCarpio COSTA RICA.pptx",
+        "locator": "fuentes/S16_Presentacion_solucion_EPA-PIU_LaCarpio_COSTA_RICA.md",
+        "url": null
+      },
+      {
+        "id": "S17",
+        "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_Costa Rica.xlsx",
+        "locator": "fuentes/S17_Sprint_Backlog_Marco_Scrum_ProyectoSIG_Costa_Rica.md",
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "/title",
+        "status": "declarado",
+        "source_ids": [
+          "S13"
+        ],
+        "note": null
+      },
+      {
+        "pointer": "/summary",
+        "status": "declarado",
+        "source_ids": [
+          "S13"
+        ],
+        "note": "Síntesis editorial del problema y propósito declarados."
+      },
+      {
+        "pointer": "/territory",
+        "status": "declarado",
+        "source_ids": [
+          "S13"
+        ],
+        "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+      },
+      {
+        "pointer": "/institutional_use",
+        "status": "declarado",
+        "source_ids": [
+          "S13"
+        ],
+        "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+      },
+      {
+        "pointer": "/pmv",
+        "status": "propuesta",
+        "source_ids": [
+          "S13"
+        ],
+        "note": "La ficha señala datos y mapas preliminares; S17 concreta un sprint de visor geoespacial y dashboard. El conjunto final de indicadores debe acordarse con el equipo."
+      },
+      {
+        "pointer": "/status",
+        "status": "por_confirmar",
+        "source_ids": [],
+        "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+      },
+      {
+        "pointer": "/data_sources",
+        "status": "declarado",
+        "source_ids": [
+          "S13"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/methodology",
+        "status": "declarado",
+        "source_ids": [
+          "S13"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/expected_outputs",
+        "status": "declarado",
+        "source_ids": [
+          "S13"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      }
+    ]
+  },
+  "team": [],
+  "data_sources": [
+    {
+      "title": "Sentinel-2 / óptico multiespectral",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Sentinel-1 / radar SAR",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Imágenes de muy alta resolución / ortofotos",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Drones / RPAS",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "LiDAR / modelos digitales de superficie",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Copernicus DEM / elevación",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "GHSL / huella urbana global",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Población (censos, WorldPop)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Catastro / parcelario",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Límites institucionales o administrativos",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos locales e institucionales declarados",
+      "provider": null,
+      "url": null,
+      "access": "institucional",
+      "description": "Datos Municipales e institucionales",
+      "status": "declarado"
+    }
+  ],
+  "methodology": "Pendiente de evaluar las condiciones específicas del asentamiento\n\nHerramientas previstas: NDVI, NDBI, LST, clasificación supervisada, análisis multicriterio, Google Earth Engine, QGIS, R, Python.",
+  "expected_outputs": [
+    "Mapa",
+    "Capa geoespacial",
+    "Indicador urbano",
+    "Escenarios",
+    "Dashboard / tablero",
+    "Visor web",
+    "Insumo técnico para instrumento de planificación",
+    "Podría visualizar estadísticas, mapas, delimitaciones, entre otros."
+  ],
+  "limitations": [
+    "El perfil describe aproximadamente 63 ha y más de 50.000 habitantes, mientras la tabla del polígono indica 48,2 ha. Conservar la discrepancia y confirmar ámbito y fuente censal.",
+    "El archivo La_Carpio-15_57_54.zip se menciona en la ficha, pero no está en el ZIP recibido.",
+    "Book.xlsx no contiene celdas con datos.",
+    "El backlog conserva un encabezado de plantilla Ministerio de Hacienda; las instituciones del proyecto son MSJ, INVU y MIVAH.",
+    "S17 contiene 15 tareas sin estimación horaria; las 13 horas registradas corresponden solo a dos tareas y no al esfuerzo total del proyecto.",
+    "S14 conserva contradicciones entre Product Owner por definir y nombres/fechas en validación, y entre estimaciones de encabezado y alcance. No interpretar las casillas DoD vacías como aprobación formal.",
+    "La captura de un visor en la presentación constituye evidencia gráfica de una propuesta o resultado mostrado, sin demostrar que una aplicación accesible esté operando."
+  ],
+  "tags": [
+    "intervención urbana",
+    "asentamientos",
+    "indicadores"
+  ]
+}

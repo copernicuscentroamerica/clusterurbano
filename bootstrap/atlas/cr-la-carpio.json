@@ -1,0 +1,221 @@
+{
+  "schema_version": "1.0.0",
+  "id": "cr-la-carpio-linea-base-indicadores",
+  "project_id": "cr-la-carpio",
+  "title": "Ficha territorial, línea base e indicadores para la intervención urbana en La Carpio",
+  "summary": "Contribución prevista con cartografía base normalizada e indicadores ambientales y urbanos de apoyo al Plan Maestro de Intervención Urbanística Integral en San José, Costa Rica.",
+  "product_type": "indicador",
+  "publication_status": "propuesto",
+  "coverage": {
+    "label": "Gran Área Metropolitana, San José, Uruca, Asentamiento Informal La Carpio.",
+    "geometry_url": null,
+    "spatial_resolution": "Escala barrial / asentamiento (10 m y cartografía local)",
+    "scale_denominator": null
+  },
+  "temporal": {
+    "start": null,
+    "end": null,
+    "reference_date": null
+  },
+  "indicator": {
+    "name": "Indicadores territoriales de densificación, cobertura vegetal y exposición",
+    "unit": "Por definir tras homologación metodológica",
+    "definition": "Conjunto de variables físicas y ambientales normalizadas para mesas interinstitucionales MSJ–INVU–MIVAH.",
+    "aggregation": "Sectores internos del asentamiento La Carpio (perímetro homologado)"
+  },
+  "data_sources": [
+    {
+      "title": "Sentinel-2 / óptico multiespectral",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Sentinel-1 / radar SAR",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Imágenes de muy alta resolución / ortofotos",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Drones / RPAS",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "LiDAR / modelos digitales de superficie",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Copernicus DEM / elevación",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "GHSL / huella urbana global",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Población (censos, WorldPop)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Catastro / parcelario",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Límites institucionales o administrativos",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos locales e institucionales declarados",
+      "provider": null,
+      "url": null,
+      "access": "institucional",
+      "description": "Datos Municipales e institucionales",
+      "status": "declarado"
+    }
+  ],
+  "method": {
+    "description": "Pendiente de evaluar las condiciones específicas del asentamiento\n\nHerramientas previstas: NDVI, NDBI, LST, clasificación supervisada, análisis multicriterio, Google Earth Engine, QGIS, R, Python.",
+    "version": "0.1.0-propuesta",
+    "code_url": null
+  },
+  "limitations": [
+    "El perfil describe aproximadamente 63 ha y más de 50.000 habitantes, mientras la tabla del polígono indica 48,2 ha. Conservar la discrepancia y confirmar ámbito y fuente censal.",
+    "El archivo La_Carpio-15_57_54.zip se menciona en la ficha, pero no está en el ZIP recibido.",
+    "Book.xlsx no contiene celdas con datos.",
+    "El backlog conserva un encabezado de plantilla Ministerio de Hacienda; las instituciones del proyecto son MSJ, INVU y MIVAH.",
+    "S17 contiene 15 tareas sin estimación horaria; las 13 horas registradas corresponden solo a dos tareas y no al esfuerzo total del proyecto.",
+    "S14 conserva contradicciones entre Product Owner por definir y nombres/fechas en validación, y entre estimaciones de encabezado y alcance. No interpretar las casillas DoD vacías como aprobación formal.",
+    "La captura de un visor en la presentación constituye evidencia gráfica de una propuesta o resultado mostrado, sin demostrar que una aplicación accesible esté operando."
+  ],
+  "validation": {
+    "state": "pendiente",
+    "evidence_url": null,
+    "date": null,
+    "reviewer": null
+  },
+  "outputs": {
+    "viewer_url": null,
+    "download_url": null,
+    "documentation_url": null,
+    "thumbnail_url": null
+  },
+  "license": {
+    "name": null,
+    "url": null,
+    "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+  },
+  "governance": {
+    "institution": "Municipalidad de San José / INVU / MIVAH",
+    "maintainer": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "S13",
+        "label": "Ficha_03_Costa_Rica_La_Carpio.docx",
+        "locator": "fuentes/S13_Ficha_03_Costa_Rica_La_Carpio.md",
+        "url": null
+      },
+      {
+        "id": "S14",
+        "label": "Ficha_HU_EPACR-GIS-01.pdf.docx",
+        "locator": "fuentes/S14_Ficha_HU_EPACR-GIS-01_pdf.md",
+        "url": null
+      },
+      {
+        "id": "S15",
+        "label": "Presentacion_solucion EPA-PIU LaCarpio COSTA RICA.pdf",
+        "locator": "fuentes/S15_Presentacion_solucion_EPA-PIU_LaCarpio_COSTA_RICA.md",
+        "url": null
+      },
+      {
+        "id": "S16",
+        "label": "Presentacion_solucion EPA-PIU LaCarpio COSTA RICA.pptx",
+        "locator": "fuentes/S16_Presentacion_solucion_EPA-PIU_LaCarpio_COSTA_RICA.md",
+        "url": null
+      },
+      {
+        "id": "S17",
+        "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_Costa Rica.xlsx",
+        "locator": "fuentes/S17_Sprint_Backlog_Marco_Scrum_ProyectoSIG_Costa_Rica.md",
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "",
+        "status": "propuesta",
+        "source_ids": [
+          "S13"
+        ],
+        "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+      }
+    ]
+  }
+}

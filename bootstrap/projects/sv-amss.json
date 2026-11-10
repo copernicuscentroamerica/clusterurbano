@@ -1,0 +1,302 @@
+{
+  "schema_version": "1.0.0",
+  "id": "sv-amss",
+  "title": "Monitoreo de las dinámicas de expansión urbana y transformación del suelo para la planificación y la gestión sostenible del AMSS",
+  "country": {
+    "code": "SV",
+    "name": "El Salvador"
+  },
+  "source_groups": [
+    2
+  ],
+  "summary": "La iniciativa integra información de expansión urbana, permisos de construcción y valores del suelo para examinar las transformaciones del Área Metropolitana de San Salvador y apoyar sus instrumentos de planificación y gestión territorial.",
+  "territory": {
+    "label": "Área Metropolitana de San Salvador (AMSS) - Zona núcleo/urbana (AMSS) - 14 DISTRITOS",
+    "administrative_units": [
+      "Área Metropolitana de San Salvador",
+      "14 distritos"
+    ],
+    "geometry_url": null
+  },
+  "institutional_use": {
+    "problem": "El AMSS necesita información actualizada e integrada para reconocer dónde y cómo se expande la ciudad y relacionar esos cambios con la normativa, la inversión y el valor del suelo.",
+    "institutions": [
+      "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+      "Ministerio de Gobernación y Desarrollo Territorial",
+      "Instituto Holandés para la Democracia Multipartidaria (NIMD)"
+    ],
+    "primary_user": "Principalmente la Subdirección de Planificación, Subdirección de Control de Desarrollo Urbano, Inteligencia Territorial y departamento de información del Ministerio de Gobernación",
+    "decision_supported": "Evaluar la conveniencia de las diferentes tipologías de expansión urbana en el territorio, permitiendo identificar las fortalezas y riesgos de inversión que estas conllevan e identificar las oportunidades de mejora para los criterios de planificación urbana , los instrumentos de gestión del suelo y los procesos de utilización de la data de los permisos de construcción de manera que permita comprender mejor la dinámica de inversión territorial",
+    "expected_benefit": "Mejorar la lectura de las tipologías de expansión y de la dinámica de inversión, con información útil para planificación, control del desarrollo y gestión del suelo."
+  },
+  "pmv": {
+    "description": "Un primer script reproducible, una capa demostrativa de expansión urbana, un flujo de integración con información de permisos y valores del suelo, y un prototipo de tablero para los 14 distritos del AMSS.",
+    "scope_status": "por_confirmar",
+    "acceptance_criteria": [
+      {
+        "id": "sv-amss-AC-01",
+        "description": "Se documenta el perímetro de los 14 distritos y las fechas comparables de huella urbana.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "sv-amss-AC-02",
+        "description": "La información de permisos y precios conserva fuente, año y unidad de valor; USD/m² y USD/v² no se mezclan sin conversión documentada.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "sv-amss-AC-03",
+        "description": "Las superficies interpoladas informan muestra utilizada, método y error de validación; los sectores sin evidencia se distinguen.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "sv-amss-AC-04",
+        "description": "Un usuario puede comparar periodos y consultar resultados por distrito sin acceder a datos personales de los expedientes.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "sv-amss-AC-05",
+        "description": "Una revisión institucional documenta qué producto resulta útil y qué aspectos siguen pendientes.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      }
+    ]
+  },
+  "status": {
+    "development": "por_confirmar",
+    "demo": "por_confirmar",
+    "technical_review": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "institutional_validation": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "adoption": {
+      "state": "no_documentada",
+      "evidence_url": null,
+      "date": null
+    }
+  },
+  "links": {
+    "repository": null,
+    "website": null,
+    "demo": null,
+    "documentation": null,
+    "issue_tracker": null
+  },
+  "governance": {
+    "technical_owner": null,
+    "content_owner": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "S09",
+        "label": "Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS.docx",
+        "locator": "fuentes/S09_Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS.md",
+        "url": null
+      },
+      {
+        "id": "S10",
+        "label": "Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS_AV_02.docx",
+        "locator": "fuentes/S10_Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS_AV_02.md",
+        "url": null
+      },
+      {
+        "id": "S11",
+        "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_OPAMSS_FINAL.xlsx",
+        "locator": "fuentes/S11_Sprint_Backlog_Marco_Scrum_ProyectoSIG_OPAMSS_FINAL.md",
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "/title",
+        "status": "declarado",
+        "source_ids": [
+          "S10"
+        ],
+        "note": null
+      },
+      {
+        "pointer": "/summary",
+        "status": "declarado",
+        "source_ids": [
+          "S10"
+        ],
+        "note": "Síntesis editorial del problema y propósito declarados."
+      },
+      {
+        "pointer": "/territory",
+        "status": "declarado",
+        "source_ids": [
+          "S10"
+        ],
+        "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+      },
+      {
+        "pointer": "/institutional_use",
+        "status": "declarado",
+        "source_ids": [
+          "S10"
+        ],
+        "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+      },
+      {
+        "pointer": "/pmv",
+        "status": "propuesta",
+        "source_ids": [
+          "S10"
+        ],
+        "note": "Alcance mínimo declarado en S10; el backlog concreta tareas de ingesta, interpolación, cruce territorial, publicación y revisión por el Product Owner."
+      },
+      {
+        "pointer": "/status",
+        "status": "por_confirmar",
+        "source_ids": [],
+        "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+      },
+      {
+        "pointer": "/data_sources",
+        "status": "declarado",
+        "source_ids": [
+          "S10"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/methodology",
+        "status": "declarado",
+        "source_ids": [
+          "S10"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/expected_outputs",
+        "status": "declarado",
+        "source_ids": [
+          "S10"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      }
+    ]
+  },
+  "team": [],
+  "data_sources": [
+    {
+      "title": "Sentinel-2 / óptico multiespectral",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Sentinel-1 / radar SAR",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "GHSL / huella urbana global",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Luces nocturnas (VIIRS)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Catastro / parcelario",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Límites institucionales o administrativos",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Limites de unidades de planificación detallada (UPD 2025)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Puntos de permisos de construcción de 1990 al 2026",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos locales e institucionales declarados",
+      "provider": null,
+      "url": null,
+      "access": "institucional",
+      "description": "Base de datos de sistema de trámites\nEsquema director, \nBase de datos de precio de venta obtenidos de webscraping de páginas de ventas inmobiliarias",
+      "status": "declarado"
+    }
+  ],
+  "methodology": "Revisión de datos existentes, integración al análisis de la base de datos de trámites, completar la información faltante referente al valor de suelo, estandarizar datos, desarrollo de script, generar mapa, implementación de aplicativo web map.\nRevisión de los datos existentes de la base de datos de tramites relacionados al valor del suelo y permisos de construcción históricos.\nCompletar vacíos de información faltante mediante web srcapping de valor de suelo\nEstandarización de datos y normalización en el territorio\nElaboración del mapa de expansión urbana mediante imágenes satelitales y scripts \nIdentificar los cambios en la mancha urbana\nInterpolar los precios de valor de suelo (USD/V2 o M2) con base a la data histórica obtenida de los permisos de construcción y el web scrapping.\nGenerar periodos de tiempo de análisis\nGenerar rangos de valor de suelo \nElaborar un mapa de consulta con dashboard\nCruce de información con las variables temporales y rangos de valores de suelo definidos anteriormente.\nIdentificación general de las diferentes tipologías de expansión urbana identificadas en el territorio AMSS\n\nHerramientas previstas: NDVI, NDBI, LST, clasificación supervisada, análisis multicriterio, Google Earth Engine, QGIS, R, Python, JavaScript, ArcGIS Pro y Server, Agentes de IA",
+  "expected_outputs": [
+    "Mapa",
+    "Capa geoespacial",
+    "Script reproducible",
+    "Flujo de trabajo / metodología",
+    "Dashboard / tablero",
+    "Visor web",
+    "Base de datos",
+    "Un usuario final tendría que poder visualizar el mapa y consultar el dashboard para la toma de decisiones. Técnicos SIG utilizarán el script y consultarán el flujo de trabajo y metodología para poder replicar el trabajo y llevar un monitoreo de la información territorial."
+  ],
+  "limitations": [
+    "La fuente principal es AV_02; la ficha anterior queda como antecedente y no debe reemplazar el alcance actualizado.",
+    "Los precios proceden de expedientes y web scraping con cobertura limitada y datos de 2025; no equivalen automáticamente a precios de transacciones representativos.",
+    "Los estados del backlog son declaraciones del documento, no una auditoría del avance vigente.",
+    "El encabezado declara cinco integrantes y la tabla contiene seis nombres; confirmar composición antes de mostrar un contador.",
+    "El límite Perimetro_AMSS-14_26_13.zip figura en la ficha pero ese archivo geoespacial no está dentro del ZIP recibido."
+  ],
+  "tags": [
+    "expansión urbana",
+    "valor del suelo",
+    "planificación metropolitana"
+  ]
+}

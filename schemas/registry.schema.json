@@ -1,0 +1,166 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "hub",
+    "projects"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "hub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposed_owner",
+        "proposed_repository",
+        "repository",
+        "website",
+        "owner_type"
+      ],
+      "properties": {
+        "proposed_owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proposed_repository": {
+          "const": "clusterurbano"
+        },
+        "repository": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "website": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "owner_type": {
+          "enum": [
+            null,
+            "User",
+            "Organization"
+          ]
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "proposed_owner",
+          "proposed_repository",
+          "source_mode",
+          "repository",
+          "default_branch",
+          "manifest_path",
+          "content_path",
+          "bootstrap_manifest",
+          "bootstrap_content",
+          "enabled"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z]{2}-[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "proposed_owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "proposed_repository": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_mode": {
+            "enum": [
+              "bootstrap",
+              "canonical"
+            ]
+          },
+          "repository": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default_branch": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "manifest_path": {
+            "const": "project.json"
+          },
+          "content_path": {
+            "const": "content/project.md"
+          },
+          "bootstrap_manifest": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bootstrap_content": {
+            "type": "string",
+            "minLength": 1
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "source_mode": {
+                  "const": "canonical"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "repository": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+                },
+                "default_branch": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 1
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:copernicus:urbano:registry:1.0.0",
+  "title": "Registro de repositorios canónicos del hub"
+}

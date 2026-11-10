@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0",
+  "id": "pa-panama-oeste-producto-por-definir",
+  "project_id": "pa-panama-oeste",
+  "title": "Producto ilustrativo del contrato",
+  "summary": "Fixture de esquema; no presentar como producto existente.",
+  "product_type": "documentacion",
+  "publication_status": "propuesto",
+  "coverage": {
+    "label": "Por definir a partir del perfil",
+    "geometry_url": null,
+    "spatial_resolution": null,
+    "scale_denominator": null
+  },
+  "temporal": {
+    "start": null,
+    "end": null,
+    "reference_date": null
+  },
+  "indicator": {
+    "name": null,
+    "unit": null,
+    "definition": null,
+    "aggregation": null
+  },
+  "data_sources": [],
+  "method": {
+    "description": null,
+    "version": null,
+    "code_url": null
+  },
+  "limitations": [],
+  "validation": {
+    "state": "pendiente",
+    "evidence_url": null,
+    "date": null,
+    "reviewer": null
+  },
+  "outputs": {
+    "viewer_url": null,
+    "download_url": null,
+    "documentation_url": null,
+    "thumbnail_url": null
+  },
+  "license": {
+    "name": null,
+    "url": null,
+    "reuse_note": null
+  },
+  "governance": {
+    "institution": null,
+    "maintainer": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "ejemplo-contrato",
+        "label": "Ejemplo sintáctico de este documento",
+        "locator": null,
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "",
+        "status": "propuesta",
+        "source_ids": [
+          "ejemplo-contrato"
+        ],
+        "note": "Fixture de contrato. No cargar en producción."
+      }
+    ]
+  }
+}

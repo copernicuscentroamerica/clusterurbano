@@ -1,0 +1,253 @@
+{
+  "schema_version": "1.0.0",
+  "id": "gt-bethania",
+  "title": "Asentamientos en alto riesgo",
+  "country": {
+    "code": "GT",
+    "name": "Guatemala"
+  },
+  "source_groups": [
+    5
+  ],
+  "summary": "La iniciativa propone organizar información de la huella urbana y de los lotes en Bethania para apoyar la revisión de condiciones de riesgo y orientar decisiones institucionales sobre obras de protección o escrituración.",
+  "territory": {
+    "label": "Zona 7, colonia Bethania, Guatemala",
+    "administrative_units": [
+      "Ciudad de Guatemala",
+      "Zona 7",
+      "Colonia Bethania"
+    ],
+    "geometry_url": null
+  },
+  "institutional_use": {
+    "problem": "La Unidad de Catastro requiere información con mayor detalle sobre viviendas y lotes para seleccionar áreas que necesitan evaluación de riesgo y estudios complementarios.",
+    "institutions": [
+      "UDEVIPO"
+    ],
+    "primary_user": "Unidad de Catastro",
+    "decision_supported": "Definir lotes en riesgo para toma de decisiones de obras de protección o escrituración.",
+    "expected_benefit": "Facilitar el análisis de gabinete y la priorización de verificaciones técnicas antes de adoptar decisiones sobre cada lote."
+  },
+  "pmv": {
+    "description": "Un mapa preliminar de huella urbana de los asentamientos de la zona piloto, organizado con los datos de dron, ortofotos y referencias territoriales disponibles.",
+    "scope_status": "por_confirmar",
+    "acceptance_criteria": [
+      {
+        "id": "gt-bethania-AC-01",
+        "description": "La zona piloto y los datos de entrada tienen referencia espacial y fecha documentadas.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "gt-bethania-AC-02",
+        "description": "Se produce una huella urbana preliminar contrastable con ortofotos o levantamientos disponibles.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "gt-bethania-AC-03",
+        "description": "Cada producto distingue identificación de edificaciones de evaluación de amenaza, exposición y riesgo.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "gt-bethania-AC-04",
+        "description": "Las variables y el método de evaluación por lote se documentan antes de asignar una categoría.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "gt-bethania-AC-05",
+        "description": "La entrega incorpora evidencia de revisión y una lista de estudios pendientes para la decisión institucional.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      }
+    ]
+  },
+  "status": {
+    "development": "por_confirmar",
+    "demo": "por_confirmar",
+    "technical_review": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "institutional_validation": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "adoption": {
+      "state": "no_documentada",
+      "evidence_url": null,
+      "date": null
+    }
+  },
+  "links": {
+    "repository": null,
+    "website": null,
+    "demo": null,
+    "documentation": null,
+    "issue_tracker": null
+  },
+  "governance": {
+    "technical_owner": null,
+    "content_owner": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "S20",
+        "label": "Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.docx",
+        "locator": "fuentes/S20_Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.md",
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "/title",
+        "status": "declarado",
+        "source_ids": [
+          "S20"
+        ],
+        "note": null
+      },
+      {
+        "pointer": "/summary",
+        "status": "declarado",
+        "source_ids": [
+          "S20"
+        ],
+        "note": "Síntesis editorial del problema y propósito declarados."
+      },
+      {
+        "pointer": "/territory",
+        "status": "declarado",
+        "source_ids": [
+          "S20"
+        ],
+        "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+      },
+      {
+        "pointer": "/institutional_use",
+        "status": "declarado",
+        "source_ids": [
+          "S20"
+        ],
+        "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+      },
+      {
+        "pointer": "/pmv",
+        "status": "propuesta",
+        "source_ids": [
+          "S20"
+        ],
+        "note": "El mapa preliminar de huella urbana es el mínimo indicado en la ficha. La evaluación de riesgo por lote y un modelo 3D son objetivos posteriores sujetos a datos y validación."
+      },
+      {
+        "pointer": "/status",
+        "status": "por_confirmar",
+        "source_ids": [],
+        "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+      },
+      {
+        "pointer": "/data_sources",
+        "status": "declarado",
+        "source_ids": [
+          "S20"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/methodology",
+        "status": "declarado",
+        "source_ids": [
+          "S20"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/expected_outputs",
+        "status": "declarado",
+        "source_ids": [
+          "S20"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      }
+    ]
+  },
+  "team": [],
+  "data_sources": [
+    {
+      "title": "Sentinel-2 / óptico multiespectral",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Drones / RPAS",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "LiDAR / modelos digitales de superficie",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Catastro / parcelario",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos locales e institucionales declarados",
+      "provider": null,
+      "url": null,
+      "access": "institucional",
+      "description": "Vuelo con dron, red vial, equipamiento, fotografías, ortofotos.",
+      "status": "declarado"
+    }
+  ],
+  "methodology": "Vuelo de dron, procesar imágenes, generación de capas, análisis de información, validación de variables, publicación en un dashboard.\n\nHerramientas previstas: No especificado",
+  "expected_outputs": [
+    "Mapa",
+    "Capa geoespacial",
+    "Modelo 3D / gemelo digital",
+    "Ver a nivel de cada lote su nivel de riesgo para toma de decisiones."
+  ],
+  "limitations": [
+    "La ficha indica 21,1 ha del polígono del formulario, pero no adjunta una geometría utilizable.",
+    "La disponibilidad de archivos geoespaciales se declara incierta aunque se mencionan vuelo de dron y ortofotos.",
+    "Las capas de huellas de edificaciones y LiDAR se identifican como faltantes.",
+    "La ficha no define algoritmo ni umbrales de riesgo; no asignar riesgos por vivienda mediante una regla inventada.",
+    "Las decisiones de escrituración y obras requieren revisión institucional y estudios pertinentes."
+  ],
+  "tags": [
+    "huella urbana",
+    "riesgo",
+    "catastro"
+  ]
+}

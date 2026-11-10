@@ -1,0 +1,266 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "source_system",
+    "overall_state",
+    "projects"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "generated_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_system": {
+      "const": "github"
+    },
+    "overall_state": {
+      "enum": [
+        "not_initialized",
+        "ok",
+        "partial",
+        "stale",
+        "unavailable"
+      ]
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "project_id",
+          "sync_state",
+          "last_success_at",
+          "source_updated_at",
+          "error_code",
+          "metrics",
+          "tasks"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "pattern": "^[a-z]{2}-[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "sync_state": {
+            "enum": [
+              "not_initialized",
+              "ok",
+              "stale",
+              "unavailable"
+            ]
+          },
+          "last_success_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error_code": {
+            "enum": [
+              null,
+              "AUTH_REQUIRED",
+              "RATE_LIMIT",
+              "SOURCE_UNAVAILABLE",
+              "SCHEMA_ERROR"
+            ]
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "open_tasks",
+              "completed_tasks",
+              "in_review_tasks",
+              "blocked_tasks"
+            ],
+            "properties": {
+              "open_tasks": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "completed_tasks": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "in_review_tasks": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "blocked_tasks": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            }
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "task_id",
+                "project_id",
+                "repository",
+                "issue_number",
+                "issue_url",
+                "title",
+                "workflow_status",
+                "issue_state",
+                "completion_reason",
+                "blocked",
+                "assignees",
+                "priority",
+                "iteration",
+                "due_date",
+                "evidence_urls",
+                "source_updated_at"
+              ],
+              "properties": {
+                "task_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "project_id": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}-[a-z0-9]+(?:-[a-z0-9]+)*$"
+                },
+                "repository": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+                },
+                "issue_number": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "issue_url": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://github[.]com/"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "workflow_status": {
+                  "enum": [
+                    "Por hacer",
+                    "En curso",
+                    "En revisión",
+                    "Terminado",
+                    "Sin clasificar"
+                  ]
+                },
+                "issue_state": {
+                  "enum": [
+                    "OPEN",
+                    "CLOSED"
+                  ]
+                },
+                "completion_reason": {
+                  "enum": [
+                    null,
+                    "completed",
+                    "not_planned",
+                    "reopened"
+                  ]
+                },
+                "blocked": {
+                  "type": "boolean"
+                },
+                "assignees": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "priority": {
+                  "enum": [
+                    null,
+                    "Alta",
+                    "Media",
+                    "Baja"
+                  ]
+                },
+                "iteration": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "due_date": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "evidence_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https://"
+                  }
+                },
+                "source_updated_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:copernicus:urbano:progress-snapshot:1.0.0",
+  "title": "Snapshot público derivado de Issues y Projects"
+}

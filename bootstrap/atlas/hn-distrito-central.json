@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.0.0",
+  "id": "hn-distrito-central-brecha-catastral-agregada",
+  "project_id": "hn-distrito-central",
+  "title": "Indicadores agregados de brecha catastral, huella construida y tipología urbana en el Distrito Central",
+  "summary": "Contribución prevista compatible con el Atlas Municipal del MDC y el Atlas Urbano de la UNAH, con indicadores agregados por colonia o celda de 250 m entre ciudad construida observada y cobertura catastral.",
+  "product_type": "indicador",
+  "publication_status": "propuesto",
+  "coverage": {
+    "label": "Zona piloto: toda la mancha urbana consolidada del Municipio del Distrito Central, es decir, Tegucigalpa y Comayagüela.\nEl polígono de la mancha urbana se genera con el script (GHSL y Dynamic World) y se homologa con el perímetro urbano delimitado por la AMDC.",
+    "geometry_url": null,
+    "spatial_resolution": "Agregación pública en celdas de 250 m o colonias (insumos base a 10 m)",
+    "scale_denominator": null
+  },
+  "temporal": {
+    "start": null,
+    "end": null,
+    "reference_date": null
+  },
+  "indicator": {
+    "name": "Proporción de edificación observada fuera de registro catastral actualizado",
+    "unit": "porcentaje (%) y densidad (edificaciones/ha)",
+    "definition": "Relación agregada por colonia o celda de 250 m entre edificaciones/huella detectadas por observación de la Tierra y predios catastrados vigentes, separando zonas sin datos disponibles.",
+    "aggregation": "Colonias homologadas y malla regular de 250 m del Municipio del Distrito Central"
+  },
+  "data_sources": [
+    {
+      "title": "Sentinel-2 / óptico multiespectral (composites de estación seca, índices)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Sentinel-1 / radar SAR (construido bajo nubosidad)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Cobertura del suelo global (Dynamic World, ESA WorldCover)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "GHSL / huella urbana global (historia 1975–2020)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Huellas de edificaciones (Google Open Buildings v3 y 2.5D Temporal; Microsoft)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Copernicus DEM / elevación (pendientes)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Imágenes de muy alta resolución / ortofotos (validación)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Drones / RPAS (validación en sectores de muestreo)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "OpenStreetMap (vías y accesibilidad)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Población (censo INE, WorldPop)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Catastro / parcelario",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Límites institucionales o administrativos",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos de campo / encuestas (Kobo/ODK)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos locales e institucionales declarados",
+      "provider": null,
+      "url": null,
+      "access": "institucional",
+      "description": "AMDC: parcelario catastral, colonias y barrios, zonificación, zonas de riesgo, hidrografía, aldeas y caseríos.\nInstituto de la Propiedad: predios titulados y polígonos en proceso de regularización (por gestionar).\nTECHO Honduras: censo de asentamientos informales del casco urbano (2018), útil como referencia de validación.\nINE: censo de población y vivienda por segmento censal.",
+      "status": "declarado"
+    }
+  ],
+  "method": {
+    "description": "1. Ciudad construida (Nivel 1, datos globales). Huella construida anual 2016–2026 con Dynamic World y Sentinel-2; historia 1975–2020 con GHSL; edificaciones con Open Buildings v3 y año de aparición con Open Buildings 2.5D Temporal.\n2. Ciudad catastrada (Nivel 2, datos de la AMDC). Normalización del parcelario al modelo de datos común: clave, uso, estado y fecha de actualización.\n3. Cruce y brecha. Asignación de cada edificación a un predio y cálculo, por colonia, de edificaciones sin predio, baldíos ocupados, ocupación nueva y rezago catastral.\n4. Caracterización y tipología. Combinación de brecha, morfología (densidad y tamaño de edificaciones) y condición crítica (pendiente ≥ 30 % o zona de riesgo) en la tipología A–E.\n5. Validación. Muestreo estratificado por tipología en sectores de la mancha urbana, con ortofotos, dron y visitas; contraste con el censo TECHO 2018; ajuste de umbrales.\n6. Publicación y réplica. Capas y tablero en el Atlas Municipal y el Atlas Urbano UNAH; scripts y guía en un repositorio abierto; réplica en un segundo municipio.\n\nHerramientas previstas: NDBI, NDVI, BSI; probabilidad de construido (Dynamic World); presencia y altura de edificaciones (Open Buildings 2.5D); pendiente (Copernicus DEM); densidad de edificaciones por hectárea, tamaño medio de edificación y proporción fuera de catastro.\nHerramientas: Google Earth Engine (JavaScript), openEO en Copernicus Data Space Ecosystem (Python), QGIS / ArcGIS Pro, PostGIS y GeoServer.",
+    "version": "0.1.0-propuesta",
+    "code_url": null
+  },
+  "limitations": [
+    "La revisión S24 sustituye el antiguo alcance del centro histórico por toda la mancha urbana consolidada; 716,1 ha y su centroide son referencias preliminares, no área ni centro vigente.",
+    "El acceso al parcelario con fecha por predio requiere condiciones de uso formalizadas.",
+    "La ausencia de correspondencia con catastro no prueba por sí misma informalidad, incumplimiento o deuda tributaria.",
+    "Los datos a nivel de predio/edificación son de uso interno/institucional; la propuesta pública utiliza indicadores agregados.",
+    "La tipología A–E es metodológica; pendiente ≥30 % u otra regla no basta para declarar riesgo sin contexto y validación.",
+    "La ficha menciona ejemplos Juticalpa o San Pedro Sula para la réplica; no existe un segundo municipio comprometido en el paquete."
+  ],
+  "validation": {
+    "state": "pendiente",
+    "evidence_url": null,
+    "date": null,
+    "reviewer": null
+  },
+  "outputs": {
+    "viewer_url": null,
+    "download_url": null,
+    "documentation_url": null,
+    "thumbnail_url": null
+  },
+  "license": {
+    "name": null,
+    "url": null,
+    "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+  },
+  "governance": {
+    "institution": "Alcaldía Municipal del Distrito Central (AMDC) / UNAH / SEGOB",
+    "maintainer": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "S24",
+        "label": "Ficha_08_Honduras_Catastro_Asentamientos_MDC REV 2026 10 12.docx",
+        "locator": "fuentes/S24_Ficha_08_Honduras_Catastro_Asentamientos_MDC_REV_2026_10_12.md",
+        "url": null
+      },
+      {
+        "id": "S25",
+        "label": "Ficha_08_Honduras_UNAH_AMDC_SEGOB_Planificacion_Riesgo.docx",
+        "locator": "fuentes/S25_Ficha_08_Honduras_UNAH_AMDC_SEGOB_Planificacion_Riesgo.md",
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "",
+        "status": "propuesta",
+        "source_ids": [
+          "S24"
+        ],
+        "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+      }
+    ]
+  }
+}

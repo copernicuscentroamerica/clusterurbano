@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0.0",
+  "id": "gt-bethania-huella-urbana-preliminar",
+  "project_id": "gt-bethania",
+  "title": "Huella urbana preliminar y metodología de caracterización en Colonia Bethania (Zona 7)",
+  "summary": "Contribución prevista con la huella construida preliminar de la zona piloto en Bethania y documentación metodológica para priorizar verificaciones técnicas de UDEVIPO.",
+  "product_type": "mapa",
+  "publication_status": "propuesto",
+  "coverage": {
+    "label": "Zona 7, colonia Bethania, Guatemala",
+    "geometry_url": null,
+    "spatial_resolution": "Alta resolución local (ortofoto dron / fotogrametría por confirmar)",
+    "scale_denominator": null
+  },
+  "temporal": {
+    "start": null,
+    "end": null,
+    "reference_date": null
+  },
+  "indicator": {
+    "name": "Superficie construida identificada en zona piloto",
+    "unit": "ha / m²",
+    "definition": "Delimitación preliminar de huella edificada contrastada con ortofotos y referencias locales.",
+    "aggregation": "Agregación por sector piloto en Colonia Bethania (sin datos nominales por lote)"
+  },
+  "data_sources": [
+    {
+      "title": "Sentinel-2 / óptico multiespectral",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Drones / RPAS",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "LiDAR / modelos digitales de superficie",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Catastro / parcelario",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos locales e institucionales declarados",
+      "provider": null,
+      "url": null,
+      "access": "institucional",
+      "description": "Vuelo con dron, red vial, equipamiento, fotografías, ortofotos.",
+      "status": "declarado"
+    }
+  ],
+  "method": {
+    "description": "Vuelo de dron, procesar imágenes, generación de capas, análisis de información, validación de variables, publicación en un dashboard.\n\nHerramientas previstas: No especificado",
+    "version": "0.1.0-propuesta",
+    "code_url": null
+  },
+  "limitations": [
+    "La ficha indica 21,1 ha del polígono del formulario, pero no adjunta una geometría utilizable.",
+    "La disponibilidad de archivos geoespaciales se declara incierta aunque se mencionan vuelo de dron y ortofotos.",
+    "Las capas de huellas de edificaciones y LiDAR se identifican como faltantes.",
+    "La ficha no define algoritmo ni umbrales de riesgo; no asignar riesgos por vivienda mediante una regla inventada.",
+    "Las decisiones de escrituración y obras requieren revisión institucional y estudios pertinentes."
+  ],
+  "validation": {
+    "state": "pendiente",
+    "evidence_url": null,
+    "date": null,
+    "reviewer": null
+  },
+  "outputs": {
+    "viewer_url": null,
+    "download_url": null,
+    "documentation_url": null,
+    "thumbnail_url": null
+  },
+  "license": {
+    "name": null,
+    "url": null,
+    "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+  },
+  "governance": {
+    "institution": "Unidad para el Desarrollo de Vivienda Popular (UDEVIPO)",
+    "maintainer": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "S20",
+        "label": "Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.docx",
+        "locator": "fuentes/S20_Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.md",
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "",
+        "status": "propuesta",
+        "source_ids": [
+          "S20"
+        ],
+        "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+      }
+    ]
+  }
+}

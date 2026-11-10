@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0.0",
+  "id": "sv-la-union-caracterizacion-asentamientos",
+  "project_id": "sv-la-union",
+  "title": "Inventario y caracterización territorial de asentamientos humanos en Conchagua y La Unión",
+  "summary": "Contribución prevista al Atlas con delimitación actualizada de asentamientos humanos y variables de ocupación del suelo en los distritos de Conchagua y La Unión, El Salvador.",
+  "product_type": "mapa",
+  "publication_status": "propuesto",
+  "coverage": {
+    "label": "Distritos de Conchagua y La Unión",
+    "geometry_url": null,
+    "spatial_resolution": "10 m (insumos satelitales) / escala distrital",
+    "scale_denominator": null
+  },
+  "temporal": {
+    "start": null,
+    "end": null,
+    "reference_date": null
+  },
+  "indicator": {
+    "name": "Superficie y cambio de asentamientos humanos caracterizados",
+    "unit": "ha",
+    "definition": "Contraste entre el inventario base 2015 y la huella actualizada de asentamientos en Conchagua y La Unión.",
+    "aggregation": "Distritos de Conchagua y La Unión (Municipio de La Unión Sur)"
+  },
+  "data_sources": [
+    {
+      "title": "Sentinel-2 / óptico multiespectral",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Sentinel-1 / radar SAR",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Landsat",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Imágenes de muy alta resolución / ortofotos",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Copernicus DEM / elevación",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "GHSL / huella urbana global",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Población (censos, WorldPop)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Luces nocturnas (VIIRS)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Catastro / parcelario",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos locales e institucionales declarados",
+      "provider": null,
+      "url": null,
+      "access": "institucional",
+      "description": "Mapa de identificación de asentamientos humanos de la Franja Costero Marina 2015, inventario de la red vial existente, base de datos tabulada del Censo Población y Vivienda 2007 y 2024, modelo de uso de suelo Plan Costa",
+      "status": "declarado"
+    }
+  ],
+  "method": {
+    "description": "Búsqueda de información, sistematización, análisis, aplicación con herramientas de procesamiento, gestión de datos y generación de cartografía\n\nHerramientas previstas: NDVI, Clasificación supervisada y no supervisada, Google Earth Engine, GIS, OpenDroneMap, JavaScript",
+    "version": "0.1.0-propuesta",
+    "code_url": null
+  },
+  "limitations": [
+    "La fuente específica sustituye el alcance regional amplio para la configuración inicial, conservando el antecedente S18.",
+    "La ficha mezcla nivel de acceso Por definir con consulta institucional; no publicar datos detallados sin definir acceso.",
+    "Los segmentos censales 2024 faltan y condicionan los cruces territoriales.",
+    "Las referencias narrativas a migración, expansión y valor del suelo son hipótesis o contexto del perfil; la aplicación debe mostrar evidencia antes de cuantificarlas.",
+    "El archivo geoespacial mencionado en la ficha no está incluido en el ZIP recibido."
+  ],
+  "validation": {
+    "state": "pendiente",
+    "evidence_url": null,
+    "date": null,
+    "reviewer": null
+  },
+  "outputs": {
+    "viewer_url": null,
+    "download_url": null,
+    "documentation_url": null,
+    "thumbnail_url": null
+  },
+  "license": {
+    "name": null,
+    "url": null,
+    "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+  },
+  "governance": {
+    "institution": "MIVI / FONAVIPO / UCA / UNAB",
+    "maintainer": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "S19",
+        "label": "Ficha_04_El_Salvador_La_Union.docx",
+        "locator": "fuentes/S19_Ficha_04_El_Salvador_La_Union.md",
+        "url": null
+      },
+      {
+        "id": "S18",
+        "label": "Ficha_04_El_Salvador_Franja_Costero_Marina.docx",
+        "locator": "fuentes/S18_Ficha_04_El_Salvador_Franja_Costero_Marina.md",
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "",
+        "status": "propuesta",
+        "source_ids": [
+          "S19"
+        ],
+        "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+      }
+    ]
+  }
+}

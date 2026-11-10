@@ -1,0 +1,2679 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-11-10T03:30:09Z",
+  "projects": [
+    {
+      "project": {
+        "schema_version": "1.0.0",
+        "id": "pa-panama-oeste",
+        "title": "Monitoreo multitemporal de expansión urbana y áreas potenciales de ocupación informal en Panamá Oeste",
+        "country": {
+          "code": "PA",
+          "name": "Panamá"
+        },
+        "source_groups": [
+          1,
+          9
+        ],
+        "summary": "La iniciativa propone comparar imágenes satelitales y referencias territoriales para localizar cambios de cobertura y nuevas superficies construidas en Arraiján y La Chorrera. El resultado apoyará la priorización de inspecciones y la actualización de inventarios de asentamientos.",
+        "territory": {
+          "label": "Caso de estudio Distritos de Arraiján y La Chorrera",
+          "administrative_units": [
+            "Arraiján",
+            "La Chorrera"
+          ],
+          "geometry_url": null
+        },
+        "institutional_use": {
+          "problem": "El crecimiento periurbano puede avanzar más rápido que la cartografía y los registros institucionales. MIVIOT requiere identificar oportunamente cambios de ocupación y disponer de evidencia territorial para orientar inspecciones, regularización y planificación.",
+          "institutions": [
+            "Ministerio de Vivienda y Ordenamiento Territorial de Panamá (MIVIOT)"
+          ],
+          "primary_user": "Dirección de Asentamientos informales",
+          "decision_supported": "Identificación de Asentamientos informales para darle seguimiento a la regularización y legalización de estos.",
+          "expected_benefit": "Disponer de un procedimiento trazable para seleccionar sectores de revisión y actualizar información territorial, con confirmación institucional de la condición de cada área."
+        },
+        "pmv": {
+          "description": "Configurar y ejecutar un flujo de Google Earth Engine sobre tres polígonos piloto, comparar periodos compatibles, generar composiciones e índices y exportar áreas candidatas de cambio con sus limitaciones y evidencias de revisión.",
+          "scope_status": "por_confirmar",
+          "acceptance_criteria": [
+            {
+              "id": "pa-panama-oeste-AC-01",
+              "description": "Los tres polígonos piloto se cargan con geometrías válidas y sistema de referencia documentado.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "pa-panama-oeste-AC-02",
+              "description": "Cada periodo aceptado tiene escenas disponibles, fecha, número de escenas y cobertura válida registrados; se resuelve explícitamente la incompatibilidad de 2016 con S2_SR_HARMONIZED.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "pa-panama-oeste-AC-03",
+              "description": "Se exportan RGB, NDVI, NDBI y evidencia SAR a la escala pertinente, junto con una capa de candidatos que conserva parámetros y periodo.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "pa-panama-oeste-AC-04",
+              "description": "Una muestra de candidatos y no candidatos se contrasta con referencia independiente; se separan confirmados, descartados y pendientes.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "pa-panama-oeste-AC-05",
+              "description": "El visor muestra la intensidad relativa de cambio sin presentarla como temperatura ni como certificación de informalidad.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            }
+          ]
+        },
+        "status": {
+          "development": "por_confirmar",
+          "demo": "por_confirmar",
+          "technical_review": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "institutional_validation": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "adoption": {
+            "state": "no_documentada",
+            "evidence_url": null,
+            "date": null
+          }
+        },
+        "links": {
+          "repository": null,
+          "website": null,
+          "demo": null,
+          "documentation": null,
+          "issue_tracker": null
+        },
+        "governance": {
+          "technical_owner": null,
+          "content_owner": null,
+          "update_frequency": null,
+          "content_updated_at": null
+        },
+        "provenance": {
+          "sources": [
+            {
+              "id": "S01",
+              "label": "2- Presentacion_soluciones_YC_AB.pptx",
+              "locator": "fuentes/S01_2-_Presentacion_soluciones_YC_AB.md",
+              "url": null
+            },
+            {
+              "id": "S02",
+              "label": "Ficha_01_Panama_Asentamientos_Arraijan_La_Chorrera.docx",
+              "locator": "fuentes/S02_Ficha_01_Panama_Asentamientos_Arraijan_La_Chorrera.md",
+              "url": null
+            },
+            {
+              "id": "S03",
+              "label": "Formato_hu_blanco_US-GIS-01.docx",
+              "locator": "fuentes/S03_Formato_hu_blanco_US-GIS-01.md",
+              "url": null
+            },
+            {
+              "id": "S04",
+              "label": "Formato_hu_blanco_US-GIS-02.docx",
+              "locator": "fuentes/S04_Formato_hu_blanco_US-GIS-02.md",
+              "url": null
+            },
+            {
+              "id": "S05",
+              "label": "Formato_hu_blanco_US-GIS-03.docx",
+              "locator": "fuentes/S05_Formato_hu_blanco_US-GIS-03.md",
+              "url": null
+            },
+            {
+              "id": "S06",
+              "label": "Formato_hu_blanco_US-GIS-04.docx",
+              "locator": "fuentes/S06_Formato_hu_blanco_US-GIS-04.md",
+              "url": null
+            },
+            {
+              "id": "S07",
+              "label": "Formato_hu_blanco_US-GIS-05.docx",
+              "locator": "fuentes/S07_Formato_hu_blanco_US-GIS-05.md",
+              "url": null
+            },
+            {
+              "id": "S08",
+              "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_yc_ab.xlsx",
+              "locator": "fuentes/S08_Sprint_Backlog_Marco_Scrum_ProyectoSIG_yc_ab.md",
+              "url": null
+            },
+            {
+              "id": "S26",
+              "label": "LEEME_PRIMERO.txt",
+              "locator": "fuentes/S26_LEEME_PRIMERO.md",
+              "url": null
+            },
+            {
+              "id": "S27",
+              "label": "Backlog_Scrum_Proyecto_Copernicus.xlsx",
+              "locator": "fuentes/S27_Backlog_Scrum_Proyecto_Copernicus.md",
+              "url": null
+            },
+            {
+              "id": "S28",
+              "label": "Ficha_Proyecto_Copernicus_Panama_Oeste.docx",
+              "locator": "fuentes/S28_Ficha_Proyecto_Copernicus_Panama_Oeste.md",
+              "url": null
+            },
+            {
+              "id": "S29",
+              "label": "01_GEE_Procesamiento_Multitemporal.js",
+              "locator": "fuentes/S29_01_GEE_Procesamiento_Multitemporal.md",
+              "url": null
+            },
+            {
+              "id": "S30",
+              "label": "02_Instalacion_y_ejecucion.txt",
+              "locator": "fuentes/S30_02_Instalacion_y_ejecucion.md",
+              "url": null
+            },
+            {
+              "id": "S31",
+              "label": "03_Biblioteca_de_enlaces_y_comandos.txt",
+              "locator": "fuentes/S31_03_Biblioteca_de_enlaces_y_comandos.md",
+              "url": null
+            },
+            {
+              "id": "S32",
+              "label": "04_QA_y_validacion.txt",
+              "locator": "fuentes/S32_04_QA_y_validacion.md",
+              "url": null
+            },
+            {
+              "id": "S33",
+              "label": "Area de Proyecto 1.kml",
+              "locator": "fuentes/S33_Area_de_Proyecto_1.md",
+              "url": null
+            },
+            {
+              "id": "S34",
+              "label": "Area de Proyecto 1.kmz",
+              "locator": "fuentes/S34_Area_de_Proyecto_1.md",
+              "url": null
+            },
+            {
+              "id": "S35",
+              "label": "Crecimiento Informal.kml",
+              "locator": "fuentes/S35_Crecimiento_Informal.md",
+              "url": null
+            },
+            {
+              "id": "S36",
+              "label": "Crecimiento Informal.kmz",
+              "locator": "fuentes/S36_Crecimiento_Informal.md",
+              "url": null
+            },
+            {
+              "id": "S37",
+              "label": "Zona de Invasion .kml",
+              "locator": "fuentes/S37_Zona_de_Invasion.md",
+              "url": null
+            },
+            {
+              "id": "S38",
+              "label": "Zona de Invasion .kmz",
+              "locator": "fuentes/S38_Zona_de_Invasion.md",
+              "url": null
+            }
+          ],
+          "statements": [
+            {
+              "pointer": "/title",
+              "status": "declarado",
+              "source_ids": [
+                "S28"
+              ],
+              "note": null
+            },
+            {
+              "pointer": "/summary",
+              "status": "declarado",
+              "source_ids": [
+                "S02"
+              ],
+              "note": "Síntesis editorial del problema y propósito declarados."
+            },
+            {
+              "pointer": "/territory",
+              "status": "declarado",
+              "source_ids": [
+                "S02"
+              ],
+              "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+            },
+            {
+              "pointer": "/institutional_use",
+              "status": "declarado",
+              "source_ids": [
+                "S02"
+              ],
+              "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+            },
+            {
+              "pointer": "/pmv",
+              "status": "propuesta",
+              "source_ids": [
+                "S02"
+              ],
+              "note": "La ficha inicial solicita un flujo de identificación y delimitación. El complemento G9 desarrolla tres pilotos y un plan de cuatro periodos; la viabilidad de 2016 requiere corregir la selección de colección antes de ejecutar."
+            },
+            {
+              "pointer": "/status",
+              "status": "por_confirmar",
+              "source_ids": [],
+              "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+            },
+            {
+              "pointer": "/data_sources",
+              "status": "declarado",
+              "source_ids": [
+                "S02"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/methodology",
+              "status": "declarado",
+              "source_ids": [
+                "S02"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/expected_outputs",
+              "status": "declarado",
+              "source_ids": [
+                "S02"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            }
+          ]
+        },
+        "team": [],
+        "data_sources": [
+          {
+            "title": "Sentinel-2 / óptico multiespectral",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "GHSL / huella urbana global",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos de población y vivienda (censos, WorldPop)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos locales e institucionales declarados",
+            "provider": null,
+            "url": null,
+            "access": "institucional",
+            "description": "Contamos con información censal del 2023, propuesta de zonificación a través del PLOT de Arraiján-La Chorrera",
+            "status": "declarado"
+          },
+          {
+            "title": "Tres polígonos piloto KML/KMZ",
+            "provider": "Equipo de Panamá",
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Área de Proyecto 1, Crecimiento Informal y Zona de Invasión. Geometrías originales transcritas en S33–S38; no equivalen a informalidad confirmada.",
+            "status": "declarado"
+          }
+        ],
+        "methodology": "Preparar los tres pilotos KML; acordar periodos y colección compatibles; componer Sentinel-2 y Sentinel-1; calcular NDVI/NDBI y cambios; delimitar candidatos; validar con referencia independiente; exportar productos y documentar parámetros. El script original S29 requiere revisar la línea base 2016 y el manejo de colecciones vacías antes de ejecutar.",
+        "expected_outputs": [
+          "Mapa",
+          "Dashboard / tablero",
+          "Poder visualizar la ubicación de los asentamientos informales en Arraiján y La Chorrera a través de un tablero de control para la toma de decisiones."
+        ],
+        "limitations": [
+          "La clasificación espectral identifica candidatos; no demuestra informalidad, titularidad ni ilegalidad.",
+          "El complemento incluye JS, KML/KMZ y manuales, pero no mapas procesados ni exportaciones de resultados.",
+          "S29 consulta Sentinel-2 SR Harmonized para 2016, aunque el catálogo empieza el 28 de marzo de 2017; no tiene manejo explícito de colección vacía.",
+          "El código fija enero–abril de 2026; la descripción más reciente disponible no debe interpretarse como actualización automática hasta noviembre.",
+          "El ámbito distrital aproximado de 89.115 ha de la ficha inicial no equivale a la suma o unión de los tres pilotos KML.",
+          "El encabezado inicial declara cuatro integrantes y la tabla identifica tres; no calcular ni publicar el total del equipo automáticamente.",
+          "S08 repite TS-104.2 y TS-105.1 para tareas distintas. S07 contiene un encabezado con TS-104.* aunque su alcance utiliza TS-105.*; preservar legacy_id y generar ID de importación único."
+        ],
+        "tags": [
+          "expansión urbana",
+          "asentamientos",
+          "detección de cambios"
+        ]
+      },
+      "content_markdown": "# Panamá Oeste: expansión urbana y áreas candidatas de ocupación informal\n\nLa iniciativa propone comparar imágenes satelitales y referencias territoriales para localizar cambios de cobertura y nuevas superficies construidas en Arraiján y La Chorrera. El resultado apoyará la priorización de inspecciones y la actualización de inventarios de asentamientos.\n\n## Propósito\n\nEl crecimiento periurbano puede avanzar más rápido que la cartografía y los registros institucionales. MIVIOT requiere identificar oportunamente cambios de ocupación y disponer de evidencia territorial para orientar inspecciones, regularización y planificación.\n\nDisponer de un procedimiento trazable para seleccionar sectores de revisión y actualizar información territorial, con confirmación institucional de la condición de cada área.\n\n## Instituciones participantes\n\n- Ministerio de Vivienda y Ordenamiento Territorial de Panamá (MIVIOT)\n\n## Territorio\n\nCaso de estudio Distritos de Arraiján y La Chorrera.\n\n## Usuario y decisión\n\nDirección de Asentamientos informales.\n\nIdentificación de Asentamientos informales para darle seguimiento a la regularización y legalización de estos.\n\n## Producto mínimo viable previsto\n\nConfigurar y ejecutar un flujo de Google Earth Engine sobre tres polígonos piloto, comparar periodos compatibles, generar composiciones e índices y exportar áreas candidatas de cambio con sus limitaciones y evidencias de revisión.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nEl método previsto combina imágenes Sentinel-2 y Sentinel-1, índices NDVI/NDBI y referencias como GHSL, Open Buildings, OpenStreetMap y datos censales. Se propone comparar periodos compatibles, localizar candidatos y contrastarlos con información institucional. Antes de ejecutar el código suministrado deben acordarse la línea base temporal, la colección satelital y los parámetros de validación.\n\n## Contribución prevista al Atlas\n\nSerie de huella/cambio urbano por periodo y áreas candidatas de revisión, con metadatos y evidencia de validación. Publicar únicamente productos autorizados y evitar etiquetas jurídicas automáticas.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nLa colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.\n",
+      "source_repository": null,
+      "source_commit": null,
+      "fetched_at": "2026-11-10T03:30:08Z",
+      "content_updated_at": null,
+      "sync_state": "bootstrap",
+      "source_mode": "bootstrap",
+      "geovisor_summary": {
+        "short_name": "Panamá Oeste: expansión urbana y ocupación potencial",
+        "center": [
+          -79.75532,
+          8.94515
+        ],
+        "zoom": 11.2
+      }
+    },
+    {
+      "project": {
+        "schema_version": "1.0.0",
+        "id": "sv-amss",
+        "title": "Monitoreo de las dinámicas de expansión urbana y transformación del suelo para la planificación y la gestión sostenible del AMSS",
+        "country": {
+          "code": "SV",
+          "name": "El Salvador"
+        },
+        "source_groups": [
+          2
+        ],
+        "summary": "La iniciativa integra información de expansión urbana, permisos de construcción y valores del suelo para examinar las transformaciones del Área Metropolitana de San Salvador y apoyar sus instrumentos de planificación y gestión territorial.",
+        "territory": {
+          "label": "Área Metropolitana de San Salvador (AMSS) - Zona núcleo/urbana (AMSS) - 14 DISTRITOS",
+          "administrative_units": [
+            "Área Metropolitana de San Salvador",
+            "14 distritos"
+          ],
+          "geometry_url": null
+        },
+        "institutional_use": {
+          "problem": "El AMSS necesita información actualizada e integrada para reconocer dónde y cómo se expande la ciudad y relacionar esos cambios con la normativa, la inversión y el valor del suelo.",
+          "institutions": [
+            "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+            "Ministerio de Gobernación y Desarrollo Territorial",
+            "Instituto Holandés para la Democracia Multipartidaria (NIMD)"
+          ],
+          "primary_user": "Principalmente la Subdirección de Planificación, Subdirección de Control de Desarrollo Urbano, Inteligencia Territorial y departamento de información del Ministerio de Gobernación",
+          "decision_supported": "Evaluar la conveniencia de las diferentes tipologías de expansión urbana en el territorio, permitiendo identificar las fortalezas y riesgos de inversión que estas conllevan e identificar las oportunidades de mejora para los criterios de planificación urbana , los instrumentos de gestión del suelo y los procesos de utilización de la data de los permisos de construcción de manera que permita comprender mejor la dinámica de inversión territorial",
+          "expected_benefit": "Mejorar la lectura de las tipologías de expansión y de la dinámica de inversión, con información útil para planificación, control del desarrollo y gestión del suelo."
+        },
+        "pmv": {
+          "description": "Un primer script reproducible, una capa demostrativa de expansión urbana, un flujo de integración con información de permisos y valores del suelo, y un prototipo de tablero para los 14 distritos del AMSS.",
+          "scope_status": "por_confirmar",
+          "acceptance_criteria": [
+            {
+              "id": "sv-amss-AC-01",
+              "description": "Se documenta el perímetro de los 14 distritos y las fechas comparables de huella urbana.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "sv-amss-AC-02",
+              "description": "La información de permisos y precios conserva fuente, año y unidad de valor; USD/m² y USD/v² no se mezclan sin conversión documentada.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "sv-amss-AC-03",
+              "description": "Las superficies interpoladas informan muestra utilizada, método y error de validación; los sectores sin evidencia se distinguen.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "sv-amss-AC-04",
+              "description": "Un usuario puede comparar periodos y consultar resultados por distrito sin acceder a datos personales de los expedientes.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "sv-amss-AC-05",
+              "description": "Una revisión institucional documenta qué producto resulta útil y qué aspectos siguen pendientes.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            }
+          ]
+        },
+        "status": {
+          "development": "por_confirmar",
+          "demo": "por_confirmar",
+          "technical_review": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "institutional_validation": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "adoption": {
+            "state": "no_documentada",
+            "evidence_url": null,
+            "date": null
+          }
+        },
+        "links": {
+          "repository": null,
+          "website": null,
+          "demo": null,
+          "documentation": null,
+          "issue_tracker": null
+        },
+        "governance": {
+          "technical_owner": null,
+          "content_owner": null,
+          "update_frequency": null,
+          "content_updated_at": null
+        },
+        "provenance": {
+          "sources": [
+            {
+              "id": "S09",
+              "label": "Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS.docx",
+              "locator": "fuentes/S09_Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS.md",
+              "url": null
+            },
+            {
+              "id": "S10",
+              "label": "Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS_AV_02.docx",
+              "locator": "fuentes/S10_Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS_AV_02.md",
+              "url": null
+            },
+            {
+              "id": "S11",
+              "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_OPAMSS_FINAL.xlsx",
+              "locator": "fuentes/S11_Sprint_Backlog_Marco_Scrum_ProyectoSIG_OPAMSS_FINAL.md",
+              "url": null
+            }
+          ],
+          "statements": [
+            {
+              "pointer": "/title",
+              "status": "declarado",
+              "source_ids": [
+                "S10"
+              ],
+              "note": null
+            },
+            {
+              "pointer": "/summary",
+              "status": "declarado",
+              "source_ids": [
+                "S10"
+              ],
+              "note": "Síntesis editorial del problema y propósito declarados."
+            },
+            {
+              "pointer": "/territory",
+              "status": "declarado",
+              "source_ids": [
+                "S10"
+              ],
+              "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+            },
+            {
+              "pointer": "/institutional_use",
+              "status": "declarado",
+              "source_ids": [
+                "S10"
+              ],
+              "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+            },
+            {
+              "pointer": "/pmv",
+              "status": "propuesta",
+              "source_ids": [
+                "S10"
+              ],
+              "note": "Alcance mínimo declarado en S10; el backlog concreta tareas de ingesta, interpolación, cruce territorial, publicación y revisión por el Product Owner."
+            },
+            {
+              "pointer": "/status",
+              "status": "por_confirmar",
+              "source_ids": [],
+              "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+            },
+            {
+              "pointer": "/data_sources",
+              "status": "declarado",
+              "source_ids": [
+                "S10"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/methodology",
+              "status": "declarado",
+              "source_ids": [
+                "S10"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/expected_outputs",
+              "status": "declarado",
+              "source_ids": [
+                "S10"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            }
+          ]
+        },
+        "team": [],
+        "data_sources": [
+          {
+            "title": "Sentinel-2 / óptico multiespectral",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Sentinel-1 / radar SAR",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "GHSL / huella urbana global",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Luces nocturnas (VIIRS)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Catastro / parcelario",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Límites institucionales o administrativos",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Limites de unidades de planificación detallada (UPD 2025)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Puntos de permisos de construcción de 1990 al 2026",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos locales e institucionales declarados",
+            "provider": null,
+            "url": null,
+            "access": "institucional",
+            "description": "Base de datos de sistema de trámites\nEsquema director, \nBase de datos de precio de venta obtenidos de webscraping de páginas de ventas inmobiliarias",
+            "status": "declarado"
+          }
+        ],
+        "methodology": "Revisión de datos existentes, integración al análisis de la base de datos de trámites, completar la información faltante referente al valor de suelo, estandarizar datos, desarrollo de script, generar mapa, implementación de aplicativo web map.\nRevisión de los datos existentes de la base de datos de tramites relacionados al valor del suelo y permisos de construcción históricos.\nCompletar vacíos de información faltante mediante web srcapping de valor de suelo\nEstandarización de datos y normalización en el territorio\nElaboración del mapa de expansión urbana mediante imágenes satelitales y scripts \nIdentificar los cambios en la mancha urbana\nInterpolar los precios de valor de suelo (USD/V2 o M2) con base a la data histórica obtenida de los permisos de construcción y el web scrapping.\nGenerar periodos de tiempo de análisis\nGenerar rangos de valor de suelo \nElaborar un mapa de consulta con dashboard\nCruce de información con las variables temporales y rangos de valores de suelo definidos anteriormente.\nIdentificación general de las diferentes tipologías de expansión urbana identificadas en el territorio AMSS\n\nHerramientas previstas: NDVI, NDBI, LST, clasificación supervisada, análisis multicriterio, Google Earth Engine, QGIS, R, Python, JavaScript, ArcGIS Pro y Server, Agentes de IA",
+        "expected_outputs": [
+          "Mapa",
+          "Capa geoespacial",
+          "Script reproducible",
+          "Flujo de trabajo / metodología",
+          "Dashboard / tablero",
+          "Visor web",
+          "Base de datos",
+          "Un usuario final tendría que poder visualizar el mapa y consultar el dashboard para la toma de decisiones. Técnicos SIG utilizarán el script y consultarán el flujo de trabajo y metodología para poder replicar el trabajo y llevar un monitoreo de la información territorial."
+        ],
+        "limitations": [
+          "La fuente principal es AV_02; la ficha anterior queda como antecedente y no debe reemplazar el alcance actualizado.",
+          "Los precios proceden de expedientes y web scraping con cobertura limitada y datos de 2025; no equivalen automáticamente a precios de transacciones representativos.",
+          "Los estados del backlog son declaraciones del documento, no una auditoría del avance vigente.",
+          "El encabezado declara cinco integrantes y la tabla contiene seis nombres; confirmar composición antes de mostrar un contador.",
+          "El límite Perimetro_AMSS-14_26_13.zip figura en la ficha pero ese archivo geoespacial no está dentro del ZIP recibido."
+        ],
+        "tags": [
+          "expansión urbana",
+          "valor del suelo",
+          "planificación metropolitana"
+        ]
+      },
+      "content_markdown": "# AMSS: expansión urbana y transformación del suelo\n\nLa iniciativa integra información de expansión urbana, permisos de construcción y valores del suelo para examinar las transformaciones del Área Metropolitana de San Salvador y apoyar sus instrumentos de planificación y gestión territorial.\n\n## Propósito\n\nEl AMSS necesita información actualizada e integrada para reconocer dónde y cómo se expande la ciudad y relacionar esos cambios con la normativa, la inversión y el valor del suelo.\n\nMejorar la lectura de las tipologías de expansión y de la dinámica de inversión, con información útil para planificación, control del desarrollo y gestión del suelo.\n\n## Instituciones participantes\n\n- Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)\n- Ministerio de Gobernación y Desarrollo Territorial\n- Instituto Holandés para la Democracia Multipartidaria (NIMD)\n\n## Territorio\n\nÁrea Metropolitana de San Salvador (AMSS) - Zona núcleo/urbana (AMSS) - 14 DISTRITOS.\n\n## Usuario y decisión\n\nPrincipalmente la Subdirección de Planificación, Subdirección de Control de Desarrollo Urbano, Inteligencia Territorial y departamento de información del Ministerio de Gobernación.\n\nEvaluar la conveniencia de las diferentes tipologías de expansión urbana en el territorio, permitiendo identificar las fortalezas y riesgos de inversión que estas conllevan e identificar las oportunidades de mejora para los criterios de planificación urbana , los instrumentos de gestión del suelo y los procesos de utilización de la data de los permisos de construcción de manera que permita comprender mejor la dinámica de inversión territorial\n\n## Producto mínimo viable previsto\n\nUn primer script reproducible, una capa demostrativa de expansión urbana, un flujo de integración con información de permisos y valores del suelo, y un prototipo de tablero para los 14 distritos del AMSS.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nSe propone integrar información de trámites y permisos con cambios de huella urbana observados por satélite y referencias de precios del suelo. El flujo previsto incluye normalización espacial, consultas en PostgreSQL/PostGIS, procesamiento en Earth Engine e interpolación de precios con evaluación del error. La publicación de registros institucionales depende de sus condiciones de acceso.\n\n## Contribución prevista al Atlas\n\nCapas de expansión urbana e indicadores territoriales por distrito, asociados a periodos y a rangos de valor del suelo con metodología y límites de interpretación.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nLa colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.\n",
+      "source_repository": null,
+      "source_commit": null,
+      "fetched_at": "2026-11-10T03:30:08Z",
+      "content_updated_at": null,
+      "sync_state": "bootstrap",
+      "source_mode": "bootstrap",
+      "geovisor_summary": {
+        "short_name": "AMSS: expansión urbana y transformación del suelo",
+        "center": [
+          -89.2182,
+          13.6989
+        ],
+        "zoom": 10.8
+      }
+    },
+    {
+      "project": {
+        "schema_version": "1.0.0",
+        "id": "cr-la-carpio",
+        "title": "Evaluación estratégica y prospectiva del asentamiento informal La Carpio como insumo para la construcción del Plan Maestro de Intervención Urbanística Integral, San José, Costa Rica.",
+        "country": {
+          "code": "CR",
+          "name": "Costa Rica"
+        },
+        "source_groups": [
+          3
+        ],
+        "summary": "La iniciativa propone reunir información territorial y ambiental de La Carpio para apoyar la formulación e implementación de su Plan Maestro de Intervención Urbanística Integral y el trabajo de las instituciones involucradas.",
+        "territory": {
+          "label": "Gran Área Metropolitana, San José, Uruca, Asentamiento Informal La Carpio.",
+          "administrative_units": [
+            "San José",
+            "Uruca",
+            "La Carpio"
+          ],
+          "geometry_url": null
+        },
+        "institutional_use": {
+          "problem": "La Carpio presenta crecimiento y ocupación urbana informal, limitaciones de servicios y espacios públicos y exposición a amenazas. Las instituciones requieren una base común para conocer esas condiciones y priorizar intervenciones.",
+          "institutions": [
+            "Municipalidad de San José",
+            "Instituto Nacional de Vivienda y Urbanismo (INVU)",
+            "Ministerio de Vivienda y Asentamientos Humanos (MIVAH)"
+          ],
+          "primary_user": "Municipalidad de San José (Gerencia de Gestión Municipal y Desarrollo Urbano, Dirección de Desarrollo Urbano, Alcaldía Municipal), Ministerio de Vivienda y Asentamientos Humanos (Dirección de Gestión Integrada del Territorio, Dirección de Vivienda y Asentamientos Humanos), Instituto Nacional de Vivienda y Urbanismo (Departamento de Urbanismo)",
+          "decision_supported": "Implementación del Plan Maestro de Intervención Urbanística Integral de La Carpio",
+          "expected_benefit": "Ofrecer mapas, indicadores y una metodología compartida que pueda utilizarse en mesas interinstitucionales y adaptarse a otros asentamientos."
+        },
+        "pmv": {
+          "description": "Una línea base organizada y mapas preliminares de La Carpio, articulados con un visor y tablero inicial que permita consultar la información disponible y sus limitaciones.",
+          "scope_status": "por_confirmar",
+          "acceptance_criteria": [
+            {
+              "id": "cr-la-carpio-AC-01",
+              "description": "Se acuerda y registra el polígono operativo, resolviendo la diferencia entre 63 ha narrativas y 48,2 ha del formulario.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "cr-la-carpio-AC-02",
+              "description": "Las capas disponibles tienen sistema de referencia, fuente, fecha y permisos de uso documentados; para visualización web se genera una exportación apropiada sin perder la referencia original.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "cr-la-carpio-AC-03",
+              "description": "El visor permite activar capas y filtros con una leyenda legible y distingue datos disponibles de información pendiente.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "cr-la-carpio-AC-04",
+              "description": "Los indicadores de vulnerabilidad y los escenarios documentan variables, pesos y supuestos antes de presentar clasificaciones.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "cr-la-carpio-AC-05",
+              "description": "La metodología y el responsable de actualización quedan documentados para una réplica posterior.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            }
+          ]
+        },
+        "status": {
+          "development": "por_confirmar",
+          "demo": "por_confirmar",
+          "technical_review": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "institutional_validation": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "adoption": {
+            "state": "no_documentada",
+            "evidence_url": null,
+            "date": null
+          }
+        },
+        "links": {
+          "repository": null,
+          "website": null,
+          "demo": null,
+          "documentation": null,
+          "issue_tracker": null
+        },
+        "governance": {
+          "technical_owner": null,
+          "content_owner": null,
+          "update_frequency": null,
+          "content_updated_at": null
+        },
+        "provenance": {
+          "sources": [
+            {
+              "id": "S12",
+              "label": "Book.xlsx",
+              "locator": "fuentes/S12_Book.md",
+              "url": null
+            },
+            {
+              "id": "S13",
+              "label": "Ficha_03_Costa_Rica_La_Carpio.docx",
+              "locator": "fuentes/S13_Ficha_03_Costa_Rica_La_Carpio.md",
+              "url": null
+            },
+            {
+              "id": "S14",
+              "label": "Ficha_HU_EPACR-GIS-01.pdf.docx",
+              "locator": "fuentes/S14_Ficha_HU_EPACR-GIS-01_pdf.md",
+              "url": null
+            },
+            {
+              "id": "S15",
+              "label": "Presentacion_solucion EPA-PIU LaCarpio COSTA RICA.pdf",
+              "locator": "fuentes/S15_Presentacion_solucion_EPA-PIU_LaCarpio_COSTA_RICA.md",
+              "url": null
+            },
+            {
+              "id": "S16",
+              "label": "Presentacion_solucion EPA-PIU LaCarpio COSTA RICA.pptx",
+              "locator": "fuentes/S16_Presentacion_solucion_EPA-PIU_LaCarpio_COSTA_RICA.md",
+              "url": null
+            },
+            {
+              "id": "S17",
+              "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_Costa Rica.xlsx",
+              "locator": "fuentes/S17_Sprint_Backlog_Marco_Scrum_ProyectoSIG_Costa_Rica.md",
+              "url": null
+            }
+          ],
+          "statements": [
+            {
+              "pointer": "/title",
+              "status": "declarado",
+              "source_ids": [
+                "S13"
+              ],
+              "note": null
+            },
+            {
+              "pointer": "/summary",
+              "status": "declarado",
+              "source_ids": [
+                "S13"
+              ],
+              "note": "Síntesis editorial del problema y propósito declarados."
+            },
+            {
+              "pointer": "/territory",
+              "status": "declarado",
+              "source_ids": [
+                "S13"
+              ],
+              "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+            },
+            {
+              "pointer": "/institutional_use",
+              "status": "declarado",
+              "source_ids": [
+                "S13"
+              ],
+              "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+            },
+            {
+              "pointer": "/pmv",
+              "status": "propuesta",
+              "source_ids": [
+                "S13"
+              ],
+              "note": "La ficha señala datos y mapas preliminares; S17 concreta un sprint de visor geoespacial y dashboard. El conjunto final de indicadores debe acordarse con el equipo."
+            },
+            {
+              "pointer": "/status",
+              "status": "por_confirmar",
+              "source_ids": [],
+              "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+            },
+            {
+              "pointer": "/data_sources",
+              "status": "declarado",
+              "source_ids": [
+                "S13"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/methodology",
+              "status": "declarado",
+              "source_ids": [
+                "S13"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/expected_outputs",
+              "status": "declarado",
+              "source_ids": [
+                "S13"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            }
+          ]
+        },
+        "team": [],
+        "data_sources": [
+          {
+            "title": "Sentinel-2 / óptico multiespectral",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Sentinel-1 / radar SAR",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Imágenes de muy alta resolución / ortofotos",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Drones / RPAS",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "LiDAR / modelos digitales de superficie",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Copernicus DEM / elevación",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "GHSL / huella urbana global",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Población (censos, WorldPop)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Catastro / parcelario",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Límites institucionales o administrativos",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos locales e institucionales declarados",
+            "provider": null,
+            "url": null,
+            "access": "institucional",
+            "description": "Datos Municipales e institucionales",
+            "status": "declarado"
+          }
+        ],
+        "methodology": "Pendiente de evaluar las condiciones específicas del asentamiento\n\nHerramientas previstas: NDVI, NDBI, LST, clasificación supervisada, análisis multicriterio, Google Earth Engine, QGIS, R, Python.",
+        "expected_outputs": [
+          "Mapa",
+          "Capa geoespacial",
+          "Indicador urbano",
+          "Escenarios",
+          "Dashboard / tablero",
+          "Visor web",
+          "Insumo técnico para instrumento de planificación",
+          "Podría visualizar estadísticas, mapas, delimitaciones, entre otros."
+        ],
+        "limitations": [
+          "El perfil describe aproximadamente 63 ha y más de 50.000 habitantes, mientras la tabla del polígono indica 48,2 ha. Conservar la discrepancia y confirmar ámbito y fuente censal.",
+          "El archivo La_Carpio-15_57_54.zip se menciona en la ficha, pero no está en el ZIP recibido.",
+          "Book.xlsx no contiene celdas con datos.",
+          "El backlog conserva un encabezado de plantilla Ministerio de Hacienda; las instituciones del proyecto son MSJ, INVU y MIVAH.",
+          "S17 contiene 15 tareas sin estimación horaria; las 13 horas registradas corresponden solo a dos tareas y no al esfuerzo total del proyecto.",
+          "S14 conserva contradicciones entre Product Owner por definir y nombres/fechas en validación, y entre estimaciones de encabezado y alcance. No interpretar las casillas DoD vacías como aprobación formal.",
+          "La captura de un visor en la presentación constituye evidencia gráfica de una propuesta o resultado mostrado, sin demostrar que una aplicación accesible esté operando."
+        ],
+        "tags": [
+          "intervención urbana",
+          "asentamientos",
+          "indicadores"
+        ]
+      },
+      "content_markdown": "# La Carpio: información territorial para la intervención urbana\n\nLa iniciativa propone reunir información territorial y ambiental de La Carpio para apoyar la formulación e implementación de su Plan Maestro de Intervención Urbanística Integral y el trabajo de las instituciones involucradas.\n\n## Propósito\n\nLa Carpio presenta crecimiento y ocupación urbana informal, limitaciones de servicios y espacios públicos y exposición a amenazas. Las instituciones requieren una base común para conocer esas condiciones y priorizar intervenciones.\n\nOfrecer mapas, indicadores y una metodología compartida que pueda utilizarse en mesas interinstitucionales y adaptarse a otros asentamientos.\n\n## Instituciones participantes\n\n- Municipalidad de San José\n- Instituto Nacional de Vivienda y Urbanismo (INVU)\n- Ministerio de Vivienda y Asentamientos Humanos (MIVAH)\n\n## Territorio\n\nGran Área Metropolitana, San José, Uruca, Asentamiento Informal La Carpio.\n\n## Usuario y decisión\n\nMunicipalidad de San José (Gerencia de Gestión Municipal y Desarrollo Urbano, Dirección de Desarrollo Urbano, Alcaldía Municipal), Ministerio de Vivienda y Asentamientos Humanos (Dirección de Gestión Integrada del Territorio, Dirección de Vivienda y Asentamientos Humanos), Instituto Nacional de Vivienda y Urbanismo (Departamento de Urbanismo).\n\nImplementación del Plan Maestro de Intervención Urbanística Integral de La Carpio\n\n## Producto mínimo viable previsto\n\nUna línea base organizada y mapas preliminares de La Carpio, articulados con un visor y tablero inicial que permita consultar la información disponible y sus limitaciones.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nEl método previsto empieza por reunir y normalizar la cartografía de La Carpio, documentar el sistema de referencia y contrastar insumos municipales, imágenes satelitales y otros levantamientos disponibles. Con esa base se propone preparar capas de diagnóstico y un tablero para apoyar el Plan Maestro de Intervención Urbanística Integral. El perímetro de trabajo y la disponibilidad de cada insumo deben acordarse con el equipo.\n\n## Contribución prevista al Atlas\n\nFicha territorial e indicadores de La Carpio que apoyen la intervención urbana, con metadatos comunes y posibilidad de comparación una vez homologadas las variables y escalas.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nLa colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.\n",
+      "source_repository": null,
+      "source_commit": null,
+      "fetched_at": "2026-11-10T03:30:08Z",
+      "content_updated_at": null,
+      "sync_state": "bootstrap",
+      "source_mode": "bootstrap",
+      "geovisor_summary": {
+        "short_name": "La Carpio: intervención urbanística integral",
+        "center": [
+          -84.1502,
+          9.96309
+        ],
+        "zoom": 14.8
+      }
+    },
+    {
+      "project": {
+        "schema_version": "1.0.0",
+        "id": "sv-la-union",
+        "title": "Análisis de Asentamientos Humanos en zona oriental sobre la Franja Costero Marina",
+        "country": {
+          "code": "SV",
+          "name": "El Salvador"
+        },
+        "source_groups": [
+          4
+        ],
+        "summary": "La iniciativa estudia los cambios de los asentamientos humanos en Conchagua y La Unión para aportar información sobre ocupación del suelo, amenazas y condiciones territoriales a la planificación del sector oriental costero.",
+        "territory": {
+          "label": "Distritos de Conchagua y La Unión",
+          "administrative_units": [
+            "Conchagua",
+            "La Unión",
+            "La Unión Sur"
+          ],
+          "geometry_url": null
+        },
+        "institutional_use": {
+          "problem": "Los cambios de ocupación asociados a inversiones, turismo y migración requieren actualizar la información de asentamientos y analizar las condiciones del suelo para orientar futuros desarrollos y vivienda social.",
+          "institutions": [
+            "Universidad Centroamericana José Simeón Cañas (UCA)",
+            "Universidad Dr. Andrés Bello (UNAB)",
+            "Fondo Nacional de Vivienda Popular (FONAVIPO)",
+            "Ministerio de Vivienda (MIVI)"
+          ],
+          "primary_user": "Unidad de Desarrollo Urbano y Unidad de Asentamientos Humanos – MIVI, Gerencia de ordenamiento Territorial (DOT)",
+          "decision_supported": "Respecto a la planificación y normativa en el sector de análisis",
+          "expected_benefit": "Apoyar decisiones de planificación y normativa mediante una caracterización territorial que integre crecimiento, amenazas y referencias demográficas."
+        },
+        "pmv": {
+          "description": "Una delimitación y caracterización actualizada de asentamientos humanos en los distritos de Conchagua y La Unión, acompañada por mapas y un tablero inicial de consulta.",
+          "scope_status": "por_confirmar",
+          "acceptance_criteria": [
+            {
+              "id": "sv-la-union-AC-01",
+              "description": "Se utiliza un límite acordado de Conchagua y La Unión y se documenta la relación con el municipio de La Unión Sur.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "sv-la-union-AC-02",
+              "description": "Se compara el inventario de asentamientos de referencia con una fecha reciente, indicando fuentes y calidad.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "sv-la-union-AC-03",
+              "description": "Las comparaciones censales 2007–2024 utilizan unidades compatibles o documentan las diferencias territoriales.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "sv-la-union-AC-04",
+              "description": "Los mapas de amenazas o aptitud muestran su método y revisión, y no se presentan como decisiones normativas aprobadas.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "sv-la-union-AC-05",
+              "description": "El tablero permite consultar el asentamiento o unidad agregada y acceder a su ficha metodológica.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            }
+          ]
+        },
+        "status": {
+          "development": "por_confirmar",
+          "demo": "por_confirmar",
+          "technical_review": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "institutional_validation": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "adoption": {
+            "state": "no_documentada",
+            "evidence_url": null,
+            "date": null
+          }
+        },
+        "links": {
+          "repository": null,
+          "website": null,
+          "demo": null,
+          "documentation": null,
+          "issue_tracker": null
+        },
+        "governance": {
+          "technical_owner": null,
+          "content_owner": null,
+          "update_frequency": null,
+          "content_updated_at": null
+        },
+        "provenance": {
+          "sources": [
+            {
+              "id": "S18",
+              "label": "Ficha_04_El_Salvador_Franja_Costero_Marina.docx",
+              "locator": "fuentes/S18_Ficha_04_El_Salvador_Franja_Costero_Marina.md",
+              "url": null
+            },
+            {
+              "id": "S19",
+              "label": "Ficha_04_El_Salvador_La_Union.docx",
+              "locator": "fuentes/S19_Ficha_04_El_Salvador_La_Union.md",
+              "url": null
+            }
+          ],
+          "statements": [
+            {
+              "pointer": "/title",
+              "status": "declarado",
+              "source_ids": [
+                "S19"
+              ],
+              "note": null
+            },
+            {
+              "pointer": "/summary",
+              "status": "declarado",
+              "source_ids": [
+                "S19"
+              ],
+              "note": "Síntesis editorial del problema y propósito declarados."
+            },
+            {
+              "pointer": "/territory",
+              "status": "declarado",
+              "source_ids": [
+                "S19"
+              ],
+              "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+            },
+            {
+              "pointer": "/institutional_use",
+              "status": "declarado",
+              "source_ids": [
+                "S19"
+              ],
+              "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+            },
+            {
+              "pointer": "/pmv",
+              "status": "propuesta",
+              "source_ids": [
+                "S19"
+              ],
+              "note": "La ficha específica La_Union delimita el caso frente a la versión previa de la Franja Costero Marina; no asumir que el PMV cubre toda la costa del país."
+            },
+            {
+              "pointer": "/status",
+              "status": "por_confirmar",
+              "source_ids": [],
+              "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+            },
+            {
+              "pointer": "/data_sources",
+              "status": "declarado",
+              "source_ids": [
+                "S19"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/methodology",
+              "status": "declarado",
+              "source_ids": [
+                "S19"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/expected_outputs",
+              "status": "declarado",
+              "source_ids": [
+                "S19"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            }
+          ]
+        },
+        "team": [],
+        "data_sources": [
+          {
+            "title": "Sentinel-2 / óptico multiespectral",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Sentinel-1 / radar SAR",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Landsat",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Imágenes de muy alta resolución / ortofotos",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Copernicus DEM / elevación",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "GHSL / huella urbana global",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Población (censos, WorldPop)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Luces nocturnas (VIIRS)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Catastro / parcelario",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos locales e institucionales declarados",
+            "provider": null,
+            "url": null,
+            "access": "institucional",
+            "description": "Mapa de identificación de asentamientos humanos de la Franja Costero Marina 2015, inventario de la red vial existente, base de datos tabulada del Censo Población y Vivienda 2007 y 2024, modelo de uso de suelo Plan Costa",
+            "status": "declarado"
+          }
+        ],
+        "methodology": "Búsqueda de información, sistematización, análisis, aplicación con herramientas de procesamiento, gestión de datos y generación de cartografía\n\nHerramientas previstas: NDVI, Clasificación supervisada y no supervisada, Google Earth Engine, GIS, OpenDroneMap, JavaScript",
+        "expected_outputs": [
+          "Mapa",
+          "Capa geoespacial",
+          "Script reproducible",
+          "Dashboard / tablero",
+          "Definición de un mapa de asentamientos humanos caracterizando zonas de riesgos, amenazas y valor de suelo"
+        ],
+        "limitations": [
+          "La fuente específica sustituye el alcance regional amplio para la configuración inicial, conservando el antecedente S18.",
+          "La ficha mezcla nivel de acceso Por definir con consulta institucional; no publicar datos detallados sin definir acceso.",
+          "Los segmentos censales 2024 faltan y condicionan los cruces territoriales.",
+          "Las referencias narrativas a migración, expansión y valor del suelo son hipótesis o contexto del perfil; la aplicación debe mostrar evidencia antes de cuantificarlas.",
+          "El archivo geoespacial mencionado en la ficha no está incluido en el ZIP recibido."
+        ],
+        "tags": [
+          "asentamientos",
+          "franja costera",
+          "planificación territorial"
+        ]
+      },
+      "content_markdown": "# Conchagua y La Unión: caracterización de asentamientos humanos\n\nLa iniciativa estudia los cambios de los asentamientos humanos en Conchagua y La Unión para aportar información sobre ocupación del suelo, amenazas y condiciones territoriales a la planificación del sector oriental costero.\n\n## Propósito\n\nLos cambios de ocupación asociados a inversiones, turismo y migración requieren actualizar la información de asentamientos y analizar las condiciones del suelo para orientar futuros desarrollos y vivienda social.\n\nApoyar decisiones de planificación y normativa mediante una caracterización territorial que integre crecimiento, amenazas y referencias demográficas.\n\n## Instituciones participantes\n\n- Universidad Centroamericana José Simeón Cañas (UCA)\n- Universidad Dr. Andrés Bello (UNAB)\n- Fondo Nacional de Vivienda Popular (FONAVIPO)\n- Ministerio de Vivienda (MIVI)\n\n## Territorio\n\nDistritos de Conchagua y La Unión.\n\n## Usuario y decisión\n\nUnidad de Desarrollo Urbano y Unidad de Asentamientos Humanos – MIVI, Gerencia de ordenamiento Territorial (DOT).\n\nRespecto a la planificación y normativa en el sector de análisis\n\n## Producto mínimo viable previsto\n\nUna delimitación y caracterización actualizada de asentamientos humanos en los distritos de Conchagua y La Unión, acompañada por mapas y un tablero inicial de consulta.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nSe propone actualizar el inventario territorial y contrastar asentamientos y expansión urbana con información de amenazas, red vial, censos y planificación. Las imágenes satelitales y las referencias geoespaciales globales complementarán los registros locales. La selección del algoritmo, las fechas comparables y la validación de las capas requieren definición técnica.\n\n## Contribución prevista al Atlas\n\nInventario y caracterización de asentamientos de Conchagua y La Unión, con fecha, fuente y metodología de cambio, y contribuciones de exposición o aptitud únicamente cuando estén documentadas.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nLa colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.\n",
+      "source_repository": null,
+      "source_commit": null,
+      "fetched_at": "2026-11-10T03:30:08Z",
+      "content_updated_at": null,
+      "sync_state": "bootstrap",
+      "source_mode": "bootstrap",
+      "geovisor_summary": {
+        "short_name": "La Unión y Conchagua: asentamientos costeros",
+        "center": [
+          -87.865,
+          13.315
+        ],
+        "zoom": 10.6
+      }
+    },
+    {
+      "project": {
+        "schema_version": "1.0.0",
+        "id": "gt-bethania",
+        "title": "Asentamientos en alto riesgo",
+        "country": {
+          "code": "GT",
+          "name": "Guatemala"
+        },
+        "source_groups": [
+          5
+        ],
+        "summary": "La iniciativa propone organizar información de la huella urbana y de los lotes en Bethania para apoyar la revisión de condiciones de riesgo y orientar decisiones institucionales sobre obras de protección o escrituración.",
+        "territory": {
+          "label": "Zona 7, colonia Bethania, Guatemala",
+          "administrative_units": [
+            "Ciudad de Guatemala",
+            "Zona 7",
+            "Colonia Bethania"
+          ],
+          "geometry_url": null
+        },
+        "institutional_use": {
+          "problem": "La Unidad de Catastro requiere información con mayor detalle sobre viviendas y lotes para seleccionar áreas que necesitan evaluación de riesgo y estudios complementarios.",
+          "institutions": [
+            "UDEVIPO"
+          ],
+          "primary_user": "Unidad de Catastro",
+          "decision_supported": "Definir lotes en riesgo para toma de decisiones de obras de protección o escrituración.",
+          "expected_benefit": "Facilitar el análisis de gabinete y la priorización de verificaciones técnicas antes de adoptar decisiones sobre cada lote."
+        },
+        "pmv": {
+          "description": "Un mapa preliminar de huella urbana de los asentamientos de la zona piloto, organizado con los datos de dron, ortofotos y referencias territoriales disponibles.",
+          "scope_status": "por_confirmar",
+          "acceptance_criteria": [
+            {
+              "id": "gt-bethania-AC-01",
+              "description": "La zona piloto y los datos de entrada tienen referencia espacial y fecha documentadas.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "gt-bethania-AC-02",
+              "description": "Se produce una huella urbana preliminar contrastable con ortofotos o levantamientos disponibles.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "gt-bethania-AC-03",
+              "description": "Cada producto distingue identificación de edificaciones de evaluación de amenaza, exposición y riesgo.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "gt-bethania-AC-04",
+              "description": "Las variables y el método de evaluación por lote se documentan antes de asignar una categoría.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "gt-bethania-AC-05",
+              "description": "La entrega incorpora evidencia de revisión y una lista de estudios pendientes para la decisión institucional.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            }
+          ]
+        },
+        "status": {
+          "development": "por_confirmar",
+          "demo": "por_confirmar",
+          "technical_review": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "institutional_validation": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "adoption": {
+            "state": "no_documentada",
+            "evidence_url": null,
+            "date": null
+          }
+        },
+        "links": {
+          "repository": null,
+          "website": null,
+          "demo": null,
+          "documentation": null,
+          "issue_tracker": null
+        },
+        "governance": {
+          "technical_owner": null,
+          "content_owner": null,
+          "update_frequency": null,
+          "content_updated_at": null
+        },
+        "provenance": {
+          "sources": [
+            {
+              "id": "S20",
+              "label": "Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.docx",
+              "locator": "fuentes/S20_Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.md",
+              "url": null
+            }
+          ],
+          "statements": [
+            {
+              "pointer": "/title",
+              "status": "declarado",
+              "source_ids": [
+                "S20"
+              ],
+              "note": null
+            },
+            {
+              "pointer": "/summary",
+              "status": "declarado",
+              "source_ids": [
+                "S20"
+              ],
+              "note": "Síntesis editorial del problema y propósito declarados."
+            },
+            {
+              "pointer": "/territory",
+              "status": "declarado",
+              "source_ids": [
+                "S20"
+              ],
+              "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+            },
+            {
+              "pointer": "/institutional_use",
+              "status": "declarado",
+              "source_ids": [
+                "S20"
+              ],
+              "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+            },
+            {
+              "pointer": "/pmv",
+              "status": "propuesta",
+              "source_ids": [
+                "S20"
+              ],
+              "note": "El mapa preliminar de huella urbana es el mínimo indicado en la ficha. La evaluación de riesgo por lote y un modelo 3D son objetivos posteriores sujetos a datos y validación."
+            },
+            {
+              "pointer": "/status",
+              "status": "por_confirmar",
+              "source_ids": [],
+              "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+            },
+            {
+              "pointer": "/data_sources",
+              "status": "declarado",
+              "source_ids": [
+                "S20"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/methodology",
+              "status": "declarado",
+              "source_ids": [
+                "S20"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/expected_outputs",
+              "status": "declarado",
+              "source_ids": [
+                "S20"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            }
+          ]
+        },
+        "team": [],
+        "data_sources": [
+          {
+            "title": "Sentinel-2 / óptico multiespectral",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Drones / RPAS",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "LiDAR / modelos digitales de superficie",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Catastro / parcelario",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos locales e institucionales declarados",
+            "provider": null,
+            "url": null,
+            "access": "institucional",
+            "description": "Vuelo con dron, red vial, equipamiento, fotografías, ortofotos.",
+            "status": "declarado"
+          }
+        ],
+        "methodology": "Vuelo de dron, procesar imágenes, generación de capas, análisis de información, validación de variables, publicación en un dashboard.\n\nHerramientas previstas: No especificado",
+        "expected_outputs": [
+          "Mapa",
+          "Capa geoespacial",
+          "Modelo 3D / gemelo digital",
+          "Ver a nivel de cada lote su nivel de riesgo para toma de decisiones."
+        ],
+        "limitations": [
+          "La ficha indica 21,1 ha del polígono del formulario, pero no adjunta una geometría utilizable.",
+          "La disponibilidad de archivos geoespaciales se declara incierta aunque se mencionan vuelo de dron y ortofotos.",
+          "Las capas de huellas de edificaciones y LiDAR se identifican como faltantes.",
+          "La ficha no define algoritmo ni umbrales de riesgo; no asignar riesgos por vivienda mediante una regla inventada.",
+          "Las decisiones de escrituración y obras requieren revisión institucional y estudios pertinentes."
+        ],
+        "tags": [
+          "huella urbana",
+          "riesgo",
+          "catastro"
+        ]
+      },
+      "content_markdown": "# Bethania: huella urbana y evaluación territorial del riesgo\n\nLa iniciativa propone organizar información de la huella urbana y de los lotes en Bethania para apoyar la revisión de condiciones de riesgo y orientar decisiones institucionales sobre obras de protección o escrituración.\n\n## Propósito\n\nLa Unidad de Catastro requiere información con mayor detalle sobre viviendas y lotes para seleccionar áreas que necesitan evaluación de riesgo y estudios complementarios.\n\nFacilitar el análisis de gabinete y la priorización de verificaciones técnicas antes de adoptar decisiones sobre cada lote.\n\n## Instituciones participantes\n\n- UDEVIPO\n\n## Territorio\n\nZona 7, colonia Bethania, Guatemala.\n\n## Usuario y decisión\n\nUnidad de Catastro.\n\nDefinir lotes en riesgo para toma de decisiones de obras de protección o escrituración.\n\n## Producto mínimo viable previsto\n\nUn mapa preliminar de huella urbana de los asentamientos de la zona piloto, organizado con los datos de dron, ortofotos y referencias territoriales disponibles.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nEl flujo previsto combina revisión de cartografía e información de campo, procesamiento de levantamientos disponibles, extracción de huella urbana y validación territorial. El perfil contempla insumos de dron y fotogrametría; la disponibilidad efectiva de archivos y el método de evaluación del riesgo por lote deben confirmarse antes de publicar resultados.\n\n## Contribución prevista al Atlas\n\nHuella urbana preliminar y metodología de caracterización del asentamiento, con publicación agregada y evidencia de revisión. Las categorías de riesgo requieren validación adicional.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nLa colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.\n",
+      "source_repository": null,
+      "source_commit": null,
+      "fetched_at": "2026-11-10T03:30:08Z",
+      "content_updated_at": null,
+      "sync_state": "bootstrap",
+      "source_mode": "bootstrap",
+      "geovisor_summary": {
+        "short_name": "Bethania: asentamientos en alto riesgo",
+        "center": [
+          -90.52353,
+          14.67209
+        ],
+        "zoom": 15.2
+      }
+    },
+    {
+      "project": {
+        "schema_version": "1.0.0",
+        "id": "do-santiago",
+        "title": "Zonificación de Riesgo de Desastre orientada a Instrumentos de Ordenamiento Territorial: municipio de Santiago de los Caballeros",
+        "country": {
+          "code": "DO",
+          "name": "República Dominicana"
+        },
+        "source_groups": [
+          6
+        ],
+        "summary": "La iniciativa combina análisis de crecimiento urbano, escenarios de inundación y exposición para apoyar la zonificación y las decisiones de inversión y permisos del municipio de Santiago de los Caballeros.",
+        "territory": {
+          "label": "Municipio de Santiago de los Caballeros: zona urbana de Santiago y sus 31 secciones rurales, organizadas en 222 barrios/parajes (ONE)",
+          "administrative_units": [
+            "Municipio de Santiago de los Caballeros",
+            "Provincia Santiago",
+            "Región Cibao Norte"
+          ],
+          "geometry_url": null
+        },
+        "institutional_use": {
+          "problem": "Santiago requiere información de riesgo con detalle territorial y criterios trazables para incorporar amenazas, exposición y vulnerabilidad a su Plan Municipal de Ordenamiento Territorial.",
+          "institutions": [
+            "Ministerio de la Presidencia (MINPRE)",
+            "Unidad Ejecutora del Proyecto, Componente 2 (UEP-C2)",
+            "Proyecto de Respuesta a Emergencias y Resiliencia de República Dominicana (P180163)"
+          ],
+          "primary_user": "Principal: Ayuntamiento del municipio de Santiago, Dirección de Planeamiento Urbano (responsable del PMOT, la normativa de uso de suelo y los permisos de construcción).\nDe apoyo: Oficina Municipal de Gestión de Riesgo; Dirección de Obras Públicas y Catastro municipal; Consejo Municipal de Prevención, Mitigación y Respuesta; Defensa Civil y COE; MEPYD (Dirección General de Ordenamiento y Desarrollo Territorial); MINPRE/UEP-C2 como impulsor y financiador del piloto.",
+          "decision_supported": "La herramienta apoyará cuatro decisiones concretas:\nZonificar: delimitar en el PMOT el suelo no urbanizable por riesgo y el suelo urbanizable condicionado, con polígonos y criterios trazables.\nAutorizar: otorgar, condicionar o negar permisos de construcción con un criterio técnico verificable por parcela o edificación.\nPriorizar inversión: ordenar barrios y cañadas para drenaje pluvial sostenible, estabilización de taludes y reasentamiento preventivo según edificaciones y viviendas expuestas.\nMonitorear: detectar cada año nueva expansión urbana dentro de zonas de amenaza y comunicarla al Ayuntamiento y a la población.",
+          "expected_benefit": "Ofrecer al Ayuntamiento escenarios y productos cartográficos que ayuden a revisar restricciones de ocupación, condiciones de desarrollo y prioridades de inversión, con sus incertidumbres explícitas."
+        },
+        "pmv": {
+          "description": "Revisar y calibrar los escenarios del demostrador reportado, contrastar la proyección urbana con evidencia disponible, configurar un piloto de deslizamientos y preparar una ficha de lectura para el Ayuntamiento.",
+          "scope_status": "por_confirmar",
+          "acceptance_criteria": [
+            {
+              "id": "do-santiago-AC-01",
+              "description": "El demostrador y sus datos de entrada son accesibles y reproducibles o se documenta qué componente aún falta.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "do-santiago-AC-02",
+              "description": "Los niveles de agua elegidos por el usuario se identifican como escenarios; un periodo de retorno solo se muestra tras una calibración documentada.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "do-santiago-AC-03",
+              "description": "Se separan huella observada y proyección hasta 2036, explicando entrenamiento, validación y supuestos.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "do-santiago-AC-04",
+              "description": "Las estimaciones de población y pérdidas identifican año, moneda, costos y curvas de daño, junto con incertidumbre.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "do-santiago-AC-05",
+              "description": "La ficha para el Ayuntamiento diferencia resultados exploratorios y criterios normativos que requieren aprobación institucional.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            }
+          ]
+        },
+        "status": {
+          "development": "por_confirmar",
+          "demo": "por_confirmar",
+          "technical_review": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "institutional_validation": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "adoption": {
+            "state": "no_documentada",
+            "evidence_url": null,
+            "date": null
+          }
+        },
+        "links": {
+          "repository": null,
+          "website": null,
+          "demo": "https://claude.ai/artifact/CeTpKKh4j3n7BTKmXQCFEe",
+          "documentation": null,
+          "issue_tracker": null
+        },
+        "governance": {
+          "technical_owner": null,
+          "content_owner": null,
+          "update_frequency": null,
+          "content_updated_at": null
+        },
+        "provenance": {
+          "sources": [
+            {
+              "id": "S21",
+              "label": "Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Gran_Santo_Domingo.docx",
+              "locator": "fuentes/S21_Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Gran_Santo_Domingo.md",
+              "url": null
+            },
+            {
+              "id": "S22",
+              "label": "Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Santiago.docx",
+              "locator": "fuentes/S22_Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Santiago.md",
+              "url": null
+            }
+          ],
+          "statements": [
+            {
+              "pointer": "/title",
+              "status": "declarado",
+              "source_ids": [
+                "S22"
+              ],
+              "note": null
+            },
+            {
+              "pointer": "/summary",
+              "status": "declarado",
+              "source_ids": [
+                "S22"
+              ],
+              "note": "Síntesis editorial del problema y propósito declarados."
+            },
+            {
+              "pointer": "/territory",
+              "status": "declarado",
+              "source_ids": [
+                "S22"
+              ],
+              "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+            },
+            {
+              "pointer": "/institutional_use",
+              "status": "declarado",
+              "source_ids": [
+                "S22"
+              ],
+              "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+            },
+            {
+              "pointer": "/pmv",
+              "status": "propuesta",
+              "source_ids": [
+                "S22"
+              ],
+              "note": "S22 reporta avances anteriores a la jornada; el paquete conserva ese reporte sin certificar métricas, calibración ni adopción institucional. La prioridad técnica debe acordarse con el equipo."
+            },
+            {
+              "pointer": "/status",
+              "status": "por_confirmar",
+              "source_ids": [],
+              "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+            },
+            {
+              "pointer": "/links/demo",
+              "status": "declarado",
+              "source_ids": [
+                "S22"
+              ],
+              "note": "Enlace exacto suministrado por el perfil. Disponibilidad y resultados no comprobados en este paquete."
+            },
+            {
+              "pointer": "/data_sources",
+              "status": "declarado",
+              "source_ids": [
+                "S22"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/methodology",
+              "status": "declarado",
+              "source_ids": [
+                "S22"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/expected_outputs",
+              "status": "declarado",
+              "source_ids": [
+                "S22"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            }
+          ]
+        },
+        "team": [],
+        "data_sources": [
+          {
+            "title": "Sentinel-2 L2A (10 m), 2018–2026: huella urbana y cambio (clasificación y proyección)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Sentinel-1 SAR: inundaciones observadas para calibrar escenarios (Global Flood Monitoring, Copernicus EMS)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Copernicus DEM GLO-30: HAND, red de drenaje, pendientes e insumo de CRISIS",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "GHSL (Copernicus/JRC): GHS-POP 2020–2030, GHS-BUILT-S 10 m y GHS-BUILT-H",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Copernicus EMS: activaciones históricas en el Cibao",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "ERA5 / ERA5-Land (Copernicus C3S): lluvias extremas para escenarios de inundación y deslizamiento",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "ESA WorldCover: referencia de cobertura del suelo",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos locales e institucionales declarados",
+            "provider": null,
+            "url": null,
+            "access": "institucional",
+            "description": "Límites ONE (municipio, secciones, 222 barrios/parajes) y Censo XCNPV 2022\nCartografía de edificaciones de la ONE (212.909 puntos) para validar la exposición\nAvances del Servicio 12 de CopernicusLAC (cartografía de valor económico) y su tabla de insumos estadísticos\nCostos de construcción por m² (ONE ICDV y referencias de mercado 2025)\nFallas geológicas y geología para parametrizar CRISIS",
+            "status": "declarado"
+          }
+        ],
+        "methodology": "1. Huella urbana: compuestos Sentinel-2 L2A sin nubes (mediana, máscara SCL) de 2018, 2021 y 2024; clasificador entrenado con GHS-BUILT-S 10 m; regla de no reversión del suelo construido.\n2. Crecimiento (tipo MOLUSCE): matriz de transición de Markov; potencial de transición con red neuronal y regresión logística (pendiente, elevación, distancia a vías, al centro y a lo construido, densidad vecinal); autómata celular. Calibración 2018→2021, validación contra 2024 y proyección por pasos de 3 años hasta 2036 (140 km²).\n3. Inundación: HAND sobre el Copernicus DEM GLO-30 con tres clases de drenaje (cañadas < 10 km², tributarios 10–500 km², Yaque > 500 km²); el usuario fija el nivel del agua. En la cañada piloto se correrán escenarios 2D con ANUGA (motor abierto que usa Hydrata) con lluvias de diseño y ERA5.\n4. Población: total proyectado con la tendencia GHS-POP (editable) y distribuido sobre la huella del año elegido.\n5. Valor económico (Servicio 12): huella de edificación × niveles (GHS-BUILT-H) × costo de reposición por m² × (1 + contenido), por píxel de 20 m.\n6. Pérdidas: curvas profundidad-daño del JRC para Sudamérica (Huizinga et al., 2017); pérdida anual esperada al calibrar los escenarios con periodos de retorno.\n7. Deslizamientos (CRISIS): estabilidad de laderas por lluvia y sismo sobre el Copernicus DEM, calibrada con inventarios de deslizamientos; aceleraciones sísmicas de la Falla Septentrional.\n8. Norma: traducción de pérdidas y aptitud a polígonos normativos del PMOT y criterios de permisos.\n\nHerramientas previstas: Python (rasterio, geopandas, scikit-learn, pysheds), réplica del flujo MOLUSCE (QGIS), ANUGA, CRISIS, Copernicus Data Space / openEO, Leaflet; métricas: F1 de la clasificación, AUC y figura de mérito del modelo de crecimiento, superficie inundada, población expuesta, pérdida probable en RD$ y US$.",
+        "expected_outputs": [
+          "Mapa",
+          "Capa geoespacial",
+          "Indicadores por barrio",
+          "Flujo de trabajo / metodología",
+          "Visor web",
+          "Simulador web de escenarios (demostrador ya publicado): el usuario fija el nivel del agua en cañadas, tributarios y el Yaque, el año de exposición (2024–2036), el crecimiento poblacional y el costo de reposición, y el visor recalcula la mancha de inundación, la población expuesta y las pérdidas económicas por píxel y por barrio.\nHuella urbana observada y proyectada a 10 m con Sentinel-2 y un modelo de cambio de uso del suelo tipo MOLUSCE (red neuronal + autómata celular) hasta 2036.\nMapa de valor económico del territorio construido por píxel, siguiendo el enfoque del Servicio 12 de CopernicusLAC (desagregación estadística de valores), y mapa de pérdidas probables.\nMódulo de deslizamientos por lluvia y sismo con el modelo abierto CRISIS sobre el Copernicus DEM, para las laderas de la Cordillera Septentrional y la Falla Septentrional.\nAptitud territorial y polígonos normativos para el PMOT, entregados en GeoPackage y servicios OGC, con metodología replicable en un repositorio."
+        ],
+        "limitations": [
+          "S22 actualizada el 14 de octubre de 2026 cambia el ámbito a Santiago; la ficha Gran Santo Domingo S21 es antecedente y no debe alimentar su mapa.",
+          "F1=0,97, AUC=0,95 y 96 % de cambios a menos de 100 m son métricas reportadas por el perfil, sin archivos de validación adjuntos.",
+          "Las cifras 80 km² (2018), 99 km² (2024) y aproximadamente 140 km² (2036) mezclan observaciones/modelos según el perfil y deben conservar esa distinción.",
+          "El escenario severo reportado de unas 58.000 personas expuestas en 2030 y pérdidas de US$1.320 millones/US$2.020 millones no tiene aquí evidencia independiente ni periodo de retorno calibrado.",
+          "El simulador de niveles HAND no demuestra por sí mismo una simulación hidráulica calibrada. ANUGA y CRISIS se describen como desarrollos a configurar.",
+          "La descarga de capas institucionales y la publicación de indicadores por barrio tienen accesos diferentes."
+        ],
+        "tags": [
+          "riesgo",
+          "escenarios",
+          "ordenamiento territorial"
+        ]
+      },
+      "content_markdown": "# Santiago: escenarios de riesgo para el ordenamiento territorial\n\nLa iniciativa combina análisis de crecimiento urbano, escenarios de inundación y exposición para apoyar la zonificación y las decisiones de inversión y permisos del municipio de Santiago de los Caballeros.\n\n## Propósito\n\nSantiago requiere información de riesgo con detalle territorial y criterios trazables para incorporar amenazas, exposición y vulnerabilidad a su Plan Municipal de Ordenamiento Territorial.\n\nOfrecer al Ayuntamiento escenarios y productos cartográficos que ayuden a revisar restricciones de ocupación, condiciones de desarrollo y prioridades de inversión, con sus incertidumbres explícitas.\n\n## Instituciones participantes\n\n- Ministerio de la Presidencia (MINPRE)\n- Unidad Ejecutora del Proyecto, Componente 2 (UEP-C2)\n- Proyecto de Respuesta a Emergencias y Resiliencia de República Dominicana (P180163)\n\n## Territorio\n\nMunicipio de Santiago de los Caballeros: zona urbana de Santiago y sus 31 secciones rurales, organizadas en 222 barrios/parajes (ONE).\n\n## Usuario y decisión\n\nPrincipal: Ayuntamiento del municipio de Santiago, Dirección de Planeamiento Urbano (responsable del PMOT, la normativa de uso de suelo y los permisos de construcción).\n\nDe apoyo: Oficina Municipal de Gestión de Riesgo; Dirección de Obras Públicas y Catastro municipal; Consejo Municipal de Prevención, Mitigación y Respuesta; Defensa Civil y COE; MEPYD (Dirección General de Ordenamiento y Desarrollo Territorial); MINPRE/UEP-C2 como impulsor y financiador del piloto.\n\nLa herramienta apoyará cuatro decisiones concretas:\nZonificar: delimitar en el PMOT el suelo no urbanizable por riesgo y el suelo urbanizable condicionado, con polígonos y criterios trazables.\nAutorizar: otorgar, condicionar o negar permisos de construcción con un criterio técnico verificable por parcela o edificación.\nPriorizar inversión: ordenar barrios y cañadas para drenaje pluvial sostenible, estabilización de taludes y reasentamiento preventivo según edificaciones y viviendas expuestas.\nMonitorear: detectar cada año nueva expansión urbana dentro de zonas de amenaza y comunicarla al Ayuntamiento y a la población.\n\n## Producto mínimo viable previsto\n\nRevisar y calibrar los escenarios del demostrador reportado, contrastar la proyección urbana con evidencia disponible, configurar un piloto de deslizamientos y preparar una ficha de lectura para el Ayuntamiento.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nEl perfil plantea analizar la expansión urbana de 2018, 2021 y 2024 con Sentinel-2 y explorar una proyección a 2036; contrastar la exposición con escenarios de inundación basados en HAND y Copernicus DEM; y valorar daños mediante supuestos de altura, costo y curvas de vulnerabilidad. ANUGA y CRISIS aparecen como ampliaciones por desarrollar o calibrar. Las métricas y pérdidas económicas incluidas en el expediente son cifras declaradas por el perfil: deben presentarse con su escenario, supuestos y evidencia de validación.\n\n## Contribución prevista al Atlas\n\nHuella urbana observada y escenarios, indicadores de exposición por barrio/paraje y fichas de método. Las pérdidas y propuestas normativas deben mostrar estado de calibración y revisión.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nLa colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.\n",
+      "source_repository": null,
+      "source_commit": null,
+      "fetched_at": "2026-11-10T03:30:08Z",
+      "content_updated_at": null,
+      "sync_state": "bootstrap",
+      "source_mode": "bootstrap",
+      "geovisor_summary": {
+        "short_name": "Santiago: zonificación del riesgo de desastres",
+        "center": [
+          -70.697,
+          19.4517
+        ],
+        "zoom": 11.3
+      }
+    },
+    {
+      "project": {
+        "schema_version": "1.0.0",
+        "id": "gt-salud-metropolitana",
+        "title": "Prevención de Riesgos",
+        "country": {
+          "code": "GT",
+          "name": "Guatemala"
+        },
+        "source_groups": [
+          7
+        ],
+        "summary": "La iniciativa propone actualizar información de expansión urbana y exposición a inundaciones, deslizamientos y calor para apoyar la prevención de riesgos a la salud y la coordinación entre MSPAS y municipalidades.",
+        "territory": {
+          "label": "Región metropolitana de Guatemala",
+          "administrative_units": [
+            "Región metropolitana de Guatemala"
+          ],
+          "geometry_url": null
+        },
+        "institutional_use": {
+          "problem": "El crecimiento no planificado y la ocupación de zonas vulnerables requieren información territorial actualizada para reconocer exposición y apoyar medidas preventivas de salud y gestión del riesgo.",
+          "institutions": [
+            "Ministerio de Salud Pública y Asistencia Social (MSPAS)"
+          ],
+          "primary_user": "Ministerio de Salud Pública y Asistencia Social y municipalidades, otros",
+          "decision_supported": "Sistema de Alertas Tempranas, Prevención de Riesgos Basada en Datos",
+          "expected_benefit": "Poner a disposición de usuarios municipales e institucionales un mapa, indicadores y un protocolo de actualización que faciliten decisiones basadas en datos."
+        },
+        "pmv": {
+          "description": "Un protocolo operativo, un script reproducible y un mapa con dashboard inicial de la región metropolitana, delimitados a variables y fuentes que el equipo pueda actualizar y revisar.",
+          "scope_status": "por_confirmar",
+          "acceptance_criteria": [
+            {
+              "id": "gt-salud-metropolitana-AC-01",
+              "description": "Se confirma el ámbito metropolitano y se registra la escala de las capas utilizadas.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "gt-salud-metropolitana-AC-02",
+              "description": "Cada capa de amenaza incluye fecha y vigencia; las capas desactualizadas se identifican expresamente.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "gt-salud-metropolitana-AC-03",
+              "description": "Se documenta el procedimiento reproducible de actualización y el papel de MSPAS.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "gt-salud-metropolitana-AC-04",
+              "description": "El tablero distingue exposición territorial, amenaza y efectos sobre la salud, sin atribuir relaciones clínicas no documentadas.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "gt-salud-metropolitana-AC-05",
+              "description": "El protocolo identifica responsables y condiciones para comunicar información o alertas; no se emiten alertas operativas desde una demostración.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            }
+          ]
+        },
+        "status": {
+          "development": "por_confirmar",
+          "demo": "por_confirmar",
+          "technical_review": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "institutional_validation": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "adoption": {
+            "state": "no_documentada",
+            "evidence_url": null,
+            "date": null
+          }
+        },
+        "links": {
+          "repository": null,
+          "website": null,
+          "demo": null,
+          "documentation": null,
+          "issue_tracker": null
+        },
+        "governance": {
+          "technical_owner": null,
+          "content_owner": null,
+          "update_frequency": null,
+          "content_updated_at": null
+        },
+        "provenance": {
+          "sources": [
+            {
+              "id": "S23",
+              "label": "Ficha_07_Guatemala_MSPAS_Prevencion_Riesgos_Salud.docx",
+              "locator": "fuentes/S23_Ficha_07_Guatemala_MSPAS_Prevencion_Riesgos_Salud.md",
+              "url": null
+            }
+          ],
+          "statements": [
+            {
+              "pointer": "/title",
+              "status": "declarado",
+              "source_ids": [
+                "S23"
+              ],
+              "note": null
+            },
+            {
+              "pointer": "/summary",
+              "status": "declarado",
+              "source_ids": [
+                "S23"
+              ],
+              "note": "Síntesis editorial del problema y propósito declarados."
+            },
+            {
+              "pointer": "/territory",
+              "status": "declarado",
+              "source_ids": [
+                "S23"
+              ],
+              "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+            },
+            {
+              "pointer": "/institutional_use",
+              "status": "declarado",
+              "source_ids": [
+                "S23"
+              ],
+              "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+            },
+            {
+              "pointer": "/pmv",
+              "status": "propuesta",
+              "source_ids": [
+                "S23"
+              ],
+              "note": "La ficha solicita un tablero automatizado, pero no adjunta un sistema desplegado. La automatización y la alerta operativa requieren implementación y revisión específicas."
+            },
+            {
+              "pointer": "/status",
+              "status": "por_confirmar",
+              "source_ids": [],
+              "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+            },
+            {
+              "pointer": "/data_sources",
+              "status": "declarado",
+              "source_ids": [
+                "S23"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/methodology",
+              "status": "declarado",
+              "source_ids": [
+                "S23"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/expected_outputs",
+              "status": "declarado",
+              "source_ids": [
+                "S23"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            }
+          ]
+        },
+        "team": [],
+        "data_sources": [
+          {
+            "title": "Sentinel-2 / óptico multiespectral",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Sentinel-1 / radar SAR",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Landsat térmico / temperatura superficial (LST)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Imágenes de muy alta resolución / ortofotos",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "LiDAR / modelos digitales de superficie",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Copernicus DEM / elevación",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Límites institucionales o administrativos",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos locales e institucionales declarados",
+            "provider": null,
+            "url": null,
+            "access": "institucional",
+            "description": "Límites municipales, departamentales y nacionales, capas de  inundación y deslizamientos (desactualizados), censos de población año 2018 de la region metropolitana de Guatemala",
+            "status": "declarado"
+          }
+        ],
+        "methodology": "Recopilación de datos a diferentes escalas, actualización, aplicación y producto final para los usuarios propuestos\n\nHerramientas previstas: No especificado",
+        "expected_outputs": [
+          "Capa geoespacial",
+          "Indicador urbano",
+          "Script reproducible",
+          "Reporte o informe automatizado",
+          "Dashboard / tablero",
+          "Visor web",
+          "Aplicación",
+          "Formulario de campo",
+          "Base de datos",
+          "Protocolo operativo",
+          "Mapa con dashboard/visor web, de la región metropolitana de Guatemala"
+        ],
+        "limitations": [
+          "La ficha menciona capas de inundación y deslizamientos desactualizadas y censo de 2018; no presentar los resultados como situación actual sin nueva evidencia.",
+          "El ámbito se declara de 2.253 km², pero no se adjunta un límite vectorial.",
+          "No se especifica un algoritmo de producción ni se adjunta código.",
+          "Temperatura superficial y exposición territorial no equivalen a temperatura del aire, diagnóstico clínico o predicción sanitaria individual.",
+          "La necesidad de alerta temprana es un objetivo declarado; no hay evidencia de un sistema de alertas operativo en el paquete."
+        ],
+        "tags": [
+          "salud",
+          "exposición",
+          "riesgo metropolitano"
+        ]
+      },
+      "content_markdown": "# Guatemala metropolitana: información territorial para prevenir riesgos a la salud\n\nLa iniciativa propone actualizar información de expansión urbana y exposición a inundaciones, deslizamientos y calor para apoyar la prevención de riesgos a la salud y la coordinación entre MSPAS y municipalidades.\n\n## Propósito\n\nEl crecimiento no planificado y la ocupación de zonas vulnerables requieren información territorial actualizada para reconocer exposición y apoyar medidas preventivas de salud y gestión del riesgo.\n\nPoner a disposición de usuarios municipales e institucionales un mapa, indicadores y un protocolo de actualización que faciliten decisiones basadas en datos.\n\n## Instituciones participantes\n\n- Ministerio de Salud Pública y Asistencia Social (MSPAS)\n\n## Territorio\n\nRegión metropolitana de Guatemala.\n\n## Usuario y decisión\n\nMinisterio de Salud Pública y Asistencia Social y municipalidades, otros.\n\nSistema de Alertas Tempranas, Prevención de Riesgos Basada en Datos\n\n## Producto mínimo viable previsto\n\nUn protocolo operativo, un script reproducible y un mapa con dashboard inicial de la región metropolitana, delimitados a variables y fuentes que el equipo pueda actualizar y revisar.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nSe propone combinar imágenes Sentinel, temperatura superficial de Landsat, modelos de elevación y referencias de población y edificaciones con información institucional sobre amenazas. El flujo debe documentar la detección de cambios urbanos, la exposición y los criterios de priorización territorial para prevención en salud. La temperatura superficial y la exposición geográfica no equivalen por sí solas a diagnósticos ni a alertas sanitarias operativas.\n\n## Contribución prevista al Atlas\n\nIndicadores agregados de exposición urbana y fichas de actualización de información territorial relacionada con riesgos a la salud, con fecha, método y límites de interpretación.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nLa colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.\n",
+      "source_repository": null,
+      "source_commit": null,
+      "fetched_at": "2026-11-10T03:30:08Z",
+      "content_updated_at": null,
+      "sync_state": "bootstrap",
+      "source_mode": "bootstrap",
+      "geovisor_summary": {
+        "short_name": "Guatemala metropolitana: prevención de riesgos a la salud",
+        "center": [
+          -90.34751,
+          14.62124
+        ],
+        "zoom": 10.4
+      }
+    },
+    {
+      "project": {
+        "schema_version": "1.0.0",
+        "id": "hn-distrito-central",
+        "title": "Brecha catastral y asentamientos informales en el Municipio del Distrito Central: herramienta geoespacial replicable para los municipios de Honduras",
+        "country": {
+          "code": "HN",
+          "name": "Honduras"
+        },
+        "source_groups": [
+          8
+        ],
+        "summary": "La iniciativa propone comparar la ciudad construida con el catastro del Distrito Central para localizar diferencias, priorizar actualización y levantamientos y preparar un método que otros municipios puedan adaptar.",
+        "territory": {
+          "label": "Zona piloto: toda la mancha urbana consolidada del Municipio del Distrito Central, es decir, Tegucigalpa y Comayagüela.\nEl polígono de la mancha urbana se genera con el script (GHSL y Dynamic World) y se homologa con el perímetro urbano delimitado por la AMDC.",
+          "administrative_units": [
+            "Municipio del Distrito Central",
+            "Tegucigalpa",
+            "Comayagüela",
+            "Francisco Morazán"
+          ],
+          "geometry_url": null
+        },
+        "institutional_use": {
+          "problem": "La información catastral puede quedar rezagada respecto de edificaciones y ocupaciones existentes. La AMDC necesita medir esa diferencia de manera sistemática para orientar actualización, regularización y mejoramiento de barrios.",
+          "institutions": [
+            "Universidad Nacional Autónoma de Honduras (UNAH)",
+            "Alcaldía Municipal del Distrito Central (AMDC)",
+            "Secretaría de Gobernación, Justicia y Descentralización (SEGOB)"
+          ],
+          "primary_user": "AMDC: Dirección de Ordenamiento Territorial (responsable del Atlas Municipal), Catastro Municipal y la unidad de acceso a la tierra y regularización.\nInstituto de la Propiedad (regularización y titulación) y SEGOB (asistencia técnica a municipios).\nUNAH (Atlas Urbano).\nEtapa de réplica: toda la población, con énfasis en las personas y organizaciones interesadas en temas urbanos.",
+          "decision_supported": "¿Dónde y en qué magnitud difiere la ciudad construida de la ciudad catastrada? A partir de esa respuesta:\nPriorizar sectores para la actualización catastral y el levantamiento en campo.\nIdentificar y caracterizar asentamientos informales para la regularización de la tenencia y el mejoramiento integral de barrios.\nDetectar a tiempo nuevas ocupaciones, en especial en laderas, quebradas y suelo no urbanizable.\nEstimar la base tributaria no registrada y orientar la inversión municipal en servicios.",
+          "expected_benefit": "Contar con indicadores trazables y un kit replicable que conecte el trabajo municipal con el Atlas Municipal del MDC y el Atlas Urbano de la UNAH."
+        },
+        "pmv": {
+          "description": "Un script parametrizado para la mancha urbana consolidada del MDC, una primera comparación con el catastro autorizado, indicadores por colonia o celda de 250 m y una prueba de réplica en un segundo municipio.",
+          "scope_status": "por_confirmar",
+          "acceptance_criteria": [
+            {
+              "id": "hn-distrito-central-AC-01",
+              "description": "Se acuerda el polígono de la mancha urbana consolidada y se homologa con el perímetro AMDC; el área final se calcula desde esa geometría.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "hn-distrito-central-AC-02",
+              "description": "El catastro tiene fecha, campos y condiciones de acceso documentados; se diferencia ausencia de registro de ausencia de datos disponibles.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "hn-distrito-central-AC-03",
+              "description": "La comparación produce indicadores trazables de edificios sin predio, baldíos ocupados u otros casos definidos, revisados con muestras.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "hn-distrito-central-AC-04",
+              "description": "Las tipologías A–E se presentan como clasificación metodológica propuesta hasta documentar umbrales y validación.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "hn-distrito-central-AC-05",
+              "description": "La vista pública publica agregados por colonia o celdas autorizadas y protege los datos de predio/edificación restringidos.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            },
+            {
+              "id": "hn-distrito-central-AC-06",
+              "description": "La réplica en otro municipio registra qué parámetros se cambian y qué datos locales siguen siendo necesarios.",
+              "status": "propuesta",
+              "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+            }
+          ]
+        },
+        "status": {
+          "development": "por_confirmar",
+          "demo": "por_confirmar",
+          "technical_review": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "institutional_validation": {
+            "state": "pendiente",
+            "evidence_url": null,
+            "date": null,
+            "reviewer": null
+          },
+          "adoption": {
+            "state": "no_documentada",
+            "evidence_url": null,
+            "date": null
+          }
+        },
+        "links": {
+          "repository": null,
+          "website": null,
+          "demo": null,
+          "documentation": null,
+          "issue_tracker": null
+        },
+        "governance": {
+          "technical_owner": null,
+          "content_owner": null,
+          "update_frequency": null,
+          "content_updated_at": null
+        },
+        "provenance": {
+          "sources": [
+            {
+              "id": "S24",
+              "label": "Ficha_08_Honduras_Catastro_Asentamientos_MDC REV 2026 10 12.docx",
+              "locator": "fuentes/S24_Ficha_08_Honduras_Catastro_Asentamientos_MDC_REV_2026_10_12.md",
+              "url": null
+            },
+            {
+              "id": "S25",
+              "label": "Ficha_08_Honduras_UNAH_AMDC_SEGOB_Planificacion_Riesgo.docx",
+              "locator": "fuentes/S25_Ficha_08_Honduras_UNAH_AMDC_SEGOB_Planificacion_Riesgo.md",
+              "url": null
+            }
+          ],
+          "statements": [
+            {
+              "pointer": "/title",
+              "status": "declarado",
+              "source_ids": [
+                "S24"
+              ],
+              "note": null
+            },
+            {
+              "pointer": "/summary",
+              "status": "declarado",
+              "source_ids": [
+                "S24"
+              ],
+              "note": "Síntesis editorial del problema y propósito declarados."
+            },
+            {
+              "pointer": "/territory",
+              "status": "declarado",
+              "source_ids": [
+                "S24"
+              ],
+              "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+            },
+            {
+              "pointer": "/institutional_use",
+              "status": "declarado",
+              "source_ids": [
+                "S24"
+              ],
+              "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+            },
+            {
+              "pointer": "/pmv",
+              "status": "propuesta",
+              "source_ids": [
+                "S24"
+              ],
+              "note": "Alcance declarado por la revisión del 12 de octubre. La ficha prevé huella 2016–2026, año de consolidación y edificios con año de aparición; la cobertura real de cada producto debe comprobarse antes de afirmarla."
+            },
+            {
+              "pointer": "/status",
+              "status": "por_confirmar",
+              "source_ids": [],
+              "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+            },
+            {
+              "pointer": "/data_sources",
+              "status": "declarado",
+              "source_ids": [
+                "S24"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/methodology",
+              "status": "declarado",
+              "source_ids": [
+                "S24"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            },
+            {
+              "pointer": "/expected_outputs",
+              "status": "declarado",
+              "source_ids": [
+                "S24"
+              ],
+              "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+            }
+          ]
+        },
+        "team": [],
+        "data_sources": [
+          {
+            "title": "Sentinel-2 / óptico multiespectral (composites de estación seca, índices)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Sentinel-1 / radar SAR (construido bajo nubosidad)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Cobertura del suelo global (Dynamic World, ESA WorldCover)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "GHSL / huella urbana global (historia 1975–2020)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Huellas de edificaciones (Google Open Buildings v3 y 2.5D Temporal; Microsoft)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Copernicus DEM / elevación (pendientes)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Imágenes de muy alta resolución / ortofotos (validación)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Drones / RPAS (validación en sectores de muestreo)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "OpenStreetMap (vías y accesibilidad)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Población (censo INE, WorldPop)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Catastro / parcelario",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Límites institucionales o administrativos",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos de campo / encuestas (Kobo/ODK)",
+            "provider": null,
+            "url": null,
+            "access": "por_confirmar",
+            "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+            "status": "declarado"
+          },
+          {
+            "title": "Datos locales e institucionales declarados",
+            "provider": null,
+            "url": null,
+            "access": "institucional",
+            "description": "AMDC: parcelario catastral, colonias y barrios, zonificación, zonas de riesgo, hidrografía, aldeas y caseríos.\nInstituto de la Propiedad: predios titulados y polígonos en proceso de regularización (por gestionar).\nTECHO Honduras: censo de asentamientos informales del casco urbano (2018), útil como referencia de validación.\nINE: censo de población y vivienda por segmento censal.",
+            "status": "declarado"
+          }
+        ],
+        "methodology": "1. Ciudad construida (Nivel 1, datos globales). Huella construida anual 2016–2026 con Dynamic World y Sentinel-2; historia 1975–2020 con GHSL; edificaciones con Open Buildings v3 y año de aparición con Open Buildings 2.5D Temporal.\n2. Ciudad catastrada (Nivel 2, datos de la AMDC). Normalización del parcelario al modelo de datos común: clave, uso, estado y fecha de actualización.\n3. Cruce y brecha. Asignación de cada edificación a un predio y cálculo, por colonia, de edificaciones sin predio, baldíos ocupados, ocupación nueva y rezago catastral.\n4. Caracterización y tipología. Combinación de brecha, morfología (densidad y tamaño de edificaciones) y condición crítica (pendiente ≥ 30 % o zona de riesgo) en la tipología A–E.\n5. Validación. Muestreo estratificado por tipología en sectores de la mancha urbana, con ortofotos, dron y visitas; contraste con el censo TECHO 2018; ajuste de umbrales.\n6. Publicación y réplica. Capas y tablero en el Atlas Municipal y el Atlas Urbano UNAH; scripts y guía en un repositorio abierto; réplica en un segundo municipio.\n\nHerramientas previstas: NDBI, NDVI, BSI; probabilidad de construido (Dynamic World); presencia y altura de edificaciones (Open Buildings 2.5D); pendiente (Copernicus DEM); densidad de edificaciones por hectárea, tamaño medio de edificación y proporción fuera de catastro.\nHerramientas: Google Earth Engine (JavaScript), openEO en Copernicus Data Space Ecosystem (Python), QGIS / ArcGIS Pro, PostGIS y GeoServer.",
+        "expected_outputs": [
+          "Mapa",
+          "Capa geoespacial",
+          "Indicador urbano",
+          "Tablero (dashboard) de indicadores",
+          "Script reproducible",
+          "Flujo de trabajo / metodología",
+          "Visor web",
+          "Base de datos",
+          "Insumo técnico para instrumento de planificación",
+          "Repositorio de datos o código",
+          "Un kit replicable de brecha catastral con cinco componentes:\nCapas: huella construida multitemporal, edificaciones con año de aparición, edificaciones fuera de catastro, predios baldíos ocupados y asentamientos informales candidatos con tipología A–E (ver figura 1).\nMapas temáticos para el Atlas Municipal del MDC y el Atlas Urbano UNAH.\nTablero de indicadores por colonia y por municipio.\nScripts parametrizados por municipio en Google Earth Engine y en openEO, sobre Copernicus Data Space Ecosystem.\nGuía metodológica y modelo de datos común para publicar los mismos productos en ambos atlas y replicarlos en otros municipios."
+        ],
+        "limitations": [
+          "La revisión S24 sustituye el antiguo alcance del centro histórico por toda la mancha urbana consolidada; 716,1 ha y su centroide son referencias preliminares, no área ni centro vigente.",
+          "El acceso al parcelario con fecha por predio requiere condiciones de uso formalizadas.",
+          "La ausencia de correspondencia con catastro no prueba por sí misma informalidad, incumplimiento o deuda tributaria.",
+          "Los datos a nivel de predio/edificación son de uso interno/institucional; la propuesta pública utiliza indicadores agregados.",
+          "La tipología A–E es metodológica; pendiente ≥30 % u otra regla no basta para declarar riesgo sin contexto y validación.",
+          "La ficha menciona ejemplos Juticalpa o San Pedro Sula para la réplica; no existe un segundo municipio comprometido en el paquete."
+        ],
+        "tags": [
+          "catastro",
+          "brecha catastral",
+          "replicabilidad"
+        ]
+      },
+      "content_markdown": "# Distrito Central: brecha catastral y ciudad construida\n\nLa iniciativa propone comparar la ciudad construida con el catastro del Distrito Central para localizar diferencias, priorizar actualización y levantamientos y preparar un método que otros municipios puedan adaptar.\n\n## Propósito\n\nLa información catastral puede quedar rezagada respecto de edificaciones y ocupaciones existentes. La AMDC necesita medir esa diferencia de manera sistemática para orientar actualización, regularización y mejoramiento de barrios.\n\nContar con indicadores trazables y un kit replicable que conecte el trabajo municipal con el Atlas Municipal del MDC y el Atlas Urbano de la UNAH.\n\n## Instituciones participantes\n\n- Universidad Nacional Autónoma de Honduras (UNAH)\n- Alcaldía Municipal del Distrito Central (AMDC)\n- Secretaría de Gobernación, Justicia y Descentralización (SEGOB)\n\n## Territorio\n\nZona piloto: toda la mancha urbana consolidada del Municipio del Distrito Central, es decir, Tegucigalpa y Comayagüela.\n\nEl polígono de la mancha urbana se genera con el script (GHSL y Dynamic World) y se homologa con el perímetro urbano delimitado por la AMDC.\n\n## Usuario y decisión\n\nAMDC: Dirección de Ordenamiento Territorial (responsable del Atlas Municipal), Catastro Municipal y la unidad de acceso a la tierra y regularización.\n\nInstituto de la Propiedad (regularización y titulación) y SEGOB (asistencia técnica a municipios).\n\nUNAH (Atlas Urbano).\n\nEtapa de réplica: toda la población, con énfasis en las personas y organizaciones interesadas en temas urbanos.\n\n¿Dónde y en qué magnitud difiere la ciudad construida de la ciudad catastrada? A partir de esa respuesta:\nPriorizar sectores para la actualización catastral y el levantamiento en campo.\nIdentificar y caracterizar asentamientos informales para la regularización de la tenencia y el mejoramiento integral de barrios.\nDetectar a tiempo nuevas ocupaciones, en especial en laderas, quebradas y suelo no urbanizable.\nEstimar la base tributaria no registrada y orientar la inversión municipal en servicios.\n\n## Producto mínimo viable previsto\n\nUn script parametrizado para la mancha urbana consolidada del MDC, una primera comparación con el catastro autorizado, indicadores por colonia o celda de 250 m y una prueba de réplica en un segundo municipio.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nSe propone comparar la ciudad construida observable con datos globales con la ciudad registrada en el catastro municipal. El flujo combina Sentinel-2/Dynamic World, Sentinel-1, GHSL, Open Buildings y Copernicus DEM con parcelario, colonias, zonificación y amenazas de AMDC. Los indicadores de brecha se plantean por colonia o celda, con revisión institucional de las tipologías y publicación agregada; el kit deberá poder adaptarse posteriormente a otro municipio.\n\n## Contribución prevista al Atlas\n\nCapas e indicadores agregados de brecha catastral, huella urbana y tipología revisada, publicados de forma compatible en el Atlas Municipal del MDC y el Atlas Urbano de la UNAH.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nLa colaboración de esta iniciativa se organizará en un repositorio canónico. Las contribuciones se preparan en una rama del clon personal o del fork y se presentan mediante una solicitud de cambios. Los enlaces de colaboración se activarán cuando el repositorio esté configurado y verificado.\n",
+      "source_repository": null,
+      "source_commit": null,
+      "fetched_at": "2026-11-10T03:30:09Z",
+      "content_updated_at": null,
+      "sync_state": "bootstrap",
+      "source_mode": "bootstrap",
+      "geovisor_summary": {
+        "short_name": "Distrito Central: brecha catastral y asentamientos informales",
+        "center": [
+          -87.20542,
+          14.085
+        ],
+        "zoom": 11.8
+      }
+    }
+  ]
+}

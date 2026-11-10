@@ -1,0 +1,288 @@
+{
+  "schema_version": "1.0.0",
+  "id": "do-santiago",
+  "title": "Zonificación de Riesgo de Desastre orientada a Instrumentos de Ordenamiento Territorial: municipio de Santiago de los Caballeros",
+  "country": {
+    "code": "DO",
+    "name": "República Dominicana"
+  },
+  "source_groups": [
+    6
+  ],
+  "summary": "La iniciativa combina análisis de crecimiento urbano, escenarios de inundación y exposición para apoyar la zonificación y las decisiones de inversión y permisos del municipio de Santiago de los Caballeros.",
+  "territory": {
+    "label": "Municipio de Santiago de los Caballeros: zona urbana de Santiago y sus 31 secciones rurales, organizadas en 222 barrios/parajes (ONE)",
+    "administrative_units": [
+      "Municipio de Santiago de los Caballeros",
+      "Provincia Santiago",
+      "Región Cibao Norte"
+    ],
+    "geometry_url": null
+  },
+  "institutional_use": {
+    "problem": "Santiago requiere información de riesgo con detalle territorial y criterios trazables para incorporar amenazas, exposición y vulnerabilidad a su Plan Municipal de Ordenamiento Territorial.",
+    "institutions": [
+      "Ministerio de la Presidencia (MINPRE)",
+      "Unidad Ejecutora del Proyecto, Componente 2 (UEP-C2)",
+      "Proyecto de Respuesta a Emergencias y Resiliencia de República Dominicana (P180163)"
+    ],
+    "primary_user": "Principal: Ayuntamiento del municipio de Santiago, Dirección de Planeamiento Urbano (responsable del PMOT, la normativa de uso de suelo y los permisos de construcción).\nDe apoyo: Oficina Municipal de Gestión de Riesgo; Dirección de Obras Públicas y Catastro municipal; Consejo Municipal de Prevención, Mitigación y Respuesta; Defensa Civil y COE; MEPYD (Dirección General de Ordenamiento y Desarrollo Territorial); MINPRE/UEP-C2 como impulsor y financiador del piloto.",
+    "decision_supported": "La herramienta apoyará cuatro decisiones concretas:\nZonificar: delimitar en el PMOT el suelo no urbanizable por riesgo y el suelo urbanizable condicionado, con polígonos y criterios trazables.\nAutorizar: otorgar, condicionar o negar permisos de construcción con un criterio técnico verificable por parcela o edificación.\nPriorizar inversión: ordenar barrios y cañadas para drenaje pluvial sostenible, estabilización de taludes y reasentamiento preventivo según edificaciones y viviendas expuestas.\nMonitorear: detectar cada año nueva expansión urbana dentro de zonas de amenaza y comunicarla al Ayuntamiento y a la población.",
+    "expected_benefit": "Ofrecer al Ayuntamiento escenarios y productos cartográficos que ayuden a revisar restricciones de ocupación, condiciones de desarrollo y prioridades de inversión, con sus incertidumbres explícitas."
+  },
+  "pmv": {
+    "description": "Revisar y calibrar los escenarios del demostrador reportado, contrastar la proyección urbana con evidencia disponible, configurar un piloto de deslizamientos y preparar una ficha de lectura para el Ayuntamiento.",
+    "scope_status": "por_confirmar",
+    "acceptance_criteria": [
+      {
+        "id": "do-santiago-AC-01",
+        "description": "El demostrador y sus datos de entrada son accesibles y reproducibles o se documenta qué componente aún falta.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "do-santiago-AC-02",
+        "description": "Los niveles de agua elegidos por el usuario se identifican como escenarios; un periodo de retorno solo se muestra tras una calibración documentada.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "do-santiago-AC-03",
+        "description": "Se separan huella observada y proyección hasta 2036, explicando entrenamiento, validación y supuestos.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "do-santiago-AC-04",
+        "description": "Las estimaciones de población y pérdidas identifican año, moneda, costos y curvas de daño, junto con incertidumbre.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      },
+      {
+        "id": "do-santiago-AC-05",
+        "description": "La ficha para el Ayuntamiento diferencia resultados exploratorios y criterios normativos que requieren aprobación institucional.",
+        "status": "propuesta",
+        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+      }
+    ]
+  },
+  "status": {
+    "development": "por_confirmar",
+    "demo": "por_confirmar",
+    "technical_review": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "institutional_validation": {
+      "state": "pendiente",
+      "evidence_url": null,
+      "date": null,
+      "reviewer": null
+    },
+    "adoption": {
+      "state": "no_documentada",
+      "evidence_url": null,
+      "date": null
+    }
+  },
+  "links": {
+    "repository": null,
+    "website": null,
+    "demo": "https://claude.ai/artifact/CeTpKKh4j3n7BTKmXQCFEe",
+    "documentation": null,
+    "issue_tracker": null
+  },
+  "governance": {
+    "technical_owner": null,
+    "content_owner": null,
+    "update_frequency": null,
+    "content_updated_at": null
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "S21",
+        "label": "Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Gran_Santo_Domingo.docx",
+        "locator": "fuentes/S21_Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Gran_Santo_Domingo.md",
+        "url": null
+      },
+      {
+        "id": "S22",
+        "label": "Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Santiago.docx",
+        "locator": "fuentes/S22_Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Santiago.md",
+        "url": null
+      }
+    ],
+    "statements": [
+      {
+        "pointer": "/title",
+        "status": "declarado",
+        "source_ids": [
+          "S22"
+        ],
+        "note": null
+      },
+      {
+        "pointer": "/summary",
+        "status": "declarado",
+        "source_ids": [
+          "S22"
+        ],
+        "note": "Síntesis editorial del problema y propósito declarados."
+      },
+      {
+        "pointer": "/territory",
+        "status": "declarado",
+        "source_ids": [
+          "S22"
+        ],
+        "note": "Ámbito descrito por el perfil; geometry_url pendiente de publicación autorizada."
+      },
+      {
+        "pointer": "/institutional_use",
+        "status": "declarado",
+        "source_ids": [
+          "S22"
+        ],
+        "note": "Las funciones son las declaradas por el perfil; no representan acuerdos nuevos."
+      },
+      {
+        "pointer": "/pmv",
+        "status": "propuesta",
+        "source_ids": [
+          "S22"
+        ],
+        "note": "S22 reporta avances anteriores a la jornada; el paquete conserva ese reporte sin certificar métricas, calibración ni adopción institucional. La prioridad técnica debe acordarse con el equipo."
+      },
+      {
+        "pointer": "/status",
+        "status": "por_confirmar",
+        "source_ids": [],
+        "note": "El paquete conserva evidencia documental, pero no acredita el estado operativo actual."
+      },
+      {
+        "pointer": "/links/demo",
+        "status": "declarado",
+        "source_ids": [
+          "S22"
+        ],
+        "note": "Enlace exacto suministrado por el perfil. Disponibilidad y resultados no comprobados en este paquete."
+      },
+      {
+        "pointer": "/data_sources",
+        "status": "declarado",
+        "source_ids": [
+          "S22"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/methodology",
+        "status": "declarado",
+        "source_ids": [
+          "S22"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/expected_outputs",
+        "status": "declarado",
+        "source_ids": [
+          "S22"
+        ],
+        "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      }
+    ]
+  },
+  "team": [],
+  "data_sources": [
+    {
+      "title": "Sentinel-2 L2A (10 m), 2018–2026: huella urbana y cambio (clasificación y proyección)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Sentinel-1 SAR: inundaciones observadas para calibrar escenarios (Global Flood Monitoring, Copernicus EMS)",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Copernicus DEM GLO-30: HAND, red de drenaje, pendientes e insumo de CRISIS",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "GHSL (Copernicus/JRC): GHS-POP 2020–2030, GHS-BUILT-S 10 m y GHS-BUILT-H",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Copernicus EMS: activaciones históricas en el Cibao",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "ERA5 / ERA5-Land (Copernicus C3S): lluvias extremas para escenarios de inundación y deslizamiento",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "ESA WorldCover: referencia de cobertura del suelo",
+      "provider": null,
+      "url": null,
+      "access": "por_confirmar",
+      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "status": "declarado"
+    },
+    {
+      "title": "Datos locales e institucionales declarados",
+      "provider": null,
+      "url": null,
+      "access": "institucional",
+      "description": "Límites ONE (municipio, secciones, 222 barrios/parajes) y Censo XCNPV 2022\nCartografía de edificaciones de la ONE (212.909 puntos) para validar la exposición\nAvances del Servicio 12 de CopernicusLAC (cartografía de valor económico) y su tabla de insumos estadísticos\nCostos de construcción por m² (ONE ICDV y referencias de mercado 2025)\nFallas geológicas y geología para parametrizar CRISIS",
+      "status": "declarado"
+    }
+  ],
+  "methodology": "1. Huella urbana: compuestos Sentinel-2 L2A sin nubes (mediana, máscara SCL) de 2018, 2021 y 2024; clasificador entrenado con GHS-BUILT-S 10 m; regla de no reversión del suelo construido.\n2. Crecimiento (tipo MOLUSCE): matriz de transición de Markov; potencial de transición con red neuronal y regresión logística (pendiente, elevación, distancia a vías, al centro y a lo construido, densidad vecinal); autómata celular. Calibración 2018→2021, validación contra 2024 y proyección por pasos de 3 años hasta 2036 (140 km²).\n3. Inundación: HAND sobre el Copernicus DEM GLO-30 con tres clases de drenaje (cañadas < 10 km², tributarios 10–500 km², Yaque > 500 km²); el usuario fija el nivel del agua. En la cañada piloto se correrán escenarios 2D con ANUGA (motor abierto que usa Hydrata) con lluvias de diseño y ERA5.\n4. Población: total proyectado con la tendencia GHS-POP (editable) y distribuido sobre la huella del año elegido.\n5. Valor económico (Servicio 12): huella de edificación × niveles (GHS-BUILT-H) × costo de reposición por m² × (1 + contenido), por píxel de 20 m.\n6. Pérdidas: curvas profundidad-daño del JRC para Sudamérica (Huizinga et al., 2017); pérdida anual esperada al calibrar los escenarios con periodos de retorno.\n7. Deslizamientos (CRISIS): estabilidad de laderas por lluvia y sismo sobre el Copernicus DEM, calibrada con inventarios de deslizamientos; aceleraciones sísmicas de la Falla Septentrional.\n8. Norma: traducción de pérdidas y aptitud a polígonos normativos del PMOT y criterios de permisos.\n\nHerramientas previstas: Python (rasterio, geopandas, scikit-learn, pysheds), réplica del flujo MOLUSCE (QGIS), ANUGA, CRISIS, Copernicus Data Space / openEO, Leaflet; métricas: F1 de la clasificación, AUC y figura de mérito del modelo de crecimiento, superficie inundada, población expuesta, pérdida probable en RD$ y US$.",
+  "expected_outputs": [
+    "Mapa",
+    "Capa geoespacial",
+    "Indicadores por barrio",
+    "Flujo de trabajo / metodología",
+    "Visor web",
+    "Simulador web de escenarios (demostrador ya publicado): el usuario fija el nivel del agua en cañadas, tributarios y el Yaque, el año de exposición (2024–2036), el crecimiento poblacional y el costo de reposición, y el visor recalcula la mancha de inundación, la población expuesta y las pérdidas económicas por píxel y por barrio.\nHuella urbana observada y proyectada a 10 m con Sentinel-2 y un modelo de cambio de uso del suelo tipo MOLUSCE (red neuronal + autómata celular) hasta 2036.\nMapa de valor económico del territorio construido por píxel, siguiendo el enfoque del Servicio 12 de CopernicusLAC (desagregación estadística de valores), y mapa de pérdidas probables.\nMódulo de deslizamientos por lluvia y sismo con el modelo abierto CRISIS sobre el Copernicus DEM, para las laderas de la Cordillera Septentrional y la Falla Septentrional.\nAptitud territorial y polígonos normativos para el PMOT, entregados en GeoPackage y servicios OGC, con metodología replicable en un repositorio."
+  ],
+  "limitations": [
+    "S22 actualizada el 14 de octubre de 2026 cambia el ámbito a Santiago; la ficha Gran Santo Domingo S21 es antecedente y no debe alimentar su mapa.",
+    "F1=0,97, AUC=0,95 y 96 % de cambios a menos de 100 m son métricas reportadas por el perfil, sin archivos de validación adjuntos.",
+    "Las cifras 80 km² (2018), 99 km² (2024) y aproximadamente 140 km² (2036) mezclan observaciones/modelos según el perfil y deben conservar esa distinción.",
+    "El escenario severo reportado de unas 58.000 personas expuestas en 2030 y pérdidas de US$1.320 millones/US$2.020 millones no tiene aquí evidencia independiente ni periodo de retorno calibrado.",
+    "El simulador de niveles HAND no demuestra por sí mismo una simulación hidráulica calibrada. ANUGA y CRISIS se describen como desarrollos a configurar.",
+    "La descarga de capas institucionales y la publicación de indicadores por barrio tienen accesos diferentes."
+  ],
+  "tags": [
+    "riesgo",
+    "escenarios",
+    "ordenamiento territorial"
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": null,
+  "source_system": "github",
+  "overall_state": "not_initialized",
+  "projects": [
+    {
+      "project_id": "pa-panama-oeste",
+      "sync_state": "not_initialized",
+      "last_success_at": null,
+      "source_updated_at": null,
+      "error_code": null,
+      "metrics": {
+        "open_tasks": null,
+        "completed_tasks": null,
+        "in_review_tasks": null,
+        "blocked_tasks": null
+      },
+      "tasks": []
+    },
+    {
+      "project_id": "sv-amss",
+      "sync_state": "not_initialized",
+      "last_success_at": null,
+      "source_updated_at": null,
+      "error_code": null,
+      "metrics": {
+        "open_tasks": null,
+        "completed_tasks": null,
+        "in_review_tasks": null,
+        "blocked_tasks": null
+      },
+      "tasks": []
+    },
+    {
+      "project_id": "cr-la-carpio",
+      "sync_state": "not_initialized",
+      "last_success_at": null,
+      "source_updated_at": null,
+      "error_code": null,
+      "metrics": {
+        "open_tasks": null,
+        "completed_tasks": null,
+        "in_review_tasks": null,
+        "blocked_tasks": null
+      },
+      "tasks": []
+    },
+    {
+      "project_id": "sv-la-union",
+      "sync_state": "not_initialized",
+      "last_success_at": null,
+      "source_updated_at": null,
+      "error_code": null,
+      "metrics": {
+        "open_tasks": null,
+        "completed_tasks": null,
+        "in_review_tasks": null,
+        "blocked_tasks": null
+      },
+      "tasks": []
+    },
+    {
+      "project_id": "gt-bethania",
+      "sync_state": "not_initialized",
+      "last_success_at": null,
+      "source_updated_at": null,
+      "error_code": null,
+      "metrics": {
+        "open_tasks": null,
+        "completed_tasks": null,
+        "in_review_tasks": null,
+        "blocked_tasks": null
+      },
+      "tasks": []
+    },
+    {
+      "project_id": "do-santiago",
+      "sync_state": "not_initialized",
+      "last_success_at": null,
+      "source_updated_at": null,
+      "error_code": null,
+      "metrics": {
+        "open_tasks": null,
+        "completed_tasks": null,
+        "in_review_tasks": null,
+        "blocked_tasks": null
+      },
+      "tasks": []
+    },
+    {
+      "project_id": "gt-salud-metropolitana",
+      "sync_state": "not_initialized",
+      "last_success_at": null,
+      "source_updated_at": null,
+      "error_code": null,
+      "metrics": {
+        "open_tasks": null,
+        "completed_tasks": null,
+        "in_review_tasks": null,
+        "blocked_tasks": null
+      },
+      "tasks": []
+    },
+    {
+      "project_id": "hn-distrito-central",
+      "sync_state": "not_initialized",
+      "last_success_at": null,
+      "source_updated_at": null,
+      "error_code": null,
+      "metrics": {
+        "open_tasks": null,
+        "completed_tasks": null,
+        "in_review_tasks": null,
+        "blocked_tasks": null
+      },
+      "tasks": []
+    }
+  ]
+}

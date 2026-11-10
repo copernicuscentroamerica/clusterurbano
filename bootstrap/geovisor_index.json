@@ -1,0 +1,66 @@
+{
+  "pa-panama-oeste": {
+    "short_name": "Panamá Oeste: expansión urbana y ocupación potencial",
+    "center": [
+      -79.75532,
+      8.94515
+    ],
+    "zoom": 11.2
+  },
+  "sv-amss": {
+    "short_name": "AMSS: expansión urbana y transformación del suelo",
+    "center": [
+      -89.2182,
+      13.6989
+    ],
+    "zoom": 10.8
+  },
+  "cr-la-carpio": {
+    "short_name": "La Carpio: intervención urbanística integral",
+    "center": [
+      -84.1502,
+      9.96309
+    ],
+    "zoom": 14.8
+  },
+  "sv-la-union": {
+    "short_name": "La Unión y Conchagua: asentamientos costeros",
+    "center": [
+      -87.865,
+      13.315
+    ],
+    "zoom": 10.6
+  },
+  "gt-bethania": {
+    "short_name": "Bethania: asentamientos en alto riesgo",
+    "center": [
+      -90.52353,
+      14.67209
+    ],
+    "zoom": 15.2
+  },
+  "do-santiago": {
+    "short_name": "Santiago: zonificación del riesgo de desastres",
+    "center": [
+      -70.697,
+      19.4517
+    ],
+    "zoom": 11.3
+  },
+  "gt-salud-metropolitana": {
+    "short_name": "Guatemala metropolitana: prevención de riesgos a la salud",
+    "center": [
+      -90.34751,
+      14.62124
+    ],
+    "zoom": 10.4
+  },
+  "hn-distrito-central": {
+    "short_name": "Distrito Central: brecha catastral y asentamientos informales",
+    "center": [
+      -87.20542,
+      14.085
+    ],
+    "zoom": 11.8
+  }
+}

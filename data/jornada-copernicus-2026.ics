@@ -1,0 +1,367 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Comunidad Urbana Copernicus Centroamerica//Agenda Jornada 2026//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Jornada Presencial Copernicus Urbano Centroamerica 2026
+X-WR-TIMEZONE:America/El_Salvador
+BEGIN:VTIMEZONE
+TZID:America/El_Salvador
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:-0600
+TZOFFSETTO:-0600
+TZNAME:CST
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:jornada-2026-01@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T083000
+DTEND;TZID=America/El_Salvador:20261110T085000
+SUMMARY:Bienvenida y apertura
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Palabras de bienvenida de SISCA\, propósito del encuentro\, continuidad de la Fase II y resultados esperados.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-02@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T085000
+DTEND;TZID=America/El_Salvador:20261110T091000
+SUMMARY:Ruta de trabajo y criterios del PMV
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Acordar qué se demostrará\, cómo se registrará el avance y cómo solicitar apoyo.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-03@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T091000
+DTEND;TZID=America/El_Salvador:20261110T104000
+SUMMARY:Presentaciones de partida y compromisos
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Presentaciones iniciales por equipo (producto de partida\, mejora comprometida\, usuario institucional\, criterios de aceptación y bloqueo principal) más aclaraciones.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-04@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T104000
+DTEND;TZID=America/El_Salvador:20261110T110000
+SUMMARY:Receso
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Pausa de la mañana.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-05@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T110000
+DTEND;TZID=America/El_Salvador:20261110T114500
+SUMMARY:Taller práctico de GitHub y entorno de trabajo
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Abrir y comprobar repositorios canónicos; clonar o hacer fork por iniciativa; revisar plantilla común\, geovisor GeoLibre y construcción local.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-06@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T114500
+DTEND;TZID=America/El_Salvador:20261110T123000
+SUMMARY:Laboratorio 1: alcance y arranque
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Precisar 3–5 tareas prioritarias\, criterios de aceptación\, responsables y ficha del PMV; iniciar la primera tarea.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-07@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T123000
+DTEND;TZID=America/El_Salvador:20261110T133000
+SUMMARY:Almuerzo
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Almuerzo.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-08@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T133000
+DTEND;TZID=America/El_Salvador:20261110T151500
+SUMMARY:Laboratorio 2: desarrollo por equipos
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Construir componentes priorizados del PMV con asistencia técnica por demanda.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-09@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T151500
+DTEND;TZID=America/El_Salvador:20261110T153000
+SUMMARY:Receso
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Pausa de la tarde.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-10@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T153000
+DTEND;TZID=America/El_Salvador:20261110T163000
+SUMMARY:Laboratorio 3: desarrollo y primera comprobación
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Ejecutar el flujo principal\, registrar evidencias y actualizar el tablero.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-11@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261110T163000
+DTEND;TZID=America/El_Salvador:20261110T170000
+SUMMARY:Revisión del día y agenda de mentorías
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Avance breve por equipo; clasificar bloqueos y asignar las citas de mentoría del miércoles.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-12@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T083000
+DTEND;TZID=America/El_Salvador:20261111T084500
+SUMMARY:Seguimiento breve
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Confirmar objetivos del día y asignaciones de mentoría.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-13@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T084500
+DTEND;TZID=America/El_Salvador:20261111T093000
+SUMMARY:Mentorías: ronda 1 y laboratorio 4
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Tres citas en paralelo; los demás equipos continúan el desarrollo autónomo.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-14@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T093000
+DTEND;TZID=America/El_Salvador:20261111T093500
+SUMMARY:Cambio de turno
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Registrar acuerdos y preparar las siguientes citas.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-15@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T093500
+DTEND;TZID=America/El_Salvador:20261111T102000
+SUMMARY:Mentorías: ronda 2 y laboratorio 4
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Tres nuevas citas; los demás equipos siguen desarrollando.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-16@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T102000
+DTEND;TZID=America/El_Salvador:20261111T104000
+SUMMARY:Receso
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Pausa de la mañana.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-17@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T104000
+DTEND;TZID=America/El_Salvador:20261111T112500
+SUMMARY:Mentorías: ronda 3 y laboratorio 4
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Tres citas adicionales; con ocho iniciativas consolidadas\, el noveno turno atiende un bloqueo prioritario.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-18@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T112500
+DTEND;TZID=America/El_Salvador:20261111T123000
+SUMMARY:Laboratorio 5: aplicación de ajustes
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Aplicar acuerdos de mentoría e integrar datos\, métodos y componentes.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-19@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T123000
+DTEND;TZID=America/El_Salvador:20261111T133000
+SUMMARY:Almuerzo
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Almuerzo.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-20@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T133000
+DTEND;TZID=America/El_Salvador:20261111T140000
+SUMMARY:Microclínicas técnicas por demanda
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Apoyo focalizado (incluyendo despliegue web y geovisor) según los bloqueos registrados.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-21@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T140000
+DTEND;TZID=America/El_Salvador:20261111T150000
+SUMMARY:Laboratorio 6: integración y pruebas
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Comprobar el flujo completo\, la calidad de resultados y la utilidad para el usuario.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-22@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T150000
+DTEND;TZID=America/El_Salvador:20261111T151500
+SUMMARY:Receso
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Pausa de la tarde.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-23@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T151500
+DTEND;TZID=America/El_Salvador:20261111T160000
+SUMMARY:Plenaria de revisión de avances
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Por equipo: 3 minutos de demostración y 1 minuto de observación o cambio\, más síntesis.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-24@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T160000
+DTEND;TZID=America/El_Salvador:20261111T164000
+SUMMARY:Laboratorio 7: afinamiento del PMV
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Resolver fallos prioritarios y dejar lista una versión identificada para la demostración final.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-25@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261111T164000
+DTEND;TZID=America/El_Salvador:20261111T170000
+SUMMARY:Preparación de acuerdos colectivos y cierre
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Revisar borrador de comunidad y Atlas; registrar aportes\, enlaces y temas por decidir el jueves.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-26@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T083000
+DTEND;TZID=America/El_Salvador:20261112T093000
+SUMMARY:Laboratorio 8: validación y ensayo
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Comprobar criterios de aceptación\, completar documentación y finalizar la presentación.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-27@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T093000
+DTEND;TZID=America/El_Salvador:20261112T094500
+SUMMARY:Receso
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Pausa de la mañana.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-28@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T094500
+DTEND;TZID=America/El_Salvador:20261112T110000
+SUMMARY:Demostración final de todos los PMV
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Presentación de 5 minutos y demostración por equipo más retroalimentación.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-29@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T110000
+DTEND;TZID=America/El_Salvador:20261112T123000
+SUMMARY:Acuerdos del Atlas y la comunidad de práctica
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Definir estructura del Atlas\, ficha común\, coordinación\, canales\, responsables y primer encuentro de seguimiento.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-30@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T123000
+DTEND;TZID=America/El_Salvador:20261112T133000
+SUMMARY:Almuerzo
+LOCATION:San Salvador\, El Salvador
+DESCRIPTION:Almuerzo.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-31@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T133000
+DTEND;TZID=America/El_Salvador:20261112T143000
+SUMMARY:Traslado al Parque Cuscatlán
+LOCATION:Parque Cuscatlán\, San Salvador\, El Salvador
+DESCRIPTION:Traslado del grupo completo\, llegada y preparación del espacio de cierre público.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-32@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T143000
+DTEND;TZID=America/El_Salvador:20261112T144500
+SUMMARY:Bienvenida al acto de cierre
+LOCATION:Parque Cuscatlán\, San Salvador\, El Salvador
+DESCRIPTION:Intervenciones breves de las instituciones organizadoras y resultados generales en Parque Cuscatlán.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-33@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T144500
+DTEND;TZID=America/El_Salvador:20261112T154500
+SUMMARY:Panel de experiencias destacadas
+LOCATION:Parque Cuscatlán\, San Salvador\, El Salvador
+DESCRIPTION:Demostraciones seleccionadas y diálogo sobre utilidad institucional\, aprendizajes\, réplica y próximos pasos.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-34@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T154500
+DTEND;TZID=America/El_Salvador:20261112T161500
+SUMMARY:Lanzamiento de la comunidad de práctica
+LOCATION:Parque Cuscatlán\, San Salvador\, El Salvador
+DESCRIPTION:Presentación de acuerdos alcanzados\, enlaces realmente disponibles\, responsables confirmados y calendario inicial.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:jornada-2026-35@clusterurbano.copernicuscentroamerica
+DTSTAMP:20261109T180000Z
+DTSTART;TZID=America/El_Salvador:20261112T161500
+DTEND;TZID=America/El_Salvador:20261112T170000
+SUMMARY:Entrega de diplomas y cierre
+LOCATION:Parque Cuscatlán\, San Salvador\, El Salvador
+DESCRIPTION:Entrega conforme a criterios acordados\, palabras finales y fotografía grupal.
+STATUS:TENTATIVE
+END:VEVENT
+END:VCALENDAR

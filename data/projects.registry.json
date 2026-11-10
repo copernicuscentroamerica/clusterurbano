@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0.0",
+  "hub": {
+    "proposed_owner": "copernicuscentroamerica",
+    "proposed_repository": "clusterurbano",
+    "repository": null,
+    "website": null,
+    "owner_type": null
+  },
+  "projects": [
+    {
+      "id": "pa-panama-oeste",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-pa-panama-oeste",
+      "source_mode": "bootstrap",
+      "repository": null,
+      "default_branch": null,
+      "manifest_path": "project.json",
+      "content_path": "content/project.md",
+      "bootstrap_manifest": "bootstrap/projects/pa-panama-oeste.json",
+      "bootstrap_content": "bootstrap/content/pa-panama-oeste.md",
+      "enabled": true
+    },
+    {
+      "id": "sv-amss",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-sv-amss",
+      "source_mode": "bootstrap",
+      "repository": null,
+      "default_branch": null,
+      "manifest_path": "project.json",
+      "content_path": "content/project.md",
+      "bootstrap_manifest": "bootstrap/projects/sv-amss.json",
+      "bootstrap_content": "bootstrap/content/sv-amss.md",
+      "enabled": true
+    },
+    {
+      "id": "cr-la-carpio",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-cr-la-carpio",
+      "source_mode": "bootstrap",
+      "repository": null,
+      "default_branch": null,
+      "manifest_path": "project.json",
+      "content_path": "content/project.md",
+      "bootstrap_manifest": "bootstrap/projects/cr-la-carpio.json",
+      "bootstrap_content": "bootstrap/content/cr-la-carpio.md",
+      "enabled": true
+    },
+    {
+      "id": "sv-la-union",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-sv-la-union",
+      "source_mode": "bootstrap",
+      "repository": null,
+      "default_branch": null,
+      "manifest_path": "project.json",
+      "content_path": "content/project.md",
+      "bootstrap_manifest": "bootstrap/projects/sv-la-union.json",
+      "bootstrap_content": "bootstrap/content/sv-la-union.md",
+      "enabled": true
+    },
+    {
+      "id": "gt-bethania",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-gt-bethania",
+      "source_mode": "bootstrap",
+      "repository": null,
+      "default_branch": null,
+      "manifest_path": "project.json",
+      "content_path": "content/project.md",
+      "bootstrap_manifest": "bootstrap/projects/gt-bethania.json",
+      "bootstrap_content": "bootstrap/content/gt-bethania.md",
+      "enabled": true
+    },
+    {
+      "id": "do-santiago",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-do-santiago",
+      "source_mode": "bootstrap",
+      "repository": null,
+      "default_branch": null,
+      "manifest_path": "project.json",
+      "content_path": "content/project.md",
+      "bootstrap_manifest": "bootstrap/projects/do-santiago.json",
+      "bootstrap_content": "bootstrap/content/do-santiago.md",
+      "enabled": true
+    },
+    {
+      "id": "gt-salud-metropolitana",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-gt-salud-metropolitana",
+      "source_mode": "bootstrap",
+      "repository": null,
+      "default_branch": null,
+      "manifest_path": "project.json",
+      "content_path": "content/project.md",
+      "bootstrap_manifest": "bootstrap/projects/gt-salud-metropolitana.json",
+      "bootstrap_content": "bootstrap/content/gt-salud-metropolitana.md",
+      "enabled": true
+    },
+    {
+      "id": "hn-distrito-central",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-hn-distrito-central",
+      "source_mode": "bootstrap",
+      "repository": null,
+      "default_branch": null,
+      "manifest_path": "project.json",
+      "content_path": "content/project.md",
+      "bootstrap_manifest": "bootstrap/projects/hn-distrito-central.json",
+      "bootstrap_content": "bootstrap/content/hn-distrito-central.md",
+      "enabled": true
+    }
+  ]
+}
