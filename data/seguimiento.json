@@ -1,118 +1,118 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": null,
+  "generated_at": "2026-11-10T04:36:15Z",
   "source_system": "github",
-  "overall_state": "not_initialized",
+  "overall_state": "ok",
   "projects": [
     {
       "project_id": "pa-panama-oeste",
-      "sync_state": "not_initialized",
-      "last_success_at": null,
+      "sync_state": "ok",
+      "last_success_at": "2026-11-10T04:36:15Z",
       "source_updated_at": null,
       "error_code": null,
       "metrics": {
-        "open_tasks": null,
-        "completed_tasks": null,
-        "in_review_tasks": null,
-        "blocked_tasks": null
+        "open_tasks": 0,
+        "completed_tasks": 0,
+        "in_review_tasks": 0,
+        "blocked_tasks": 0
       },
       "tasks": []
     },
     {
       "project_id": "sv-amss",
-      "sync_state": "not_initialized",
-      "last_success_at": null,
+      "sync_state": "ok",
+      "last_success_at": "2026-11-10T04:36:15Z",
       "source_updated_at": null,
       "error_code": null,
       "metrics": {
-        "open_tasks": null,
-        "completed_tasks": null,
-        "in_review_tasks": null,
-        "blocked_tasks": null
+        "open_tasks": 0,
+        "completed_tasks": 0,
+        "in_review_tasks": 0,
+        "blocked_tasks": 0
       },
       "tasks": []
     },
     {
       "project_id": "cr-la-carpio",
-      "sync_state": "not_initialized",
-      "last_success_at": null,
+      "sync_state": "ok",
+      "last_success_at": "2026-11-10T04:36:15Z",
       "source_updated_at": null,
       "error_code": null,
       "metrics": {
-        "open_tasks": null,
-        "completed_tasks": null,
-        "in_review_tasks": null,
-        "blocked_tasks": null
+        "open_tasks": 0,
+        "completed_tasks": 0,
+        "in_review_tasks": 0,
+        "blocked_tasks": 0
       },
       "tasks": []
     },
     {
       "project_id": "sv-la-union",
-      "sync_state": "not_initialized",
-      "last_success_at": null,
+      "sync_state": "ok",
+      "last_success_at": "2026-11-10T04:36:15Z",
       "source_updated_at": null,
       "error_code": null,
       "metrics": {
-        "open_tasks": null,
-        "completed_tasks": null,
-        "in_review_tasks": null,
-        "blocked_tasks": null
+        "open_tasks": 0,
+        "completed_tasks": 0,
+        "in_review_tasks": 0,
+        "blocked_tasks": 0
       },
       "tasks": []
     },
     {
       "project_id": "gt-bethania",
-      "sync_state": "not_initialized",
-      "last_success_at": null,
+      "sync_state": "ok",
+      "last_success_at": "2026-11-10T04:36:15Z",
       "source_updated_at": null,
       "error_code": null,
       "metrics": {
-        "open_tasks": null,
-        "completed_tasks": null,
-        "in_review_tasks": null,
-        "blocked_tasks": null
+        "open_tasks": 0,
+        "completed_tasks": 0,
+        "in_review_tasks": 0,
+        "blocked_tasks": 0
       },
       "tasks": []
     },
     {
       "project_id": "do-santiago",
-      "sync_state": "not_initialized",
-      "last_success_at": null,
+      "sync_state": "ok",
+      "last_success_at": "2026-11-10T04:36:15Z",
       "source_updated_at": null,
       "error_code": null,
       "metrics": {
-        "open_tasks": null,
-        "completed_tasks": null,
-        "in_review_tasks": null,
-        "blocked_tasks": null
+        "open_tasks": 0,
+        "completed_tasks": 0,
+        "in_review_tasks": 0,
+        "blocked_tasks": 0
       },
       "tasks": []
     },
     {
       "project_id": "gt-salud-metropolitana",
-      "sync_state": "not_initialized",
-      "last_success_at": null,
+      "sync_state": "ok",
+      "last_success_at": "2026-11-10T04:36:15Z",
       "source_updated_at": null,
       "error_code": null,
       "metrics": {
-        "open_tasks": null,
-        "completed_tasks": null,
-        "in_review_tasks": null,
-        "blocked_tasks": null
+        "open_tasks": 0,
+        "completed_tasks": 0,
+        "in_review_tasks": 0,
+        "blocked_tasks": 0
       },
       "tasks": []
     },
     {
       "project_id": "hn-distrito-central",
-      "sync_state": "not_initialized",
-      "last_success_at": null,
+      "sync_state": "ok",
+      "last_success_at": "2026-11-10T04:36:15Z",
       "source_updated_at": null,
       "error_code": null,
       "metrics": {
-        "open_tasks": null,
-        "completed_tasks": null,
-        "in_review_tasks": null,
-        "blocked_tasks": null
+        "open_tasks": 0,
+        "completed_tasks": 0,
+        "in_review_tasks": 0,
+        "blocked_tasks": 0
       },
       "tasks": []
     }

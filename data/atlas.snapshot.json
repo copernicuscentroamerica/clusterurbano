@@ -1,53 +1,53 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-11-10T03:30:09Z",
+  "generated_at": "2026-11-10T04:36:14Z",
   "sources": [
     {
       "project_id": "pa-panama-oeste",
-      "source_mode": "bootstrap",
-      "sync_state": "bootstrap",
+      "source_mode": "canonical",
+      "sync_state": "ok",
       "error_code": null
     },
     {
       "project_id": "sv-amss",
-      "source_mode": "bootstrap",
-      "sync_state": "bootstrap",
+      "source_mode": "canonical",
+      "sync_state": "ok",
       "error_code": null
     },
     {
       "project_id": "cr-la-carpio",
-      "source_mode": "bootstrap",
-      "sync_state": "bootstrap",
+      "source_mode": "canonical",
+      "sync_state": "ok",
       "error_code": null
     },
     {
       "project_id": "sv-la-union",
-      "source_mode": "bootstrap",
-      "sync_state": "bootstrap",
+      "source_mode": "canonical",
+      "sync_state": "ok",
       "error_code": null
     },
     {
       "project_id": "gt-bethania",
-      "source_mode": "bootstrap",
-      "sync_state": "bootstrap",
+      "source_mode": "canonical",
+      "sync_state": "ok",
       "error_code": null
     },
     {
       "project_id": "do-santiago",
-      "source_mode": "bootstrap",
-      "sync_state": "bootstrap",
+      "source_mode": "canonical",
+      "sync_state": "ok",
       "error_code": null
     },
     {
       "project_id": "gt-salud-metropolitana",
-      "source_mode": "bootstrap",
-      "sync_state": "bootstrap",
+      "source_mode": "canonical",
+      "sync_state": "ok",
       "error_code": null
     },
     {
       "project_id": "hn-distrito-central",
-      "source_mode": "bootstrap",
-      "sync_state": "bootstrap",
+      "source_mode": "canonical",
+      "sync_state": "ok",
       "error_code": null
     }
   ],
