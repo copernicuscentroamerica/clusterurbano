@@ -386,6 +386,87 @@
     }
   };
 
+  // Generación automática de series anuales completas para el Atlas y el Geovisor:
+  // 1) Sentinel-2 10m LULC anual (2017–2023)
+  [2023, 2022, 2021, 2020, 2019, 2018, 2017].forEach(function (yr) {
+    var key = "s2-lulc-" + yr;
+    var s2FallbackYear = yr < 2018 ? 2018 : yr;
+    BASEMAPS[key] = {
+      name: "Uso y Cobertura del Suelo Sentinel-2 10 m (Año " + yr + " · 9 clases)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/27352be54f5b70ae6eb491be7c2db331/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=io-lulc-annual-v02&assets=data&colormap_name=io-lulc-9-class"
+      ],
+      pcRegister: {
+        collections: ["io-lulc-annual-v02"],
+        "filter-lang": "cql2-json",
+        filter: { op: "anyinteracts", args: [{ property: "datetime" }, { interval: [yr + "-01-01T00:00:00Z", yr + "-12-31T23:59:59Z"] }] }
+      },
+      pcQuery: "collection=io-lulc-annual-v02&assets=data&colormap_name=io-lulc-9-class",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-" + s2FallbackYear + "_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🏙️ Sentinel-2 LULC 10 m (Año " + yr + "): 🟥 Área Construida (Built Area) · 🟩 Árboles · 🟨 Pastizal · 🟧 Cultivos · 🟦 Agua · ⬜ Suelo Desnudo",
+      attribution: "&copy; Impact Observatory / Esri / <a href='https://spacedata.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 10m LULC (" + yr + ")</a>"
+    };
+  });
+
+  // 2) Series anuales Sentinel-2 L2A (NDVI, NDBI, NDWI, Falso Color Infrarrojo, SWIR Urbano) para 2018–2024
+  ["s2-l2a-ndvi", "s2-l2a-ndbi", "s2-l2a-ndwi", "s2-l2a-falsecolor", "s2-l2a-swir"].forEach(function (baseKey) {
+    var tpl = BASEMAPS[baseKey];
+    if (!tpl) return;
+    [2024, 2023, 2022, 2021, 2020, 2019, 2018].forEach(function (yr) {
+      BASEMAPS[baseKey + "-" + yr] = {
+        name: tpl.name + " · Año " + yr,
+        tiles: tpl.tiles.slice(),
+        pcRegister: {
+          collections: ["sentinel-2-l2a"],
+          "filter-lang": "cql2-json",
+          filter: {
+            op: "and",
+            args: [
+              { op: "<=", args: [{ property: "eo:cloud_cover" }, 15] },
+              { op: "anyinteracts", args: [{ property: "datetime" }, { interval: [yr + "-01-01T00:00:00Z", yr + "-12-31T23:59:59Z"] }] }
+            ]
+          }
+        },
+        pcQuery: tpl.pcQuery,
+        lowZoomFallbackTiles: [
+          "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-" + yr + "_3857/default/g/{z}/{y}/{x}.jpg"
+        ],
+        legend: tpl.legend + " (Compuesto anual " + yr + ")",
+        attribution: tpl.attribution
+      };
+    });
+  });
+
+  // 3) Series anuales Sentinel-1 SAR RTC (Compuesto VV+VH y Polarización VV) para 2018–2024
+  ["s1-rtc-falsecolor", "s1-rtc-vv"].forEach(function (baseKey) {
+    var tpl = BASEMAPS[baseKey];
+    if (!tpl) return;
+    [2024, 2023, 2022, 2021, 2020, 2019, 2018].forEach(function (yr) {
+      BASEMAPS[baseKey + "-" + yr] = {
+        name: tpl.name + " · Año " + yr,
+        tiles: tpl.tiles.slice(),
+        pcRegister: {
+          collections: ["sentinel-1-rtc"],
+          "filter-lang": "cql2-json",
+          filter: {
+            op: "and",
+            args: [
+              { op: "=", args: [{ property: "sar:polarizations" }, ["VV", "VH"]] },
+              { op: "anyinteracts", args: [{ property: "datetime" }, { interval: [yr + "-01-01T00:00:00Z", yr + "-12-31T23:59:59Z"] }] }
+            ]
+          }
+        },
+        pcQuery: tpl.pcQuery,
+        lowZoomFallbackTiles: tpl.lowZoomFallbackTiles,
+        legend: tpl.legend + " (Año " + yr + ")",
+        attribution: tpl.attribution
+      };
+    });
+  });
+
+
   var pcSearchIdCache = {};
 
   function resolveBasemapTiles(basemapKey, callback) {
@@ -1819,15 +1900,84 @@
 
   // =========================================================================
   // C. Atlas Temático Copernicus de la Zona de Estudio (resultados/ y atlas/)
+  //    Incluye las 10 láminas temáticas completas con selectores de Año y Modo
+  //    para cubrir el 100% de las capas satelitales y mosaicos anuales Copernicus.
   // =========================================================================
   var ATLAS_PLATES = {
+    "sentinel2-cloudless": {
+      id: "sentinel2-cloudless",
+      number: "Lámina 1",
+      shortTitle: "🛰️ 1. Mosaicos Anuales Sentinel-2 (2018–2024)",
+      title: "Mosaicos Anuales sin Nubes Copernicus Sentinel-2 Cloudless (Serie Multitemporal 2018–2024 · 10 m)",
+      sensor: "Copernicus Sentinel-2 MSI Nivel L2A/L1C · Mosaicos anuales libres de nubes (EOX IT Services / Unión Europea · 10 m)",
+      formula: "Compuesto anual óptico en Color Verdadero RGB (B04 Rojo · B03 Verde · B02 Azul) a 10 m de resolución espacial",
+      selectorLabel: "📅 Seleccionar año del mosaico satelital Sentinel-2 Cloudless (Serie 2018–2024):",
+      defaultVariant: "sentinel2-2024",
+      variants: [
+        { key: "sentinel2-2024", pill: "2024", label: "Año 2024 · Mosaico Anual Copernicus Sentinel-2 Cloudless (10 m)", title: "Mosaico Anual sin Nubes Copernicus Sentinel-2 Cloudless · Año 2024 (10 m)" },
+        { key: "sentinel2-2023", pill: "2023", label: "Año 2023 · Mosaico Anual Copernicus Sentinel-2 Cloudless (10 m)", title: "Mosaico Anual sin Nubes Copernicus Sentinel-2 Cloudless · Año 2023 (10 m)" },
+        { key: "sentinel2-2022", pill: "2022", label: "Año 2022 · Mosaico Anual Copernicus Sentinel-2 Cloudless (10 m)", title: "Mosaico Anual sin Nubes Copernicus Sentinel-2 Cloudless · Año 2022 (10 m)" },
+        { key: "sentinel2-2021", pill: "2021", label: "Año 2021 · Mosaico Anual Copernicus Sentinel-2 Cloudless (10 m)", title: "Mosaico Anual sin Nubes Copernicus Sentinel-2 Cloudless · Año 2021 (10 m)" },
+        { key: "sentinel2-2020", pill: "2020", label: "Año 2020 · Mosaico Anual Copernicus Sentinel-2 Cloudless (10 m)", title: "Mosaico Anual sin Nubes Copernicus Sentinel-2 Cloudless · Año 2020 (10 m)" },
+        { key: "sentinel2-2019", pill: "2019", label: "Año 2019 · Mosaico Anual Copernicus Sentinel-2 Cloudless (10 m)", title: "Mosaico Anual sin Nubes Copernicus Sentinel-2 Cloudless · Año 2019 (10 m)" },
+        { key: "sentinel2-2018", pill: "2018 (Base)", label: "Año 2018 (Línea base) · Mosaico Anual Copernicus Sentinel-2 Cloudless (10 m)", title: "Mosaico Anual sin Nubes Copernicus Sentinel-2 Cloudless · Año 2018 Línea Base (10 m)" }
+      ],
+      reading:
+        "Permite inspeccionar visualmente la evolución física real del territorio año por año entre 2018 y 2024 sin interferencia de nubosidad. Al alternar entre los 7 años en el selector se observa la apertura de nuevas urbanizaciones, obras de infraestructura, deforestación periurbana y cambios en riberas dentro del perímetro de estudio.",
+      swatches: [
+        { color: "#E8ECEF", label: "Blanco / Gris brillante", desc: "Techos industriales y comerciales de gran superficie, concreto nuevo, cubiertas metálicas y equipamiento logístico." },
+        { color: "#9BA3AE", label: "Gris medio / Trama reticular", desc: "Tejido residencial urbano consolidado, red vial pavimentada y manzanas de alta densidad constructiva." },
+        { color: "#D29D6A", label: "Ocre / Terracota / Marrón claro", desc: "Suelo desnudo en movimiento de tierra (nuevos desarrollos), laderas expuestas o techos de teja y lámina oxidada." },
+        { color: "#1E5631", label: "Verde bosque oscuro", desc: "Cobertura arbórea densa, bosques riparios en cañones fluviales, reservas urbanas y manglares." },
+        { color: "#76B041", label: "Verde claro / Amarillo verdoso", desc: "Parques urbanos, pastizales, campos deportivos y parcelas agrícolas periurbanas." },
+        { color: "#0F3A5D", label: "Azul marino / Turquesa oscuro", desc: "Cuerpos de agua permanentes: ríos principales, lagos, embalses, esteros y litoral marino." }
+      ]
+    },
     "copernicus-dem-glo30": {
       id: "copernicus-dem-glo30",
-      number: "Lámina 1",
-      shortTitle: "⛰️ 1. Geomorfología y Pendientes (DEM 30 m)",
+      number: "Lámina 2",
+      shortTitle: "⛰️ 2. Geomorfología y Pendientes (DEM 30 m)",
       title: "Geomorfología, Altitud y Pendientes Urbanas (Copernicus DEM GLO-30 · 30 m)",
       sensor: "Copernicus Digital Elevation Model (GLO-30 · 30 m · Agencia Espacial Europea / Unión Europea)",
       formula: "Elevación hipsométrica (-100 a 2600 m s. n. m.) + Sombreado analítico Hillshade (Acimut 315°, Altitud 45°)",
+      selectorLabel: "🎛️ Seleccionar representación topográfica de Copernicus DEM GLO-30 (3 capas disponibles):",
+      defaultVariant: "copernicus-dem-glo30",
+      variants: [
+        {
+          key: "copernicus-dem-glo30",
+          pill: "Hipsometría + Hillshade",
+          label: "Copernicus DEM GLO-30 · Elevación Hipsométrica + Sombreado Hillshade (30 m)",
+          title: "Geomorfología, Altitud y Pendientes Urbanas (Copernicus DEM GLO-30 · Hipsometría + Hillshade 30 m)",
+          formula: "Elevación hipsométrica (-100 a 2600 m s. n. m.) + Sombreado analítico Hillshade (Acimut 315°, Altitud 45°)"
+        },
+        {
+          key: "copernicus-dem-hillshade",
+          pill: "Solo Hillshade 30 m",
+          label: "Copernicus DEM GLO-30 · Sombreado Analítico de Relieve y Cañones (Hillshade 30 m)",
+          title: "Sombreado Analítico de Pendientes, Barrancos y Morfología Fluvial (Copernicus DEM GLO-30 Hillshade · 30 m)",
+          formula: "Algoritmo Hillshade analítico sobre el DEM oficial de 30 m (Acimut solar 315° · Altitud 45° · Buffer 3 px)",
+          swatches: [
+            { color: "#F2F4F7", label: "Gris muy claro / Blanco (Iluminación directa)", desc: "Laderas orientadas al noroeste (barlovento solar) y crestas topográficas expuestas." },
+            { color: "#B8C0CC", label: "Gris neutro uniforme", desc: "Planicies aluviales, terrazas fluviales y mesetas urbanas de baja pendiente (<5%)." },
+            { color: "#68707E", label: "Gris medio texturizado", desc: "Piedemonte y laderas de pendiente moderada (10% – 25%) con disección superficial." },
+            { color: "#1F242D", label: "Gris carbón / Negro (Sombra de escarpe)", desc: "Cañones profundos, barrancos urbanos, taludes inestables (>25%) y fallas morfológicas críticas." }
+          ]
+        },
+        {
+          key: "copernicus-dem-viridis",
+          pill: "Viridis + Curvas de Nivel",
+          label: "Copernicus DEM GLO-30 · Hipsometría Continua Viridis + Curvas de Nivel Dinámicas (30 m)",
+          title: "Hipsometría Perceptualmente Uniforme y Curvas de Nivel (Copernicus DEM GLO-30 Viridis · 30 m)",
+          formula: "Rampa continua Viridis (0 a 2500 m s. n. m.) + Generación dinámica de isolíneas topográficas (Contours)",
+          swatches: [
+            { color: "#440154", label: "0 – 200 m s. n. m. (Violeta profundo)", desc: "Planicies costeras, desembocaduras, esteros y fondos de valle más bajos de la cuenca." },
+            { color: "#31688E", label: "200 – 700 m s. n. m. (Azul petróleo)", desc: "Valles intramontanos bajos y terrazas fluviales intermedias." },
+            { color: "#35B779", label: "700 – 1400 m s. n. m. (Verde esmeralda)", desc: "Mesetas metropolitanas intermedias (Valle Central, Guatemala, San Salvador, Tegucigalpa)." },
+            { color: "#FDE725", label: "> 1400 m s. n. m. (Amarillo brillante)", desc: "Cumbres volcánicas, cerros tutelares y divisorias altas de recarga hídrica." },
+            { color: "#14283F", label: "Isolíneas oscuras (Curvas de nivel)", desc: "Mayor cercanía entre curvas indica fuerte gradiente de pendiente y restricción constructiva." }
+          ]
+        }
+      ],
       reading:
         "Permite identificar la configuración topográfica sobre la cual se asienta la mancha urbana: valles fluviales, abanicos aluviales, terrazas intermedias y laderas escarpadas o cañones donde el crecimiento informal presenta mayor exposición a deslizamientos y escorrentía concentrada.",
       swatches: [
@@ -1840,13 +1990,19 @@
     },
     "esa-worldcover-2021": {
       id: "esa-worldcover-2021",
-      number: "Lámina 2",
-      shortTitle: "🏙️ 2. Cobertura y Mancha Urbana 10 m (WorldCover)",
+      number: "Lámina 3",
+      shortTitle: "🏙️ 3. Cobertura y Mancha Urbana 10 m (WorldCover)",
       title: "Cobertura Terrestre y Huella Urbana a 10 m (ESA WorldCover · Sentinel-1 + Sentinel-2)",
-      sensor: "ESA WorldCover 10 m v200 (Fusión óptica-radar Copernicus Sentinel-2 L2A + Sentinel-1 SAR)",
+      sensor: "ESA WorldCover 10 m (Fusión óptica-radar Copernicus Sentinel-2 L2A + Sentinel-1 SAR)",
       formula: "Clasificación global supervisada de 11 clases de cobertura terrestre a 10 metros de resolución espacial",
+      selectorLabel: "📅 Seleccionar año oficial publicado de ESA WorldCover (10 m):",
+      defaultVariant: "esa-worldcover-2021",
+      variants: [
+        { key: "esa-worldcover-2021", pill: "Año 2021 (v200)", label: "Año 2021 (v200) · ESA WorldCover 10 m (Sentinel-1 + Sentinel-2)", title: "Cobertura Terrestre y Huella Urbana a 10 m · Año 2021 (ESA WorldCover v200)" },
+        { key: "esa-worldcover-2020", pill: "Año 2020 (v100)", label: "Año 2020 (v100) · ESA WorldCover 10 m (Sentinel-1 + Sentinel-2)", title: "Cobertura Terrestre y Huella Urbana a 10 m · Año 2020 (ESA WorldCover v100)" }
+      ],
       reading:
-        "Delimita con precisión de 10 m la huella edificada e impermeable (en rojo intenso #FA0000) frente a la infraestructura verde urbana, bosques de galería, cinturones agrícolas, manglares y cuerpos de agua dentro del límite de la zona de estudio.",
+        "Delimita con precisión de 10 m la huella edificada e impermeable (en rojo intenso #FA0000) frente a la infraestructura verde urbana, bosques de galería, cinturones agrícolas, manglares y cuerpos de agua dentro del límite de la zona de estudio, permitiendo comparar las ediciones 2020 (v100) y 2021 (v200).",
       swatches: [
         { color: "#FA0000", label: "Edificado / Mancha Urbana (#FA0000)", desc: "Superficie construida consolidada: edificaciones residenciales, industriales, techos, pavimento vial y concreto." },
         { color: "#006400", label: "Cobertura Arbórea (#006400)", desc: "Bosques urbanos, parques metropolitanos, bosques riparios en cañones y arbolado denso (>10% de dosel)." },
@@ -1859,13 +2015,24 @@
     },
     "s2-lulc-2023": {
       id: "s2-lulc-2023",
-      shortTitle: "📈 3. Uso del Suelo y Expansión 10 m (LULC)",
-      number: "Lámina 3",
-      title: "Uso del Suelo y Expansión del Área Construida a 10 m (Sentinel-2 LULC · 2023)",
+      number: "Lámina 4",
+      shortTitle: "📈 4. Uso del Suelo Anual 10 m (LULC 2017–2023)",
+      title: "Serie Multitemporal de Uso del Suelo y Expansión Urbana a 10 m (Sentinel-2 LULC · 2017–2023)",
       sensor: "Copernicus Sentinel-2 L2A · Clasificación Anual IA de 9 Clases (Impact Observatory / Esri · 10 m)",
-      formula: "Segmentación semántica profunda sobre compuestos anuales libres de nubes de Sentinel-2 L2A",
+      formula: "Segmentación semántica profunda sobre compuestos anuales Sentinel-2 L2A (Serie histórica anual 2017–2023)",
+      selectorLabel: "📅 Seleccionar año de la serie anual de Uso del Suelo (7 años disponibles: 2017–2023):",
+      defaultVariant: "s2-lulc-2023",
+      variants: [
+        { key: "s2-lulc-2023", pill: "2023", label: "Año 2023 · Uso y Cobertura del Suelo Sentinel-2 10 m (9 clases)", title: "Uso del Suelo y Expansión del Área Construida a 10 m · Año 2023 (Sentinel-2 LULC)" },
+        { key: "s2-lulc-2022", pill: "2022", label: "Año 2022 · Uso y Cobertura del Suelo Sentinel-2 10 m (9 clases)", title: "Uso del Suelo y Expansión del Área Construida a 10 m · Año 2022 (Sentinel-2 LULC)" },
+        { key: "s2-lulc-2021", pill: "2021", label: "Año 2021 · Uso y Cobertura del Suelo Sentinel-2 10 m (9 clases)", title: "Uso del Suelo y Expansión del Área Construida a 10 m · Año 2021 (Sentinel-2 LULC)" },
+        { key: "s2-lulc-2020", pill: "2020", label: "Año 2020 · Uso y Cobertura del Suelo Sentinel-2 10 m (9 clases)", title: "Uso del Suelo y Expansión del Área Construida a 10 m · Año 2020 (Sentinel-2 LULC)" },
+        { key: "s2-lulc-2019", pill: "2019", label: "Año 2019 · Uso y Cobertura del Suelo Sentinel-2 10 m (9 clases)", title: "Uso del Suelo y Expansión del Área Construida a 10 m · Año 2019 (Sentinel-2 LULC)" },
+        { key: "s2-lulc-2018", pill: "2018", label: "Año 2018 · Uso y Cobertura del Suelo Sentinel-2 10 m (9 clases)", title: "Uso del Suelo y Expansión del Área Construida a 10 m · Año 2018 (Sentinel-2 LULC)" },
+        { key: "s2-lulc-2017", pill: "2017 (Base)", label: "Año 2017 (Línea base) · Uso y Cobertura del Suelo Sentinel-2 10 m", title: "Uso del Suelo y Expansión del Área Construida a 10 m · Año 2017 Línea Base (Sentinel-2 LULC)" }
+      ],
       reading:
-        "Muestra la estructura funcional del uso del suelo urbano y periurbano a 10 m de resolución. Permite cuantificar qué proporción de la zona de estudio corresponde a tejido urbano consolidado frente a remanentes forestales y matriz agropecuaria.",
+        "Permite evaluar año por año (desde la línea base 2017 hasta 2023) la expansión de la mancha construida (#C4281B) sobre antiguos terrenos agrícolas (#E49635), pastizales (#DFC35A) o bordes forestales (#397D49) dentro de la zona de estudio.",
       swatches: [
         { color: "#C4281B", label: "Área Construida / Built Area (#C4281B)", desc: "Tejido urbano consolidado, asentamientos humanos, infraestructura vial y zonas industriales." },
         { color: "#397D49", label: "Árboles y Bosque Denso (#397D49)", desc: "Masas forestales densas, reservas ecológicas urbanas y cortinas rompe-vientos." },
@@ -1877,13 +2044,25 @@
     },
     "s2-l2a-ndvi": {
       id: "s2-l2a-ndvi",
-      number: "Lámina 4",
-      shortTitle: "🌿 4. Vegetación Urbana e Islas Verdes (NDVI)",
+      number: "Lámina 5",
+      shortTitle: "🌿 5. Vegetación Urbana e Islas Verdes (NDVI)",
       title: "Índice de Vegetación de Diferencia Normalizada (Copernicus Sentinel-2 L2A · NDVI 10 m)",
       sensor: "Copernicus Sentinel-2 L2A (Bandas B08 Infrarrojo Cercano y B04 Rojo a 10 m de resolución)",
       formula: "NDVI = (B08 - B04) / (B08 + B04) · Escala [-0.30 a +0.85] · Rampa RdYlGn",
+      selectorLabel: "📅 Seleccionar compuesto óptimo o año del índice NDVI (Sentinel-2 L2A · 10 m):",
+      defaultVariant: "s2-l2a-ndvi",
+      variants: [
+        { key: "s2-l2a-ndvi", pill: "Reciente (<10% nubes)", label: "Compuesto Reciente Óptimo (<10% nubosidad) · NDVI 10 m", title: "Índice de Vegetación Urbana NDVI (Sentinel-2 L2A · Compuesto Reciente 10 m)" },
+        { key: "s2-l2a-ndvi-2024", pill: "2024", label: "Año 2024 · NDVI Anual Sentinel-2 L2A (10 m)", title: "Índice de Vegetación Urbana NDVI · Año 2024 (Sentinel-2 L2A · 10 m)" },
+        { key: "s2-l2a-ndvi-2023", pill: "2023", label: "Año 2023 · NDVI Anual Sentinel-2 L2A (10 m)", title: "Índice de Vegetación Urbana NDVI · Año 2023 (Sentinel-2 L2A · 10 m)" },
+        { key: "s2-l2a-ndvi-2022", pill: "2022", label: "Año 2022 · NDVI Anual Sentinel-2 L2A (10 m)", title: "Índice de Vegetación Urbana NDVI · Año 2022 (Sentinel-2 L2A · 10 m)" },
+        { key: "s2-l2a-ndvi-2021", pill: "2021", label: "Año 2021 · NDVI Anual Sentinel-2 L2A (10 m)", title: "Índice de Vegetación Urbana NDVI · Año 2021 (Sentinel-2 L2A · 10 m)" },
+        { key: "s2-l2a-ndvi-2020", pill: "2020", label: "Año 2020 · NDVI Anual Sentinel-2 L2A (10 m)", title: "Índice de Vegetación Urbana NDVI · Año 2020 (Sentinel-2 L2A · 10 m)" },
+        { key: "s2-l2a-ndvi-2019", pill: "2019", label: "Año 2019 · NDVI Anual Sentinel-2 L2A (10 m)", title: "Índice de Vegetación Urbana NDVI · Año 2019 (Sentinel-2 L2A · 10 m)" },
+        { key: "s2-l2a-ndvi-2018", pill: "2018", label: "Año 2018 · NDVI Anual Sentinel-2 L2A (10 m)", title: "Índice de Vegetación Urbana NDVI · Año 2018 (Sentinel-2 L2A · 10 m)" }
+      ],
       reading:
-        "Evalúa la actividad fotosintética y la dotación de biomasa vegetal dentro del perímetro urbano. Es el indicador clave para localizar el déficit de áreas verdes por barrio, fragmentación de corredores ecológicos y zonas críticas de isla de calor.",
+        "Evalúa la actividad fotosintética y la dotación de biomasa vegetal dentro del perímetro urbano. Es el indicador clave para localizar el déficit de áreas verdes por barrio, fragmentación de corredores ecológicos y zonas críticas de isla de calor a través de los años.",
       swatches: [
         { color: "#A50026", label: "NDVI < 0.05 (Rojo intenso)", desc: "Cuerpos de agua, techos metálicos o de concreto, asfalto vial y superficies 100% impermeables sin vegetación." },
         { color: "#F46D43", label: "NDVI 0.05 – 0.20 (Naranja)", desc: "Tejido urbano altamente densificado, centros históricos o asentamientos compactos con nulo arbolado viario." },
@@ -1894,13 +2073,25 @@
     },
     "s2-l2a-ndbi": {
       id: "s2-l2a-ndbi",
-      number: "Lámina 5",
-      shortTitle: "🏗️ 5. Densidad Edificada e Impermeabilización (NDBI)",
+      number: "Lámina 6",
+      shortTitle: "🏗️ 6. Densidad Edificada e Impermeabilización (NDBI)",
       title: "Índice de Edificación y Área Construida (Copernicus Sentinel-2 L2A · NDBI 20 m)",
       sensor: "Copernicus Sentinel-2 L2A (Bandas B11 Infrarrojo de Onda Corta SWIR y B08 NIR)",
       formula: "NDBI = (B11 - B08) / (B11 + B08) · Escala [-0.45 a +0.45] · Rampa Inferno",
+      selectorLabel: "📅 Seleccionar compuesto óptimo o año del índice NDBI (Sentinel-2 L2A · 20 m):",
+      defaultVariant: "s2-l2a-ndbi",
+      variants: [
+        { key: "s2-l2a-ndbi", pill: "Reciente (<10% nubes)", label: "Compuesto Reciente Óptimo (<10% nubosidad) · NDBI 20 m", title: "Índice de Edificación e Impermeabilización NDBI (Sentinel-2 L2A · Reciente 20 m)" },
+        { key: "s2-l2a-ndbi-2024", pill: "2024", label: "Año 2024 · NDBI Anual Sentinel-2 L2A (20 m)", title: "Índice de Edificación e Impermeabilización NDBI · Año 2024 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndbi-2023", pill: "2023", label: "Año 2023 · NDBI Anual Sentinel-2 L2A (20 m)", title: "Índice de Edificación e Impermeabilización NDBI · Año 2023 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndbi-2022", pill: "2022", label: "Año 2022 · NDBI Anual Sentinel-2 L2A (20 m)", title: "Índice de Edificación e Impermeabilización NDBI · Año 2022 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndbi-2021", pill: "2021", label: "Año 2021 · NDBI Anual Sentinel-2 L2A (20 m)", title: "Índice de Edificación e Impermeabilización NDBI · Año 2021 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndbi-2020", pill: "2020", label: "Año 2020 · NDBI Anual Sentinel-2 L2A (20 m)", title: "Índice de Edificación e Impermeabilización NDBI · Año 2020 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndbi-2019", pill: "2019", label: "Año 2019 · NDBI Anual Sentinel-2 L2A (20 m)", title: "Índice de Edificación e Impermeabilización NDBI · Año 2019 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndbi-2018", pill: "2018", label: "Año 2018 · NDBI Anual Sentinel-2 L2A (20 m)", title: "Índice de Edificación e Impermeabilización NDBI · Año 2018 (Sentinel-2 L2A · 20 m)" }
+      ],
       reading:
-        "Aprovecha la fuerte reflectancia de los materiales de construcción (techos de zinc, fibrocemento, hormigón, asfalto y suelo compactado) en el infrarrojo de onda corta (SWIR B11) para medir el grado de sellado e impermeabilización del suelo.",
+        "Aprovecha la fuerte reflectancia de los materiales de construcción (techos de zinc, fibrocemento, hormigón, asfalto y suelo compactado) en el infrarrojo de onda corta (SWIR B11) para medir el grado de sellado e impermeabilización del suelo y su evolución multitemporal.",
       swatches: [
         { color: "#FCFFA4", label: "NDBI > +0.15 (Amarillo brillante)", desc: "Máxima intensidad edificada: techos industriales/comerciales continuos, asentamientos muy compactos o suelo en explanación." },
         { color: "#F98E09", label: "NDBI 0.00 a +0.15 (Naranja intenso)", desc: "Tejido urbano consolidado con predominio de superficies impermeables y alta generación de escorrentía pluvial." },
@@ -1910,11 +2101,23 @@
     },
     "s2-l2a-ndwi": {
       id: "s2-l2a-ndwi",
-      number: "Lámina 6",
-      shortTitle: "💧 6. Humedad Superficial y Estrés Térmico (NDWI)",
+      number: "Lámina 7",
+      shortTitle: "💧 7. Humedad Superficial y Estrés Térmico (NDWI)",
       title: "Índice de Humedad Superficial y Estrés Hídrico (Copernicus Sentinel-2 L2A · NDWI 20 m)",
       sensor: "Copernicus Sentinel-2 L2A (Bandas B8A NIR Estrecho y B11 SWIR a 20 m)",
       formula: "NDWI = (B8A - B11) / (B8A + B11) · Escala [-0.50 a +0.50] · Rampa RdBu",
+      selectorLabel: "📅 Seleccionar compuesto óptimo o año del índice NDWI (Sentinel-2 L2A · 20 m):",
+      defaultVariant: "s2-l2a-ndwi",
+      variants: [
+        { key: "s2-l2a-ndwi", pill: "Reciente (<10% nubes)", label: "Compuesto Reciente Óptimo (<10% nubosidad) · NDWI 20 m", title: "Índice de Humedad Superficial NDWI (Sentinel-2 L2A · Compuesto Reciente 20 m)" },
+        { key: "s2-l2a-ndwi-2024", pill: "2024", label: "Año 2024 · NDWI Anual Sentinel-2 L2A (20 m)", title: "Índice de Humedad Superficial NDWI · Año 2024 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndwi-2023", pill: "2023", label: "Año 2023 · NDWI Anual Sentinel-2 L2A (20 m)", title: "Índice de Humedad Superficial NDWI · Año 2023 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndwi-2022", pill: "2022", label: "Año 2022 · NDWI Anual Sentinel-2 L2A (20 m)", title: "Índice de Humedad Superficial NDWI · Año 2022 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndwi-2021", pill: "2021", label: "Año 2021 · NDWI Anual Sentinel-2 L2A (20 m)", title: "Índice de Humedad Superficial NDWI · Año 2021 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndwi-2020", pill: "2020", label: "Año 2020 · NDWI Anual Sentinel-2 L2A (20 m)", title: "Índice de Humedad Superficial NDWI · Año 2020 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndwi-2019", pill: "2019", label: "Año 2019 · NDWI Anual Sentinel-2 L2A (20 m)", title: "Índice de Humedad Superficial NDWI · Año 2019 (Sentinel-2 L2A · 20 m)" },
+        { key: "s2-l2a-ndwi-2018", pill: "2018", label: "Año 2018 · NDWI Anual Sentinel-2 L2A (20 m)", title: "Índice de Humedad Superficial NDWI · Año 2018 (Sentinel-2 L2A · 20 m)" }
+      ],
       reading:
         "Mide el contenido de agua líquida en el dosel vegetal y la humedad superficial del suelo. Permite contrastar los corredores húmedos y frescos (en azul) frente a las islas de sequedad e impermeabilización urbana (en rojo).",
       swatches: [
@@ -1925,13 +2128,160 @@
         { color: "#67001F", label: "NDWI < -0.20 (Rojo granate oscuro)", desc: "Superficies urbanas totalmente impermeables, techos calientes y suelos áridos con máxima carga térmica." }
       ]
     },
+    "s2-l2a-composites": {
+      id: "s2-l2a-composites",
+      number: "Lámina 8",
+      shortTitle: "🔬 8. Falso Color Infrarrojo y SWIR Urbano (S2 L2A)",
+      title: "Compuestos Multiespectrales Infrarrojo Cercano (VNIR) y Onda Corta (SWIR) (Sentinel-2 L2A)",
+      sensor: "Copernicus Sentinel-2 L2A · Combinaciones de bandas VNIR (B08-B04-B03 a 10 m) y SWIR (B12-B8A-B04 a 20 m)",
+      formula: "Falso Color Infrarrojo RGB=(B08, B04, B03) a 10 m · Compuesto SWIR Urbano RGB=(B12, B8A, B04) a 20 m",
+      selectorLabel: "🎛️ Seleccionar combinación multiespectral (Infrarrojo VNIR o SWIR Urbano) y año:",
+      defaultVariant: "s2-l2a-falsecolor",
+      variants: [
+        {
+          key: "s2-l2a-falsecolor",
+          pill: "IR B08-B04-B03 (Reciente)",
+          label: "Falso Color Infrarrojo (B08-B04-B03 · 10 m) · Compuesto Reciente",
+          title: "Compuesto Falso Color Infrarrojo Cercano (Sentinel-2 L2A · B08-B04-B03 · 10 m Reciente)",
+          formula: "RGB = (B08 Infrarrojo Cercano, B04 Rojo, B03 Verde) a 10 m · Realce Gamma 3.7"
+        },
+        {
+          key: "s2-l2a-falsecolor-2024",
+          pill: "IR 2024",
+          label: "Falso Color Infrarrojo (B08-B04-B03 · 10 m) · Año 2024",
+          title: "Compuesto Falso Color Infrarrojo Cercano · Año 2024 (Sentinel-2 L2A · B08-B04-B03 · 10 m)",
+          formula: "RGB = (B08 Infrarrojo Cercano, B04 Rojo, B03 Verde) a 10 m · Compuesto Anual 2024"
+        },
+        {
+          key: "s2-l2a-falsecolor-2022",
+          pill: "IR 2022",
+          label: "Falso Color Infrarrojo (B08-B04-B03 · 10 m) · Año 2022",
+          title: "Compuesto Falso Color Infrarrojo Cercano · Año 2022 (Sentinel-2 L2A · B08-B04-B03 · 10 m)",
+          formula: "RGB = (B08 Infrarrojo Cercano, B04 Rojo, B03 Verde) a 10 m · Compuesto Anual 2022"
+        },
+        {
+          key: "s2-l2a-falsecolor-2020",
+          pill: "IR 2020",
+          label: "Falso Color Infrarrojo (B08-B04-B03 · 10 m) · Año 2020",
+          title: "Compuesto Falso Color Infrarrojo Cercano · Año 2020 (Sentinel-2 L2A · B08-B04-B03 · 10 m)",
+          formula: "RGB = (B08 Infrarrojo Cercano, B04 Rojo, B03 Verde) a 10 m · Compuesto Anual 2020"
+        },
+        {
+          key: "s2-l2a-swir",
+          pill: "SWIR Urbano (Reciente)",
+          label: "SWIR Urbano (B12-B8A-B04 · 20 m) · Compuesto Reciente",
+          title: "Compuesto Infrarrojo de Onda Corta SWIR Urbano (Sentinel-2 L2A · B12-B8A-B04 · 20 m Reciente)",
+          formula: "RGB = (B12 SWIR 2190 nm, B8A NIR Estrecho 865 nm, B04 Rojo 665 nm) a 20 m",
+          swatches: [
+            { color: "#BA68C8", label: "Magenta / Púrpura brillante (Alto B12 + B04)", desc: "Huella urbana consolidada, techos metálicos/concreto, pavimento vial y zonas industriales." },
+            { color: "#D7CCC8", label: "Rosado claro / Ocre rojizo", desc: "Suelo desnudo expuesto, terrenos en urbanización, canteras o pastizales secos." },
+            { color: "#2E7D32", label: "Verde intenso / Esmeralda (Alto B8A)", desc: "Vegetación vigorosa y bosques urbanos (fuerte reflectancia en B8A y absorción en SWIR)." },
+            { color: "#091526", label: "Azul marino muy oscuro / Negro", desc: "Cuerpos de agua (ríos, lagos, esteros) que absorben casi totalmente el infrarrojo de onda corta." }
+          ]
+        },
+        {
+          key: "s2-l2a-swir-2024",
+          pill: "SWIR 2024",
+          label: "SWIR Urbano (B12-B8A-B04 · 20 m) · Año 2024",
+          title: "Compuesto Infrarrojo de Onda Corta SWIR Urbano · Año 2024 (Sentinel-2 L2A · 20 m)",
+          formula: "RGB = (B12 SWIR, B8A NIR, B04 Rojo) a 20 m · Compuesto Anual 2024",
+          swatches: [
+            { color: "#BA68C8", label: "Magenta / Púrpura brillante (Alto B12 + B04)", desc: "Huella urbana consolidada, techos metálicos/concreto, pavimento vial y zonas industriales." },
+            { color: "#D7CCC8", label: "Rosado claro / Ocre rojizo", desc: "Suelo desnudo expuesto, terrenos en urbanización, canteras o pastizales secos." },
+            { color: "#2E7D32", label: "Verde intenso / Esmeralda (Alto B8A)", desc: "Vegetación vigorosa y bosques urbanos (fuerte reflectancia en B8A y absorción en SWIR)." },
+            { color: "#091526", label: "Azul marino muy oscuro / Negro", desc: "Cuerpos de agua (ríos, lagos, esteros) que absorben casi totalmente el infrarrojo de onda corta." }
+          ]
+        },
+        {
+          key: "s2-l2a-swir-2022",
+          pill: "SWIR 2022",
+          label: "SWIR Urbano (B12-B8A-B04 · 20 m) · Año 2022",
+          title: "Compuesto Infrarrojo de Onda Corta SWIR Urbano · Año 2022 (Sentinel-2 L2A · 20 m)",
+          formula: "RGB = (B12 SWIR, B8A NIR, B04 Rojo) a 20 m · Compuesto Anual 2022",
+          swatches: [
+            { color: "#BA68C8", label: "Magenta / Púrpura brillante (Alto B12 + B04)", desc: "Huella urbana consolidada, techos metálicos/concreto, pavimento vial y zonas industriales." },
+            { color: "#D7CCC8", label: "Rosado claro / Ocre rojizo", desc: "Suelo desnudo expuesto, terrenos en urbanización, canteras o pastizales secos." },
+            { color: "#2E7D32", label: "Verde intenso / Esmeralda (Alto B8A)", desc: "Vegetación vigorosa y bosques urbanos (fuerte reflectancia en B8A y absorción en SWIR)." },
+            { color: "#091526", label: "Azul marino muy oscuro / Negro", desc: "Cuerpos de agua (ríos, lagos, esteros) que absorben casi totalmente el infrarrojo de onda corta." }
+          ]
+        },
+        {
+          key: "s2-l2a-swir-2020",
+          pill: "SWIR 2020",
+          label: "SWIR Urbano (B12-B8A-B04 · 20 m) · Año 2020",
+          title: "Compuesto Infrarrojo de Onda Corta SWIR Urbano · Año 2020 (Sentinel-2 L2A · 20 m)",
+          formula: "RGB = (B12 SWIR, B8A NIR, B04 Rojo) a 20 m · Compuesto Anual 2020",
+          swatches: [
+            { color: "#BA68C8", label: "Magenta / Púrpura brillante (Alto B12 + B04)", desc: "Huella urbana consolidada, techos metálicos/concreto, pavimento vial y zonas industriales." },
+            { color: "#D7CCC8", label: "Rosado claro / Ocre rojizo", desc: "Suelo desnudo expuesto, terrenos en urbanización, canteras o pastizales secos." },
+            { color: "#2E7D32", label: "Verde intenso / Esmeralda (Alto B8A)", desc: "Vegetación vigorosa y bosques urbanos (fuerte reflectancia en B8A y absorción en SWIR)." },
+            { color: "#091526", label: "Azul marino muy oscuro / Negro", desc: "Cuerpos de agua (ríos, lagos, esteros) que absorben casi totalmente el infrarrojo de onda corta." }
+          ]
+        }
+      ],
+      reading:
+        "Combina las bandas del infrarrojo cercano (B08/B8A) y de onda corta (B12 SWIR) de Sentinel-2 L2A para separar nítidamente los materiales artificiales de construcción respecto de la vegetación activa y los suelos desnudos en apertura.",
+      swatches: [
+        { color: "#D32F2F", label: "Rojo escarlata intenso (Alto B08 NIR)", desc: "Dosel arbóreo denso, bosques de galería y vegetación fotosintéticamente muy activa." },
+        { color: "#F48FB1", label: "Rosa claro / Coral", desc: "Parques urbanos con césped, vegetación herbácea, cultivos periurbanos o jardines residenciales." },
+        { color: "#90CAF9", label: "Azul cian / Gris azulado brillante", desc: "Tejido urbano denso, concreto, asfalto vial, techos industriales y roca o suelo compacto." },
+        { color: "#0D1B2A", label: "Azul muy oscuro / Negro", desc: "Cuerpos de agua limpios (ríos, embalses, mar) que absorben la radiación infrarroja cercana." }
+      ]
+    },
     "s1-rtc-falsecolor": {
       id: "s1-rtc-falsecolor",
-      number: "Lámina 7",
-      shortTitle: "📡 7. Morfología Urbana por Radar (Sentinel-1 SAR)",
+      number: "Lámina 9",
+      shortTitle: "📡 9. Morfología Urbana por Radar (Sentinel-1 SAR)",
       title: "Morfología y Densidad Estructural por Radar Todo-Tiempo (Copernicus Sentinel-1 SAR RTC · 10 m)",
       sensor: "Copernicus Sentinel-1 C-Band SAR (Radiometrically Terrain Corrected · Polarización Dual VV + VH a 10 m)",
       formula: "Compuesto RGB de retrodispersión radar corregida por terreno (VV, VH y razón VV/VH) — Penetra el 100% de las nubes",
+      selectorLabel: "🎛️ Seleccionar polarización radar Sentinel-1 SAR (Compuesto VV+VH o Escala de Grises VV) y año:",
+      defaultVariant: "s1-rtc-falsecolor",
+      variants: [
+        { key: "s1-rtc-falsecolor", pill: "VV+VH Urbano (Reciente)", label: "Compuesto Urbano Dual VV+VH (10 m · Reciente)", title: "Morfología Urbana por Radar Todo-Tiempo (Sentinel-1 SAR RTC · Compuesto VV+VH 10 m)" },
+        { key: "s1-rtc-falsecolor-2024", pill: "VV+VH 2024", label: "Compuesto Urbano Dual VV+VH (10 m · Año 2024)", title: "Morfología Urbana por Radar Todo-Tiempo · Año 2024 (Sentinel-1 SAR RTC · VV+VH 10 m)" },
+        { key: "s1-rtc-falsecolor-2022", pill: "VV+VH 2022", label: "Compuesto Urbano Dual VV+VH (10 m · Año 2022)", title: "Morfología Urbana por Radar Todo-Tiempo · Año 2022 (Sentinel-1 SAR RTC · VV+VH 10 m)" },
+        { key: "s1-rtc-falsecolor-2020", pill: "VV+VH 2020", label: "Compuesto Urbano Dual VV+VH (10 m · Año 2020)", title: "Morfología Urbana por Radar Todo-Tiempo · Año 2020 (Sentinel-1 SAR RTC · VV+VH 10 m)" },
+        {
+          key: "s1-rtc-vv",
+          pill: "Polarización VV (Grises)",
+          label: "Polarización VV en Escala de Grises (10 m · Reciente)",
+          title: "Retrodispersión Radar en Polarización VV (Sentinel-1 SAR RTC · Escala de Grises 10 m)",
+          formula: " Intensidad de retrodispersión copolarizada VV corregida por terreno (Rango 0.00 a 0.25)",
+          swatches: [
+            { color: "#FFFFFF", label: "Blanco brillante (VV muy alto > 0.20)", desc: "Reflectores de esquina diedro: edificios densos, naves metálicas, puentes y laderas rocosas." },
+            { color: "#9E9E9E", label: "Gris medio (VV moderado 0.06 – 0.18)", desc: "Dosel arbóreo, zonas residenciales de baja altura y terrenos rugosos." },
+            { color: "#424242", label: "Gris oscuro (VV bajo 0.02 – 0.06)", desc: "Pastizales cortos, suelos agrícolas arados o pavimento liso." },
+            { color: "#080B10", label: "Negro profundo (VV ~ 0 · Reflexión especular)", desc: "Espejos de agua calma, cauces fluviales e inundaciones urbanas activas bajo nubes." }
+          ]
+        },
+        {
+          key: "s1-rtc-vv-2024",
+          pill: "VV Grises 2024",
+          label: "Polarización VV en Escala de Grises (10 m · Año 2024)",
+          title: "Retrodispersión Radar en Polarización VV · Año 2024 (Sentinel-1 SAR RTC · 10 m)",
+          formula: "Intensidad de retrodispersión copolarizada VV corregida por terreno · Año 2024",
+          swatches: [
+            { color: "#FFFFFF", label: "Blanco brillante (VV muy alto > 0.20)", desc: "Reflectores de esquina diedro: edificios densos, naves metálicas, puentes y laderas rocosas." },
+            { color: "#9E9E9E", label: "Gris medio (VV moderado 0.06 – 0.18)", desc: "Dosel arbóreo, zonas residenciales de baja altura y terrenos rugosos." },
+            { color: "#424242", label: "Gris oscuro (VV bajo 0.02 – 0.06)", desc: "Pastizales cortos, suelos agrícolas arados o pavimento liso." },
+            { color: "#080B10", label: "Negro profundo (VV ~ 0 · Reflexión especular)", desc: "Espejos de agua calma, cauces fluviales e inundaciones urbanas activas bajo nubes." }
+          ]
+        },
+        {
+          key: "s1-rtc-vv-2020",
+          pill: "VV Grises 2020",
+          label: "Polarización VV en Escala de Grises (10 m · Año 2020)",
+          title: "Retrodispersión Radar en Polarización VV · Año 2020 (Sentinel-1 SAR RTC · 10 m)",
+          formula: "Intensidad de retrodispersión copolarizada VV corregida por terreno · Año 2020",
+          swatches: [
+            { color: "#FFFFFF", label: "Blanco brillante (VV muy alto > 0.20)", desc: "Reflectores de esquina diedro: edificios densos, naves metálicas, puentes y laderas rocosas." },
+            { color: "#9E9E9E", label: "Gris medio (VV moderado 0.06 – 0.18)", desc: "Dosel arbóreo, zonas residenciales de baja altura y terrenos rugosos." },
+            { color: "#424242", label: "Gris oscuro (VV bajo 0.02 – 0.06)", desc: "Pastizales cortos, suelos agrícolas arados o pavimento liso." },
+            { color: "#080B10", label: "Negro profundo (VV ~ 0 · Reflexión especular)", desc: "Espejos de agua calma, cauces fluviales e inundaciones urbanas activas bajo nubes." }
+          ]
+        }
+      ],
       reading:
         "A diferencia de los sensores ópticos, el radar activo de Sentinel-1 opera día y noche atravesando nubes y lluvia. Detecta la rugosidad física y la geometría tridimensional de las construcciones humanas mediante el efecto de rebote doble (double-bounce) entre paredes y calles.",
       swatches: [
@@ -1943,11 +2293,33 @@
     },
     "jrc-gsw-occurrence": {
       id: "jrc-gsw-occurrence",
-      number: "Lámina 8",
-      shortTitle: "🌊 8. Agua Superficial e Inundación (JRC)",
+      number: "Lámina 10",
+      shortTitle: "🌊 10. Agua Superficial e Inundación (JRC)",
       title: "Ocurrencia Histórica de Agua Superficial y Huella de Inundación (EC JRC / Copernicus)",
       sensor: "Joint Research Centre (JRC) de la Comisión Europea · Global Surface Water (Serie multitemporal 1984–2021)",
-      formula: "Frecuencia porcentual (0–100%) de presencia de lámina de agua detectada por píxel sobre relieve base",
+      formula: "Frecuencia porcentual (0–100%) de presencia de lámina de agua y huella de extensión máxima sobre relieve base",
+      selectorLabel: "🎛️ Seleccionar capa hidrológica de JRC Global Surface Water:",
+      defaultVariant: "jrc-gsw-occurrence",
+      variants: [
+        {
+          key: "jrc-gsw-occurrence",
+          pill: "Ocurrencia Histórica (0–100%)",
+          label: "JRC Agua Superficial · Ocurrencia Histórica e Inundación (1984–2021 · 0–100%)",
+          title: "Ocurrencia Histórica de Agua Superficial y Frecuencia de Inundación (EC JRC / Copernicus)",
+          formula: "Frecuencia porcentual (0–100%) de presencia de lámina de agua detectada por píxel sobre relieve base"
+        },
+        {
+          key: "jrc-gsw-extent",
+          pill: "Extensión Máxima de Inundación",
+          label: "JRC Agua Superficial · Extensión Máxima Histórica de Agua / Inundación",
+          title: "Extensión Máxima Histórica de Agua Superficial y Desbordamiento (EC JRC / Copernicus)",
+          formula: "Máscara binaria de huella máxima histórica donde se ha detectado agua superficial al menos una vez (1984–2021)",
+          swatches: [
+            { color: "#0055FF", label: "Huella Máxima de Agua / Inundación (#0055FF)", desc: "Toda superficie donde el registro satelital ha detectado lámina de agua permanente, estacional o desbordamiento extremo." },
+            { color: "#D9DFEA", label: "Relieve base emergido sin registro de agua", desc: "Terreno alto o consolidado fuera de la envolvente histórica de inundación a 30 m." }
+          ]
+        }
+      ],
       reading:
         "Identifica tanto los cauces fluviales y cuerpos de agua permanentes como las planicies de inundación estacional o episódica dentro de la zona de estudio, insumo crítico para evitar o mitigar asentamientos humanos en zonas inundables.",
       swatches: [
@@ -1972,6 +2344,11 @@
     var detailSwatchesEl = document.getElementById("atlas-plate-swatches");
     var toolbarTitleEl = document.getElementById("atlas-toolbar-plate-label");
 
+    var toolbarVariantSelectEl = document.getElementById("atlas-toolbar-variant-select");
+    var panelVariantSelectEl = document.getElementById("atlas-panel-variant-select");
+    var panelVariantLabelEl = document.getElementById("atlas-variant-selector-label");
+    var panelVariantPillsEl = document.getElementById("atlas-variant-pills");
+
     var maskCheckEl = document.getElementById("atlas-toggle-mask");
     var maskOpEl = document.getElementById("atlas-mask-opacity");
     var fitBtnEl = document.getElementById("atlas-fit-bounds");
@@ -1991,9 +2368,12 @@
       } catch (e) {}
     }
     var currentZoom = initialZoomAttr ? parseFloat(initialZoomAttr) : 12;
-    var currentPlateKey = "copernicus-dem-glo30";
+    var currentPlateKey = plateTabs.length ? plateTabs[0].getAttribute("data-atlas-plate") : "sentinel2-cloudless";
+    if (!ATLAS_PLATES[currentPlateKey]) currentPlateKey = "sentinel2-cloudless";
+    var currentVariantKey = ATLAS_PLATES[currentPlateKey].defaultVariant;
     var currentPerimeterGeoJson = null;
     var allHubPerimeters = null;
+    var atlasMap = null;
 
     var perimJsonScript = document.getElementById("atlas-perimeters-json");
     if (perimJsonScript) {
@@ -2004,18 +2384,66 @@
       }
     }
 
-    function renderPlateInfoPanel(plateKey) {
-      var p = ATLAS_PLATES[plateKey] || ATLAS_PLATES["copernicus-dem-glo30"];
-      if (detailBadgeEl) detailBadgeEl.textContent = p.number + " · Dato Abierto Copernicus";
-      if (detailTitleEl) detailTitleEl.textContent = p.title;
+    function findVariantObj(plateObj, variantKey) {
+      var list = plateObj.variants || [];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].key === variantKey) return list[i];
+      }
+      return list[0] || { key: plateObj.defaultVariant, label: plateObj.title, pill: "Principal" };
+    }
+
+    function populateVariantControls(plateObj, activeVarKey) {
+      var variants = plateObj.variants || [];
+      if (panelVariantLabelEl) {
+        panelVariantLabelEl.textContent = plateObj.selectorLabel || "Seleccionar año o variante de la capa:";
+      }
+      [toolbarVariantSelectEl, panelVariantSelectEl].forEach(function (sel) {
+        if (!sel) return;
+        sel.innerHTML = "";
+        variants.forEach(function (v) {
+          var opt = document.createElement("option");
+          opt.value = v.key;
+          opt.textContent = v.label;
+          if (v.key === activeVarKey) opt.selected = true;
+          sel.appendChild(opt);
+        });
+      });
+
+      if (panelVariantPillsEl) {
+        panelVariantPillsEl.innerHTML = "";
+        variants.forEach(function (v) {
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "atlas-variant-pill" + (v.key === activeVarKey ? " is-active" : "");
+          btn.textContent = v.pill || v.label;
+          btn.setAttribute("data-variant-key", v.key);
+          btn.addEventListener("click", function () {
+            activateAtlasPlate(plateObj.id, v.key);
+          });
+          panelVariantPillsEl.appendChild(btn);
+        });
+      }
+    }
+
+    function renderPlateInfoPanel(plateKey, variantKey) {
+      var p = ATLAS_PLATES[plateKey] || ATLAS_PLATES["sentinel2-cloudless"];
+      var vObj = findVariantObj(p, variantKey || p.defaultVariant);
+      var effectiveSwatches = vObj.swatches || p.swatches || [];
+
+      populateVariantControls(p, vObj.key);
+
+      if (detailBadgeEl) {
+        detailBadgeEl.textContent = p.number + " · " + (vObj.pill || "Dato Abierto Copernicus");
+      }
+      if (detailTitleEl) detailTitleEl.textContent = vObj.title || p.title;
       if (detailSensorEl) detailSensorEl.textContent = p.sensor;
-      if (detailFormulaEl) detailFormulaEl.textContent = p.formula;
+      if (detailFormulaEl) detailFormulaEl.textContent = vObj.formula || p.formula;
       if (detailReadingEl) detailReadingEl.textContent = p.reading;
       if (toolbarTitleEl) toolbarTitleEl.textContent = p.shortTitle;
 
       if (detailSwatchesEl) {
         detailSwatchesEl.innerHTML = "";
-        p.swatches.forEach(function (sw) {
+        effectiveSwatches.forEach(function (sw) {
           var li = document.createElement("li");
           li.className = "atlas-swatch-item";
 
@@ -2044,23 +2472,73 @@
       });
     }
 
-    renderPlateInfoPanel(currentPlateKey);
+    function refreshMaskOnAtlasMap(shouldFit) {
+      if (!atlasMap || !currentPerimeterGeoJson) return;
+      var enabled = maskCheckEl ? maskCheckEl.checked : true;
+      var op = maskOpEl ? parseFloat(maskOpEl.value) : 0.88;
+      applyStudyAreaMaskToMap(atlasMap, currentPerimeterGeoJson, enabled, op);
+      if (shouldFit) {
+        var b = computeGeoJsonBounds(currentPerimeterGeoJson);
+        if (b) {
+          atlasMap.fitBounds(b, { padding: 42, maxZoom: 15.2, duration: 700 });
+        }
+      }
+    }
+
+    function activateAtlasPlate(plateKey, optionalVariantKey) {
+      if (!plateKey || !ATLAS_PLATES[plateKey]) return;
+      var p = ATLAS_PLATES[plateKey];
+      var targetVarKey = optionalVariantKey || (currentPlateKey === plateKey ? currentVariantKey : p.defaultVariant);
+      var vObj = findVariantObj(p, targetVarKey);
+      currentPlateKey = plateKey;
+      currentVariantKey = vObj.key;
+
+      renderPlateInfoPanel(currentPlateKey, currentVariantKey);
+
+      if (!atlasMap) return;
+      resolveBasemapTiles(currentVariantKey, function () {
+        atlasMap.setStyle(makeStyle(currentVariantKey));
+        atlasMap.once("styledata", function () {
+          refreshMaskOnAtlasMap(false);
+        });
+      });
+    }
+
+    if (toolbarVariantSelectEl) {
+      toolbarVariantSelectEl.addEventListener("change", function () {
+        activateAtlasPlate(currentPlateKey, toolbarVariantSelectEl.value);
+      });
+    }
+    if (panelVariantSelectEl) {
+      panelVariantSelectEl.addEventListener("change", function () {
+        activateAtlasPlate(currentPlateKey, panelVariantSelectEl.value);
+      });
+    }
+
+    renderPlateInfoPanel(currentPlateKey, currentVariantKey);
 
     if (typeof window.maplibregl === "undefined" || !isWebGLSupported()) {
       mapContainer.innerHTML =
-        '<div class="callout callout-warn" style="margin:1rem;"><strong>Modo de lectura de leyendas activo:</strong> Consulta las fichas cromáticas e interpretativas de las 8 láminas a la derecha y debajo de este recuadro.</div>';
+        '<div class="callout callout-warn" style="margin:1rem;"><strong>Modo de lectura de leyendas activo:</strong> Consulta las fichas cromáticas, series anuales e interpretaciones de las 10 láminas a la derecha y debajo de este recuadro.</div>';
       plateTabs.forEach(function (btn) {
         btn.addEventListener("click", function () {
-          currentPlateKey = btn.getAttribute("data-atlas-plate");
-          renderPlateInfoPanel(currentPlateKey);
+          activateAtlasPlate(btn.getAttribute("data-atlas-plate"));
+        });
+      });
+      plateJumpBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var pk = btn.getAttribute("data-atlas-plate-select");
+          var vk = btn.getAttribute("data-atlas-variant-select") || null;
+          activateAtlasPlate(pk, vk);
+          shellEl.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
       return;
     }
 
-    var atlasMap = new window.maplibregl.Map({
+    atlasMap = new window.maplibregl.Map({
       container: mapContainer,
-      style: makeStyle(currentPlateKey),
+      style: makeStyle(currentVariantKey),
       center: currentCenter,
       zoom: currentZoom,
       attributionControl: true,
@@ -2073,30 +2551,12 @@
       atlasMap.addControl(new window.maplibregl.FullscreenControl({ container: shellEl }), "top-right");
     }
 
-    function refreshMaskOnAtlasMap(shouldFit) {
-      if (!currentPerimeterGeoJson) return;
-      var enabled = maskCheckEl ? maskCheckEl.checked : true;
-      var op = maskOpEl ? parseFloat(maskOpEl.value) : 0.88;
-      applyStudyAreaMaskToMap(atlasMap, currentPerimeterGeoJson, enabled, op);
-      if (shouldFit) {
-        var b = computeGeoJsonBounds(currentPerimeterGeoJson);
-        if (b) {
-          atlasMap.fitBounds(b, { padding: 42, maxZoom: 15.2, duration: 700 });
-        }
-      }
-    }
-
-    function activateAtlasPlate(plateKey) {
-      if (!plateKey || !ATLAS_PLATES[plateKey]) return;
-      currentPlateKey = plateKey;
-      renderPlateInfoPanel(plateKey);
-      resolveBasemapTiles(plateKey, function () {
-        atlasMap.setStyle(makeStyle(plateKey));
-        atlasMap.once("styledata", function () {
-          refreshMaskOnAtlasMap(false);
-        });
+    resolveBasemapTiles(currentVariantKey, function () {
+      atlasMap.setStyle(makeStyle(currentVariantKey));
+      atlasMap.once("styledata", function () {
+        refreshMaskOnAtlasMap(false);
       });
-    }
+    });
 
     plateTabs.forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -2107,7 +2567,8 @@
     plateJumpBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
         var pk = btn.getAttribute("data-atlas-plate-select");
-        activateAtlasPlate(pk);
+        var vk = btn.getAttribute("data-atlas-variant-select") || null;
+        activateAtlasPlate(pk, vk);
         shellEl.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });

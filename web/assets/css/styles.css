@@ -1744,3 +1744,77 @@ tr:last-child td {
   color: var(--c-text);
 }
 
+.atlas-variant-box {
+  background: #FFFDF4;
+  border: 1px solid #E5D48A;
+  border-radius: 6px;
+  padding: 0.55rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+}
+
+.atlas-variant-box-label {
+  font-size: 0.77rem;
+  font-weight: 700;
+  color: var(--c-brand-blue);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.atlas-variant-select {
+  width: 100%;
+  padding: 0.36rem 0.55rem;
+  font-size: 0.81rem;
+  font-weight: 600;
+  color: var(--c-brand-blue);
+  background: #FFFFFF;
+  border: 1px solid var(--c-border-strong);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.atlas-toolbar-select {
+  padding: 0.22rem 0.48rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--c-brand-blue);
+  background: var(--c-accent-yellow);
+  border: 1px solid var(--c-accent-yellow);
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: 290px;
+}
+
+.atlas-variant-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem;
+}
+
+.atlas-variant-pill {
+  padding: 0.24rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+  border: 1px solid var(--c-border-strong);
+  background: #FFFFFF;
+  color: var(--c-brand-blue);
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.atlas-variant-pill:hover {
+  background: var(--c-surface-alt);
+  border-color: var(--c-brand-blue);
+}
+
+.atlas-variant-pill.is-active {
+  background: var(--c-brand-blue);
+  color: var(--c-accent-yellow);
+  border-color: var(--c-brand-blue);
+}
+
+
