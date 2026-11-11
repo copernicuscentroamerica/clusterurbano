@@ -1886,44 +1886,65 @@ tr:last-child td {
   color: var(--c-brand-blue);
 }
 
-.atlas-map-year-badge {
-  position: absolute;
-  top: 56px;
-  left: 12px;
-  z-index: 15;
-  background: rgba(7, 13, 36, 0.88);
-  color: #FFFFFF;
-  border: 1.5px solid var(--c-accent-yellow);
-  border-radius: 8px;
-  padding: 0.4rem 0.75rem;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-  pointer-events: none;
+.atlas-map-stage {
+  position: relative;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 0.12rem;
-  backdrop-filter: blur(4px);
+  min-height: 460px;
+}
+
+.atlas-map-year-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  background: rgba(7, 13, 36, 0.78);
+  color: #FFFFFF;
+  border: 1px solid var(--c-accent-yellow);
+  border-radius: 6px;
+  padding: 0.24rem 0.6rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.45rem;
+  backdrop-filter: blur(3px);
 }
 
 .atlas-map-year-badge-top {
   font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--c-accent-yellow);
   font-weight: 700;
 }
 
 .atlas-map-year-badge-main {
   font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-size: 0.92rem;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1;
   color: #FFFFFF;
 }
 
 .atlas-map-year-badge.is-playing {
   border-color: #4CAF50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.35), 0 4px 14px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3), 0 2px 8px rgba(0, 0, 0, 0.35);
 }
+
+.atlas-copernicus-canvas .maplibregl-ctrl-attrib {
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+  padding: 2px 6px !important;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: rgba(255, 255, 255, 0.75) !important;
+}
+
 
 
 

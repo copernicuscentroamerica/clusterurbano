@@ -2709,8 +2709,7 @@
           atlasMap.addSource(mSrc, {
             type: "raster",
             tiles: bm.tiles,
-            tileSize: 256,
-            attribution: bm.attribution
+            tileSize: 256
           });
           atlasMap.addLayer(
             {
@@ -2878,7 +2877,7 @@
       },
       center: currentCenter,
       zoom: currentZoom,
-      attributionControl: true,
+      attributionControl: false,
       canvasContextAttributes: { preserveDrawingBuffer: true }
     });
 
