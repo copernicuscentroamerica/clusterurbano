@@ -2066,11 +2066,105 @@ tr:last-child td {
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.atlas-pdf-pill:hover {
+.atlas-pdf-pill:hover,
+.atlas-pdf-pill.is-active {
   background: var(--c-accent-yellow);
   color: var(--c-brand-blue);
+  border-color: var(--c-accent-yellow);
+  font-weight: 800;
   text-decoration: none;
+  box-shadow: 0 0 0 2px rgba(255, 200, 0, 0.35);
 }
+
+.atlas-pdf-pill.is-filtered-out {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Modal de Vista Previa e Impresión Institucional A4 Horizontal (Lámina Activa)
+   ========================================================================== */
+.atlas-print-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(7, 13, 36, 0.88);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.atlas-print-modal-bar {
+  width: min(100%, 1122px);
+  background: var(--c-cover-blue);
+  color: #FFFFFF;
+  border: 2px solid var(--c-accent-yellow);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.atlas-print-sheet {
+  width: 297mm;
+  height: 210mm;
+  max-width: 100%;
+  background: #F4F6FB;
+  color: #0F1738;
+  font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow: 0 12px 38px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--c-accent-yellow);
+  flex-shrink: 0;
+}
+
+@media print {
+  @page {
+    size: 297mm 210mm;
+    margin: 0;
+  }
+  body.is-printing-atlas-plate > *:not(#atlas-print-modal-backdrop) {
+    display: none !important;
+  }
+  body.is-printing-atlas-plate {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #F4F6FB !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.is-printing-atlas-plate #atlas-print-modal-backdrop {
+    position: static !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+  body.is-printing-atlas-plate .atlas-print-modal-bar {
+    display: none !important;
+  }
+  body.is-printing-atlas-plate .atlas-print-sheet {
+    width: 297mm !important;
+    height: 210mm !important;
+    max-width: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+}
+
 
 
 

@@ -2843,6 +2843,587 @@
 
     renderPlateInfoPanel(currentPlateKey, currentVariantKey);
 
+    function escapeHtml(val) {
+      return String(val == null ? "" : val)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function getActiveProjectMeta() {
+      var pid = "";
+      var label = document.title.split("·").pop().trim() || "Zona de Estudio";
+      if (projectSelectEl && projectSelectEl.value) {
+        pid = projectSelectEl.value;
+        if (projectSelectEl.options[projectSelectEl.selectedIndex]) {
+          label = projectSelectEl.options[projectSelectEl.selectedIndex].text;
+        }
+      } else {
+        var dlBtn = document.querySelector(".atlas-pdf-banner a[download]");
+        if (dlBtn) {
+          var href = dlBtn.getAttribute("href") || "";
+          var m = href.match(/atlas_copernicus_([a-z0-9-]+)\.pdf/i);
+          if (m && m[1] !== "zona_estudio" && m[1] !== "regional") {
+            pid = m[1];
+          }
+        }
+      }
+      var pdfPath = pid
+        ? "assets/descargas/atlas_copernicus_" + encodeURIComponent(pid) + ".pdf"
+        : "assets/descargas/atlas_copernicus_zona_estudio.pdf";
+      var pdfUrl = new URL(pdfPath, window.location.origin + baseUrl).href;
+      var dlName = pid ? "Atlas_Copernicus_" + pid + ".pdf" : "Atlas_Copernicus_Zona_Estudio.pdf";
+      return { id: pid, label: label, pdfUrl: pdfUrl, downloadName: dlName };
+    }
+
+    function renderCartographicPlateCanvasDataUrl(p, vObj) {
+      var W = 840;
+      var H = 560;
+      var cv = document.createElement("canvas");
+      cv.width = W;
+      cv.height = H;
+      var ctx = cv.getContext("2d");
+      if (!ctx) return "";
+
+      ctx.fillStyle = "#070D24";
+      ctx.fillRect(0, 0, W, H);
+
+      var drewLiveCanvas = false;
+      try {
+        if (atlasMap && typeof atlasMap.triggerRepaint === "function") {
+          atlasMap.triggerRepaint();
+        }
+        if (atlasMap && typeof atlasMap.getCanvas === "function") {
+          var mapCanvas = atlasMap.getCanvas();
+          if (mapCanvas && mapCanvas.width > 0 && mapCanvas.height > 0) {
+            var srcRatio = mapCanvas.width / mapCanvas.height;
+            var dstRatio = W / H;
+            var drawW = W;
+            var drawH = H;
+            var dx = 0;
+            var dy = 0;
+            if (srcRatio > dstRatio) {
+              drawH = W / srcRatio;
+              dy = (H - drawH) / 2;
+            } else {
+              drawW = H * srcRatio;
+              dx = (W - drawW) / 2;
+            }
+            ctx.drawImage(mapCanvas, dx, dy, drawW, drawH);
+            var testUrl = cv.toDataURL("image/png");
+            if (testUrl && testUrl.length > 14000) {
+              drewLiveCanvas = true;
+            }
+          }
+        }
+      } catch (err) {
+        drewLiveCanvas = false;
+      }
+
+      var b = currentPerimeterGeoJson ? computeGeoJsonBounds(currentPerimeterGeoJson) : null;
+      var minLon = b ? b[0][0] : currentCenter[0] - 0.08;
+      var minLat = b ? b[0][1] : currentCenter[1] - 0.06;
+      var maxLon = b ? b[1][0] : currentCenter[0] + 0.08;
+      var maxLat = b ? b[1][1] : currentCenter[1] + 0.06;
+      var meanLat = 0.5 * (minLat + maxLat);
+      var cosLat = Math.cos((meanLat * Math.PI) / 180);
+      var padLon = Math.max(0.008, (maxLon - minLon) * 0.16);
+      var padLat = Math.max(0.008, (maxLat - minLat) * 0.16);
+      var cx = 0.5 * (minLon + maxLon);
+      var cy = 0.5 * (minLat + maxLat);
+      var spanLon = maxLon - minLon + 2 * padLon;
+      var spanLat = maxLat - minLat + 2 * padLat;
+      var targetRatio = W / H;
+      if ((spanLon * cosLat) / spanLat > targetRatio) {
+        spanLat = (spanLon * cosLat) / targetRatio;
+      } else {
+        spanLon = (spanLat * targetRatio) / cosLat;
+      }
+      minLon = cx - spanLon / 2;
+      maxLon = cx + spanLon / 2;
+      minLat = cy - spanLat / 2;
+      maxLat = cy + spanLat / 2;
+
+      function lonLatToXY(lon, lat) {
+        return [
+          ((lon - minLon) / Math.max(1e-6, maxLon - minLon)) * W,
+          ((maxLat - lat) / Math.max(1e-6, maxLat - minLat)) * H
+        ];
+      }
+
+      if (!drewLiveCanvas) {
+        var swatches = vObj.swatches || p.swatches || [];
+        var col0 = (swatches[0] && swatches[0].color) || "#1E5631";
+        var col1 = (swatches[1] && swatches[1].color) || "#76B041";
+        var col2 = (swatches[2] && swatches[2].color) || "#D29D6A";
+
+        ctx.fillStyle = "#070D24";
+        ctx.fillRect(0, 0, W, H);
+
+        if (currentPerimeterGeoJson) {
+          var rings = [];
+          function collectRings(g) {
+            if (!g) return;
+            if (g.type === "FeatureCollection") {
+              (g.features || []).forEach(collectRings);
+            } else if (g.type === "Feature") {
+              collectRings(g.geometry);
+            } else if (g.type === "Polygon" && g.coordinates && g.coordinates[0]) {
+              rings.push(g.coordinates[0]);
+            } else if (g.type === "MultiPolygon" && g.coordinates) {
+              g.coordinates.forEach(function (poly) {
+                if (poly && poly[0]) rings.push(poly[0]);
+              });
+            }
+          }
+          collectRings(currentPerimeterGeoJson);
+
+          ctx.save();
+          ctx.beginPath();
+          rings.forEach(function (ring) {
+            ring.forEach(function (pt, idx) {
+              var xy = lonLatToXY(pt[0], pt[1]);
+              if (idx === 0) ctx.moveTo(xy[0], xy[1]);
+              else ctx.lineTo(xy[0], xy[1]);
+            });
+            ctx.closePath();
+          });
+          ctx.clip();
+
+          var grad = ctx.createLinearGradient(80, 60, W - 80, H - 60);
+          grad.addColorStop(0, col1);
+          grad.addColorStop(0.52, col0);
+          grad.addColorStop(1, col2);
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, W, H);
+
+          ctx.strokeStyle = "rgba(255,255,255,0.16)";
+          ctx.lineWidth = 1;
+          for (var gx = 40; gx < W; gx += 28) {
+            ctx.beginPath();
+            ctx.moveTo(gx, 0);
+            ctx.lineTo(gx, H);
+            ctx.stroke();
+          }
+          for (var gy = 40; gy < H; gy += 28) {
+            ctx.beginPath();
+            ctx.moveTo(0, gy);
+            ctx.lineTo(W, gy);
+            ctx.stroke();
+          }
+          ctx.restore();
+
+          rings.forEach(function (ring) {
+            ctx.beginPath();
+            ring.forEach(function (pt, idx) {
+              var xy = lonLatToXY(pt[0], pt[1]);
+              if (idx === 0) ctx.moveTo(xy[0], xy[1]);
+              else ctx.lineTo(xy[0], xy[1]);
+            });
+            ctx.closePath();
+            ctx.strokeStyle = "#000A62";
+            ctx.lineWidth = 7;
+            ctx.stroke();
+            ctx.strokeStyle = "#FFC800";
+            ctx.lineWidth = 3.5;
+            ctx.stroke();
+            ctx.strokeStyle = "#FFFFFF";
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          });
+        }
+      }
+
+      // Grilla de coordenadas EPSG:4326
+      ctx.strokeStyle = "rgba(255,255,255,0.15)";
+      ctx.lineWidth = 1;
+      [0.28, 0.72].forEach(function (frac) {
+        var x = Math.round(W * frac);
+        var y = Math.round(H * frac);
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+
+        var lonV = minLon + (maxLon - minLon) * frac;
+        var latV = maxLat - (maxLat - minLat) * frac;
+        ctx.fillStyle = "rgba(7,13,36,0.82)";
+        ctx.fillRect(x - 32, 6, 64, 16);
+        ctx.fillRect(W - 68, y - 8, 60, 16);
+        ctx.fillStyle = "#E2E8F8";
+        ctx.font = "bold 11px Calibri, Arial, sans-serif";
+        ctx.fillText(Math.abs(lonV).toFixed(2) + "°W", x - 26, 18);
+        ctx.fillText(Math.abs(latV).toFixed(2) + "°N", W - 64, y + 4);
+      });
+
+      // Insignia superior izquierda de Lámina y Año
+      var badgeText = (p.number + " · " + (vObj.pill || vObj.label || "")).toUpperCase();
+      ctx.font = "bold 13px Calibri, Arial, sans-serif";
+      var bw = Math.max(175, ctx.measureText(badgeText).width + 26);
+      ctx.fillStyle = "rgba(12,22,89,0.92)";
+      ctx.fillRect(16, 26, bw, 28);
+      ctx.strokeStyle = "#FFC800";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(16, 26, bw, 28);
+      ctx.fillStyle = "#FFC800";
+      ctx.fillText(badgeText, 28, 45);
+
+      // Flecha de Norte superior derecha
+      var nx = W - 40;
+      var ny = 42;
+      ctx.beginPath();
+      ctx.arc(nx, ny, 18, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(12,22,89,0.9)";
+      ctx.fill();
+      ctx.strokeStyle = "#FFC800";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(nx, ny - 12);
+      ctx.lineTo(nx - 6, ny + 8);
+      ctx.lineTo(nx, ny + 3);
+      ctx.lineTo(nx + 6, ny + 8);
+      ctx.closePath();
+      ctx.fillStyle = "#FFC800";
+      ctx.fill();
+      ctx.fillStyle = "#FFFFFF";
+      ctx.font = "bold 12px Calibri, Arial, sans-serif";
+      ctx.fillText("N", nx - 4, ny + 32);
+
+      // Barra de escala métrica inferior derecha
+      var kmSpan = (maxLon - minLon) * 111.32 * cosLat;
+      var targetKm = kmSpan > 18 ? 5 : kmSpan > 7 ? 2 : kmSpan > 2.2 ? 1 : 0.5;
+      var barPx = Math.max(90, Math.min(160, Math.round((targetKm / Math.max(0.1, kmSpan)) * W)));
+      var sx1 = W - 20;
+      var sx0 = sx1 - barPx;
+      var sy = H - 18;
+      ctx.fillStyle = "rgba(7,13,36,0.88)";
+      ctx.fillRect(sx0 - 10, sy - 20, barPx + 18, 28);
+      ctx.strokeStyle = "#FFC800";
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(sx0 - 10, sy - 20, barPx + 18, 28);
+      ctx.fillStyle = "#FFC800";
+      ctx.fillRect(sx0, sy - 3, barPx / 2, 5);
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(sx0 + barPx / 2, sy - 3, barPx / 2, 5);
+      ctx.font = "bold 11px Calibri, Arial, sans-serif";
+      ctx.fillText("0      " + targetKm + " km (EPSG:4326)", sx0 - 4, sy - 7);
+
+      try {
+        return cv.toDataURL("image/png");
+      } catch (e) {
+        return "";
+      }
+    }
+
+    function exportCurrentAtlasPlateToPdf() {
+      stopTimelinePlayback();
+      var p = ATLAS_PLATES[currentPlateKey] || ATLAS_PLATES["sentinel2-cloudless"];
+      var vObj = findVariantObj(p, currentVariantKey);
+      var effectiveSwatches = vObj.swatches || p.swatches || [];
+      var projMeta = getActiveProjectMeta();
+      var mapDataUrl = renderCartographicPlateCanvasDataUrl(p, vObj);
+
+      var brandBase = new URL("assets/img/brand/", window.location.origin + baseUrl).href;
+      var ggUrl = brandBase + "logo-global-gateway.png";
+      var euUrl = brandBase + "logo-union-europea.png";
+      var ccvahUrl = brandBase + "logo-ccvah.png";
+      var siscaUrl = brandBase + "logo-sisca.png";
+      var sicaUrl = brandBase + "logo-sica.png";
+      var coopUrl = brandBase + "logo-cooperacion-alemana.png";
+      var gizUrl = brandBase + "logo-giz.png";
+      var copUrl = brandBase + "logo-copernicus-lac-chile.png";
+
+      var swatchesRowsHtml = effectiveSwatches
+        .map(function (sw) {
+          return (
+            "<tr>" +
+            '<td style="width:24mm;white-space:nowrap;padding:1.3mm 1.5mm;border-bottom:0.25mm solid #E6ECF8;">' +
+            '<span style="display:inline-block;width:6.8mm;height:4.2mm;border-radius:0.8mm;border:0.3mm solid rgba(0,10,98,0.3);background:' +
+            escapeHtml(sw.color) +
+            ';vertical-align:middle;"></span> ' +
+            '<code style="font-size:6.8pt;color:#455073;">' +
+            escapeHtml(sw.color) +
+            "</code></td>" +
+            '<td style="padding:1.3mm 1.5mm;border-bottom:0.25mm solid #E6ECF8;font-size:7.6pt;line-height:1.28;">' +
+            "<strong>" +
+            escapeHtml(sw.label) +
+            ":</strong> " +
+            escapeHtml(sw.desc) +
+            "</td></tr>"
+          );
+        })
+        .join("");
+
+      var variantsChipsHtml = (p.variants || [])
+        .map(function (v) {
+          var isAct = v.key === vObj.key;
+          return (
+            '<span style="display:inline-block;padding:0.5mm 1.8mm;border-radius:1mm;font-size:7.1pt;font-weight:700;margin-left:0.8mm;' +
+            (isAct
+              ? "background:#FFC800;color:#000A62;border:0.35mm solid #000A62;"
+              : "background:#FFFFFF;color:#000A62;border:0.3mm solid #B0BBE0;") +
+            '">' +
+            escapeHtml(v.pill || v.label) +
+            "</span>"
+          );
+        })
+        .join("");
+
+      var sheetInnerHtml =
+        '<header style="background:linear-gradient(90deg,#000A62 0%,#0C1659 60%,#172070 100%);color:#FFFFFF;padding:3.8mm 10mm;border-bottom:1.1mm solid #FFC800;display:flex;align-items:center;justify-content:space-between;gap:4mm;">' +
+        '<div style="display:flex;align-items:center;gap:3.2mm;">' +
+        '<span style="background:#FFC800;color:#000A62;font-weight:800;font-size:8.3pt;padding:1mm 2.8mm;border-radius:1.2mm;text-transform:uppercase;white-space:nowrap;">' +
+        escapeHtml(p.number + " · " + (vObj.pill || "")) +
+        "</span>" +
+        "<div>" +
+        '<h1 style="margin:0;font-size:12pt;color:#FFFFFF;line-height:1.15;">' +
+        escapeHtml(vObj.title || p.title) +
+        "</h1>" +
+        '<p style="margin:0.5mm 0 0;font-size:7.8pt;color:#C5D0F0;">Zona de Estudio: <strong>' +
+        escapeHtml(projMeta.label) +
+        "</strong> · Clúster de Asentamientos Humanos (Fase II)</p>" +
+        "</div></div>" +
+        '<div style="text-align:right;font-size:7.6pt;color:#E2E8F8;white-space:nowrap;">' +
+        '<strong style="display:block;color:#FFC800;font-size:8.3pt;">Atlas Temático Copernicus</strong>' +
+        "<span>Recorte Enmascarado · EPSG:4326</span>" +
+        "</div></header>" +
+        '<div style="flex:1;display:grid;grid-template-columns:1.38fr 1fr;gap:5mm;padding:4mm 10mm;min-height:0;">' +
+        '<div style="background:#FFFFFF;border:0.4mm solid #D5DCEE;border-radius:2.5mm;padding:2.5mm;display:flex;flex-direction:column;justify-content:space-between;">' +
+        '<div style="width:100%;height:116mm;background:#070D24;border-radius:1.8mm;overflow:hidden;border:0.5mm solid #FFC800;display:flex;align-items:center;justify-content:center;">' +
+        (mapDataUrl
+          ? '<img src="' + mapDataUrl + '" alt="Mapa de la lámina activa" style="width:100%;height:100%;object-fit:contain;display:block;">'
+          : '<div style="color:#FFF;padding:20mm;text-align:center;">Mapa interactivo Copernicus</div>') +
+        "</div>" +
+        '<div style="margin-top:2mm;background:#EEF2FA;border:0.35mm solid #C5D0F0;border-left:1.1mm solid #000A62;border-radius:1.5mm;padding:1.8mm 2.8mm;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5mm;font-size:7.5pt;">' +
+        '<strong style="color:#000A62;">📅 Serie multitemporal / variante activa:</strong>' +
+        "<div>" +
+        variantsChipsHtml +
+        "</div></div></div>" +
+        '<div style="background:#FFFFFF;border:0.4mm solid #D5DCEE;border-top:1.1mm solid #000A62;border-radius:2.5mm;padding:3.2mm 3.8mm;display:flex;flex-direction:column;gap:2.6mm;">' +
+        '<div style="background:#F8FAFF;border:0.3mm solid #D5DCEE;border-radius:1.8mm;padding:2.2mm 2.8mm;font-size:7.8pt;line-height:1.38;">' +
+        '<div><strong style="color:#000A62;">Sensor / Fuente Oficial:</strong> ' +
+        escapeHtml(p.sensor) +
+        "</div>" +
+        '<div style="margin-top:0.7mm;"><strong style="color:#000A62;">Fórmula / Expresión:</strong> <code style="background:#EEF2FA;color:#000A62;padding:0.3mm 1.2mm;border-radius:0.8mm;font-weight:700;">' +
+        escapeHtml(vObj.formula || p.formula) +
+        "</code></div></div>" +
+        '<div style="background:#F3F6FD;border-left:1.1mm solid #000A62;border-radius:1.5mm;padding:2.2mm 2.8mm;font-size:7.9pt;line-height:1.4;">' +
+        '<strong style="display:block;color:#000A62;margin-bottom:0.6mm;">Lectura e interpretación territorial:</strong>' +
+        escapeHtml(p.reading) +
+        "</div>" +
+        "<div>" +
+        '<h3 style="margin:0 0 1.2mm;font-size:8pt;font-weight:800;text-transform:uppercase;color:#000A62;">Guía de interpretación de los colores de la leyenda</h3>' +
+        '<table style="width:100%;border-collapse:collapse;"><tbody>' +
+        swatchesRowsHtml +
+        "</tbody></table></div></div></div>" +
+        '<footer style="background:#FFFFFF;border-top:0.8mm solid #FFC800;padding:2.2mm 10mm;display:flex;align-items:center;justify-content:space-between;gap:3mm;white-space:nowrap;">' +
+        '<div style="display:flex;align-items:center;gap:4mm;">' +
+        '<div style="display:flex;align-items:center;gap:1.5mm;"><span style="font-size:6.6pt;font-weight:700;color:#000A62;">GLOBAL GATEWAY · UE:</span>' +
+        '<span style="background:#0C1659;padding:0.6mm 1.4mm;border-radius:1mm;display:inline-flex;"><img src="' +
+        ggUrl +
+        '" alt="Global Gateway" style="height:4.8mm;"></span>' +
+        '<img src="' +
+        euUrl +
+        '" alt="UE" style="height:5.2mm;"></div>' +
+        '<div style="display:flex;align-items:center;gap:1.5mm;"><span style="font-size:6.6pt;font-weight:700;color:#000A62;">IMPLEMENTADO POR:</span>' +
+        '<img src="' +
+        ccvahUrl +
+        '" alt="CCVAH" style="height:5.6mm;">' +
+        '<img src="' +
+        siscaUrl +
+        '" alt="SISCA" style="height:5.2mm;">' +
+        '<img src="' +
+        sicaUrl +
+        '" alt="SICA" style="height:5.2mm;"></div>' +
+        '<div style="display:flex;align-items:center;gap:1.5mm;"><span style="font-size:6.6pt;font-weight:700;color:#000A62;">APOYO TÉCNICO:</span>' +
+        '<img src="' +
+        coopUrl +
+        '" alt="Cooperación Alemana" style="height:5.6mm;">' +
+        '<img src="' +
+        gizUrl +
+        '" alt="GIZ" style="height:4.8mm;">' +
+        '<img src="' +
+        copUrl +
+        '" alt="Copernicus LAC" style="height:5.2mm;"></div>' +
+        "</div>" +
+        '<div style="font-size:7.1pt;color:#455073;">Atlas Temático Copernicus · <strong>' +
+        escapeHtml(projMeta.id || "A4") +
+        " · " +
+        escapeHtml(p.number) +
+        " (" +
+        escapeHtml(vObj.pill || "") +
+        ")</strong></div>" +
+        "</footer>";
+
+      var existingModal = document.getElementById("atlas-print-modal-backdrop");
+      if (existingModal && existingModal.parentNode) {
+        existingModal.parentNode.removeChild(existingModal);
+      }
+
+      var modal = document.createElement("div");
+      modal.id = "atlas-print-modal-backdrop";
+      modal.className = "atlas-print-modal-backdrop";
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      modal.setAttribute("aria-label", "Vista Previa Institucional A4 Horizontal de la Lámina Activa");
+
+      var bar = document.createElement("div");
+      bar.className = "atlas-print-modal-bar";
+      bar.innerHTML =
+        '<div><strong style="color:#FFC800;font-size:0.92rem;">🖨️ Vista Previa Institucional A4 Horizontal:</strong> ' +
+        '<span style="font-size:0.84rem;color:#E2E8F8;">' +
+        escapeHtml(p.number + " (" + (vObj.pill || "") + ") · " + projMeta.label) +
+        "</span></div>" +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.45rem;align-items:center;">' +
+        '<button type="button" id="atlas-modal-do-print" class="btn btn-primary btn-xs">🖨️ Imprimir / Guardar esta Lámina en PDF</button>' +
+        '<a class="btn btn-teal btn-xs" href="' +
+        escapeHtml(projMeta.pdfUrl) +
+        '" download="' +
+        escapeHtml(projMeta.downloadName) +
+        '">📥 Descargar Atlas PDF Completo de esta Zona</a>' +
+        '<button type="button" id="atlas-modal-close" class="btn btn-outline-light btn-xs">✕ Cerrar vista previa</button>' +
+        "</div>";
+
+      var sheet = document.createElement("section");
+      sheet.className = "atlas-print-sheet";
+      sheet.innerHTML = sheetInnerHtml;
+
+      modal.appendChild(bar);
+      modal.appendChild(sheet);
+      document.body.appendChild(modal);
+      document.body.classList.add("is-printing-atlas-plate");
+
+      function closeModal() {
+        document.body.classList.remove("is-printing-atlas-plate");
+        if (modal && modal.parentNode) {
+          modal.parentNode.removeChild(modal);
+        }
+      }
+
+      var printBtn = document.getElementById("atlas-modal-do-print");
+      if (printBtn) {
+        printBtn.addEventListener("click", function () {
+          document.body.classList.add("is-printing-atlas-plate");
+          window.print();
+        });
+      }
+      var closeBtn = document.getElementById("atlas-modal-close");
+      if (closeBtn) {
+        closeBtn.addEventListener("click", closeModal);
+      }
+      modal.addEventListener("click", function (ev) {
+        if (ev.target === modal) closeModal();
+      });
+    }
+
+    var exportPdfBtns = document.querySelectorAll("[data-atlas-export-pdf]");
+    exportPdfBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        exportCurrentAtlasPlateToPdf();
+      });
+    });
+
+    // Sincronización del filtro de Zona de Estudio con los archivos de descarga disponibles y el catálogo
+    var hubProjPdfBtn = document.getElementById("atlas-download-project-pdf");
+    var panelProjPdfBtn = document.getElementById("atlas-panel-download-pdf");
+    var bannerZoneBadgeEl = document.getElementById("atlas-banner-active-zone");
+    var pdfPills = Array.prototype.slice.call(document.querySelectorAll("[data-pdf-project-id]"));
+    var toggleAllPdfsBtn = document.getElementById("atlas-toggle-all-pdfs");
+    var catalogProjFilterEl = document.getElementById("f-atlas-project");
+    var showAllPdfPills = false;
+
+    function updateStudyAreaDownloadsAndFilters(pid, syncCatalog) {
+      if (!pid) return;
+      var pdfHref = new URL("assets/descargas/atlas_copernicus_" + encodeURIComponent(pid) + ".pdf", window.location.origin + baseUrl).href;
+      var optionText = pid;
+      if (projectSelectEl) {
+        for (var i = 0; i < projectSelectEl.options.length; i++) {
+          if (projectSelectEl.options[i].value === pid) {
+            optionText = projectSelectEl.options[i].text;
+            break;
+          }
+        }
+      }
+      if (hubProjPdfBtn) {
+        hubProjPdfBtn.href = pdfHref;
+        hubProjPdfBtn.setAttribute("download", "Atlas_Copernicus_" + pid + ".pdf");
+        hubProjPdfBtn.textContent = "📥 Descargar Atlas PDF: " + optionText;
+      }
+      if (panelProjPdfBtn) {
+        panelProjPdfBtn.href = pdfHref;
+        panelProjPdfBtn.setAttribute("download", "Atlas_Copernicus_" + pid + ".pdf");
+        panelProjPdfBtn.textContent = "📥 Descargar Atlas PDF (" + pid + ")";
+      }
+      if (bannerZoneBadgeEl) {
+        bannerZoneBadgeEl.textContent = "ZONA SELECCIONADA: " + optionText.toUpperCase();
+      }
+      pdfPills.forEach(function (pill) {
+        var pillPid = pill.getAttribute("data-pdf-project-id");
+        var isMatch = pillPid === pid;
+        pill.classList.toggle("is-active", isMatch);
+        pill.classList.toggle("is-filtered-out", !showAllPdfPills && !isMatch);
+      });
+      if (syncCatalog && catalogProjFilterEl && catalogProjFilterEl.value !== pid) {
+        catalogProjFilterEl.value = pid;
+        catalogProjFilterEl.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    }
+
+    if (toggleAllPdfsBtn) {
+      toggleAllPdfsBtn.addEventListener("click", function () {
+        showAllPdfPills = !showAllPdfPills;
+        toggleAllPdfsBtn.textContent = showAllPdfPills
+          ? "Mostrar solo zona seleccionada"
+          : "Ver descargas de las 8 zonas";
+        if (projectSelectEl) {
+          updateStudyAreaDownloadsAndFilters(projectSelectEl.value, false);
+        }
+      });
+    }
+
+    if (catalogProjFilterEl && projectSelectEl) {
+      catalogProjFilterEl.addEventListener("change", function () {
+        var val = catalogProjFilterEl.value;
+        if (val && allHubPerimeters && allHubPerimeters[val] && projectSelectEl.value !== val) {
+          projectSelectEl.value = val;
+          projectSelectEl.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      });
+    }
+
+    function selectHubProject(pid) {
+      if (!allHubPerimeters || !pid) return;
+      var entry = allHubPerimeters[pid];
+      if (!entry || !entry.feature_collection) return;
+      currentPerimeterGeoJson = entry.feature_collection;
+      currentCenter = entry.center || currentCenter;
+      currentZoom = entry.zoom || 12;
+      updateStudyAreaDownloadsAndFilters(pid, true);
+      if (atlasMap) {
+        if (atlasMap.isStyleLoaded()) {
+          refreshMaskOnAtlasMap(true);
+        } else {
+          atlasMap.once("load", function () {
+            refreshMaskOnAtlasMap(true);
+          });
+        }
+      }
+    }
+
+    if (allHubPerimeters && projectSelectEl) {
+      projectSelectEl.addEventListener("change", function () {
+        selectHubProject(projectSelectEl.value);
+      });
+      selectHubProject(projectSelectEl.value || Object.keys(allHubPerimeters)[0]);
+    }
+
     if (typeof window.maplibregl === "undefined" || !isWebGLSupported()) {
       mapContainer.innerHTML =
         '<div class="callout callout-warn" style="margin:1rem;"><strong>Modo de lectura de leyendas activo:</strong> Consulta las fichas cromáticas, series anuales e interpretaciones de las 10 láminas a la derecha y debajo de este recuadro.</div>';
@@ -2973,9 +3554,9 @@
         .then(function (gj) {
           if (gj) {
             currentPerimeterGeoJson = gj;
-            if (atlasMap.isStyleLoaded()) {
+            if (atlasMap && atlasMap.isStyleLoaded()) {
               refreshMaskOnAtlasMap(true);
-            } else {
+            } else if (atlasMap) {
               atlasMap.once("load", function () {
                 refreshMaskOnAtlasMap(true);
               });
@@ -2985,223 +3566,7 @@
         .catch(function () {});
     }
 
-    function exportCurrentAtlasPlateToPdf() {
-      stopTimelinePlayback();
-      var p = ATLAS_PLATES[currentPlateKey] || ATLAS_PLATES["sentinel2-cloudless"];
-      var vObj = findVariantObj(p, currentVariantKey);
-      var effectiveSwatches = vObj.swatches || p.swatches || [];
-      var mapDataUrl = "";
-      try {
-        if (atlasMap && atlasMap.getCanvas) {
-          mapDataUrl = atlasMap.getCanvas().toDataURL("image/png");
-        }
-      } catch (e) {
-        mapDataUrl = "";
-      }
-
-      var brandBase = new URL("assets/img/brand/", window.location.origin + baseUrl).href;
-      var ggUrl = brandBase + "logo-global-gateway.png";
-      var euUrl = brandBase + "logo-union-europea.png";
-      var ccvahUrl = brandBase + "logo-ccvah.png";
-      var siscaUrl = brandBase + "logo-sisca.png";
-      var sicaUrl = brandBase + "logo-sica.png";
-      var coopUrl = brandBase + "logo-cooperacion-alemana.png";
-      var gizUrl = brandBase + "logo-giz.png";
-      var copUrl = brandBase + "logo-copernicus-lac-chile.png";
-
-      var territoryTitle = document.title.split("·").pop().trim() || "Zona de Estudio";
-      if (projectSelectEl && projectSelectEl.options[projectSelectEl.selectedIndex]) {
-        territoryTitle = projectSelectEl.options[projectSelectEl.selectedIndex].text;
-      }
-
-      var swatchesRowsHtml = effectiveSwatches
-        .map(function (sw) {
-          return (
-            "<tr>" +
-            '<td style="width:24mm;white-space:nowrap;padding:1.4mm 1.5mm;border-bottom:0.25mm solid #E6ECF8;">' +
-            '<span style="display:inline-block;width:7mm;height:4.5mm;border-radius:0.8mm;border:0.3mm solid rgba(0,10,98,0.3);background:' +
-            escapeHtml(sw.color) +
-            ';vertical-align:middle;"></span> ' +
-            '<code style="font-size:7pt;color:#455073;">' +
-            escapeHtml(sw.color) +
-            "</code></td>" +
-            '<td style="padding:1.4mm 1.5mm;border-bottom:0.25mm solid #E6ECF8;font-size:7.8pt;line-height:1.3;">' +
-            "<strong>" +
-            escapeHtml(sw.label) +
-            ":</strong> " +
-            escapeHtml(sw.desc) +
-            "</td></tr>"
-          );
-        })
-        .join("");
-
-      var variantsChipsHtml = (p.variants || [])
-        .map(function (v) {
-          var isAct = v.key === vObj.key;
-          return (
-            '<span style="display:inline-block;padding:0.6mm 2mm;border-radius:1mm;font-size:7.4pt;font-weight:700;margin-left:1mm;' +
-            (isAct
-              ? "background:#FFC800;color:#000A62;border:0.35mm solid #000A62;"
-              : "background:#FFFFFF;color:#000A62;border:0.3mm solid #B0BBE0;") +
-            '">' +
-            escapeHtml(v.pill || v.label) +
-            "</span>"
-          );
-        })
-        .join("");
-
-      var printWin = window.open("", "_blank");
-      if (!printWin) {
-        window.print();
-        return;
-      }
-
-      var htmlDoc =
-        "<!DOCTYPE html><html lang='es'><head><meta charset='utf-8'>" +
-        "<title>" +
-        escapeHtml((vObj.title || p.title) + " · " + territoryTitle) +
-        "</title>" +
-        "<style>" +
-        "@page { size: 297mm 210mm; margin: 0; }" +
-        "* { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }" +
-        "html, body { margin: 0; padding: 0; width: 297mm; height: 210mm; font-family: Calibri, 'Segoe UI', Arial, sans-serif; color: #0F1738; background: #F4F6FB; }" +
-        ".sheet { width: 297mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }" +
-        ".hdr { background: linear-gradient(90deg, #000A62 0%, #0C1659 60%, #172070 100%); color: #FFFFFF; padding: 4mm 10mm; border-bottom: 1.1mm solid #FFC800; display: flex; align-items: center; justify-content: space-between; gap: 4mm; }" +
-        ".pill { background: #FFC800; color: #000A62; font-weight: 800; font-size: 8.5pt; padding: 1.1mm 3mm; border-radius: 1.2mm; text-transform: uppercase; white-space: nowrap; }" +
-        ".body { flex: 1; display: grid; grid-template-columns: 1.38fr 1fr; gap: 5mm; padding: 4.5mm 10mm; min-height: 0; }" +
-        ".map-col { background: #FFFFFF; border: 0.4mm solid #D5DCEE; border-radius: 2.5mm; padding: 2.5mm; display: flex; flex-direction: column; justify-content: space-between; }" +
-        ".map-box { width: 100%; height: 118mm; background: #070D24; border-radius: 1.8mm; overflow: hidden; border: 0.5mm solid #FFC800; position: relative; }" +
-        ".map-box img { width: 100%; height: 100%; object-fit: cover; display: block; }" +
-        ".info-col { background: #FFFFFF; border: 0.4mm solid #D5DCEE; border-top: 1.1mm solid #000A62; border-radius: 2.5mm; padding: 3.5mm 4mm; display: flex; flex-direction: column; gap: 3mm; }" +
-        ".ftr { background: #FFFFFF; border-top: 0.9mm solid #FFC800; padding: 2.4mm 10mm; display: flex; align-items: center; justify-content: space-between; gap: 4mm; }" +
-        "@media screen { body { width: 100%; height: auto; padding: 12px; background: #070D24; } .sheet { margin: 0 auto; box-shadow: 0 10px 32px rgba(0,0,0,0.5); } .screen-bar { max-width: 297mm; margin: 0 auto 10px; background: #0C1659; color: #FFF; padding: 8px 14px; border-radius: 8px; border: 1px solid #FFC800; display: flex; justify-content: space-between; align-items: center; } }" +
-        "@media print { .screen-bar { display: none !important; } }" +
-        "</style></head><body>" +
-        '<div class="screen-bar">' +
-        "<span><strong>Vista Previa Institucional A4 Horizontal</strong> · Pulsa <em>Guardar como PDF</em> en el cuadro de impresión</span>" +
-        '<button type="button" onclick="window.print()" style="background:#FFC800;color:#000A62;border:none;padding:6px 14px;border-radius:5px;font-weight:800;cursor:pointer;">🖨️ Imprimir / Guardar en PDF</button>' +
-        "</div>" +
-        '<section class="sheet">' +
-        '<header class="hdr">' +
-        '<div style="display:flex;align-items:center;gap:3.5mm;">' +
-        '<span class="pill">' +
-        escapeHtml(p.number + " · " + (vObj.pill || "")) +
-        "</span>" +
-        "<div>" +
-        '<h1 style="margin:0;font-size:12.4pt;color:#FFFFFF;">' +
-        escapeHtml(vObj.title || p.title) +
-        "</h1>" +
-        '<p style="margin:0.6mm 0 0;font-size:8pt;color:#C5D0F0;">Ámbito Territorial: <strong>' +
-        escapeHtml(territoryTitle) +
-        "</strong> · Clúster de Asentamientos Humanos (Fase II)</p>" +
-        "</div></div>" +
-        '<div style="text-align:right;font-size:7.8pt;color:#E2E8F8;">' +
-        '<strong style="display:block;color:#FFC800;font-size:8.5pt;">Atlas Temático Copernicus</strong>' +
-        "<span>Recorte Enmascarado · EPSG:4326</span>" +
-        "</div></header>" +
-        '<div class="body">' +
-        '<div class="map-col">' +
-        '<div class="map-box">' +
-        (mapDataUrl
-          ? '<img src="' + mapDataUrl + '" alt="Mapa de la lámina activa">'
-          : '<div style="color:#FFF;padding:20mm;text-align:center;">Mapa interactivo Copernicus</div>') +
-        "</div>" +
-        '<div style="margin-top:2mm;background:#EEF2FA;border:0.35mm solid #C5D0F0;border-left:1.1mm solid #000A62;border-radius:1.5mm;padding:2mm 3mm;display:flex;align-items:center;justify-content:space-between;font-size:7.8pt;">' +
-        '<strong style="color:#000A62;">📅 Serie multitemporal / variante activa:</strong>' +
-        "<div>" +
-        variantsChipsHtml +
-        "</div></div></div>" +
-        '<div class="info-col">' +
-        '<div style="background:#F8FAFF;border:0.3mm solid #D5DCEE;border-radius:1.8mm;padding:2.4mm 3mm;font-size:8pt;line-height:1.4;">' +
-        '<div><strong style="color:#000A62;">Sensor / Fuente Oficial:</strong> ' +
-        escapeHtml(p.sensor) +
-        "</div>" +
-        '<div style="margin-top:0.8mm;"><strong style="color:#000A62;">Fórmula / Expresión:</strong> <code style="background:#EEF2FA;color:#000A62;padding:0.3mm 1.2mm;border-radius:0.8mm;font-weight:700;">' +
-        escapeHtml(vObj.formula || p.formula) +
-        "</code></div></div>" +
-        '<div style="background:#F3F6FD;border-left:1.1mm solid #000A62;border-radius:1.5mm;padding:2.5mm 3mm;font-size:8.1pt;line-height:1.42;">' +
-        '<strong style="display:block;color:#000A62;margin-bottom:0.8mm;">Lectura e interpretación territorial:</strong>' +
-        escapeHtml(p.reading) +
-        "</div>" +
-        "<div>" +
-        '<h3 style="margin:0 0 1.5mm;font-size:8.2pt;font-weight:800;text-transform:uppercase;color:#000A62;">Guía de interpretación de los colores de la leyenda</h3>' +
-        '<table style="width:100%;border-collapse:collapse;"><tbody>' +
-        swatchesRowsHtml +
-        "</tbody></table></div></div></div>" +
-        '<footer class="ftr">' +
-        '<div style="display:flex;align-items:center;gap:4.5mm;">' +
-        '<div style="display:flex;align-items:center;gap:1.8mm;"><span style="font-size:6.8pt;font-weight:700;color:#000A62;">GLOBAL GATEWAY · UE:</span>' +
-        '<span style="background:#0C1659;padding:0.7mm 1.6mm;border-radius:1mm;display:inline-flex;"><img src="' +
-        ggUrl +
-        '" alt="Global Gateway" style="height:5mm;"></span>' +
-        '<img src="' +
-        euUrl +
-        '" alt="UE" style="height:5.5mm;"></div>' +
-        '<div style="display:flex;align-items:center;gap:1.8mm;"><span style="font-size:6.8pt;font-weight:700;color:#000A62;">IMPLEMENTADO POR:</span>' +
-        '<img src="' +
-        ccvahUrl +
-        '" alt="CCVAH" style="height:6mm;">' +
-        '<img src="' +
-        siscaUrl +
-        '" alt="SISCA" style="height:5.5mm;">' +
-        '<img src="' +
-        sicaUrl +
-        '" alt="SICA" style="height:5.5mm;"></div>' +
-        '<div style="display:flex;align-items:center;gap:1.8mm;"><span style="font-size:6.8pt;font-weight:700;color:#000A62;">APOYO TÉCNICO:</span>' +
-        '<img src="' +
-        coopUrl +
-        '" alt="Cooperación Alemana" style="height:6mm;">' +
-        '<img src="' +
-        gizUrl +
-        '" alt="GIZ" style="height:5mm;">' +
-        '<img src="' +
-        copUrl +
-        '" alt="Copernicus LAC" style="height:5.5mm;"></div>' +
-        "</div>" +
-        '<div style="font-size:7.4pt;color:#455073;">Tema: <strong>2.0.0-copernicus-2026</strong> · Exportación directa desde el Visor Atlas</div>' +
-        "</footer></section>" +
-        "<script>window.onload=function(){setTimeout(function(){window.print();},450);};</script>" +
-        "</body></html>";
-
-      printWin.document.open();
-      printWin.document.write(htmlDoc);
-      printWin.document.close();
-    }
-
-    var exportPdfBtns = document.querySelectorAll("[data-atlas-export-pdf]");
-    exportPdfBtns.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        exportCurrentAtlasPlateToPdf();
-      });
-    });
-
-    if (allHubPerimeters && projectSelectEl) {
-      var hubProjPdfBtn = document.getElementById("atlas-download-project-pdf");
-      function selectHubProject(pid) {
-        var entry = allHubPerimeters[pid];
-        if (!entry || !entry.feature_collection) return;
-        currentPerimeterGeoJson = entry.feature_collection;
-        currentCenter = entry.center || currentCenter;
-        currentZoom = entry.zoom || 12;
-        if (hubProjPdfBtn) {
-          var pdfHref = new URL("assets/descargas/atlas_copernicus_" + encodeURIComponent(pid) + ".pdf", window.location.origin + baseUrl).href;
-          hubProjPdfBtn.href = pdfHref;
-          hubProjPdfBtn.setAttribute("download", "Atlas_Copernicus_" + pid + ".pdf");
-          hubProjPdfBtn.textContent = "📥 Descargar Atlas PDF de " + pid;
-        }
-        if (atlasMap.isStyleLoaded()) {
-          refreshMaskOnAtlasMap(true);
-        } else {
-          atlasMap.once("load", function () {
-            refreshMaskOnAtlasMap(true);
-          });
-        }
-      }
-      projectSelectEl.addEventListener("change", function () {
-        selectHubProject(projectSelectEl.value);
-      });
-      selectHubProject(projectSelectEl.value || Object.keys(allHubPerimeters)[0]);
-    } else {
+    if (!allHubPerimeters || !projectSelectEl) {
       loadSingleProjectPerimeter();
     }
   }

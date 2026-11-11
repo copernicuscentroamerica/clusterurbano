@@ -1235,15 +1235,17 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
         c_name = p_info.get("country", {}).get("name", pid)
         c_code = p_info.get("country", {}).get("code", "")
         detail_href = html.escape(ctx.site_url(f"atlas/{ap['id']}/"), quote=True)
+        proj_pdf_href = html.escape(ctx.site_url(f"assets/descargas/atlas_copernicus_{pid}.pdf"), quote=True)
         search_txt = f"{ap['title']} {ap['summary']} {c_name} {ap['coverage']['label']} {ap.get('governance', {}).get('institution', '')}"
         cards.append(
             f"""
             <article class="card" data-filter-item
+                     data-pproj="{esc(pid)}"
                      data-ptype="{esc(ap['product_type'])}"
                      data-pstatus="{esc(ap['publication_status'])}"
                      data-search-text="{esc(search_txt)}">
               <div style="display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:space-between;">
-                <span class="badge badge-country">{esc(c_name)} ({esc(c_code)})</span>
+                <span class="badge badge-country">{esc(c_name)} ({esc(c_code)}) · {esc(pid)}</span>
                 {badge_html(ap['publication_status'], 'Catálogo')}
               </div>
               <h3><a href="{detail_href}" style="color:var(--c-navy);text-decoration:none;">{esc(ap['title'])}</a></h3>
@@ -1254,6 +1256,7 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
               </p>
               <div class="card-footer">
                 <a class="btn btn-teal btn-xs" href="{detail_href}">Ver metadatos completos →</a>
+                <a class="btn btn-outline btn-xs" href="{proj_pdf_href}" download="Atlas_Copernicus_{esc(pid)}.pdf">📥 Atlas PDF ({esc(pid)})</a>
                 {badge_html(ap['validation']['state'], 'Validación')}
               </div>
             </article>
@@ -1265,20 +1268,25 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
     safe_perims_json = perims_raw.replace("</", "<\\/")
 
     proj_options = []
+    catalog_proj_opts = ['<option value="all">Todas las zonas de estudio (8)</option>']
     pdf_pills = []
-    for it in catalog_snap.get("projects", []):
+    for idx_p, it in enumerate(catalog_snap.get("projects", [])):
         p = it["project"]
         pid = p["id"]
         c_name = p["country"]["name"]
         c_code = p["country"]["code"]
         t_lbl = p["territory"]["label"]
-        proj_options.append(f'<option value="{esc(pid)}">{esc(c_name)} · {esc(t_lbl)} ({esc(pid)})</option>')
+        opt_html = f'<option value="{esc(pid)}">{esc(c_name)} · {esc(t_lbl)} ({esc(pid)})</option>'
+        proj_options.append(opt_html)
+        catalog_proj_opts.append(opt_html)
         pdf_href = html.escape(ctx.site_url(f"assets/descargas/atlas_copernicus_{pid}.pdf"), quote=True)
+        active_cls = " is-active" if idx_p == 0 else " is-filtered-out"
         pdf_pills.append(
-            f'<a class="atlas-pdf-pill" href="{pdf_href}" download="Atlas_Copernicus_{esc(pid)}.pdf">'
-            f'📄 {esc(c_code)} · {esc(pid)}</a>'
+            f'<a class="atlas-pdf-pill{active_cls}" data-pdf-project-id="{esc(pid)}" href="{pdf_href}" download="Atlas_Copernicus_{esc(pid)}.pdf">'
+            f'📄 Descargar Atlas PDF · {esc(c_name)} ({esc(c_code)}) · {esc(t_lbl)} ({esc(pid)})</a>'
         )
     pdf_pills_html = "".join(pdf_pills)
+    catalog_proj_opts_html = "".join(catalog_proj_opts)
     reg_pdf_href = html.escape(ctx.site_url("assets/descargas/atlas_copernicus_regional.pdf"), quote=True)
     default_proj_pdf_href = html.escape(ctx.site_url("assets/descargas/atlas_copernicus_pa-panama-oeste.pdf"), quote=True)
 
@@ -1330,19 +1338,20 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
       <div class="atlas-pdf-banner" role="region" aria-label="Descarga del Atlas Regional y por Proyecto en PDF con identidad institucional">
         <div class="atlas-pdf-banner-inner">
           <div class="atlas-pdf-banner-text">
-            <span class="atlas-pdf-banner-eyebrow">EDICIÓN EDITORIAL INSTITUCIONAL · FORMATO A4 HORIZONTAL · LISTO PARA IMPRESIÓN</span>
-            <h3 class="atlas-pdf-banner-title">Atlas Urbano Regional y por Zona de Estudio en PDF (Identidad Gráfica Oficial Copernicus LAC)</h3>
-            <p class="atlas-pdf-banner-desc">Descarga el <strong>Atlas Regional Consolidado (13 páginas)</strong>, el <strong>Atlas PDF de 12 páginas de cada una de las 8 iniciativas</strong> (portada con logos institucionales, ficha territorial, 10 láminas satelitales enmascaradas y guía cromática hexadecimal) o exporta en vivo la lámina y año que estés visualizando.</p>
+            <span id="atlas-banner-active-zone" class="atlas-pdf-banner-eyebrow">ZONA SELECCIONADA: PANAMÁ · DISTRITOS DE ARRAIJÁN Y LA CHORRERA (PA-PANAMA-OESTE)</span>
+            <h3 class="atlas-pdf-banner-title">Descarga del Atlas PDF Correspondiente a la Zona de Estudio Seleccionada y Edición Regional</h3>
+            <p class="atlas-pdf-banner-desc">Los archivos de descarga se actualizan automáticamente según el filtro de <strong>Zona de estudio / Iniciativa</strong> seleccionado arriba. Incluye las <strong>10 láminas temáticas y todas las series multitemporales anuales (2017–2024)</strong> en formato A4 Horizontal institucional.</p>
           </div>
           <div class="atlas-pdf-banner-actions">
-            <a class="btn btn-primary" href="{reg_pdf_href}" download="Atlas_Urbano_Regional_Copernicus.pdf">📘 Descargar Atlas Regional Consolidado (PDF · 13 Págs.)</a>
-            <a id="atlas-download-project-pdf" class="btn btn-teal" href="{default_proj_pdf_href}" download="Atlas_Copernicus_pa-panama-oeste.pdf">📥 Descargar Atlas PDF de pa-panama-oeste</a>
-            <button type="button" class="btn btn-outline-light" data-atlas-export-pdf>🖨️ Exportar lámina / año actual a PDF</button>
+            <a id="atlas-download-project-pdf" class="btn btn-primary" href="{default_proj_pdf_href}" download="Atlas_Copernicus_pa-panama-oeste.pdf">📥 Descargar Atlas PDF: Panamá · Caso de estudio Distritos de Arraiján y La Chorrera (pa-panama-oeste)</a>
+            <button type="button" class="btn btn-teal" data-atlas-export-pdf>🖨️ Exportar lámina / año actual a PDF</button>
+            <a class="btn btn-outline-light" href="{reg_pdf_href}" download="Atlas_Urbano_Regional_Copernicus.pdf">📘 Atlas Regional Consolidado (8 Zonas · PDF)</a>
           </div>
         </div>
-        <div class="atlas-pdf-project-pills" aria-label="Descarga directa de PDF por iniciativa">
-          <span style="font-size:0.75rem;color:rgba(255,255,255,0.82);font-weight:700;margin-right:0.25rem;">Atlas individuales (12 págs. PDF):</span>
+        <div class="atlas-pdf-project-pills" aria-label="Archivo PDF disponible para la zona de estudio filtrada">
+          <span style="font-size:0.75rem;color:var(--c-accent-yellow);font-weight:700;margin-right:0.25rem;">Archivo PDF de la zona filtrada:</span>
           {pdf_pills_html}
+          <button type="button" id="atlas-toggle-all-pdfs" class="btn btn-outline-light btn-xs" style="margin-left:auto;">Ver descargas de las 8 zonas</button>
         </div>
       </div>
 
@@ -1425,8 +1434,8 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
           </div>
 
           <div style="margin-top:auto;padding-top:0.55rem;border-top:1px solid var(--c-border);display:flex;flex-wrap:wrap;gap:0.45rem;">
-            <a class="btn btn-primary btn-xs" href="{reg_pdf_href}" download="Atlas_Urbano_Regional_Copernicus.pdf">📘 Atlas Regional (PDF)</a>
-            <button type="button" class="btn btn-teal btn-xs" data-atlas-export-pdf>🖨️ Imprimir / Guardar lámina actual</button>
+            <a id="atlas-panel-download-pdf" class="btn btn-primary btn-xs" href="{default_proj_pdf_href}" download="Atlas_Copernicus_pa-panama-oeste.pdf">📥 Descargar Atlas PDF (pa-panama-oeste)</a>
+            <button type="button" class="btn btn-teal btn-xs" data-atlas-export-pdf>🖨️ Exportar lámina / año actual a PDF</button>
           </div>
         </div>
       </div>
@@ -1440,9 +1449,13 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
 
     <section class="section" data-catalog-atlas>
       <div class="filter-bar" role="search" aria-label="Filtrar catálogo del Atlas">
-        <div class="filter-field" style="flex:2;">
+        <div class="filter-field" style="flex:1.5;">
           <label for="f-atlas-q">Buscar por territorio, institución o indicador</label>
           <input id="f-atlas-q" type="search" placeholder="Ej. huella urbana, brecha catastral, exposición, Santiago..." data-filter-search>
+        </div>
+        <div class="filter-field">
+          <label for="f-atlas-project">Zona de estudio / Iniciativa</label>
+          <select id="f-atlas-project" data-filter-select="pproj">{catalog_proj_opts_html}</select>
         </div>
         <div class="filter-field">
           <label for="f-atlas-type">Tipo de producto</label>
