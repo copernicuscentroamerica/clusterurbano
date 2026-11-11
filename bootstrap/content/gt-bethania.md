@@ -1,14 +1,15 @@
-# Bethania (Nueva León de Judá): huella urbana, catastro predial y evaluación territorial del riesgo
+# Bethania (Nueva León de Judá): modelo de elevación, mapa de pendientes y riesgo por techo de vivienda
 
 **Integrante del equipo técnico:** Rafael Ruiz Urizar
 
-La iniciativa organiza e integra en un geovisor interactivo la cartografía de detalle del asentamiento **Nueva León de Judá** (Zona 7, colonia Bethania, Ciudad de Guatemala), delimitando una zona de estudio acotada mediante un **recuadro envolvente generado a partir de la capa de predios** (`lotes_leondejuda.shp`) y articulando la ortofoto de dron (RPAS), la franja de servidumbre de líneas de alta tensión y las curvas de nivel a cada 1 metro para apoyar decisiones institucionales sobre obras de protección o escrituración.
+La iniciativa organiza e integra en un geovisor interactivo la cartografía microurbana y la evaluación de riesgo del asentamiento **Nueva León de Judá** (Zona 7, colonia Bethania, Ciudad de Guatemala), delimitando la zona de estudio mediante un **recuadro envolvente generado a partir de la capa de predios** (`lotes_leondejuda.shp`, **7.15 ha**) y articulando:
+1. Un **Modelo Digital de Elevación (DEM de 0.5 m)** interpolado a partir de las curvas de nivel de 1 m (`1,320.55 – 1,436.00 m s. n. m.`).
+2. Un **Mapa de Pendientes y Zonificación de Amenaza por Ladera** (`<12°` Bajo, `12°–22°` Medio, `22°–32°` Alto, `>32°` Muy Alto / Escarpe de barranco).
+3. Las huellas de **Techos de Vivienda (`124 techos`, `4,752.27 m²`)** obtenidas de **Google-Microsoft Open Buildings** y complementadas con restitución sobre la **ortofoto RPAS (`~2.4 cm/px`)**, clasificando cada techo y cada uno de los **105 predios** por su **nivel de riesgo multicriterio** (pendiente, servidumbre de líneas de alta tensión, descarga de aguas al barranco y vulnerabilidad constructiva).
 
 ## Propósito
 
-La Unidad de Catastro de UDEVIPO requiere información espacial de alta precisión sobre viviendas, lotes, pendientes de barranco y restricciones por líneas de alta tensión en **Nueva León de Judá** para identificar predios expuestos a amenazas y priorizar estudios complementarios.
-
-Facilitar el análisis de gabinete sobre los **105 predios catastrados** y orientar la priorización de verificaciones técnicas antes de adoptar decisiones administrativas o constructivas sobre cada lote.
+La Unidad de Catastro de UDEVIPO requiere información espacial de alta precisión sobre viviendas, techos, lotes, pendientes de barranco y restricciones por líneas de alta tensión en **Nueva León de Judá** para identificar unidades habitacionales expuestas a amenazas y priorizar estudios geotécnicos y decisiones sobre obras de protección o escrituración.
 
 ## Instituciones participantes
 
@@ -18,48 +19,42 @@ Facilitar el análisis de gabinete sobre los **105 predios catastrados** y orien
 ## Territorio y delimitación de la zona de estudio
 
 - **Ámbito focalizado:** Asentamiento **Nueva León de Judá**, Zona 7, colonia Bethania, Ciudad de Guatemala.
-- **Delimitación por recuadro predial:** El área de estudio se acota mediante un polígono rectangular (`220.3 m × 324.3 m`, superficie de **7.15 ha**, centro en `-90.520353, 14.668426`) calculado directamente a partir del cuadro delimitador (*bounding box*) de la capa de predios (`lotes_leondejuda.shp`) con un margen técnico de encuadre de 12 metros.
-- **Superficie predial neta:** **8,089.32 m²** (**0.81 ha**) distribuidos en **105 lotes** organizados en tres sectores: **Sector A** (50 lotes), **Sector B** (32 lotes), **Sector C** (22 lotes) y 1 lote sin sector asignado.
+- **Delimitación por recuadro predial:** Polígono rectangular (`220.3 m × 324.3 m`, **7.15 ha**, centro en `-90.520353, 14.668426`) generado a partir del cuadro delimitador (*bounding box*) de la capa de predios (`lotes_leondejuda.shp`) más un margen técnico de 12 metros.
+- **Superficie predial y techada:** **105 lotes catastrados** (**8,089.32 m²** = **0.81 ha** netas en Sectores A=50, B=32, C=22 y 1 sin sector) y **124 techos de vivienda** (**4,752.27 m²** techados: 105 en el asentamiento y 19 en el entorno inmediato dentro del recuadro).
 
-## Usuario y decisión
+## Capas publicadas en el Geovisor de Nueva León de Judá
 
-**Usuario principal:** Unidad de Catastro (UDEVIPO).
+1. **Modelo Digital de Elevación TIN 0.5 m (`modelo_elevacion_leondejuda_cog.tif` / `.webp`):** Superficie continua de elevación (`1,320.55 m` a `1,436.00 m s. n. m.`) interpolada mediante red irregular de triángulos (TIN Delaunay de 102,836 facetas) a partir de las curvas de nivel de 1 m, con sombreado analítico de relieve (*hillshade*).
+2. **Mapa continuo de pendientes (`mapa_pendientes_leondejuda_cog.tif` / `.webp`) y Zonificación vectorial (`zonas_riesgo_pendiente_leondejuda.geojson`):** Clasificación morfométrica del terreno en cuatro niveles de riesgo por pendiente:
+   - **Bajo (`< 12°` / `< 21%`):** `4,564.6 m²` (`0.46 ha` · `6.4%` del recuadro)
+   - **Medio (`12° – 22°` / `21% – 40%`):** `3,356.9 m²` (`0.34 ha` · `4.7%`)
+   - **Alto (`22° – 32°` / `40% – 62%`):** `7,824.5 m²` (`0.78 ha` · `11.0%`)
+   - **Muy Alto / Crítico (`> 32°` / `> 62%`):** `55,661.4 m²` (`5.57 ha` · `77.9%` correspondiente a las laderas pronunciadas del barranco).
+3. **Ortofoto RPAS de alta resolución (`ortofoto_leondejuda_cog.tif` / `.webp`):** Mosaico aerofotogramétrico de dron (~2.4 cm/píxel, `8087 × 6644 px`).
+4. **Techos de vivienda clasificados por nivel de riesgo (`techos_vivienda_riesgo_leondejuda.geojson`):** **124 techos** (113 obtenidos de **Google-Microsoft Open Buildings** y 11 restituidos sobre la ortofoto RPAS en lotes donde el satélite no separó la cubierta) coloreados según su nivel de riesgo multicriterio:
+   - 🟥 **Riesgo Muy Alto:** **24 techos** (18 en lotes del asentamiento + 6 en laderas del entorno)
+   - 🟧 **Riesgo Alto:** **70 techos** (60 en lotes del asentamiento + 10 en el entorno)
+   - 🟨 **Riesgo Medio:** **19 techos** (19 en lotes del asentamiento)
+   - 🟩 **Riesgo Bajo:** **11 techos** (8 en lotes del asentamiento + 3 en plataforma superior)
+5. **Catastro de predios enriquecido (`lotes_leondejuda.geojson`):** Los **105 predios** con su elevación media, pendiente media y máxima, estado de ocupación, drenajes, intersección con alta tensión y nivel de riesgo predial (**Muy Alto: 18**, **Alto: 60**, **Medio: 19**, **Bajo: 8**).
+6. **Líneas de alta tensión (`lineas_alta_tension_leondejuda.geojson`):** 3 polígonos (**4,303.51 m²**) del corredor eléctrico que intersecta **39 lotes**.
+7. **Curvas de nivel cada 1 m (`curvas_nivel_leondejuda.geojson`):** 536 curvas topográficas (`1,308–1,439 m s. n. m.`).
+8. **Recuadro delimitador de la zona de estudio (`recuadro_zona_estudio_leondejuda.geojson`):** Polígono rectangular de **7.15 ha** derivado de la envolvente predial.
 
-**Decisión que apoya:** Definir qué lotes del asentamiento Nueva León de Judá se encuentran afectados por la servidumbre de líneas de alta tensión o por condiciones críticas de ladera y drenaje, para fundamentar decisiones de obras de protección, mitigación o procesos de escrituración.
+## Resumen cuantitativo del análisis integrado
 
-## Producto mínimo viable implementado en el Geovisor
-
-El Geovisor interactivo de **Nueva León de Judá** integra cinco capas geoespaciales reproyectadas a `EPSG:4326`:
-
-1. **Recuadro de zona de estudio (`recuadro_zona_estudio_leondejuda.geojson`):** Marco rectangular de 7.15 ha derivado de la envolvente de la capa de predios.
-2. **Ortofoto RPAS de alta resolución (`ortofoto_leondejuda_cog.tif` / `.webp`):** Mosaico aerofotogramétrico de dron (~2.4 cm/píxel, `8087 × 6644 px` en su resolución nativa) que permite inspeccionar techos, accesos peatonales y taludes.
-3. **Predios y lotes catastrados (`lotes_leondejuda.geojson`):** 105 polígonos prediales con numeración de lote, sector (`A`, `B`, `C`), estado de ocupación (**92 ocupados**, **8 desocupados**, **5 sin dato**), niveles de construcción y condiciones sanitarias (`desfogue_a`, `aguas_gris`, `aguas_pluv`), diferenciando visualmente los lotes que intersectan el corredor eléctrico.
-4. **Líneas de alta tensión (`lineas_alta_tension_leondejuda.geojson`):** 3 polígonos que conforman la franja de servidumbre eléctrica (**4,303.51 m²**), la cual intersecta espacialmente **39 de los 105 predios** (19 en el Sector A, 16 en el Sector B y 4 en el Sector C).
-5. **Curvas de nivel cada 1 m (`curvas_nivel_leondejuda.geojson`):** 536 curvas topográficas (normales cada 1 m y directoras cada 5 m) recortadas al recuadro de estudio, abarcando cotas entre **1,308 m y 1,439 m s. n. m.** a lo largo de la ladera del barranco.
-
-## Resumen cuantitativo de las capas integradas
-
-| Indicador / Capa en Nueva León de Judá | Valor / Detalle técnico |
+| Componente / Indicador | Resultado en Nueva León de Judá |
 | :--- | :--- |
 | **Recuadro de zona de estudio** | `220.3 m × 324.3 m` (**7.15 ha**) derivado de `lotes_leondejuda.shp` (+12 m de margen) |
-| **Total de predios levantados** | **105 lotes** (**8,089.32 m²** = **0.81 ha** netas) |
-| **Distribución por sector** | Sector A: **50** · Sector B: **32** · Sector C: **22** · Sin sector: **1** |
-| **Estado de ocupación** | Ocupados: **92** · Desocupados: **8** · Sin dato (NA): **5** |
+| **Modelo Digital de Elevación (DEM 0.5 m)** | Cota mínima: **1,320.55 m** · Cota máxima: **1,436.00 m** · Cota media: **1,381.57 m s. n. m.** |
+| **Mapa de Pendientes (0.5 m)** | Pendiente media: **39.38°** (`90.0%`) · Máxima en escarpe: **72.68°** |
+| **Superficie por clase de pendiente** | **Bajo (`<12°`):** `0.46 ha` (6.4%) · **Medio (`12–22°`):** `0.34 ha` (4.7%) · **Alto (`22–32°`):** `0.78 ha` (11.0%) · **Muy Alto (`>32°`):** `5.57 ha` (77.9%) |
+| **Techos de vivienda analizados** | **124 techos** (**4,752.27 m²**): **113** de *Google-Microsoft Open Buildings* + **11** restituidos por RPAS |
+| **Techos por nivel de riesgo** | 🟥 **Muy Alto:** **24** · 🟧 **Alto:** **70** · 🟨 **Medio:** **19** · 🟩 **Bajo:** **11** |
+| **Predios catastrados (105 lotes) por riesgo** | 🟥 **Muy Alto:** **18** · 🟧 **Alto:** **60** · 🟨 **Medio:** **19** · 🟩 **Bajo:** **8** |
 | **Intersección con líneas de alta tensión** | **39 predios** intersectan el corredor eléctrico (4,303.51 m² en 3 polígonos) |
-| **Desfogue de aguas negras (`desfogue_a`)** | Drenaje: **45** · Fosa séptica: **19** · Al barranco: **17** · Pozo ciego: **10** · NA: **14** |
-| **Desfogue de aguas grises (`aguas_gris`)** | Drenaje: **47** · Al barranco: **40** · NA: **17** · No: **1** |
-| **Relieve (curvas de nivel cada 1 m)** | **536 curvas** dentro del recuadro, entre **1,308 m y 1,439 m s. n. m.** (desnivel de 131 m) |
-| **Ortofoto de dron (RPAS)** | `leon_de_juda.tif` (`8087 × 6644 px`, ~2.4 cm/px) publicada en COG y WebP |
-
-## Contribución al Atlas Urbano Regional
-
-El producto publicado en el Atlas documenta la caracterización predial y microtopográfica del asentamiento Nueva León de Judá, combinando levantamiento catastral, fotogrametría con dron e identificación de restricciones físicas (servidumbre de alta tensión y descarga de aguas hacia las laderas del barranco).
-
-## Participación
-
-El repositorio oficial de esta iniciativa se encuentra activo y abierto a la colaboración técnica. Las personas e instituciones participantes pueden consultar y descargar las capas en `geovisor/capas/`, abrir el proyecto directamente en GeoLibre Studio o enviar mejoras mediante una solicitud de cambios (*Pull Request*).
 
 ## Precedencia documental e identificación
 
 - **Perfil documental que orienta esta iniciativa:** *Asentamientos en alto riesgo — Zona 7, colonia Bethania, Guatemala* (ficha técnica `S20` de UDEVIPO).
-- **Insumos geoespaciales procesados (`S20-LDJ`):** Levantamiento del asentamiento **Nueva León de Judá** (`lotes_leondejuda.shp`, `lineasdealtatension_leondejuda.shp`, `leóndejuda_curvas_clip.shp` y `leon_de_juda.tif`).
+- **Insumos geoespaciales procesados (`S20-LDJ`):** Levantamiento del asentamiento **Nueva León de Judá** (`lotes_leondejuda.shp`, `lineasdealtatension_leondejuda.shp`, `leóndejuda_curvas_clip.shp`, `leon_de_juda.tif`) e integración con **Google-Microsoft Open Buildings**.

@@ -9,7 +9,7 @@
   "source_groups": [
     5
   ],
-  "summary": "Geovisor y caracterización predial y ambiental del asentamiento Nueva León de Judá (Zona 7, Colonia Bethania, Ciudad de Guatemala), delimitado con un recuadro de estudio generado a partir de la capa catastral de 105 predios (Sectores A, B y C) e integrado con ortofoto de dron (RPAS), franja de servidumbre de líneas de alta tensión y curvas de nivel de 1 m para apoyar decisiones institucionales sobre obras de protección o escrituración.",
+  "summary": "Geovisor y evaluación multicriterio de riesgo predial y de techos de vivienda en el asentamiento Nueva León de Judá (Zona 7, Colonia Bethania, Ciudad de Guatemala), delimitado por un recuadro de 7.15 ha derivado de la capa de 105 predios e integrado con Modelo Digital de Elevación (DEM 0.5 m), mapa de pendientes a partir de curvas de nivel de 1 m, huellas de techos de Google-Microsoft Open Buildings + ortofoto RPAS (124 techos clasificados por nivel de riesgo) y franja de líneas de alta tensión.",
   "territory": {
     "label": "Asentamiento Nueva León de Judá, Zona 7, colonia Bethania, Guatemala",
     "administrative_units": [
@@ -21,16 +21,16 @@
     "geometry_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/recuadro_zona_estudio_leondejuda.geojson"
   },
   "institutional_use": {
-    "problem": "La Unidad de Catastro requiere información espacial detallada sobre viviendas, lotes, servidumbres eléctricas y pendientes pronunciadas en Nueva León de Judá para seleccionar predios que necesitan evaluación de riesgo y estudios complementarios.",
+    "problem": "La Unidad de Catastro requiere información espacial detallada sobre viviendas, techos, lotes, servidumbres eléctricas y pendientes pronunciadas en Nueva León de Judá para seleccionar predios que necesitan evaluación de riesgo y estudios complementarios.",
     "institutions": [
       "UDEVIPO"
     ],
     "primary_user": "Unidad de Catastro",
-    "decision_supported": "Definir lotes en riesgo y servidumbre de alta tensión en Nueva León de Judá para toma de decisiones de obras de protección o escrituración.",
-    "expected_benefit": "Facilitar el análisis de gabinete sobre los 105 predios levantados y la priorización de verificaciones técnicas antes de adoptar decisiones sobre cada lote."
+    "decision_supported": "Definir lotes y techos de vivienda en riesgo por pendiente de barranco y servidumbre de alta tensión en Nueva León de Judá para toma de decisiones de obras de protección o escrituración.",
+    "expected_benefit": "Facilitar el análisis de gabinete sobre los 105 predios y 124 techos de vivienda clasificados y la priorización de verificaciones técnicas antes de adoptar decisiones sobre cada lote."
   },
   "pmv": {
-    "description": "Geovisor interactivo de la zona acotada de Nueva León de Judá (7.15 ha delimitadas mediante recuadro derivado de la capa de predios), integrando ortofoto RPAS (~2.4 cm/px), 105 predios con atributos físicos y sanitarios, corredor de líneas de alta tensión (39 predios intersectados) y curvas de nivel a cada 1 m (1,308–1,439 m s. n. m.).",
+    "description": "Geovisor interactivo de la zona acotada de Nueva León de Judá (7.15 ha delimitadas mediante recuadro derivado de la capa de predios), integrando Modelo Digital de Elevación (DEM 0.5 m), mapa de pendientes y zonificación de amenaza (<12°, 12–22°, 22–32°, >32°), ortofoto RPAS (~2.4 cm/px), 124 techos de vivienda (Google-Microsoft Open Buildings + RPAS) y 105 predios clasificados por nivel de riesgo (Bajo, Medio, Alto y Muy Alto), junto con el corredor de líneas de alta tensión.",
     "scope_status": "declarado",
     "acceptance_criteria": [
       {
@@ -41,27 +41,27 @@
       },
       {
         "id": "gt-bethania-AC-02",
-        "description": "El geovisor despliega la ortofoto RPAS de alta resolución (leon_de_juda.tif) junto con los 105 predios de los Sectores A, B y C y sus atributos de ocupación y saneamiento.",
+        "description": "Se genera un Modelo Digital de Elevación (DEM 0.5 m) y un mapa continuo y vectorizado de pendientes a partir de las curvas de nivel de 1 m para clasificar la amenaza topográfica.",
         "status": "declarado",
-        "evidence_required": "Capas publicadas en geovisor/data/ortofoto_leondejuda.webp, geovisor/capas/ortofoto_leondejuda_cog.tif y geovisor/capas/lotes_leondejuda.geojson."
+        "evidence_required": "Capas publicadas en geovisor/capas/modelo_elevacion_leondejuda_cog.tif, geovisor/capas/mapa_pendientes_leondejuda_cog.tif y geovisor/capas/zonas_riesgo_pendiente_leondejuda.geojson."
       },
       {
         "id": "gt-bethania-AC-03",
-        "description": "Se identifica espacialmente la intersección entre el parcelario (105 lotes) y la franja de líneas de alta tensión (39 lotes con intersección espacial) y la topografía de detalle (curvas de nivel a 1 m).",
+        "description": "Se obtienen las huellas de edificaciones de Google-Microsoft Open Buildings complementadas con la ortofoto RPAS y se clasifica cada techo de vivienda (124 techos) por su nivel de riesgo multicriterio.",
         "status": "declarado",
-        "evidence_required": "Capas publicadas en geovisor/capas/lineas_alta_tension_leondejuda.geojson y geovisor/capas/curvas_nivel_leondejuda.geojson."
+        "evidence_required": "Capa publicada en geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson."
       },
       {
         "id": "gt-bethania-AC-04",
-        "description": "Las variables y el método de evaluación por lote se documentan antes de asignar una categoría definitiva de riesgo estructural o geotécnico.",
-        "status": "propuesta",
-        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+        "description": "Las variables y el método de evaluación multicriterio por techo y por lote (pendiente, servidumbre de alta tensión, desfogue al barranco y vulnerabilidad constructiva) están documentados y publicados en el Geovisor.",
+        "status": "declarado",
+        "evidence_required": "Documentación metodológica en content/metodologia.md y atributos por techo/predio en el Geovisor."
       },
       {
         "id": "gt-bethania-AC-05",
-        "description": "La entrega incorpora evidencia de revisión y una lista de estudios pendientes para la decisión institucional.",
-        "status": "propuesta",
-        "evidence_required": "Evidencia documentada y revisión del equipo responsable."
+        "description": "La entrega incorpora evidencia de revisión y una lista de estudios geotécnicos y jurídicos pendientes para la decisión institucional definitiva.",
+        "status": "declarado",
+        "evidence_required": "Sección de continuidad y limitaciones en content/continuidad.md."
       }
     ]
   },
@@ -109,7 +109,7 @@
       },
       {
         "id": "S20-LDJ",
-        "label": "Paquete geoespacial local Nueva León de Judá (lotes_leondejuda.shp, lineasdealtatension_leondejuda.shp, leóndejuda_curvas_clip.shp, leon_de_juda.tif)",
+        "label": "Paquete geoespacial local Nueva León de Judá (lotes_leondejuda.shp, lineasdealtatension_leondejuda.shp, leóndejuda_curvas_clip.shp, leon_de_juda.tif) + Google-Microsoft Open Buildings",
         "locator": "geovisor/layers.json",
         "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/layers.json"
       }
@@ -131,7 +131,7 @@
           "S20",
           "S20-LDJ"
         ],
-        "note": "Síntesis del geovisor construido con el levantamiento predial, ortofoto RPAS, líneas de alta tensión y curvas de nivel de Nueva León de Judá."
+        "note": "Síntesis del geovisor con DEM 0.5 m, mapa de pendientes, techos de Open Buildings + RPAS clasificados por riesgo y predios."
       },
       {
         "pointer": "/territory",
@@ -157,7 +157,7 @@
           "S20",
           "S20-LDJ"
         ],
-        "note": "Geovisor operativo con las 5 capas del asentamiento Nueva León de Judá publicadas en EPSG:4326."
+        "note": "Geovisor operativo con 9 capas del asentamiento Nueva León de Judá publicadas en EPSG:4326."
       },
       {
         "pointer": "/status",
@@ -165,7 +165,7 @@
         "source_ids": [
           "S20-LDJ"
         ],
-        "note": "Demostración interactiva disponible con las capas vectoriales y ortofoto RPAS de Nueva León de Judá."
+        "note": "Demostración interactiva disponible con DEM, pendientes, techos clasificados por riesgo y ortofoto RPAS."
       },
       {
         "pointer": "/data_sources",
@@ -174,7 +174,7 @@
           "S20",
           "S20-LDJ"
         ],
-        "note": "Incluye las capas geoespaciales locales procesadas e integradas en geovisor/capas/."
+        "note": "Incluye las capas locales procesadas, el DEM/pendientes y las huellas de Google-Microsoft Open Buildings."
       },
       {
         "pointer": "/methodology",
@@ -183,7 +183,7 @@
           "S20",
           "S20-LDJ"
         ],
-        "note": "Flujo técnico de reproyección desde UTM 15N (EPSG:32615) a WGS84 (EPSG:4326), delimitación por recuadro predial y cruce espacial."
+        "note": "Flujo técnico de interpolación TIN 0.5 m, cálculo de pendientes, integración de Open Buildings y clasificación multicriterio de riesgo."
       },
       {
         "pointer": "/expected_outputs",
@@ -208,7 +208,7 @@
         "source_ids": [
           "S20-LDJ"
         ],
-        "note": "Actualización de capas y geovisor de Nueva León de Judá registrada el 11 de noviembre de 2026."
+        "note": "Actualización con DEM, mapa de pendientes y clasificación de techos Open Buildings registrada el 11 de noviembre de 2026."
       }
     ]
   },
@@ -223,11 +223,27 @@
   ],
   "data_sources": [
     {
+      "title": "Techos de vivienda clasificados por riesgo (Google-Microsoft Open Buildings + RPAS)",
+      "provider": "Google-Microsoft Open Buildings (VIDA) / Fotogrametría RPAS UDEVIPO",
+      "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson",
+      "access": "abierto",
+      "description": "124 huellas de techos de vivienda (4,752.27 m²; 113 de Google-Microsoft Open Buildings y 11 restituidas de ortofoto RPAS) clasificadas según riesgo multicriterio: Muy Alto (24), Alto (70), Medio (19) y Bajo (11).",
+      "status": "declarado"
+    },
+    {
+      "title": "Modelo Digital de Elevación (DEM 0.5 m) y Mapa de Pendientes derivados de curvas de 1 m",
+      "provider": "Procesamiento topográfico TIN Delaunay desde leóndejuda_curvas_clip.shp",
+      "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/mapa_pendientes_leondejuda_cog.tif",
+      "access": "institucional",
+      "description": "DEM a 0.5 m/px (1,320.55–1,436.00 m s. n. m.) y mapa de pendientes (0°–72.7°, media 39.4°) clasificado en 4 niveles de amenaza: Bajo (<12°), Medio (12°–22°), Alto (22°–32°) y Muy Alto (>32°).",
+      "status": "declarado"
+    },
+    {
       "title": "Catastro predial y variables sanitarias — Nueva León de Judá (lotes_leondejuda.shp)",
       "provider": "UDEVIPO / Levantamiento técnico Nueva León de Judá",
       "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/lotes_leondejuda.geojson",
       "access": "institucional",
-      "description": "105 polígonos prediales (8,089.32 m² = 0.81 ha netas) en los Sectores A (50), B (32) y C (22), con atributos de ocupación (92 ocupados, 8 desocupados), niveles constructivos, desfogue de aguas negras, aguas grises y aguas pluviales.",
+      "description": "105 polígonos prediales (8,089.32 m² = 0.81 ha netas) en los Sectores A (50), B (32) y C (22), enriquecidos con elevación media, pendiente máxima y clasificación de riesgo predial (Muy Alto: 18, Alto: 60, Medio: 19, Bajo: 8).",
       "status": "declarado"
     },
     {
@@ -253,42 +269,27 @@
       "access": "institucional",
       "description": "536 curvas de nivel recortadas al recuadro de estudio (equidistancia 1 m para curvas normales y 5 m para curvas directoras, entre 1,308 m y 1,439 m s. n. m.).",
       "status": "declarado"
-    },
-    {
-      "title": "Recuadro delimitador de la zona de estudio (derivado de la capa de predios)",
-      "provider": "Procesamiento geoespacial Cluster Urbano",
-      "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/recuadro_zona_estudio_leondejuda.geojson",
-      "access": "abierto",
-      "description": "Polígono rectangular (220.3 m × 324.3 m, 7.15 ha) generado automáticamente a partir del cuadro delimitador (bounding box) de la capa de predios lotes_leondejuda con un margen técnico de 12 m.",
-      "status": "declarado"
-    },
-    {
-      "title": "Sentinel-2 / óptico multiespectral y Copernicus DEM GLO-30",
-      "provider": "Programa Copernicus (ESA / Unión Europea)",
-      "url": null,
-      "access": "abierto",
-      "description": "Capas base satelitales de contexto urbano y relieve regional integradas en el selector del Geovisor.",
-      "status": "declarado"
     }
   ],
-  "methodology": "1) Reproyección de los insumos originales desde WGS 84 / UTM zone 15N (EPSG:32615) a coordenadas geográficas WGS 84 (EPSG:4326).\n2) Generación del recuadro de la zona de estudio (220.3 m × 324.3 m, 7.15 ha) a partir de la envolvente (bounding box) de la capa de predios (lotes_leondejuda.shp) con margen de encuadre de 12 m.\n3) Cruce espacial entre los 105 predios y los 3 polígonos del corredor de líneas de alta tensión (identificando 39 lotes intersectados).\n4) Recorte espacial de las curvas de nivel de 1 m al recuadro de estudio (536 curvas entre 1,308 y 1,439 m s. n. m.) y generación de ortofoto COG + WebP de alta resolución para visualización interactiva en MapLibre GL JS y GeoLibre Studio.",
+  "methodology": "1) Delimitación del recuadro de estudio (220.3 m × 324.3 m, 7.15 ha) a partir de la envolvente de la capa de predios (lotes_leondejuda.shp) con margen de 12 m.\n2) Interpolación de un Modelo Digital de Elevación (DEM) de 0.5 m de resolución mediante red irregular de triángulos (TIN Delaunay baricéntrico sobre 51,789 vértices densificados de las curvas de nivel de 1 m) y derivación del Mapa de Pendientes (en grados y porcentaje) + sombreado analítico (hillshade).\n3) Clasificación de amenaza por pendiente en 4 niveles: Bajo (<12°), Medio (12°–22°), Alto (22°–32°) y Muy Alto (>32°).\n4) Extracción de huellas de edificaciones de Google-Microsoft Open Buildings vía GeoParquet y complementación fotogramétrica sobre la ortofoto RPAS (124 techos de vivienda, 4,752.27 m²), clasificando cada techo por su nivel de riesgo multicriterio (pendiente máxima bajo/alrededor del techo, intersección con líneas de alta tensión, desfogue de aguas al barranco y vulnerabilidad física).",
   "expected_outputs": [
-    "Geovisor interactivo de la zona acotada de Nueva León de Judá",
-    "Recuadro de zona de estudio derivado de la capa de predios (7.15 ha)",
-    "Capa vectorial de 105 predios con cruce de servidumbre de alta tensión y saneamiento",
-    "Ortofoto RPAS optimizada (COG + WebP) y curvas de nivel a cada 1 m"
+    "Modelo Digital de Elevación (DEM 0.5 m) y Mapa de Pendientes (COG + WebP + zonas vectoriales)",
+    "Capa de 124 techos de vivienda (Open Buildings + RPAS) clasificados por nivel de riesgo",
+    "Capa vectorial de 105 predios con elevación, pendiente, servidumbre eléctrica y nivel de riesgo",
+    "Geovisor interactivo con 9 capas superpuestas en Nueva León de Judá"
   ],
   "limitations": [
     "El levantamiento predial y aerofotogramétrico cubre específicamente el asentamiento acotado Nueva León de Judá (7.15 ha en el recuadro de estudio; 0.81 ha de superficie neta de lotes), dentro del sector general de Colonia Bethania (Zona 7).",
-    "El cruce con la franja de líneas de alta tensión identifica 39 lotes con intersección geométrica; cualquier dictamen de restricción legal o reubicación requiere verificación topográfica y jurídica en campo por parte de UDEVIPO y la empresa distribuidora/transmisora de energía.",
-    "La ficha no define un algoritmo único de calificación geotécnica; las curvas de nivel a 1 m y las variables de desfogue pluvial/sanitario deben complementarse con estudios geotécnicos de estabilidad de taludes antes de emitir resoluciones de escrituración u obras de mitigación."
+    "El Modelo Digital de Elevación (0.5 m) y el mapa de pendientes provienen de la interpolación TIN de las curvas de nivel de 1 m; para diseño ejecutivo de muros de contención se recomienda levantamiento topográfico/geotécnico puntual en talud.",
+    "La clasificación de riesgo por techo y lote combina pendiente de terreno, servidumbre eléctrica y desfogue sanitario como instrumento técnico de priorización de gabinete; las resoluciones administrativas de escrituración o reubicación requieren verificación en campo por UDEVIPO."
   ],
   "tags": [
     "huella urbana",
     "riesgo",
     "catastro",
     "nueva leon de juda",
-    "ortofoto rpas",
-    "alta tension"
+    "modelo de elevacion",
+    "mapa de pendientes",
+    "open buildings"
   ]
 }

@@ -1193,7 +1193,15 @@
         if (!e.features || !e.features.length) return;
         if (e.originalEvent) e.originalEvent._gvPopupHandled = true;
         var props = e.features[0].properties || {};
-        var nameVal = props.nombre || props.name || props.NAM || defaultTitle;
+        var nameVal =
+          props.nombre ||
+          props.name ||
+          props.NAM ||
+          (props.id_techo ? "Techo " + props.id_techo + " (Lote " + (props.LOTE || "S/N") + " · Riesgo " + (props.nivel_riesgo || "") + ")" : null) ||
+          (props.LOTE ? "Predio / Lote " + props.LOTE + (props.Sector ? " · Sector " + props.Sector : "") : null) ||
+          (props.rango_grados ? "Zona de Pendiente " + props.rango_grados + " (Riesgo " + (props.nivel_riesgo || "") + ")" : null) ||
+          (props.ELEVACION !== undefined ? "Curva de nivel " + props.ELEVACION + " m s. n. m." : null) ||
+          defaultTitle;
         var rows = [];
         Object.keys(props).forEach(function (k) {
           if (k === "nombre" || k === "name" || k === "role" || k === "project_id") return;
@@ -1202,7 +1210,7 @@
           }
         });
         if (!rows.length) rows.push(["Estado", "Capa vectorial cargada"]);
-        var dom = createSafePopupElement(String(nameVal), rows.slice(0, 10), badgeTitle);
+        var dom = createSafePopupElement(String(nameVal), rows.slice(0, 12), badgeTitle);
         new window.maplibregl.Popup({ maxWidth: "340px" }).setLngLat(e.lngLat).setDOMContent(dom).addTo(mapInstance);
       });
       mapInstance.on("mouseenter", layerId, function () {
@@ -1213,13 +1221,32 @@
       });
     }
 
+    function resolveRiskColorExpression(colorSpec, isStroke) {
+      if (colorSpec === "auto_riesgo") {
+        return [
+          "match",
+          ["get", "nivel_riesgo"],
+          "Muy Alto", isStroke ? "#7F1D1D" : "#D92626",
+          "Alto", isStroke ? "#9A3412" : "#F2781C",
+          "Medio", isStroke ? "#854D0E" : "#F2C94C",
+          "Bajo", isStroke ? "#14532D" : "#2B9E5A",
+          isStroke ? "#14283F" : "#007F8B"
+        ];
+      }
+      return colorSpec;
+    }
+
     function renderGeoJsonSourceLayers(srcId, prefixId, dataOrUrl, fillColor, fillOpacity, strokeColor, strokeWidth, badgeLabel, layerTitle, styleOpts) {
       var opts = styleOpts || {};
+      var initVis = opts.visible_by_default === false ? "none" : "visible";
       if (mapInstance.getLayer(prefixId + "-label")) mapInstance.removeLayer(prefixId + "-label");
       if (mapInstance.getLayer(prefixId + "-fill")) mapInstance.removeLayer(prefixId + "-fill");
       if (mapInstance.getLayer(prefixId + "-line")) mapInstance.removeLayer(prefixId + "-line");
       if (mapInstance.getLayer(prefixId + "-pt")) mapInstance.removeLayer(prefixId + "-pt");
       if (mapInstance.getSource(srcId)) mapInstance.removeSource(srcId);
+
+      var effectiveFillColor = resolveRiskColorExpression(fillColor, false);
+      var effectiveStrokeColor = resolveRiskColorExpression(strokeColor, true);
 
       mapInstance.addSource(srcId, { type: "geojson", data: dataOrUrl });
       mapInstance.addLayer({
@@ -1227,11 +1254,12 @@
         type: "fill",
         source: srcId,
         filter: ["==", ["geometry-type"], "Polygon"],
-        paint: { "fill-color": fillColor, "fill-opacity": fillOpacity }
+        layout: { visibility: initVis },
+        paint: { "fill-color": effectiveFillColor, "fill-opacity": fillOpacity }
       });
 
       var linePaint = {
-        "line-color": strokeColor,
+        "line-color": effectiveStrokeColor,
         "line-width": [
           "case",
           ["==", ["get", "TIPO"], "Directora"],
@@ -1255,6 +1283,7 @@
         id: prefixId + "-line",
         type: "line",
         source: srcId,
+        layout: { visibility: initVis },
         paint: linePaint
       });
       mapInstance.addLayer({
@@ -1262,10 +1291,11 @@
         type: "circle",
         source: srcId,
         filter: ["==", ["geometry-type"], "Point"],
+        layout: { visibility: initVis },
         paint: {
           "circle-radius": 6,
-          "circle-color": fillColor,
-          "circle-stroke-color": strokeColor,
+          "circle-color": effectiveFillColor,
+          "circle-stroke-color": effectiveStrokeColor,
           "circle-stroke-width": 2
         }
       });
@@ -1280,6 +1310,7 @@
           minzoom: typeof opts.label_min_zoom === "number" ? opts.label_min_zoom : 17,
           filter: labelFilter,
           layout: {
+            visibility: initVis,
             "text-field": isLineGeom
               ? ["concat", ["to-string", ["get", opts.label_field]], " m"]
               : ["to-string", ["get", opts.label_field]],
@@ -1315,6 +1346,7 @@
         var resolvedSource = /^https?:\/\//i.test(lyr.source_path)
           ? lyr.source_path
           : new URL(lyr.source_path, window.location.origin + baseUrl).href;
+        var isVisibleByDefault = !(lyr.style && lyr.style.visible_by_default === false);
 
         if (lyr.preview_image_path && Array.isArray(lyr.image_coordinates) && lyr.image_coordinates.length === 4) {
           var resolvedPreview = /^https?:\/\//i.test(lyr.preview_image_path)
@@ -1334,6 +1366,9 @@
             id: lyr.id + "-raster",
             type: "raster",
             source: srcId,
+            layout: {
+              visibility: isVisibleByDefault ? "visible" : "none"
+            },
             paint: {
               "raster-opacity": rasterOp,
               "raster-resampling": "linear",
@@ -1344,7 +1379,7 @@
           var rChk = document.querySelector('[data-layer-toggle="' + lyr.id + '"]');
           if (rChk) {
             rChk.disabled = false;
-            rChk.checked = true;
+            rChk.checked = isVisibleByDefault;
             rChk.onchange = function () {
               if (mapInstance.getLayer(lyr.id + "-raster")) {
                 mapInstance.setLayoutProperty(lyr.id + "-raster", "visibility", rChk.checked ? "visible" : "none");
@@ -1438,7 +1473,7 @@
           var chk = document.querySelector('[data-layer-toggle="' + lyr.id + '"]');
           if (chk) {
             chk.disabled = false;
-            chk.checked = true;
+            chk.checked = isVisibleByDefault;
             chk.onchange = function () {
               var vis = chk.checked ? "visible" : "none";
               ["-fill", "-line", "-pt", "-label"].forEach(function (suf) {
