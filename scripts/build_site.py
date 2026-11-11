@@ -774,7 +774,8 @@ git remote add upstream https://github.com/{effective_slug}.git"""
         <div class="hero-actions">
           {site_btn}
           {repo_btn}
-          <a class="btn btn-teal" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ejercicio Colab / GEE →</a>
+          <a class="btn btn-teal" href="{html.escape(ctx.site_url(f'assets/descargas/atlas_copernicus_{pid}.pdf'), quote=True)}" download="Atlas_Copernicus_{esc(pid)}.pdf">📥 Descargar Atlas Copernicus (PDF)</a>
+          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">Ejercicio Colab / GEE →</a>
           {demo_btn}
         </div>
       </div>
@@ -1264,12 +1265,22 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
     safe_perims_json = perims_raw.replace("</", "<\\/")
 
     proj_options = []
+    pdf_pills = []
     for it in catalog_snap.get("projects", []):
         p = it["project"]
         pid = p["id"]
         c_name = p["country"]["name"]
+        c_code = p["country"]["code"]
         t_lbl = p["territory"]["label"]
         proj_options.append(f'<option value="{esc(pid)}">{esc(c_name)} · {esc(t_lbl)} ({esc(pid)})</option>')
+        pdf_href = html.escape(ctx.site_url(f"assets/descargas/atlas_copernicus_{pid}.pdf"), quote=True)
+        pdf_pills.append(
+            f'<a class="atlas-pdf-pill" href="{pdf_href}" download="Atlas_Copernicus_{esc(pid)}.pdf">'
+            f'📄 {esc(c_code)} · {esc(pid)}</a>'
+        )
+    pdf_pills_html = "".join(pdf_pills)
+    reg_pdf_href = html.escape(ctx.site_url("assets/descargas/atlas_copernicus_regional.pdf"), quote=True)
+    default_proj_pdf_href = html.escape(ctx.site_url("assets/descargas/atlas_copernicus_pa-panama-oeste.pdf"), quote=True)
 
     plates_meta = [
         ("sentinel2-cloudless", "🛰️ 1. Mosaicos Anuales Sentinel-2 (2018–2024)"),
@@ -1316,6 +1327,25 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
         </div>
       </div>
 
+      <div class="atlas-pdf-banner" role="region" aria-label="Descarga del Atlas Regional y por Proyecto en PDF con identidad institucional">
+        <div class="atlas-pdf-banner-inner">
+          <div class="atlas-pdf-banner-text">
+            <span class="atlas-pdf-banner-eyebrow">EDICIÓN EDITORIAL INSTITUCIONAL · FORMATO A4 HORIZONTAL · LISTO PARA IMPRESIÓN</span>
+            <h3 class="atlas-pdf-banner-title">Atlas Urbano Regional y por Zona de Estudio en PDF (Identidad Gráfica Oficial Copernicus LAC)</h3>
+            <p class="atlas-pdf-banner-desc">Descarga el <strong>Atlas Regional Consolidado (13 páginas)</strong>, el <strong>Atlas PDF de 12 páginas de cada una de las 8 iniciativas</strong> (portada con logos institucionales, ficha territorial, 10 láminas satelitales enmascaradas y guía cromática hexadecimal) o exporta en vivo la lámina y año que estés visualizando.</p>
+          </div>
+          <div class="atlas-pdf-banner-actions">
+            <a class="btn btn-primary" href="{reg_pdf_href}" download="Atlas_Urbano_Regional_Copernicus.pdf">📘 Descargar Atlas Regional Consolidado (PDF · 13 Págs.)</a>
+            <a id="atlas-download-project-pdf" class="btn btn-teal" href="{default_proj_pdf_href}" download="Atlas_Copernicus_pa-panama-oeste.pdf">📥 Descargar Atlas PDF de pa-panama-oeste</a>
+            <button type="button" class="btn btn-outline-light" data-atlas-export-pdf>🖨️ Exportar lámina / año actual a PDF</button>
+          </div>
+        </div>
+        <div class="atlas-pdf-project-pills" aria-label="Descarga directa de PDF por iniciativa">
+          <span style="font-size:0.75rem;color:rgba(255,255,255,0.82);font-weight:700;margin-right:0.25rem;">Atlas individuales (12 págs. PDF):</span>
+          {pdf_pills_html}
+        </div>
+      </div>
+
       <div class="atlas-plate-tabs" role="tablist" aria-label="Láminas temáticas del Atlas Copernicus">
         {hub_plate_tabs}
       </div>
@@ -1341,6 +1371,7 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
             </div>
             <div class="geovisor-toolbar-actions">
               <button type="button" id="atlas-fit-bounds" class="btn btn-outline-light btn-xs">Encuadrar límite</button>
+              <button type="button" class="btn btn-outline-light btn-xs" data-atlas-export-pdf title="Exportar la lámina y año actual a formato PDF institucional">🖨️ Lámina a PDF</button>
               <button type="button" id="atlas-toggle-fullscreen" class="btn btn-primary btn-xs">⛶ Pantalla completa</button>
             </div>
           </div>
@@ -1391,6 +1422,11 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
           <div>
             <h4 style="margin:0 0 0.45rem;font-size:0.86rem;text-transform:uppercase;letter-spacing:0.03em;color:var(--c-brand-blue);">Guía de interpretación de los colores de la leyenda</h4>
             <ul id="atlas-plate-swatches" class="atlas-swatch-list"></ul>
+          </div>
+
+          <div style="margin-top:auto;padding-top:0.55rem;border-top:1px solid var(--c-border);display:flex;flex-wrap:wrap;gap:0.45rem;">
+            <a class="btn btn-primary btn-xs" href="{reg_pdf_href}" download="Atlas_Urbano_Regional_Copernicus.pdf">📘 Atlas Regional (PDF)</a>
+            <button type="button" class="btn btn-teal btn-xs" data-atlas-export-pdf>🖨️ Imprimir / Guardar lámina actual</button>
           </div>
         </div>
       </div>

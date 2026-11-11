@@ -1945,6 +1945,134 @@ tr:last-child td {
   background: rgba(255, 255, 255, 0.75) !important;
 }
 
+/* ==========================================================================
+   Banner Institucional de Descarga y Exportación del Atlas en PDF
+   ========================================================================== */
+.atlas-pdf-banner {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--c-cover-blue);
+  background-image:
+    linear-gradient(125deg, rgba(12, 22, 89, 0.94) 0%, rgba(0, 10, 98, 0.90) 58%, rgba(23, 32, 112, 0.92) 100%),
+    url("../img/brand/bg-trama-cartografica.png");
+  background-size: cover;
+  background-position: center;
+  color: #FFFFFF;
+  border: 2px solid var(--c-accent-yellow);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+.atlas-pdf-banner::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  width: min(100%, 420px);
+  height: 76px;
+  background-image: url("../img/brand/onda-puntos-amarilla.png");
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: contain;
+  opacity: 0.42;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.atlas-pdf-banner-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem 1.25rem;
+}
+
+.atlas-pdf-banner-text {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.atlas-pdf-banner-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--c-accent-yellow);
+  color: var(--c-brand-blue);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.18rem 0.55rem;
+  border-radius: 4px;
+  margin-bottom: 0.35rem;
+}
+
+.atlas-pdf-banner-title {
+  margin: 0 0 0.2rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.atlas-pdf-banner-desc {
+  margin: 0;
+  font-size: 0.84rem;
+  color: #E2E8F8;
+  line-height: 1.42;
+}
+
+.atlas-pdf-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.atlas-pdf-project-pills {
+  position: relative;
+  z-index: 2;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255, 200, 0, 0.28);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.atlas-pdf-project-pills-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--c-accent-yellow);
+  margin-right: 0.25rem;
+}
+
+.atlas-pdf-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 200, 0, 0.45);
+  border-radius: 5px;
+  padding: 0.2rem 0.52rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.atlas-pdf-pill:hover {
+  background: var(--c-accent-yellow);
+  color: var(--c-brand-blue);
+  text-decoration: none;
+}
+
+
 
 
 

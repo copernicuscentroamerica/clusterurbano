@@ -2878,6 +2878,7 @@
       center: currentCenter,
       zoom: currentZoom,
       attributionControl: false,
+      preserveDrawingBuffer: true,
       canvasContextAttributes: { preserveDrawingBuffer: true }
     });
 
@@ -2984,13 +2985,210 @@
         .catch(function () {});
     }
 
+    function exportCurrentAtlasPlateToPdf() {
+      stopTimelinePlayback();
+      var p = ATLAS_PLATES[currentPlateKey] || ATLAS_PLATES["sentinel2-cloudless"];
+      var vObj = findVariantObj(p, currentVariantKey);
+      var effectiveSwatches = vObj.swatches || p.swatches || [];
+      var mapDataUrl = "";
+      try {
+        if (atlasMap && atlasMap.getCanvas) {
+          mapDataUrl = atlasMap.getCanvas().toDataURL("image/png");
+        }
+      } catch (e) {
+        mapDataUrl = "";
+      }
+
+      var brandBase = new URL("assets/img/brand/", window.location.origin + baseUrl).href;
+      var ggUrl = brandBase + "logo-global-gateway.png";
+      var euUrl = brandBase + "logo-union-europea.png";
+      var ccvahUrl = brandBase + "logo-ccvah.png";
+      var siscaUrl = brandBase + "logo-sisca.png";
+      var sicaUrl = brandBase + "logo-sica.png";
+      var coopUrl = brandBase + "logo-cooperacion-alemana.png";
+      var gizUrl = brandBase + "logo-giz.png";
+      var copUrl = brandBase + "logo-copernicus-lac-chile.png";
+
+      var territoryTitle = document.title.split("·").pop().trim() || "Zona de Estudio";
+      if (projectSelectEl && projectSelectEl.options[projectSelectEl.selectedIndex]) {
+        territoryTitle = projectSelectEl.options[projectSelectEl.selectedIndex].text;
+      }
+
+      var swatchesRowsHtml = effectiveSwatches
+        .map(function (sw) {
+          return (
+            "<tr>" +
+            '<td style="width:24mm;white-space:nowrap;padding:1.4mm 1.5mm;border-bottom:0.25mm solid #E6ECF8;">' +
+            '<span style="display:inline-block;width:7mm;height:4.5mm;border-radius:0.8mm;border:0.3mm solid rgba(0,10,98,0.3);background:' +
+            escapeHtml(sw.color) +
+            ';vertical-align:middle;"></span> ' +
+            '<code style="font-size:7pt;color:#455073;">' +
+            escapeHtml(sw.color) +
+            "</code></td>" +
+            '<td style="padding:1.4mm 1.5mm;border-bottom:0.25mm solid #E6ECF8;font-size:7.8pt;line-height:1.3;">' +
+            "<strong>" +
+            escapeHtml(sw.label) +
+            ":</strong> " +
+            escapeHtml(sw.desc) +
+            "</td></tr>"
+          );
+        })
+        .join("");
+
+      var variantsChipsHtml = (p.variants || [])
+        .map(function (v) {
+          var isAct = v.key === vObj.key;
+          return (
+            '<span style="display:inline-block;padding:0.6mm 2mm;border-radius:1mm;font-size:7.4pt;font-weight:700;margin-left:1mm;' +
+            (isAct
+              ? "background:#FFC800;color:#000A62;border:0.35mm solid #000A62;"
+              : "background:#FFFFFF;color:#000A62;border:0.3mm solid #B0BBE0;") +
+            '">' +
+            escapeHtml(v.pill || v.label) +
+            "</span>"
+          );
+        })
+        .join("");
+
+      var printWin = window.open("", "_blank");
+      if (!printWin) {
+        window.print();
+        return;
+      }
+
+      var htmlDoc =
+        "<!DOCTYPE html><html lang='es'><head><meta charset='utf-8'>" +
+        "<title>" +
+        escapeHtml((vObj.title || p.title) + " · " + territoryTitle) +
+        "</title>" +
+        "<style>" +
+        "@page { size: 297mm 210mm; margin: 0; }" +
+        "* { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }" +
+        "html, body { margin: 0; padding: 0; width: 297mm; height: 210mm; font-family: Calibri, 'Segoe UI', Arial, sans-serif; color: #0F1738; background: #F4F6FB; }" +
+        ".sheet { width: 297mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }" +
+        ".hdr { background: linear-gradient(90deg, #000A62 0%, #0C1659 60%, #172070 100%); color: #FFFFFF; padding: 4mm 10mm; border-bottom: 1.1mm solid #FFC800; display: flex; align-items: center; justify-content: space-between; gap: 4mm; }" +
+        ".pill { background: #FFC800; color: #000A62; font-weight: 800; font-size: 8.5pt; padding: 1.1mm 3mm; border-radius: 1.2mm; text-transform: uppercase; white-space: nowrap; }" +
+        ".body { flex: 1; display: grid; grid-template-columns: 1.38fr 1fr; gap: 5mm; padding: 4.5mm 10mm; min-height: 0; }" +
+        ".map-col { background: #FFFFFF; border: 0.4mm solid #D5DCEE; border-radius: 2.5mm; padding: 2.5mm; display: flex; flex-direction: column; justify-content: space-between; }" +
+        ".map-box { width: 100%; height: 118mm; background: #070D24; border-radius: 1.8mm; overflow: hidden; border: 0.5mm solid #FFC800; position: relative; }" +
+        ".map-box img { width: 100%; height: 100%; object-fit: cover; display: block; }" +
+        ".info-col { background: #FFFFFF; border: 0.4mm solid #D5DCEE; border-top: 1.1mm solid #000A62; border-radius: 2.5mm; padding: 3.5mm 4mm; display: flex; flex-direction: column; gap: 3mm; }" +
+        ".ftr { background: #FFFFFF; border-top: 0.9mm solid #FFC800; padding: 2.4mm 10mm; display: flex; align-items: center; justify-content: space-between; gap: 4mm; }" +
+        "@media screen { body { width: 100%; height: auto; padding: 12px; background: #070D24; } .sheet { margin: 0 auto; box-shadow: 0 10px 32px rgba(0,0,0,0.5); } .screen-bar { max-width: 297mm; margin: 0 auto 10px; background: #0C1659; color: #FFF; padding: 8px 14px; border-radius: 8px; border: 1px solid #FFC800; display: flex; justify-content: space-between; align-items: center; } }" +
+        "@media print { .screen-bar { display: none !important; } }" +
+        "</style></head><body>" +
+        '<div class="screen-bar">' +
+        "<span><strong>Vista Previa Institucional A4 Horizontal</strong> · Pulsa <em>Guardar como PDF</em> en el cuadro de impresión</span>" +
+        '<button type="button" onclick="window.print()" style="background:#FFC800;color:#000A62;border:none;padding:6px 14px;border-radius:5px;font-weight:800;cursor:pointer;">🖨️ Imprimir / Guardar en PDF</button>' +
+        "</div>" +
+        '<section class="sheet">' +
+        '<header class="hdr">' +
+        '<div style="display:flex;align-items:center;gap:3.5mm;">' +
+        '<span class="pill">' +
+        escapeHtml(p.number + " · " + (vObj.pill || "")) +
+        "</span>" +
+        "<div>" +
+        '<h1 style="margin:0;font-size:12.4pt;color:#FFFFFF;">' +
+        escapeHtml(vObj.title || p.title) +
+        "</h1>" +
+        '<p style="margin:0.6mm 0 0;font-size:8pt;color:#C5D0F0;">Ámbito Territorial: <strong>' +
+        escapeHtml(territoryTitle) +
+        "</strong> · Clúster de Asentamientos Humanos (Fase II)</p>" +
+        "</div></div>" +
+        '<div style="text-align:right;font-size:7.8pt;color:#E2E8F8;">' +
+        '<strong style="display:block;color:#FFC800;font-size:8.5pt;">Atlas Temático Copernicus</strong>' +
+        "<span>Recorte Enmascarado · EPSG:4326</span>" +
+        "</div></header>" +
+        '<div class="body">' +
+        '<div class="map-col">' +
+        '<div class="map-box">' +
+        (mapDataUrl
+          ? '<img src="' + mapDataUrl + '" alt="Mapa de la lámina activa">'
+          : '<div style="color:#FFF;padding:20mm;text-align:center;">Mapa interactivo Copernicus</div>') +
+        "</div>" +
+        '<div style="margin-top:2mm;background:#EEF2FA;border:0.35mm solid #C5D0F0;border-left:1.1mm solid #000A62;border-radius:1.5mm;padding:2mm 3mm;display:flex;align-items:center;justify-content:space-between;font-size:7.8pt;">' +
+        '<strong style="color:#000A62;">📅 Serie multitemporal / variante activa:</strong>' +
+        "<div>" +
+        variantsChipsHtml +
+        "</div></div></div>" +
+        '<div class="info-col">' +
+        '<div style="background:#F8FAFF;border:0.3mm solid #D5DCEE;border-radius:1.8mm;padding:2.4mm 3mm;font-size:8pt;line-height:1.4;">' +
+        '<div><strong style="color:#000A62;">Sensor / Fuente Oficial:</strong> ' +
+        escapeHtml(p.sensor) +
+        "</div>" +
+        '<div style="margin-top:0.8mm;"><strong style="color:#000A62;">Fórmula / Expresión:</strong> <code style="background:#EEF2FA;color:#000A62;padding:0.3mm 1.2mm;border-radius:0.8mm;font-weight:700;">' +
+        escapeHtml(vObj.formula || p.formula) +
+        "</code></div></div>" +
+        '<div style="background:#F3F6FD;border-left:1.1mm solid #000A62;border-radius:1.5mm;padding:2.5mm 3mm;font-size:8.1pt;line-height:1.42;">' +
+        '<strong style="display:block;color:#000A62;margin-bottom:0.8mm;">Lectura e interpretación territorial:</strong>' +
+        escapeHtml(p.reading) +
+        "</div>" +
+        "<div>" +
+        '<h3 style="margin:0 0 1.5mm;font-size:8.2pt;font-weight:800;text-transform:uppercase;color:#000A62;">Guía de interpretación de los colores de la leyenda</h3>' +
+        '<table style="width:100%;border-collapse:collapse;"><tbody>' +
+        swatchesRowsHtml +
+        "</tbody></table></div></div></div>" +
+        '<footer class="ftr">' +
+        '<div style="display:flex;align-items:center;gap:4.5mm;">' +
+        '<div style="display:flex;align-items:center;gap:1.8mm;"><span style="font-size:6.8pt;font-weight:700;color:#000A62;">GLOBAL GATEWAY · UE:</span>' +
+        '<span style="background:#0C1659;padding:0.7mm 1.6mm;border-radius:1mm;display:inline-flex;"><img src="' +
+        ggUrl +
+        '" alt="Global Gateway" style="height:5mm;"></span>' +
+        '<img src="' +
+        euUrl +
+        '" alt="UE" style="height:5.5mm;"></div>' +
+        '<div style="display:flex;align-items:center;gap:1.8mm;"><span style="font-size:6.8pt;font-weight:700;color:#000A62;">IMPLEMENTADO POR:</span>' +
+        '<img src="' +
+        ccvahUrl +
+        '" alt="CCVAH" style="height:6mm;">' +
+        '<img src="' +
+        siscaUrl +
+        '" alt="SISCA" style="height:5.5mm;">' +
+        '<img src="' +
+        sicaUrl +
+        '" alt="SICA" style="height:5.5mm;"></div>' +
+        '<div style="display:flex;align-items:center;gap:1.8mm;"><span style="font-size:6.8pt;font-weight:700;color:#000A62;">APOYO TÉCNICO:</span>' +
+        '<img src="' +
+        coopUrl +
+        '" alt="Cooperación Alemana" style="height:6mm;">' +
+        '<img src="' +
+        gizUrl +
+        '" alt="GIZ" style="height:5mm;">' +
+        '<img src="' +
+        copUrl +
+        '" alt="Copernicus LAC" style="height:5.5mm;"></div>' +
+        "</div>" +
+        '<div style="font-size:7.4pt;color:#455073;">Tema: <strong>2.0.0-copernicus-2026</strong> · Exportación directa desde el Visor Atlas</div>' +
+        "</footer></section>" +
+        "<script>window.onload=function(){setTimeout(function(){window.print();},450);};</script>" +
+        "</body></html>";
+
+      printWin.document.open();
+      printWin.document.write(htmlDoc);
+      printWin.document.close();
+    }
+
+    var exportPdfBtns = document.querySelectorAll("[data-atlas-export-pdf]");
+    exportPdfBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        exportCurrentAtlasPlateToPdf();
+      });
+    });
+
     if (allHubPerimeters && projectSelectEl) {
+      var hubProjPdfBtn = document.getElementById("atlas-download-project-pdf");
       function selectHubProject(pid) {
         var entry = allHubPerimeters[pid];
         if (!entry || !entry.feature_collection) return;
         currentPerimeterGeoJson = entry.feature_collection;
         currentCenter = entry.center || currentCenter;
         currentZoom = entry.zoom || 12;
+        if (hubProjPdfBtn) {
+          var pdfHref = new URL("assets/descargas/atlas_copernicus_" + encodeURIComponent(pid) + ".pdf", window.location.origin + baseUrl).href;
+          hubProjPdfBtn.href = pdfHref;
+          hubProjPdfBtn.setAttribute("download", "Atlas_Copernicus_" + pid + ".pdf");
+          hubProjPdfBtn.textContent = "📥 Descargar Atlas PDF de " + pid;
+        }
         if (atlasMap.isStyleLoaded()) {
           refreshMaskOnAtlasMap(true);
         } else {
