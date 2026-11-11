@@ -389,9 +389,39 @@ def build_home_page(
         <span class="badge badge-declarado">Ubicaciones referenciales según cada perfil</span>
       </div>
       <div class="hub-map-card">
+        <div class="geovisor-toolbar" style="border-radius:0;">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;">
+            <strong style="font-size:0.82rem;">🛰️ Mapa Base Copernicus / Sentinel-2:</strong>
+            <select id="hub-basemap-select" aria-label="Seleccionar mapa base o mosaico Sentinel-2" style="padding:0.25rem 0.5rem;border-radius:4px;border:1px solid rgba(255,255,255,0.4);font-size:0.78rem;background:#FFFFFF;color:var(--c-brand-blue);font-weight:600;">
+              <optgroup label="Mosaicos Abiertos Copernicus Sentinel-2 Cloudless y DEM (Sin API Key)">
+                <option value="sentinel2-2024">Copernicus Sentinel-2 Cloudless (Mosaico 2024 · EOX)</option>
+                <option value="sentinel2-2023">Copernicus Sentinel-2 Cloudless (Mosaico 2023 · EOX)</option>
+                <option value="sentinel2-2022">Copernicus Sentinel-2 Cloudless (Mosaico 2022 · EOX)</option>
+                <option value="sentinel2-2021">Copernicus Sentinel-2 Cloudless (Mosaico 2021 · EOX)</option>
+                <option value="sentinel2-2020">Copernicus Sentinel-2 Cloudless (Mosaico 2020 · EOX)</option>
+                <option value="sentinel2-2019">Copernicus Sentinel-2 Cloudless (Mosaico 2019 · EOX)</option>
+                <option value="sentinel2-2018">Copernicus Sentinel-2 Cloudless (Mosaico 2018 · EOX)</option>
+                <option value="copernicus-terrain">Relieve y Topografía Copernicus DEM (Terrain Light)</option>
+              </optgroup>
+              <optgroup label="Mapas Base Vectoriales y Referencia">
+                <option value="carto-positron" selected>Mapa Claro Vectorial (OpenFreeMap)</option>
+                <option value="osm-standard">OpenStreetMap Estándar</option>
+                <option value="carto-dark">Modo Oscuro Vectorial (OpenFreeMap)</option>
+                <option value="esri-imagery">Imagen Satelital de Alta Resolución (Esri)</option>
+              </optgroup>
+            </select>
+            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="sentinel2-2024">S2 · 2024</button>
+            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="sentinel2-2020">S2 · 2020</button>
+            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="copernicus-terrain">⛰️ Relieve DEM</button>
+            <button type="button" class="btn btn-teal btn-xs" data-hub-basemap-quick="carto-positron">🗺️ Vectorial</button>
+          </div>
+          <div class="geovisor-toolbar-actions">
+            <button type="button" id="hub-toggle-fullscreen" class="btn btn-primary btn-xs">⛶ Pantalla completa</button>
+          </div>
+        </div>
         <div id="hub-regional-map" class="hub-map-canvas" role="region" aria-label="Mapa regional orientativo de las ocho iniciativas"></div>
         <div style="padding:0.65rem 1rem;background:var(--c-surface-alt);font-size:0.82rem;color:var(--c-text-muted);">
-          <strong>Nota cartográfica:</strong> Los marcadores señalan únicamente el centroide o ámbito referencial declarado en cada ficha de proyecto para facilitar la navegación; no representan resultados analíticos ni límites oficiales validados. Cada iniciativa cuenta con su propio geovisor basado en GeoLibre.
+          <strong>Nota cartográfica:</strong> Los marcadores señalan únicamente el centroide o ámbito referencial declarado en cada ficha de proyecto para facilitar la navegación; no representan resultados analíticos ni límites oficiales validados. Cada iniciativa cuenta con su propio geovisor basado en GeoLibre con mosaicos abiertos de Copernicus Sentinel-2 Cloudless (2018–2024) y Relieve Copernicus DEM.
         </div>
       </div>
       <script id="hub-map-points" type="application/json">{safe_points_json}</script>

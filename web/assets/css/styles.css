@@ -1495,6 +1495,27 @@ tr:last-child td {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.hub-map-card:fullscreen,
+.hub-map-card:-webkit-full-screen,
+.hub-map-card.is-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+.hub-map-card:fullscreen .hub-map-canvas,
+.hub-map-card:-webkit-full-screen .hub-map-canvas,
+.hub-map-card.is-fullscreen .hub-map-canvas {
+  flex: 1 1 auto !important;
+  height: calc(100vh - 105px) !important;
 }
 
 .hub-map-canvas {

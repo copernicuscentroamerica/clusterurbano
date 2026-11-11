@@ -23,6 +23,11 @@
       tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2023_3857/default/g/{z}/{y}/{x}.jpg"],
       attribution: "Sentinel-2 cloudless 2023 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2023)"
     },
+    "sentinel2-2022": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2022 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpg"],
+      attribution: "Sentinel-2 cloudless 2022 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2022)"
+    },
     "sentinel2-2021": {
       name: "Copernicus Sentinel-2 Cloudless (Mosaico 2021 · EOX)",
       tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg"],
@@ -33,13 +38,18 @@
       tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"],
       attribution: "Sentinel-2 cloudless 2020 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020)"
     },
+    "sentinel2-2019": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2019 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg"],
+      attribution: "Sentinel-2 cloudless 2019 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2019)"
+    },
     "sentinel2-2018": {
       name: "Copernicus Sentinel-2 Cloudless (Mosaico 2018 · EOX)",
       tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2018_3857/default/g/{z}/{y}/{x}.jpg"],
       attribution: "Sentinel-2 cloudless 2018 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2018)"
     },
     "copernicus-terrain": {
-      name: "Relieve y Topografía (Terrain Light · DEM)",
+      name: "Relieve y Topografía Copernicus DEM (Terrain Light)",
       tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"],
       attribution: "Terrain Light by <a href='https://maps.eox.at' target='_blank' rel='noopener'>EOX</a> &mdash; Data &copy; Copernicus DEM &amp; OpenStreetMap"
     },
@@ -728,89 +738,33 @@
       });
 
       var basemapSelect = document.getElementById("gv-basemap-select");
+      var quickBasemapBtns = Array.prototype.slice.call(document.querySelectorAll("[data-basemap-quick]"));
+
+      function applyBasemapKey(bmKey) {
+        if (!bmKey || !BASEMAPS[bmKey]) return;
+        if (basemapSelect && basemapSelect.value !== bmKey) {
+          basemapSelect.value = bmKey;
+        }
+        quickBasemapBtns.forEach(function (btn) {
+          var isMatch = btn.getAttribute("data-basemap-quick") === bmKey;
+          btn.className = isMatch ? "btn btn-teal btn-xs" : "btn btn-outline btn-xs";
+        });
+        mapInstance.setStyle(makeStyle(bmKey));
+        mapInstance.once("styledata", function () {
+          addActiveProjectLayers();
+        });
+      }
+
       if (basemapSelect) {
         basemapSelect.addEventListener("change", function () {
-          mapInstance.setStyle(makeStyle(basemapSelect.value));
-          mapInstance.once("styledata", function () {
-            addActiveProjectLayers();
-          });
+          applyBasemapKey(basemapSelect.value);
         });
       }
-
-      // Conector directo a Copernicus Data Space Ecosystem (CDSE WMS / WMTS / XYZ) y Copernicus Browser
-      var cdseInput = document.getElementById("gv-cdse-instance-or-url");
-      var cdseLayerSel = document.getElementById("gv-cdse-layer");
-      var cdseDateInp = document.getElementById("gv-cdse-date");
-      var cdseApplyBtn = document.getElementById("gv-apply-cdse-btn");
-      var cdseBrowserLink = document.getElementById("gv-open-cdse-browser");
-      var cdseStatus = document.getElementById("gv-cdse-status");
-
-      function updateCopernicusBrowserHref() {
-        if (!cdseBrowserLink || !mapInstance) return;
-        var c = mapInstance.getCenter();
-        var z = Math.round(mapInstance.getZoom());
-        cdseBrowserLink.href =
-          "https://browser.dataspace.copernicus.eu/?zoom=" +
-          z +
-          "&lat=" +
-          c.lat.toFixed(5) +
-          "&lng=" +
-          c.lng.toFixed(5);
-      }
-      updateCopernicusBrowserHref();
-      mapInstance.on("moveend", updateCopernicusBrowserHref);
-
-      if (cdseApplyBtn && cdseInput) {
-        cdseApplyBtn.addEventListener("click", function () {
-          var rawVal = (cdseInput.value || "").trim();
-          var layerName = (cdseLayerSel && cdseLayerSel.value) || "TRUE-COLOR-S2L2A";
-          var maxDate = (cdseDateInp && cdseDateInp.value) || "2026-11-10";
-          if (!rawVal) {
-            if (cdseStatus) {
-              cdseStatus.textContent = "Ingresa un Instance ID (UUID de CDSE Sentinel Hub) o una plantilla URL WMS/XYZ.";
-            }
-            return;
-          }
-          var tileTemplate = "";
-          if (/^https?:\/\//i.test(rawVal)) {
-            if (rawVal.indexOf("{z}") !== -1 || rawVal.indexOf("{bbox-epsg-3857}") !== -1) {
-              tileTemplate = rawVal;
-            } else {
-              var sep = rawVal.indexOf("?") === -1 ? "?" : "&";
-              tileTemplate =
-                rawVal +
-                sep +
-                "SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=" +
-                encodeURIComponent(layerName) +
-                "&STYLES=&FORMAT=image/jpeg&TRANSPARENT=false&HEIGHT=256&WIDTH=256&SRS=EPSG:3857&TIME=2024-01-01/" +
-                encodeURIComponent(maxDate) +
-                "&MAXCC=20&BBOX={bbox-epsg-3857}";
-            }
-          } else {
-            tileTemplate =
-              "https://sh.dataspace.copernicus.eu/ogc/wms/" +
-              encodeURIComponent(rawVal) +
-              "?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=" +
-              encodeURIComponent(layerName) +
-              "&STYLES=&FORMAT=image/jpeg&TRANSPARENT=false&HEIGHT=256&WIDTH=256&SRS=EPSG:3857&TIME=2024-01-01/" +
-              encodeURIComponent(maxDate) +
-              "&MAXCC=20&BBOX={bbox-epsg-3857}";
-          }
-
-          BASEMAPS["cdse-custom"] = {
-            name: "Copernicus Data Space Ecosystem (" + layerName + ")",
-            tiles: [tileTemplate],
-            attribution: "&copy; Copernicus Data Space Ecosystem (European Union) &mdash; Sentinel Hub OGC WMS/WMTS"
-          };
-          mapInstance.setStyle(makeStyle("cdse-custom"));
-          mapInstance.once("styledata", function () {
-            addActiveProjectLayers();
-          });
-          if (cdseStatus) {
-            cdseStatus.textContent = "Servicio Copernicus (" + layerName + " · hasta " + maxDate + ") activo como mapa base.";
-          }
+      quickBasemapBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          applyBasemapKey(btn.getAttribute("data-basemap-quick"));
         });
-      }
+      });
     }
 
     // =======================================================================
@@ -1223,8 +1177,59 @@
       return;
     }
     map.addControl(new window.maplibregl.NavigationControl(), "top-right");
+    var hubCardEl = container.closest(".hub-map-card") || container;
     if (window.maplibregl.FullscreenControl) {
-      map.addControl(new window.maplibregl.FullscreenControl(), "top-right");
+      map.addControl(new window.maplibregl.FullscreenControl({ container: hubCardEl }), "top-right");
+    }
+
+    var hubBasemapSelect = document.getElementById("hub-basemap-select");
+    var hubQuickBtns = Array.prototype.slice.call(document.querySelectorAll("[data-hub-basemap-quick]"));
+    function applyHubBasemap(bmKey) {
+      if (!bmKey || !BASEMAPS[bmKey]) return;
+      if (hubBasemapSelect && hubBasemapSelect.value !== bmKey) {
+        hubBasemapSelect.value = bmKey;
+      }
+      hubQuickBtns.forEach(function (btn) {
+        var isMatch = btn.getAttribute("data-hub-basemap-quick") === bmKey;
+        btn.className = isMatch ? "btn btn-teal btn-xs" : "btn btn-outline btn-xs";
+      });
+      map.setStyle(makeStyle(bmKey));
+    }
+    if (hubBasemapSelect) {
+      hubBasemapSelect.addEventListener("change", function () {
+        applyHubBasemap(hubBasemapSelect.value);
+      });
+    }
+    hubQuickBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        applyHubBasemap(btn.getAttribute("data-hub-basemap-quick"));
+      });
+    });
+
+    var hubFsBtn = document.getElementById("hub-toggle-fullscreen");
+    if (hubFsBtn && hubCardEl) {
+      hubFsBtn.addEventListener("click", function () {
+        var isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement || hubCardEl.classList.contains("is-fullscreen"));
+        if (!isFs) {
+          if (hubCardEl.requestFullscreen) {
+            hubCardEl.requestFullscreen().catch(function () {
+              hubCardEl.classList.add("is-fullscreen");
+            });
+          } else {
+            hubCardEl.classList.add("is-fullscreen");
+          }
+          hubFsBtn.textContent = "✕ Salir de pantalla completa";
+        } else {
+          if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(function () {});
+          }
+          hubCardEl.classList.remove("is-fullscreen");
+          hubFsBtn.textContent = "⛶ Pantalla completa";
+        }
+        setTimeout(function () {
+          map.resize();
+        }, 120);
+      });
     }
 
     points.forEach(function (pt) {
