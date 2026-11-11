@@ -1270,6 +1270,43 @@ tr:last-child td {
   box-shadow: var(--shadow-md);
 }
 
+.geovisor-shell.is-sidebar-collapsed {
+  grid-template-columns: 1fr;
+}
+
+.geovisor-shell.is-sidebar-collapsed .geovisor-sidebar {
+  display: none;
+}
+
+.geovisor-shell:fullscreen,
+.geovisor-shell:-webkit-full-screen,
+.geovisor-shell.is-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  min-height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  margin: 0 !important;
+}
+
+.geovisor-shell:fullscreen .geovisor-sidebar,
+.geovisor-shell:-webkit-full-screen .geovisor-sidebar,
+.geovisor-shell.is-fullscreen .geovisor-sidebar {
+  max-height: 100vh !important;
+  height: 100vh !important;
+}
+
+.geovisor-shell:fullscreen .geovisor-stage,
+.geovisor-shell:-webkit-full-screen .geovisor-stage,
+.geovisor-shell.is-fullscreen .geovisor-stage {
+  height: 100vh !important;
+  min-height: 100vh !important;
+}
+
 @media (max-width: 980px) {
   .geovisor-shell {
     grid-template-columns: 1fr;
