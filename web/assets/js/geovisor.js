@@ -592,6 +592,102 @@
     return [[bounds[0], bounds[1]], [bounds[2], bounds[3]]];
   }
 
+  function buildInvertedMaskGeoJson(perimeterGeoJson) {
+    if (!perimeterGeoJson) return null;
+    var holes = [];
+    function collectOuterRings(geom) {
+      if (!geom) return;
+      if (geom.type === "Polygon" && Array.isArray(geom.coordinates) && geom.coordinates.length > 0) {
+        holes.push(geom.coordinates[0]);
+      } else if (geom.type === "MultiPolygon" && Array.isArray(geom.coordinates)) {
+        geom.coordinates.forEach(function (poly) {
+          if (Array.isArray(poly) && poly.length > 0) {
+            holes.push(poly[0]);
+          }
+        });
+      } else if (geom.type === "GeometryCollection" && Array.isArray(geom.geometries)) {
+        geom.geometries.forEach(collectOuterRings);
+      }
+    }
+    if (perimeterGeoJson.type === "FeatureCollection" && Array.isArray(perimeterGeoJson.features)) {
+      perimeterGeoJson.features.forEach(function (f) {
+        if (f && f.geometry) collectOuterRings(f.geometry);
+      });
+    } else if (perimeterGeoJson.type === "Feature" && perimeterGeoJson.geometry) {
+      collectOuterRings(perimeterGeoJson.geometry);
+    } else {
+      collectOuterRings(perimeterGeoJson);
+    }
+    if (!holes.length) return null;
+    var worldOuter = [
+      [-179.9, -85.0],
+      [179.9, -85.0],
+      [179.9, 85.0],
+      [-179.9, 85.0],
+      [-179.9, -85.0]
+    ];
+    return {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          properties: { role: "inverted_study_area_mask" },
+          geometry: {
+            type: "Polygon",
+            coordinates: [worldOuter].concat(holes)
+          }
+        }
+      ]
+    };
+  }
+
+  function applyStudyAreaMaskToMap(targetMap, perimeterGeoJson, maskEnabled, maskOpacity) {
+    if (!targetMap || !perimeterGeoJson) return;
+    var inverted = buildInvertedMaskGeoJson(perimeterGeoJson);
+    if (!inverted) return;
+    var op = typeof maskOpacity === "number" ? maskOpacity : 0.88;
+    var vis = maskEnabled ? "visible" : "none";
+
+    ["study-area-mask-fill", "study-area-perimeter-glow", "study-area-perimeter-stroke"].forEach(function (lid) {
+      if (targetMap.getLayer(lid)) targetMap.removeLayer(lid);
+    });
+    if (targetMap.getSource("study-area-mask-src")) targetMap.removeSource("study-area-mask-src");
+    if (targetMap.getSource("study-area-perim-src")) targetMap.removeSource("study-area-perim-src");
+
+    targetMap.addSource("study-area-mask-src", { type: "geojson", data: inverted });
+    targetMap.addSource("study-area-perim-src", { type: "geojson", data: perimeterGeoJson });
+
+    targetMap.addLayer({
+      id: "study-area-mask-fill",
+      type: "fill",
+      source: "study-area-mask-src",
+      layout: { visibility: vis },
+      paint: {
+        "fill-color": "#070D24",
+        "fill-opacity": op
+      }
+    });
+    targetMap.addLayer({
+      id: "study-area-perimeter-glow",
+      type: "line",
+      source: "study-area-perim-src",
+      paint: {
+        "line-color": "#FFCC00",
+        "line-width": 3.4,
+        "line-opacity": 0.92
+      }
+    });
+    targetMap.addLayer({
+      id: "study-area-perimeter-stroke",
+      type: "line",
+      source: "study-area-perim-src",
+      paint: {
+        "line-color": "#FFFFFF",
+        "line-width": 1.3
+      }
+    });
+  }
+
   function parseKmlToGeoJson(kmlText) {
     var parser = new DOMParser();
     var xml = parser.parseFromString(kmlText, "text/xml");
@@ -1128,9 +1224,57 @@
           "Archivo local"
         );
       }
+
+      if (projectPerimeterGeoJson) {
+        var maskToggleEl = document.getElementById("gv-toggle-mask");
+        var maskOpEl = document.getElementById("gv-mask-opacity");
+        var maskEnabled = maskToggleEl ? maskToggleEl.checked : true;
+        var maskOp = maskOpEl ? parseFloat(maskOpEl.value) : 0.88;
+        applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, maskEnabled, maskOp);
+      }
     }
 
+    var projectPerimeterGeoJson = null;
+
     if (mapInstance) {
+      var perimUrl = new URL("geovisor/capas/perimetro_zona_estudio.geojson", window.location.origin + baseUrl).href;
+      fetch(perimUrl)
+        .then(function (r) {
+          return r.ok ? r.json() : null;
+        })
+        .then(function (perimGj) {
+          if (perimGj) {
+            projectPerimeterGeoJson = perimGj;
+            var maskToggleEl = document.getElementById("gv-toggle-mask");
+            var maskOpEl = document.getElementById("gv-mask-opacity");
+            var maskEnabled = maskToggleEl ? maskToggleEl.checked : true;
+            var maskOp = maskOpEl ? parseFloat(maskOpEl.value) : 0.88;
+            if (mapInstance.isStyleLoaded()) {
+              applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, maskEnabled, maskOp);
+            }
+          }
+        })
+        .catch(function () {});
+
+      var gvMaskToggle = document.getElementById("gv-toggle-mask");
+      var gvMaskOpacity = document.getElementById("gv-mask-opacity");
+      if (gvMaskToggle) {
+        gvMaskToggle.addEventListener("change", function () {
+          if (mapInstance.getLayer("study-area-mask-fill")) {
+            mapInstance.setLayoutProperty("study-area-mask-fill", "visibility", gvMaskToggle.checked ? "visible" : "none");
+          } else if (projectPerimeterGeoJson) {
+            applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, gvMaskToggle.checked, gvMaskOpacity ? parseFloat(gvMaskOpacity.value) : 0.88);
+          }
+        });
+      }
+      if (gvMaskOpacity) {
+        gvMaskOpacity.addEventListener("input", function () {
+          if (mapInstance.getLayer("study-area-mask-fill")) {
+            mapInstance.setPaintProperty("study-area-mask-fill", "fill-opacity", parseFloat(gvMaskOpacity.value));
+          }
+        });
+      }
+
       mapInstance.on("load", function () {
         addActiveProjectLayers();
         setTimeout(function () {
@@ -1673,6 +1817,401 @@
     });
   }
 
+  // =========================================================================
+  // C. Atlas Temático Copernicus de la Zona de Estudio (resultados/ y atlas/)
+  // =========================================================================
+  var ATLAS_PLATES = {
+    "copernicus-dem-glo30": {
+      id: "copernicus-dem-glo30",
+      number: "Lámina 1",
+      shortTitle: "⛰️ 1. Geomorfología y Pendientes (DEM 30 m)",
+      title: "Geomorfología, Altitud y Pendientes Urbanas (Copernicus DEM GLO-30 · 30 m)",
+      sensor: "Copernicus Digital Elevation Model (GLO-30 · 30 m · Agencia Espacial Europea / Unión Europea)",
+      formula: "Elevación hipsométrica (-100 a 2600 m s. n. m.) + Sombreado analítico Hillshade (Acimut 315°, Altitud 45°)",
+      reading:
+        "Permite identificar la configuración topográfica sobre la cual se asienta la mancha urbana: valles fluviales, abanicos aluviales, terrazas intermedias y laderas escarpadas o cañones donde el crecimiento informal presenta mayor exposición a deslizamientos y escorrentía concentrada.",
+      swatches: [
+        { color: "#336699", label: "0 – 150 m s. n. m. (Azul/Verde bajo)", desc: "Planicies costeras, llanuras de inundación y fondos de valle bajos susceptibles a anegamiento." },
+        { color: "#56A862", label: "150 – 500 m s. n. m. (Verde medio)", desc: "Terrazas aluviales y valles intramontanos de pendiente suave con alta aptitud para urbanización consolidada." },
+        { color: "#E6C267", label: "500 – 1200 m s. n. m. (Amarillo / Ocre)", desc: "Piedemonte, mesetas intermedias (ej. Valle Central, Guatemala, San Salvador, Tegucigalpa) y laderas moderadas." },
+        { color: "#A66A43", label: "> 1200 m s. n. m. (Marrón / Blanco)", desc: "Escarpes pronunciados, cordilleras volcánicas y divisorias de cuenca de alta fragilidad morfodinámica." },
+        { color: "#3A3F4B", label: "Sombreado oscuro (Hillshade 30 m)", desc: "Barrancos, cañones fluviales y taludes de fuerte pendiente (>25%) donde debe restringirse o mitigarse la densificación." }
+      ]
+    },
+    "esa-worldcover-2021": {
+      id: "esa-worldcover-2021",
+      number: "Lámina 2",
+      shortTitle: "🏙️ 2. Cobertura y Mancha Urbana 10 m (WorldCover)",
+      title: "Cobertura Terrestre y Huella Urbana a 10 m (ESA WorldCover · Sentinel-1 + Sentinel-2)",
+      sensor: "ESA WorldCover 10 m v200 (Fusión óptica-radar Copernicus Sentinel-2 L2A + Sentinel-1 SAR)",
+      formula: "Clasificación global supervisada de 11 clases de cobertura terrestre a 10 metros de resolución espacial",
+      reading:
+        "Delimita con precisión de 10 m la huella edificada e impermeable (en rojo intenso #FA0000) frente a la infraestructura verde urbana, bosques de galería, cinturones agrícolas, manglares y cuerpos de agua dentro del límite de la zona de estudio.",
+      swatches: [
+        { color: "#FA0000", label: "Edificado / Mancha Urbana (#FA0000)", desc: "Superficie construida consolidada: edificaciones residenciales, industriales, techos, pavimento vial y concreto." },
+        { color: "#006400", label: "Cobertura Arbórea (#006400)", desc: "Bosques urbanos, parques metropolitanos, bosques riparios en cañones y arbolado denso (>10% de dosel)." },
+        { color: "#FFBB22", label: "Arbustos y Matorral (#FFBB22)", desc: "Vegetación leñosa baja, laderas en regeneración o bordes periurbanos no consolidados." },
+        { color: "#FFFF4C", label: "Pastizales y Herbáceas (#FFFF4C)", desc: "Praderas, áreas verdes abiertas, lotes baldíos con cobertura herbácea y zonas de amortiguamiento." },
+        { color: "#F096FF", label: "Cultivos Agrícolas (#F096FF)", desc: "Tierras de cultivo en la periferia urbano-rural sujetas a presión por cambio de uso del suelo." },
+        { color: "#B4B4B4", label: "Suelo Desnudo / Expuesto (#B4B4B4)", desc: "Terrenos en movimiento de tierra (nuevas urbanizaciones), canteras, playones fluviales o taludes erosionados." },
+        { color: "#0064C8", label: "Agua Permanente y Manglar (#0064C8 / #00CF75)", desc: "Ríos principales, lagos, embalses, esteros costeros y ecosistemas de manglar (#00CF75)." }
+      ]
+    },
+    "s2-lulc-2023": {
+      id: "s2-lulc-2023",
+      shortTitle: "📈 3. Uso del Suelo y Expansión 10 m (LULC)",
+      number: "Lámina 3",
+      title: "Uso del Suelo y Expansión del Área Construida a 10 m (Sentinel-2 LULC · 2023)",
+      sensor: "Copernicus Sentinel-2 L2A · Clasificación Anual IA de 9 Clases (Impact Observatory / Esri · 10 m)",
+      formula: "Segmentación semántica profunda sobre compuestos anuales libres de nubes de Sentinel-2 L2A",
+      reading:
+        "Muestra la estructura funcional del uso del suelo urbano y periurbano a 10 m de resolución. Permite cuantificar qué proporción de la zona de estudio corresponde a tejido urbano consolidado frente a remanentes forestales y matriz agropecuaria.",
+      swatches: [
+        { color: "#C4281B", label: "Área Construida / Built Area (#C4281B)", desc: "Tejido urbano consolidado, asentamientos humanos, infraestructura vial y zonas industriales." },
+        { color: "#397D49", label: "Árboles y Bosque Denso (#397D49)", desc: "Masas forestales densas, reservas ecológicas urbanas y cortinas rompe-vientos." },
+        { color: "#E49635", label: "Cultivos (#E49635)", desc: "Áreas agrícolas periurbanas en contacto directo con los frentes de expansión urbana." },
+        { color: "#DFC35A", label: "Matorral / Rangeland (#DFC35A)", desc: "Terrenos abiertos con arbustos dispersos y pastizales de transición." },
+        { color: "#A59B8F", label: "Suelo Desnudo (#A59B8F)", desc: "Superficie sin vegetación, trazados viales en apertura o áreas extractivas." },
+        { color: "#419BDF", label: "Agua y Humedales (#419BDF / #88B053)", desc: "Cuerpos de agua superficiales (#419BDF) y vegetación inundable o ribereña (#88B053)." }
+      ]
+    },
+    "s2-l2a-ndvi": {
+      id: "s2-l2a-ndvi",
+      number: "Lámina 4",
+      shortTitle: "🌿 4. Vegetación Urbana e Islas Verdes (NDVI)",
+      title: "Índice de Vegetación de Diferencia Normalizada (Copernicus Sentinel-2 L2A · NDVI 10 m)",
+      sensor: "Copernicus Sentinel-2 L2A (Bandas B08 Infrarrojo Cercano y B04 Rojo a 10 m de resolución)",
+      formula: "NDVI = (B08 - B04) / (B08 + B04) · Escala [-0.30 a +0.85] · Rampa RdYlGn",
+      reading:
+        "Evalúa la actividad fotosintética y la dotación de biomasa vegetal dentro del perímetro urbano. Es el indicador clave para localizar el déficit de áreas verdes por barrio, fragmentación de corredores ecológicos y zonas críticas de isla de calor.",
+      swatches: [
+        { color: "#A50026", label: "NDVI < 0.05 (Rojo intenso)", desc: "Cuerpos de agua, techos metálicos o de concreto, asfalto vial y superficies 100% impermeables sin vegetación." },
+        { color: "#F46D43", label: "NDVI 0.05 – 0.20 (Naranja)", desc: "Tejido urbano altamente densificado, centros históricos o asentamientos compactos con nulo arbolado viario." },
+        { color: "#FEE08B", label: "NDVI 0.20 – 0.38 (Amarillo pálido)", desc: "Zonas residenciales de densidad media con jardines dispersos, pastizales secos o suelo parcialmente expuesto." },
+        { color: "#66BD63", label: "NDVI 0.38 – 0.60 (Verde claro)", desc: "Parques urbanos, bulevares arbolados, áreas periurbanas arborizadas y cultivos activos." },
+        { color: "#006837", label: "NDVI > 0.60 (Verde bosque oscuro)", desc: "Dosel forestal denso y vigoroso en cañones, áreas protegidas y riberas que actúan como sumideros térmicos." }
+      ]
+    },
+    "s2-l2a-ndbi": {
+      id: "s2-l2a-ndbi",
+      number: "Lámina 5",
+      shortTitle: "🏗️ 5. Densidad Edificada e Impermeabilización (NDBI)",
+      title: "Índice de Edificación y Área Construida (Copernicus Sentinel-2 L2A · NDBI 20 m)",
+      sensor: "Copernicus Sentinel-2 L2A (Bandas B11 Infrarrojo de Onda Corta SWIR y B08 NIR)",
+      formula: "NDBI = (B11 - B08) / (B11 + B08) · Escala [-0.45 a +0.45] · Rampa Inferno",
+      reading:
+        "Aprovecha la fuerte reflectancia de los materiales de construcción (techos de zinc, fibrocemento, hormigón, asfalto y suelo compactado) en el infrarrojo de onda corta (SWIR B11) para medir el grado de sellado e impermeabilización del suelo.",
+      swatches: [
+        { color: "#FCFFA4", label: "NDBI > +0.15 (Amarillo brillante)", desc: "Máxima intensidad edificada: techos industriales/comerciales continuos, asentamientos muy compactos o suelo en explanación." },
+        { color: "#F98E09", label: "NDBI 0.00 a +0.15 (Naranja intenso)", desc: "Tejido urbano consolidado con predominio de superficies impermeables y alta generación de escorrentía pluvial." },
+        { color: "#AC2F5E", label: "NDBI -0.15 a 0.00 (Magenta / Púrpura)", desc: "Tejido residencial mixto o periurbano donde alternan viviendas con patios y vegetación." },
+        { color: "#1B0C41", label: "NDBI < -0.15 (Violeta oscuro / Negro)", desc: "Superficies naturales permeables: bosques, áreas verdes densas y cuerpos de agua que absorben radiación SWIR." }
+      ]
+    },
+    "s2-l2a-ndwi": {
+      id: "s2-l2a-ndwi",
+      number: "Lámina 6",
+      shortTitle: "💧 6. Humedad Superficial y Estrés Térmico (NDWI)",
+      title: "Índice de Humedad Superficial y Estrés Hídrico (Copernicus Sentinel-2 L2A · NDWI 20 m)",
+      sensor: "Copernicus Sentinel-2 L2A (Bandas B8A NIR Estrecho y B11 SWIR a 20 m)",
+      formula: "NDWI = (B8A - B11) / (B8A + B11) · Escala [-0.50 a +0.50] · Rampa RdBu",
+      reading:
+        "Mide el contenido de agua líquida en el dosel vegetal y la humedad superficial del suelo. Permite contrastar los corredores húmedos y frescos (en azul) frente a las islas de sequedad e impermeabilización urbana (en rojo).",
+      swatches: [
+        { color: "#053061", label: "NDWI > +0.25 (Azul marino intenso)", desc: "Cuerpos de agua abiertos, humedales saturados y bosques de galería con alta retención de humedad." },
+        { color: "#4393C3", label: "NDWI +0.05 a +0.25 (Azul claro)", desc: "Vegetación saludable bien hidratada y suelos húmedos con capacidad de enfriamiento evaporativo." },
+        { color: "#F7F7F7", label: "NDWI -0.05 a +0.05 (Blanco neutro)", desc: "Zonas de transición periurbana con humedad superficial moderada." },
+        { color: "#D6604D", label: "NDWI -0.20 a -0.05 (Rojo salmón)", desc: "Áreas urbanizadas secas o vegetación con déficit hídrico estacional." },
+        { color: "#67001F", label: "NDWI < -0.20 (Rojo granate oscuro)", desc: "Superficies urbanas totalmente impermeables, techos calientes y suelos áridos con máxima carga térmica." }
+      ]
+    },
+    "s1-rtc-falsecolor": {
+      id: "s1-rtc-falsecolor",
+      number: "Lámina 7",
+      shortTitle: "📡 7. Morfología Urbana por Radar (Sentinel-1 SAR)",
+      title: "Morfología y Densidad Estructural por Radar Todo-Tiempo (Copernicus Sentinel-1 SAR RTC · 10 m)",
+      sensor: "Copernicus Sentinel-1 C-Band SAR (Radiometrically Terrain Corrected · Polarización Dual VV + VH a 10 m)",
+      formula: "Compuesto RGB de retrodispersión radar corregida por terreno (VV, VH y razón VV/VH) — Penetra el 100% de las nubes",
+      reading:
+        "A diferencia de los sensores ópticos, el radar activo de Sentinel-1 opera día y noche atravesando nubes y lluvia. Detecta la rugosidad física y la geometría tridimensional de las construcciones humanas mediante el efecto de rebote doble (double-bounce) entre paredes y calles.",
+      swatches: [
+        { color: "#FFF59D", label: "Amarillo brillante / Blanco (Alto VV)", desc: "Rebote doble intenso (double-bounce): centros urbanos densos, edificaciones de varios niveles, naves metálicas y taludes." },
+        { color: "#4CAF50", label: "Verde intenso (Alto VH cruzado)", desc: "Dispersión volumétrica producida por ramas y hojas del dosel arbóreo y vegetación densa." },
+        { color: "#5C6BC0", label: "Azul / Añil intermedio", desc: "Suelos agrícolas, pastizales cortos o superficies de rugosidad baja a moderada." },
+        { color: "#0D1B2A", label: "Azul muy oscuro / Negro (Baja retrodispersión)", desc: "Reflexión especular: espejos de agua calma (ríos, lagos, mar), pistas aeroportuarias o zonas urbanas inundadas." }
+      ]
+    },
+    "jrc-gsw-occurrence": {
+      id: "jrc-gsw-occurrence",
+      number: "Lámina 8",
+      shortTitle: "🌊 8. Agua Superficial e Inundación (JRC)",
+      title: "Ocurrencia Histórica de Agua Superficial y Huella de Inundación (EC JRC / Copernicus)",
+      sensor: "Joint Research Centre (JRC) de la Comisión Europea · Global Surface Water (Serie multitemporal 1984–2021)",
+      formula: "Frecuencia porcentual (0–100%) de presencia de lámina de agua detectada por píxel sobre relieve base",
+      reading:
+        "Identifica tanto los cauces fluviales y cuerpos de agua permanentes como las planicies de inundación estacional o episódica dentro de la zona de estudio, insumo crítico para evitar o mitigar asentamientos humanos en zonas inundables.",
+      swatches: [
+        { color: "#0000FF", label: "80% – 100% Ocurrencia (Azul puro)", desc: "Cuerpos de agua permanentes: cauce activo de ríos principales, lagos, embalses y mar." },
+        { color: "#8844CC", label: "25% – 80% Ocurrencia (Violeta / Púrpura)", desc: "Cuerpos de agua estacionales, barras fluviales inundables cada época lluviosa, esteros y zonas intermareales." },
+        { color: "#FF3366", label: "1% – 25% Ocurrencia (Rosa / Magenta)", desc: "Llanuras de inundación episódica donde se han registrado desbordamientos históricos durante eventos extremos." },
+        { color: "#D9DFEA", label: "Fondo topográfico sin ocurrencia hídrica", desc: "Terreno emergido donde no se ha detectado lámina de agua a escala satelital de 30 m." }
+      ]
+    }
+  };
+
+  function initCopernicusAtlasViewer() {
+    var mapContainer = document.getElementById("atlas-copernicus-map");
+    if (!mapContainer) return;
+
+    var shellEl = mapContainer.closest(".atlas-copernicus-shell") || mapContainer;
+    var detailTitleEl = document.getElementById("atlas-plate-title");
+    var detailBadgeEl = document.getElementById("atlas-plate-badge");
+    var detailSensorEl = document.getElementById("atlas-plate-sensor");
+    var detailFormulaEl = document.getElementById("atlas-plate-formula");
+    var detailReadingEl = document.getElementById("atlas-plate-reading");
+    var detailSwatchesEl = document.getElementById("atlas-plate-swatches");
+    var toolbarTitleEl = document.getElementById("atlas-toolbar-plate-label");
+
+    var maskCheckEl = document.getElementById("atlas-toggle-mask");
+    var maskOpEl = document.getElementById("atlas-mask-opacity");
+    var fitBtnEl = document.getElementById("atlas-fit-bounds");
+    var fsBtnEl = document.getElementById("atlas-toggle-fullscreen");
+    var projectSelectEl = document.getElementById("atlas-project-select");
+
+    var plateTabs = Array.prototype.slice.call(document.querySelectorAll("[data-atlas-plate]"));
+    var plateJumpBtns = Array.prototype.slice.call(document.querySelectorAll("[data-atlas-plate-select]"));
+
+    var baseUrl = document.body.getAttribute("data-baseurl") || "/";
+    var initialCenterAttr = mapContainer.getAttribute("data-center");
+    var initialZoomAttr = mapContainer.getAttribute("data-zoom");
+    var currentCenter = [-84.0, 10.0];
+    if (initialCenterAttr) {
+      try {
+        currentCenter = JSON.parse(initialCenterAttr);
+      } catch (e) {}
+    }
+    var currentZoom = initialZoomAttr ? parseFloat(initialZoomAttr) : 12;
+    var currentPlateKey = "copernicus-dem-glo30";
+    var currentPerimeterGeoJson = null;
+    var allHubPerimeters = null;
+
+    var perimJsonScript = document.getElementById("atlas-perimeters-json");
+    if (perimJsonScript) {
+      try {
+        allHubPerimeters = JSON.parse(perimJsonScript.textContent || "{}");
+      } catch (e) {
+        allHubPerimeters = null;
+      }
+    }
+
+    function renderPlateInfoPanel(plateKey) {
+      var p = ATLAS_PLATES[plateKey] || ATLAS_PLATES["copernicus-dem-glo30"];
+      if (detailBadgeEl) detailBadgeEl.textContent = p.number + " · Dato Abierto Copernicus";
+      if (detailTitleEl) detailTitleEl.textContent = p.title;
+      if (detailSensorEl) detailSensorEl.textContent = p.sensor;
+      if (detailFormulaEl) detailFormulaEl.textContent = p.formula;
+      if (detailReadingEl) detailReadingEl.textContent = p.reading;
+      if (toolbarTitleEl) toolbarTitleEl.textContent = p.shortTitle;
+
+      if (detailSwatchesEl) {
+        detailSwatchesEl.innerHTML = "";
+        p.swatches.forEach(function (sw) {
+          var li = document.createElement("li");
+          li.className = "atlas-swatch-item";
+
+          var chip = document.createElement("span");
+          chip.className = "atlas-swatch-chip";
+          chip.style.backgroundColor = sw.color;
+
+          var lbl = document.createElement("span");
+          lbl.className = "atlas-swatch-label";
+          lbl.textContent = sw.label;
+
+          var desc = document.createElement("span");
+          desc.className = "atlas-swatch-desc";
+          desc.textContent = sw.desc;
+
+          li.appendChild(chip);
+          li.appendChild(lbl);
+          li.appendChild(desc);
+          detailSwatchesEl.appendChild(li);
+        });
+      }
+
+      plateTabs.forEach(function (btn) {
+        var active = btn.getAttribute("data-atlas-plate") === plateKey;
+        btn.classList.toggle("is-active", active);
+      });
+    }
+
+    renderPlateInfoPanel(currentPlateKey);
+
+    if (typeof window.maplibregl === "undefined" || !isWebGLSupported()) {
+      mapContainer.innerHTML =
+        '<div class="callout callout-warn" style="margin:1rem;"><strong>Modo de lectura de leyendas activo:</strong> Consulta las fichas cromáticas e interpretativas de las 8 láminas a la derecha y debajo de este recuadro.</div>';
+      plateTabs.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          currentPlateKey = btn.getAttribute("data-atlas-plate");
+          renderPlateInfoPanel(currentPlateKey);
+        });
+      });
+      return;
+    }
+
+    var atlasMap = new window.maplibregl.Map({
+      container: mapContainer,
+      style: makeStyle(currentPlateKey),
+      center: currentCenter,
+      zoom: currentZoom,
+      attributionControl: true,
+      canvasContextAttributes: { preserveDrawingBuffer: true }
+    });
+
+    atlasMap.addControl(new window.maplibregl.NavigationControl(), "top-right");
+    atlasMap.addControl(new window.maplibregl.ScaleControl({ maxWidth: 120, unit: "metric" }), "bottom-left");
+    if (window.maplibregl.FullscreenControl) {
+      atlasMap.addControl(new window.maplibregl.FullscreenControl({ container: shellEl }), "top-right");
+    }
+
+    function refreshMaskOnAtlasMap(shouldFit) {
+      if (!currentPerimeterGeoJson) return;
+      var enabled = maskCheckEl ? maskCheckEl.checked : true;
+      var op = maskOpEl ? parseFloat(maskOpEl.value) : 0.88;
+      applyStudyAreaMaskToMap(atlasMap, currentPerimeterGeoJson, enabled, op);
+      if (shouldFit) {
+        var b = computeGeoJsonBounds(currentPerimeterGeoJson);
+        if (b) {
+          atlasMap.fitBounds(b, { padding: 42, maxZoom: 15.2, duration: 700 });
+        }
+      }
+    }
+
+    function activateAtlasPlate(plateKey) {
+      if (!plateKey || !ATLAS_PLATES[plateKey]) return;
+      currentPlateKey = plateKey;
+      renderPlateInfoPanel(plateKey);
+      resolveBasemapTiles(plateKey, function () {
+        atlasMap.setStyle(makeStyle(plateKey));
+        atlasMap.once("styledata", function () {
+          refreshMaskOnAtlasMap(false);
+        });
+      });
+    }
+
+    plateTabs.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        activateAtlasPlate(btn.getAttribute("data-atlas-plate"));
+      });
+    });
+
+    plateJumpBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var pk = btn.getAttribute("data-atlas-plate-select");
+        activateAtlasPlate(pk);
+        shellEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    if (maskCheckEl) {
+      maskCheckEl.addEventListener("change", function () {
+        if (atlasMap.getLayer("study-area-mask-fill")) {
+          atlasMap.setLayoutProperty("study-area-mask-fill", "visibility", maskCheckEl.checked ? "visible" : "none");
+        } else {
+          refreshMaskOnAtlasMap(false);
+        }
+      });
+    }
+
+    if (maskOpEl) {
+      maskOpEl.addEventListener("input", function () {
+        if (atlasMap.getLayer("study-area-mask-fill")) {
+          atlasMap.setPaintProperty("study-area-mask-fill", "fill-opacity", parseFloat(maskOpEl.value));
+        }
+      });
+    }
+
+    if (fitBtnEl) {
+      fitBtnEl.addEventListener("click", function () {
+        if (currentPerimeterGeoJson) {
+          var b = computeGeoJsonBounds(currentPerimeterGeoJson);
+          if (b) atlasMap.fitBounds(b, { padding: 42, maxZoom: 15.2 });
+        } else {
+          atlasMap.flyTo({ center: currentCenter, zoom: currentZoom });
+        }
+      });
+    }
+
+    if (fsBtnEl && shellEl) {
+      fsBtnEl.addEventListener("click", function () {
+        var isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement || shellEl.classList.contains("is-fullscreen"));
+        if (!isFs) {
+          if (shellEl.requestFullscreen) {
+            shellEl.requestFullscreen().catch(function () {
+              shellEl.classList.add("is-fullscreen");
+            });
+          } else {
+            shellEl.classList.add("is-fullscreen");
+          }
+          fsBtnEl.textContent = "✕ Salir";
+        } else {
+          if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(function () {});
+          }
+          shellEl.classList.remove("is-fullscreen");
+          fsBtnEl.textContent = "⛶ Pantalla completa";
+        }
+        setTimeout(function () {
+          atlasMap.resize();
+        }, 120);
+      });
+    }
+
+    function loadSingleProjectPerimeter() {
+      var perimUrl = new URL("geovisor/capas/perimetro_zona_estudio.geojson", window.location.origin + baseUrl).href;
+      fetch(perimUrl)
+        .then(function (r) {
+          return r.ok ? r.json() : null;
+        })
+        .then(function (gj) {
+          if (gj) {
+            currentPerimeterGeoJson = gj;
+            if (atlasMap.isStyleLoaded()) {
+              refreshMaskOnAtlasMap(true);
+            } else {
+              atlasMap.once("load", function () {
+                refreshMaskOnAtlasMap(true);
+              });
+            }
+          }
+        })
+        .catch(function () {});
+    }
+
+    if (allHubPerimeters && projectSelectEl) {
+      function selectHubProject(pid) {
+        var entry = allHubPerimeters[pid];
+        if (!entry || !entry.feature_collection) return;
+        currentPerimeterGeoJson = entry.feature_collection;
+        currentCenter = entry.center || currentCenter;
+        currentZoom = entry.zoom || 12;
+        if (atlasMap.isStyleLoaded()) {
+          refreshMaskOnAtlasMap(true);
+        } else {
+          atlasMap.once("load", function () {
+            refreshMaskOnAtlasMap(true);
+          });
+        }
+      }
+      projectSelectEl.addEventListener("change", function () {
+        selectHubProject(projectSelectEl.value);
+      });
+      selectHubProject(projectSelectEl.value || Object.keys(allHubPerimeters)[0]);
+    } else {
+      loadSingleProjectPerimeter();
+    }
+  }
+
   initProjectGeovisor();
   initHubRegionalMap();
+  initCopernicusAtlasViewer();
 })();

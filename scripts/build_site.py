@@ -1259,19 +1259,109 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
             """
         )
 
+    perim_path = ROOT / "data" / "perimetros_proyectos.json"
+    perims_raw = perim_path.read_text(encoding="utf-8") if perim_path.exists() else "{}"
+    safe_perims_json = perims_raw.replace("</", "<\\/")
+
+    proj_options = []
+    for it in catalog_snap.get("projects", []):
+        p = it["project"]
+        pid = p["id"]
+        c_name = p["country"]["name"]
+        t_lbl = p["territory"]["label"]
+        proj_options.append(f'<option value="{esc(pid)}">{esc(c_name)} · {esc(t_lbl)} ({esc(pid)})</option>')
+
+    plates_meta = [
+        ("copernicus-dem-glo30", "⛰️ 1. Geomorfología y Pendientes (DEM 30 m)"),
+        ("esa-worldcover-2021", "🏙️ 2. Cobertura y Mancha Urbana 10 m (WorldCover)"),
+        ("s2-lulc-2023", "📈 3. Uso del Suelo y Expansión 10 m (LULC)"),
+        ("s2-l2a-ndvi", "🌿 4. Vegetación Urbana e Islas Verdes (NDVI)"),
+        ("s2-l2a-ndbi", "🏗️ 5. Densidad Edificada e Impermeabilización (NDBI)"),
+        ("s2-l2a-ndwi", "💧 6. Humedad Superficial y Estrés Térmico (NDWI)"),
+        ("s1-rtc-falsecolor", "📡 7. Morfología Urbana por Radar (Sentinel-1 SAR)"),
+        ("jrc-gsw-occurrence", "🌊 8. Agua Superficial e Inundación (JRC)"),
+    ]
+    hub_plate_tabs = "".join(
+        f'<button type="button" class="atlas-plate-tab{" is-active" if i == 0 else ""}" data-atlas-plate="{esc(pk)}">{esc(plbl)}</button>'
+        for i, (pk, plbl) in enumerate(plates_meta)
+    )
+
     hero = """
     <section class="hero">
       <div class="container">
         <div class="hero-eyebrow">
-          <span class="badge badge-lime">Atlas Urbano Regional</span>
+          <span class="badge badge-lime">Atlas Urbano Regional · Capas Copernicus Enmascaradas</span>
         </div>
-        <h1>Catálogo de productos y contribuciones previstas</h1>
-        <p class="hero-lead">Espacio común para documentar, revisar y enlazar capas, indicadores y visores de las iniciativas, conservando sus escalas, definiciones y limitaciones antes de realizar comparaciones regionales.</p>
+        <h1>Atlas Temático Copernicus por Zona de Estudio y Catálogo Regional</h1>
+        <p class="hero-lead">Explora las 8 láminas derivadas de sensores satelitales Copernicus recortadas visualmente con los límites de cada zona de estudio, junto con su guía de interpretación cromática de leyendas y el catálogo de contribuciones previstas.</p>
       </div>
     </section>
     """
 
     body = f"""
+    <section class="section" id="atlas-copernicus-regional" aria-labelledby="titulo-atlas-copernicus-reg">
+      <div class="section-header" style="margin-bottom:0.8rem;">
+        <div>
+          <span class="badge badge-lime">Visor Regional de Láminas e Interpretación de Leyendas</span>
+          <h2 id="titulo-atlas-copernicus-reg" style="margin:0.3rem 0 0.2rem;">Atlas Temático Copernicus por Zona de Estudio</h2>
+          <p style="margin:0;color:var(--c-text-muted);font-size:0.93rem;">Selecciona cualquiera de las 8 zonas de estudio de la región y alterna entre las 8 láminas oficiales de Copernicus con máscara visual del límite territorial e interpretación detallada de cada color de la leyenda.</p>
+        </div>
+        <div class="filter-field" style="min-width:290px;max-width:420px;">
+          <label for="atlas-project-select">Zona de estudio / Iniciativa:</label>
+          <select id="atlas-project-select">
+            {"".join(proj_options)}
+          </select>
+        </div>
+      </div>
+
+      <div class="atlas-plate-tabs" role="tablist" aria-label="Láminas temáticas del Atlas Copernicus">
+        {hub_plate_tabs}
+      </div>
+
+      <div class="atlas-copernicus-shell">
+        <div class="atlas-copernicus-map-col">
+          <div class="geovisor-toolbar" style="border-radius:0;">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.55rem;">
+              <strong id="atlas-toolbar-plate-label" style="font-size:0.84rem;color:var(--c-accent-yellow);">⛰️ 1. Geomorfología y Pendientes (DEM 30 m)</strong>
+              <label style="display:inline-flex;align-items:center;gap:0.35rem;font-size:0.78rem;background:rgba(255,255,255,0.12);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer;">
+                <input type="checkbox" id="atlas-toggle-mask" checked>
+                <span>Enmascarar con límite de zona de estudio</span>
+              </label>
+              <label style="display:inline-flex;align-items:center;gap:0.35rem;font-size:0.75rem;">
+                <span>Máscara:</span>
+                <input type="range" id="atlas-mask-opacity" min="0" max="1" step="0.05" value="0.88" style="width:75px;" aria-label="Opacidad de la máscara del límite">
+              </label>
+            </div>
+            <div class="geovisor-toolbar-actions">
+              <button type="button" id="atlas-fit-bounds" class="btn btn-outline-light btn-xs">Encuadrar límite</button>
+              <button type="button" id="atlas-toggle-fullscreen" class="btn btn-primary btn-xs">⛶ Pantalla completa</button>
+            </div>
+          </div>
+          <div id="atlas-copernicus-map" class="atlas-copernicus-canvas" data-center="[-79.78, 8.95]" data-zoom="10.8" role="region" aria-label="Mapa del Atlas Temático Copernicus enmascarado con la zona de estudio"></div>
+        </div>
+
+        <div class="atlas-copernicus-info-col" id="atlas-plate-detail">
+          <div>
+            <span id="atlas-plate-badge" class="badge badge-lime">Lámina 1 · Dato Abierto Copernicus</span>
+            <h3 id="atlas-plate-title" style="margin:0.35rem 0 0.25rem;font-size:1.12rem;color:var(--c-brand-blue);">Geomorfología, Altitud y Pendientes Urbanas (Copernicus DEM GLO-30 · 30 m)</h3>
+            <p style="margin:0;font-size:0.8rem;color:var(--c-text-muted);"><strong>Sensor / Fuente:</strong> <span id="atlas-plate-sensor">Copernicus Digital Elevation Model (GLO-30 · 30 m)</span></p>
+            <p style="margin:0.15rem 0 0;font-size:0.78rem;color:var(--c-text-muted);"><strong>Parámetro / Expresión:</strong> <code id="atlas-plate-formula">Elevación hipsométrica + Sombreado Hillshade 30 m</code></p>
+          </div>
+
+          <div style="background:#F3F6FD;border-left:3px solid var(--c-brand-blue);padding:0.65rem 0.8rem;border-radius:4px;font-size:0.85rem;line-height:1.45;">
+            <strong style="color:var(--c-brand-blue);display:block;margin-bottom:0.2rem;">Lectura e interpretación territorial de la lámina:</strong>
+            <span id="atlas-plate-reading">Permite identificar la configuración topográfica sobre la cual se asienta la mancha urbana.</span>
+          </div>
+
+          <div>
+            <h4 style="margin:0 0 0.45rem;font-size:0.86rem;text-transform:uppercase;letter-spacing:0.03em;color:var(--c-brand-blue);">Guía de interpretación de los colores de la leyenda</h4>
+            <ul id="atlas-plate-swatches" class="atlas-swatch-list"></ul>
+          </div>
+        </div>
+      </div>
+      <script id="atlas-perimeters-json" type="application/json">{safe_perims_json}</script>
+    </section>
+
     <div class="callout">
       <strong>Regla metodológica de comparabilidad regional</strong>
       <span>Dos indicadores solo son directamente comparables cuando comparten definición, unidad, periodo, cobertura y método de agregación documentados. Los registros en estado <em>Propuesto</em> representan contribuciones previstas por las fichas iniciales; no son productos validados ni publicados aún.</span>
@@ -1312,10 +1402,11 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
     return render_hub_shell(
         ctx=ctx,
         registry=registry,
-        page_title="Atlas Urbano Regional",
+        page_title="Atlas Urbano Regional y Láminas Copernicus",
         active_nav="atlas",
         hero_html=hero,
         body_html=body,
+        include_maplibre=True,
         snapshot_generated_at=atlas_snap.get("generated_at"),
     )
 
