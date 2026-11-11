@@ -158,7 +158,7 @@
       attribution: "&copy; Impact Observatory / Esri / <a href='https://spacedata.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 10m LULC (2017)</a>"
     },
 
-    // 3. Índices Espectrales y Bandas Copernicus Sentinel-2 L2A (10 m / 20 m · Baja nubosidad)
+    // 3. Índices Espectrales y Bandas Copernicus Sentinel-2 L2A (10 m / 20 m · Baja nubosidad con relleno continuo entre celdas MGRS)
     "s2-l2a-ndvi": {
       name: "Copernicus Sentinel-2 L2A · Índice de Vegetación Urbana (NDVI · 10 m)",
       tiles: [
@@ -166,8 +166,16 @@
       ],
       pcRegister: {
         collections: ["sentinel-2-l2a"],
+        bbox: [-92.5, 7.0, -68.0, 20.0],
         "filter-lang": "cql2-json",
-        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+        filter: {
+          op: "and",
+          args: [
+            { op: "<=", args: [{ property: "eo:cloud_cover" }, 45] },
+            { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2025-01-01T00:00:00Z", "2026-12-31T23:59:59Z"] }] }
+          ]
+        },
+        sortby: [{ field: "eo:cloud_cover", direction: "asc" }]
       },
       pcQuery: "collection=sentinel-2-l2a&nodata=0&expression=(B08-B04)/(B08%2BB04)&rescale=-0.3,0.85&colormap_name=rdylgn&asset_as_band=true",
       lowZoomFallbackTiles: [
@@ -183,8 +191,16 @@
       ],
       pcRegister: {
         collections: ["sentinel-2-l2a"],
+        bbox: [-92.5, 7.0, -68.0, 20.0],
         "filter-lang": "cql2-json",
-        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+        filter: {
+          op: "and",
+          args: [
+            { op: "<=", args: [{ property: "eo:cloud_cover" }, 45] },
+            { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2025-01-01T00:00:00Z", "2026-12-31T23:59:59Z"] }] }
+          ]
+        },
+        sortby: [{ field: "eo:cloud_cover", direction: "asc" }]
       },
       pcQuery: "collection=sentinel-2-l2a&nodata=0&expression=(B11-B08)/(B11%2BB08)&rescale=-0.45,0.45&colormap_name=inferno&asset_as_band=true",
       lowZoomFallbackTiles: [
@@ -200,8 +216,16 @@
       ],
       pcRegister: {
         collections: ["sentinel-2-l2a"],
+        bbox: [-92.5, 7.0, -68.0, 20.0],
         "filter-lang": "cql2-json",
-        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+        filter: {
+          op: "and",
+          args: [
+            { op: "<=", args: [{ property: "eo:cloud_cover" }, 45] },
+            { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2025-01-01T00:00:00Z", "2026-12-31T23:59:59Z"] }] }
+          ]
+        },
+        sortby: [{ field: "eo:cloud_cover", direction: "asc" }]
       },
       pcQuery: "collection=sentinel-2-l2a&nodata=0&expression=(B8A-B11)/(B8A%2BB11)&rescale=-0.5,0.5&colormap_name=rdbu&asset_as_band=true",
       lowZoomFallbackTiles: [
@@ -217,8 +241,16 @@
       ],
       pcRegister: {
         collections: ["sentinel-2-l2a"],
+        bbox: [-92.5, 7.0, -68.0, 20.0],
         "filter-lang": "cql2-json",
-        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+        filter: {
+          op: "and",
+          args: [
+            { op: "<=", args: [{ property: "eo:cloud_cover" }, 45] },
+            { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2025-01-01T00:00:00Z", "2026-12-31T23:59:59Z"] }] }
+          ]
+        },
+        sortby: [{ field: "eo:cloud_cover", direction: "asc" }]
       },
       pcQuery: "collection=sentinel-2-l2a&assets=B08&assets=B04&assets=B03&nodata=0&color_formula=Gamma+RGB+3.7+Saturation+1.5+Sigmoidal+RGB+15+0.35",
       lowZoomFallbackTiles: [
@@ -234,8 +266,16 @@
       ],
       pcRegister: {
         collections: ["sentinel-2-l2a"],
+        bbox: [-92.5, 7.0, -68.0, 20.0],
         "filter-lang": "cql2-json",
-        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+        filter: {
+          op: "and",
+          args: [
+            { op: "<=", args: [{ property: "eo:cloud_cover" }, 45] },
+            { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2025-01-01T00:00:00Z", "2026-12-31T23:59:59Z"] }] }
+          ]
+        },
+        sortby: [{ field: "eo:cloud_cover", direction: "asc" }]
       },
       pcQuery: "collection=sentinel-2-l2a&assets=B12&assets=B8A&assets=B04&nodata=0&color_formula=Gamma+RGB+3.7+Saturation+1.5+Sigmoidal+RGB+15+0.35",
       lowZoomFallbackTiles: [
@@ -253,8 +293,10 @@
       ],
       pcRegister: {
         collections: ["sentinel-1-rtc"],
+        bbox: [-92.5, 7.0, -68.0, 20.0],
         "filter-lang": "cql2-json",
-        filter: { op: "=", args: [{ property: "sar:polarizations" }, ["VV", "VH"]] }
+        filter: { op: "=", args: [{ property: "sar:polarizations" }, ["VV", "VH"]] },
+        sortby: [{ field: "datetime", direction: "desc" }]
       },
       pcQuery: "collection=sentinel-1-rtc&expression=0.03%2Blog(0.001-log(0.05/(0.02%2B2*vv)));0.05%2Bexp(0.25*(log(0.01%2B2*vv)%2Blog(0.02%2B5*vh)));1-log(0.05/(0.045-0.9*vv))&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&asset_as_band=true",
       lowZoomFallbackTiles: [
@@ -270,8 +312,10 @@
       ],
       pcRegister: {
         collections: ["sentinel-1-rtc"],
+        bbox: [-92.5, 7.0, -68.0, 20.0],
         "filter-lang": "cql2-json",
-        filter: { op: "=", args: [{ property: "sar:polarizations" }, ["VV", "VH"]] }
+        filter: { op: "=", args: [{ property: "sar:polarizations" }, ["VV", "VH"]] },
+        sortby: [{ field: "datetime", direction: "desc" }]
       },
       pcQuery: "collection=sentinel-1-rtc&assets=vv&rescale=0,0.25&colormap_name=gray",
       lowZoomFallbackTiles: [
@@ -294,6 +338,7 @@
       underlayTiles: [
         "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
       ],
+      underlayOpacity: 0.42,
       legend: "🌊 JRC Global Surface Water (Comisión Europea): 🟦 Agua permanente (100% ocurrencia) · 🟪/🟥 Zonas de inundación estacional o episódica",
       attribution: "&copy; <a href='https://global-surface-water.appspot.com' target='_blank' rel='noopener'>EC JRC / Copernicus Global Surface Water</a>"
     },
@@ -309,6 +354,7 @@
       underlayTiles: [
         "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
       ],
+      underlayOpacity: 0.42,
       legend: "🌊 JRC Extensión Máxima de Agua (Comisión Europea): 🟦 Huella máxima histórica de cuerpos de agua y eventos de inundación detectados",
       attribution: "&copy; <a href='https://global-surface-water.appspot.com' target='_blank' rel='noopener'>EC JRC / Copernicus Global Surface Water</a>"
     },
@@ -420,14 +466,16 @@
         tiles: tpl.tiles.slice(),
         pcRegister: {
           collections: ["sentinel-2-l2a"],
+          bbox: [-92.5, 7.0, -68.0, 20.0],
           "filter-lang": "cql2-json",
           filter: {
             op: "and",
             args: [
-              { op: "<=", args: [{ property: "eo:cloud_cover" }, 15] },
+              { op: "<=", args: [{ property: "eo:cloud_cover" }, 50] },
               { op: "anyinteracts", args: [{ property: "datetime" }, { interval: [yr + "-01-01T00:00:00Z", yr + "-12-31T23:59:59Z"] }] }
             ]
-          }
+          },
+          sortby: [{ field: "eo:cloud_cover", direction: "asc" }]
         },
         pcQuery: tpl.pcQuery,
         lowZoomFallbackTiles: [
@@ -449,6 +497,7 @@
         tiles: tpl.tiles.slice(),
         pcRegister: {
           collections: ["sentinel-1-rtc"],
+          bbox: [-92.5, 7.0, -68.0, 20.0],
           "filter-lang": "cql2-json",
           filter: {
             op: "and",
@@ -456,7 +505,8 @@
               { op: "=", args: [{ property: "sar:polarizations" }, ["VV", "VH"]] },
               { op: "anyinteracts", args: [{ property: "datetime" }, { interval: [yr + "-01-01T00:00:00Z", yr + "-12-31T23:59:59Z"] }] }
             ]
-          }
+          },
+          sortby: [{ field: "datetime", direction: "desc" }]
         },
         pcQuery: tpl.pcQuery,
         lowZoomFallbackTiles: tpl.lowZoomFallbackTiles,
@@ -529,7 +579,13 @@
       return bm.styleUrl;
     }
     var sources = {};
-    var layers = [];
+    var layers = [
+      {
+        id: "base-bg-layer",
+        type: "background",
+        paint: { "background-color": "#141E38" }
+      }
+    ];
 
     if (bm.underlayTiles) {
       sources["base-underlay-tiles"] = {
@@ -542,7 +598,10 @@
         type: "raster",
         source: "base-underlay-tiles",
         minzoom: 0,
-        maxzoom: 19
+        maxzoom: 19,
+        paint: {
+          "raster-opacity": typeof bm.underlayOpacity === "number" ? bm.underlayOpacity : 1
+        }
       });
     } else if (bm.lowZoomFallbackTiles) {
       sources["base-fallback-tiles"] = {
@@ -2316,7 +2375,7 @@
           formula: "Máscara binaria de huella máxima histórica donde se ha detectado agua superficial al menos una vez (1984–2021)",
           swatches: [
             { color: "#0055FF", label: "Huella Máxima de Agua / Inundación (#0055FF)", desc: "Toda superficie donde el registro satelital ha detectado lámina de agua permanente, estacional o desbordamiento extremo." },
-            { color: "#D9DFEA", label: "Relieve base emergido sin registro de agua", desc: "Terreno alto o consolidado fuera de la envolvente histórica de inundación a 30 m." }
+            { color: "#364564", label: "Relieve base emergido sin registro de agua", desc: "Terreno sombreado de alto contraste fuera de la envolvente histórica de inundación a 30 m." }
           ]
         }
       ],
@@ -2326,7 +2385,7 @@
         { color: "#0000FF", label: "80% – 100% Ocurrencia (Azul puro)", desc: "Cuerpos de agua permanentes: cauce activo de ríos principales, lagos, embalses y mar." },
         { color: "#8844CC", label: "25% – 80% Ocurrencia (Violeta / Púrpura)", desc: "Cuerpos de agua estacionales, barras fluviales inundables cada época lluviosa, esteros y zonas intermareales." },
         { color: "#FF3366", label: "1% – 25% Ocurrencia (Rosa / Magenta)", desc: "Llanuras de inundación episódica donde se han registrado desbordamientos históricos durante eventos extremos." },
-        { color: "#D9DFEA", label: "Fondo topográfico sin ocurrencia hídrica", desc: "Terreno emergido donde no se ha detectado lámina de agua a escala satelital de 30 m." }
+        { color: "#364564", label: "Fondo topográfico sin ocurrencia hídrica", desc: "Relieve emergido atenuado para destacar con alto contraste cauces y planicies inundables a 30 m." }
       ]
     }
   };
@@ -2671,6 +2730,7 @@
           if (bm.underlayTiles) {
             var uSrc = prefix + "-underlay-src";
             var uLyr = prefix + "-underlay-lyr";
+            var uOp = typeof bm.underlayOpacity === "number" ? bm.underlayOpacity : 1;
             atlasMap.addSource(uSrc, { type: "raster", tiles: bm.underlayTiles, tileSize: 256 });
             atlasMap.addLayer(
               {
@@ -2684,7 +2744,7 @@
               beforeLayerId
             );
             srcIds.push(uSrc);
-            lyrSpecs.push({ id: uLyr, targetOpacity: 1 });
+            lyrSpecs.push({ id: uLyr, targetOpacity: uOp });
           } else if (bm.lowZoomFallbackTiles) {
             var fSrc = prefix + "-fallback-src";
             var fLyr = prefix + "-fallback-lyr";
