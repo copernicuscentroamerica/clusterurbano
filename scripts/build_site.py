@@ -393,7 +393,12 @@ def build_home_page(
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;">
             <strong style="font-size:0.82rem;">🛰️ Mapa Base Copernicus / Sentinel-2:</strong>
             <select id="hub-basemap-select" aria-label="Seleccionar mapa base o mosaico Sentinel-2" style="padding:0.25rem 0.5rem;border-radius:4px;border:1px solid rgba(255,255,255,0.4);font-size:0.78rem;background:#FFFFFF;color:var(--c-brand-blue);font-weight:600;">
-              <optgroup label="Mosaicos Abiertos Copernicus Sentinel-2 Cloudless y DEM (Sin API Key)">
+              <optgroup label="Modelo Digital de Elevación Oficial Copernicus DEM (GLO-30 · 30 m)">
+                <option value="copernicus-dem-glo30">Copernicus DEM GLO-30 (30 m · Elevación Hipsométrica + Sombreado)</option>
+                <option value="copernicus-dem-hillshade">Copernicus DEM GLO-30 (30 m · Sombreado de Relieve / Hillshade)</option>
+                <option value="copernicus-dem-viridis">Copernicus DEM GLO-30 (30 m · Hipsometría Viridis + Curvas de Nivel)</option>
+              </optgroup>
+              <optgroup label="Mosaicos Abiertos Copernicus Sentinel-2 Cloudless (Sin API Key)">
                 <option value="sentinel2-2024">Copernicus Sentinel-2 Cloudless (Mosaico 2024 · EOX)</option>
                 <option value="sentinel2-2023">Copernicus Sentinel-2 Cloudless (Mosaico 2023 · EOX)</option>
                 <option value="sentinel2-2022">Copernicus Sentinel-2 Cloudless (Mosaico 2022 · EOX)</option>
@@ -401,7 +406,6 @@ def build_home_page(
                 <option value="sentinel2-2020">Copernicus Sentinel-2 Cloudless (Mosaico 2020 · EOX)</option>
                 <option value="sentinel2-2019">Copernicus Sentinel-2 Cloudless (Mosaico 2019 · EOX)</option>
                 <option value="sentinel2-2018">Copernicus Sentinel-2 Cloudless (Mosaico 2018 · EOX)</option>
-                <option value="copernicus-terrain">Relieve y Topografía Copernicus DEM (Terrain Light)</option>
               </optgroup>
               <optgroup label="Mapas Base Vectoriales y Referencia">
                 <option value="carto-positron" selected>Mapa Claro Vectorial (OpenFreeMap)</option>
@@ -410,9 +414,10 @@ def build_home_page(
                 <option value="esri-imagery">Imagen Satelital de Alta Resolución (Esri)</option>
               </optgroup>
             </select>
+            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="copernicus-dem-glo30">⛰️ DEM GLO-30 (30m)</button>
+            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="copernicus-dem-hillshade">⛰️ Hillshade 30m</button>
             <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="sentinel2-2024">S2 · 2024</button>
             <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="sentinel2-2020">S2 · 2020</button>
-            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="copernicus-terrain">⛰️ Relieve DEM</button>
             <button type="button" class="btn btn-teal btn-xs" data-hub-basemap-quick="carto-positron">🗺️ Vectorial</button>
           </div>
           <div class="geovisor-toolbar-actions">

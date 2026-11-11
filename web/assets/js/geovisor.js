@@ -48,10 +48,57 @@
       tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2018_3857/default/g/{z}/{y}/{x}.jpg"],
       attribution: "Sentinel-2 cloudless 2018 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2018)"
     },
+    "copernicus-dem-glo30": {
+      name: "Copernicus DEM GLO-30 (30 m · Elevación Hipsométrica + Sombreado)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&rescale=-100,2600&colormap_name=terrain"
+      ],
+      overlayTiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
+      ],
+      overlayOpacity: 0.36,
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 (30 m · European Union / ESA)</a> via Planetary Computer STAC"
+    },
+    "copernicus-dem-hillshade": {
+      name: "Copernicus DEM GLO-30 (30 m · Sombreado de Relieve / Hillshade)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
+      ],
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 Hillshade (30 m · European Union / ESA)</a>"
+    },
+    "copernicus-dem-viridis": {
+      name: "Copernicus DEM GLO-30 (30 m · Hipsometría Viridis + Curvas de Nivel)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&rescale=0,2500&colormap_name=viridis"
+      ],
+      overlayTiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&algorithm=contours&buffer=3&algorithm_params=%7B%22minz%22%3A0%2C%22maxz%22%3A3500%2C%22thickness%22%3A6%7D"
+      ],
+      overlayOpacity: 0.55,
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 (30 m · European Union / ESA)</a>"
+    },
     "copernicus-terrain": {
-      name: "Relieve y Topografía Copernicus DEM (Terrain Light)",
-      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"],
-      attribution: "Terrain Light by <a href='https://maps.eox.at' target='_blank' rel='noopener'>EOX</a> &mdash; Data &copy; Copernicus DEM &amp; OpenStreetMap"
+      name: "Copernicus DEM GLO-30 (30 m · Elevación Hipsométrica + Sombreado)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&rescale=-100,2600&colormap_name=terrain"
+      ],
+      overlayTiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
+      ],
+      overlayOpacity: 0.36,
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 (30 m · European Union / ESA)</a>"
     },
     "carto-positron": {
       name: "Mapa Claro Vectorial (OpenFreeMap)",
@@ -94,25 +141,60 @@
     if (bm.styleUrl) {
       return bm.styleUrl;
     }
+    var sources = {};
+    var layers = [];
+
+    if (bm.lowZoomFallbackTiles) {
+      sources["base-fallback-tiles"] = {
+        type: "raster",
+        tiles: bm.lowZoomFallbackTiles,
+        tileSize: 256
+      };
+      layers.push({
+        id: "base-fallback-tiles-layer",
+        type: "raster",
+        source: "base-fallback-tiles",
+        minzoom: 0,
+        maxzoom: 7
+      });
+    }
+
+    sources["base-tiles"] = {
+      type: "raster",
+      tiles: bm.tiles,
+      tileSize: 256,
+      attribution: bm.attribution
+    };
+    layers.push({
+      id: "base-tiles-layer",
+      type: "raster",
+      source: "base-tiles",
+      minzoom: bm.lowZoomFallbackTiles ? 6 : 0,
+      maxzoom: 19
+    });
+
+    if (bm.overlayTiles) {
+      sources["base-overlay-tiles"] = {
+        type: "raster",
+        tiles: bm.overlayTiles,
+        tileSize: 256
+      };
+      layers.push({
+        id: "base-overlay-tiles-layer",
+        type: "raster",
+        source: "base-overlay-tiles",
+        minzoom: bm.lowZoomFallbackTiles ? 6 : 0,
+        maxzoom: 19,
+        paint: {
+          "raster-opacity": typeof bm.overlayOpacity === "number" ? bm.overlayOpacity : 0.4
+        }
+      });
+    }
+
     return {
       version: 8,
-      sources: {
-        "base-tiles": {
-          type: "raster",
-          tiles: bm.tiles,
-          tileSize: 256,
-          attribution: bm.attribution
-        }
-      },
-      layers: [
-        {
-          id: "base-tiles-layer",
-          type: "raster",
-          source: "base-tiles",
-          minzoom: 0,
-          maxzoom: 19
-        }
-      ]
+      sources: sources,
+      layers: layers
     };
   }
 
