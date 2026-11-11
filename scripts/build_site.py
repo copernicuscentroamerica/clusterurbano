@@ -1329,6 +1329,7 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
                 <span>Año / Capa:</span>
                 <select id="atlas-toolbar-variant-select" class="atlas-toolbar-select" aria-label="Seleccionar año o variante de la lámina en la barra del mapa"></select>
               </label>
+              <button type="button" id="atlas-toolbar-play-btn" class="atlas-play-btn" title="Reproducir o pausar secuencia multitemporal animada">▶ Reproducir serie</button>
               <label style="display:inline-flex;align-items:center;gap:0.35rem;font-size:0.76rem;background:rgba(255,255,255,0.12);padding:0.2rem 0.48rem;border-radius:4px;cursor:pointer;">
                 <input type="checkbox" id="atlas-toggle-mask" checked>
                 <span>Enmascarar límite</span>
@@ -1342,6 +1343,10 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
               <button type="button" id="atlas-fit-bounds" class="btn btn-outline-light btn-xs">Encuadrar límite</button>
               <button type="button" id="atlas-toggle-fullscreen" class="btn btn-primary btn-xs">⛶ Pantalla completa</button>
             </div>
+          </div>
+          <div id="atlas-map-year-badge" class="atlas-map-year-badge" aria-live="polite">
+            <span id="atlas-map-year-top" class="atlas-map-year-badge-top">SERIE MULTITEMPORAL (7/7)</span>
+            <span id="atlas-map-year-main" class="atlas-map-year-badge-main">2024</span>
           </div>
           <div id="atlas-copernicus-map" class="atlas-copernicus-canvas" data-center="[-79.78, 8.95]" data-zoom="10.8" role="region" aria-label="Mapa del Atlas Temático Copernicus enmascarado con la zona de estudio"></div>
         </div>
@@ -1358,6 +1363,22 @@ def build_atlas_index_page(ctx: SiteContext, registry: dict[str, Any], atlas_sna
             <label for="atlas-panel-variant-select" id="atlas-variant-selector-label" class="atlas-variant-box-label">📅 Seleccionar año o variante de la capa:</label>
             <select id="atlas-panel-variant-select" class="atlas-variant-select" aria-label="Selector desplegable de año o capa del tema"></select>
             <div id="atlas-variant-pills" class="atlas-variant-pills" role="group" aria-label="Botones rápidos de año o variante"></div>
+            <div id="atlas-timeline-controls" class="atlas-timeline-controls" aria-label="Controles de animación multitemporal">
+              <div class="atlas-timeline-row">
+                <button type="button" id="atlas-panel-play-btn" class="atlas-play-btn">▶ Reproducir secuencia</button>
+                <button type="button" id="atlas-step-prev" class="atlas-step-btn" title="Año anterior">⏮ Ant.</button>
+                <button type="button" id="atlas-step-next" class="atlas-step-btn" title="Año siguiente">Sig. ⏭</button>
+                <select id="atlas-play-speed" class="atlas-speed-select" aria-label="Velocidad de la animación">
+                  <option value="2800">Lento (2.8 s)</option>
+                  <option value="1800" selected>Normal (1.8 s)</option>
+                  <option value="1000">Rápido (1.0 s)</option>
+                </select>
+              </div>
+              <div class="atlas-timeline-row" style="gap:0.5rem;">
+                <input type="range" id="atlas-timeline-slider" min="0" max="6" step="1" value="6" style="flex:1;" aria-label="Deslizador de línea de tiempo">
+                <span id="atlas-timeline-counter" style="font-size:0.74rem;font-weight:700;color:var(--c-brand-blue);min-width:44px;text-align:right;">7 / 7</span>
+              </div>
+            </div>
           </div>
 
           <div style="background:#F3F6FD;border-left:3px solid var(--c-brand-blue);padding:0.65rem 0.8rem;border-radius:4px;font-size:0.85rem;line-height:1.45;">

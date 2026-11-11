@@ -2349,6 +2349,18 @@
     var panelVariantLabelEl = document.getElementById("atlas-variant-selector-label");
     var panelVariantPillsEl = document.getElementById("atlas-variant-pills");
 
+    var toolbarPlayBtnEl = document.getElementById("atlas-toolbar-play-btn");
+    var panelPlayBtnEl = document.getElementById("atlas-panel-play-btn");
+    var timelineBoxEl = document.getElementById("atlas-timeline-controls");
+    var stepPrevBtnEl = document.getElementById("atlas-step-prev");
+    var stepNextBtnEl = document.getElementById("atlas-step-next");
+    var speedSelectEl = document.getElementById("atlas-play-speed");
+    var timelineSliderEl = document.getElementById("atlas-timeline-slider");
+    var timelineCounterEl = document.getElementById("atlas-timeline-counter");
+    var mapYearBadgeEl = document.getElementById("atlas-map-year-badge");
+    var mapYearTopEl = document.getElementById("atlas-map-year-top");
+    var mapYearMainEl = document.getElementById("atlas-map-year-main");
+
     var maskCheckEl = document.getElementById("atlas-toggle-mask");
     var maskOpEl = document.getElementById("atlas-mask-opacity");
     var fitBtnEl = document.getElementById("atlas-fit-bounds");
@@ -2374,6 +2386,9 @@
     var currentPerimeterGeoJson = null;
     var allHubPerimeters = null;
     var atlasMap = null;
+    var mountedVariantMap = {};
+    var isPlayingTimeline = false;
+    var playTimerId = null;
 
     var perimJsonScript = document.getElementById("atlas-perimeters-json");
     if (perimJsonScript) {
@@ -2390,6 +2405,130 @@
         if (list[i].key === variantKey) return list[i];
       }
       return list[0] || { key: plateObj.defaultVariant, label: plateObj.title, pill: "Principal" };
+    }
+
+    // Devuelve la secuencia cronológica (del año más antiguo al más reciente) si el tema es multitemporal
+    function getTimelineSequence(plateObj, activeVarKey) {
+      if (!plateObj) return [];
+      var pid = plateObj.id;
+      if (pid === "copernicus-dem-glo30" || pid === "jrc-gsw-occurrence") {
+        return [];
+      }
+      if (pid === "s2-l2a-composites") {
+        var isSwir = activeVarKey && activeVarKey.indexOf("s2-l2a-swir") === 0;
+        return isSwir
+          ? ["s2-l2a-swir-2020", "s2-l2a-swir-2022", "s2-l2a-swir-2024", "s2-l2a-swir"]
+          : ["s2-l2a-falsecolor-2020", "s2-l2a-falsecolor-2022", "s2-l2a-falsecolor-2024", "s2-l2a-falsecolor"];
+      }
+      if (pid === "s1-rtc-falsecolor") {
+        var isVv = activeVarKey && activeVarKey.indexOf("s1-rtc-vv") === 0;
+        return isVv
+          ? ["s1-rtc-vv-2020", "s1-rtc-vv-2024", "s1-rtc-vv"]
+          : ["s1-rtc-falsecolor-2020", "s1-rtc-falsecolor-2022", "s1-rtc-falsecolor-2024", "s1-rtc-falsecolor"];
+      }
+      var keys = (plateObj.variants || []).map(function (v) {
+        return v.key;
+      });
+      return keys.slice().reverse();
+    }
+
+    function updatePlayUiState() {
+      var p = ATLAS_PLATES[currentPlateKey] || ATLAS_PLATES["sentinel2-cloudless"];
+      var seq = getTimelineSequence(p, currentVariantKey);
+      var hasSeq = seq.length > 1;
+
+      if (timelineBoxEl) {
+        timelineBoxEl.classList.toggle("hidden", !hasSeq);
+      }
+      if (toolbarPlayBtnEl) {
+        toolbarPlayBtnEl.classList.toggle("hidden", !hasSeq);
+        toolbarPlayBtnEl.classList.toggle("is-playing", isPlayingTimeline && hasSeq);
+        toolbarPlayBtnEl.textContent = isPlayingTimeline ? "⏸ Pausar serie" : "▶ Reproducir serie";
+      }
+      if (panelPlayBtnEl) {
+        panelPlayBtnEl.classList.toggle("is-playing", isPlayingTimeline && hasSeq);
+        panelPlayBtnEl.textContent = isPlayingTimeline ? "⏸ Pausar animación" : "▶ Reproducir secuencia";
+      }
+
+      var vObj = findVariantObj(p, currentVariantKey);
+      var idx = seq.indexOf(currentVariantKey);
+      if (idx < 0) idx = seq.length - 1;
+
+      if (timelineSliderEl && hasSeq) {
+        timelineSliderEl.max = String(seq.length - 1);
+        timelineSliderEl.value = String(idx);
+      }
+      if (timelineCounterEl && hasSeq) {
+        timelineCounterEl.textContent = (idx + 1) + " / " + seq.length;
+      }
+
+      if (mapYearBadgeEl) {
+        mapYearBadgeEl.classList.toggle("is-playing", isPlayingTimeline && hasSeq);
+        if ( mapYearTopEl ) {
+          mapYearTopEl.textContent = hasSeq
+            ? (isPlayingTimeline ? "▶ ANIMACIÓN MULTITEMPORAL (" + (idx + 1) + "/" + seq.length + ")" : "SERIE MULTITEMPORAL (" + (idx + 1) + "/" + seq.length + ")")
+            : p.number.toUpperCase();
+        }
+        if (mapYearMainEl) {
+          mapYearMainEl.textContent = vObj.pill || vObj.label;
+        }
+      }
+    }
+
+    function stopTimelinePlayback() {
+      isPlayingTimeline = false;
+      if (playTimerId) {
+        clearTimeout(playTimerId);
+        playTimerId = null;
+      }
+      updatePlayUiState();
+    }
+
+    function stepTimelineBy(delta) {
+      var p = ATLAS_PLATES[currentPlateKey] || ATLAS_PLATES["sentinel2-cloudless"];
+      var seq = getTimelineSequence(p, currentVariantKey);
+      if (seq.length <= 1) return;
+      var idx = seq.indexOf(currentVariantKey);
+      if (idx < 0) idx = 0;
+      var nextIdx = (idx + delta + seq.length) % seq.length;
+      activateAtlasPlate(currentPlateKey, seq[nextIdx], true);
+    }
+
+    function scheduleNextTimelineStep() {
+      if (!isPlayingTimeline) return;
+      if (playTimerId) clearTimeout(playTimerId);
+      var delayMs = speedSelectEl ? parseInt(speedSelectEl.value, 10) || 1800 : 1800;
+      playTimerId = setTimeout(function () {
+        if (!isPlayingTimeline) return;
+        stepTimelineBy(1);
+        scheduleNextTimelineStep();
+      }, delayMs);
+    }
+
+    function toggleTimelinePlayback() {
+      var p = ATLAS_PLATES[currentPlateKey] || ATLAS_PLATES["sentinel2-cloudless"];
+      var seq = getTimelineSequence(p, currentVariantKey);
+      if (seq.length <= 1) return;
+
+      if (isPlayingTimeline) {
+        stopTimelinePlayback();
+        return;
+      }
+
+      isPlayingTimeline = true;
+      // Pre-registrar todos los años de la secuencia para transición instantánea sin esperas
+      seq.forEach(function (vk) {
+        resolveBasemapTiles(vk, function () {});
+      });
+
+      // Si estamos en el último año de la serie al pulsar Play, comenzar desde el primer año (el más antiguo)
+      var idx = seq.indexOf(currentVariantKey);
+      if (idx === seq.length - 1 || idx < 0) {
+        activateAtlasPlate(currentPlateKey, seq[0], true);
+      } else {
+        updatePlayUiState();
+      }
+      scheduleNextTimelineStep();
     }
 
     function populateVariantControls(plateObj, activeVarKey) {
@@ -2418,7 +2557,8 @@
           btn.textContent = v.pill || v.label;
           btn.setAttribute("data-variant-key", v.key);
           btn.addEventListener("click", function () {
-            activateAtlasPlate(plateObj.id, v.key);
+            stopTimelinePlayback();
+            activateAtlasPlate(plateObj.id, v.key, false);
           });
           panelVariantPillsEl.appendChild(btn);
         });
@@ -2431,6 +2571,7 @@
       var effectiveSwatches = vObj.swatches || p.swatches || [];
 
       populateVariantControls(p, vObj.key);
+      updatePlayUiState();
 
       if (detailBadgeEl) {
         detailBadgeEl.textContent = p.number + " · " + (vObj.pill || "Dato Abierto Copernicus");
@@ -2485,33 +2626,219 @@
       }
     }
 
-    function activateAtlasPlate(plateKey, optionalVariantKey) {
+    // Motor de capas rásters sin parpadeo (flicker-free) para animaciones multitemporales fluidas:
+    // En lugar de destruir el estilo con setStyle(), monta las fuentes rásters debajo de la máscara
+    // del perímetro de estudio y realiza fundido cruzado (cross-fade) de opacidad.
+    function clearMountedVariantsFromOtherPlates(keepPlateKey) {
+      if (!atlasMap) return;
+      var keepObj = ATLAS_PLATES[keepPlateKey];
+      var allowed = {};
+      if (keepObj && keepObj.variants) {
+        keepObj.variants.forEach(function (v) {
+          allowed[v.key] = true;
+        });
+      }
+      Object.keys(mountedVariantMap).forEach(function (vk) {
+        if (allowed[vk]) return;
+        var info = mountedVariantMap[vk];
+        (info.layerIds || []).forEach(function (lid) {
+          if (atlasMap.getLayer(lid)) atlasMap.removeLayer(lid);
+        });
+        (info.sourceIds || []).forEach(function (sid) {
+          if (atlasMap.getSource(sid)) atlasMap.removeSource(sid);
+        });
+        delete mountedVariantMap[vk];
+      });
+    }
+
+    function mountAndCrossfadeVariantOnAtlasMap(variantKey) {
+      if (!atlasMap) return;
+      resolveBasemapTiles(variantKey, function () {
+        if (!atlasMap.isStyleLoaded()) {
+          atlasMap.once("load", function () {
+            mountAndCrossfadeVariantOnAtlasMap(variantKey);
+          });
+          return;
+        }
+        var bm = BASEMAPS[variantKey] || BASEMAPS["sentinel2-2024"];
+        var beforeLayerId = atlasMap.getLayer("study-area-mask-fill") ? "study-area-mask-fill" : undefined;
+
+        if (!mountedVariantMap[variantKey]) {
+          var srcIds = [];
+          var lyrSpecs = [];
+          var prefix = "atlas-bm-" + variantKey;
+
+          if (bm.underlayTiles) {
+            var uSrc = prefix + "-underlay-src";
+            var uLyr = prefix + "-underlay-lyr";
+            atlasMap.addSource(uSrc, { type: "raster", tiles: bm.underlayTiles, tileSize: 256 });
+            atlasMap.addLayer(
+              {
+                id: uLyr,
+                type: "raster",
+                source: uSrc,
+                minzoom: 0,
+                maxzoom: 19,
+                paint: { "raster-opacity": 0, "raster-fade-duration": 260 }
+              },
+              beforeLayerId
+            );
+            srcIds.push(uSrc);
+            lyrSpecs.push({ id: uLyr, targetOpacity: 1 });
+          } else if (bm.lowZoomFallbackTiles) {
+            var fSrc = prefix + "-fallback-src";
+            var fLyr = prefix + "-fallback-lyr";
+            atlasMap.addSource(fSrc, { type: "raster", tiles: bm.lowZoomFallbackTiles, tileSize: 256 });
+            atlasMap.addLayer(
+              {
+                id: fLyr,
+                type: "raster",
+                source: fSrc,
+                minzoom: 0,
+                maxzoom: 7,
+                paint: { "raster-opacity": 0, "raster-fade-duration": 260 }
+              },
+              beforeLayerId
+            );
+            srcIds.push(fSrc);
+            lyrSpecs.push({ id: fLyr, targetOpacity: 1 });
+          }
+
+          var mSrc = prefix + "-main-src";
+          var mLyr = prefix + "-main-lyr";
+          atlasMap.addSource(mSrc, {
+            type: "raster",
+            tiles: bm.tiles,
+            tileSize: 256,
+            attribution: bm.attribution
+          });
+          atlasMap.addLayer(
+            {
+              id: mLyr,
+              type: "raster",
+              source: mSrc,
+              minzoom: bm.lowZoomFallbackTiles ? 6 : 0,
+              maxzoom: 19,
+              paint: { "raster-opacity": 0, "raster-fade-duration": 260 }
+            },
+            beforeLayerId
+          );
+          srcIds.push(mSrc);
+          lyrSpecs.push({ id: mLyr, targetOpacity: 1 });
+
+          if (bm.overlayTiles) {
+            var oSrc = prefix + "-overlay-src";
+            var oLyr = prefix + "-overlay-lyr";
+            var oOp = typeof bm.overlayOpacity === "number" ? bm.overlayOpacity : 0.4;
+            atlasMap.addSource(oSrc, { type: "raster", tiles: bm.overlayTiles, tileSize: 256 });
+            atlasMap.addLayer(
+              {
+                id: oLyr,
+                type: "raster",
+                source: oSrc,
+                minzoom: bm.lowZoomFallbackTiles ? 6 : 0,
+                maxzoom: 19,
+                paint: { "raster-opacity": 0, "raster-fade-duration": 260 }
+              },
+              beforeLayerId
+            );
+            srcIds.push(oSrc);
+            lyrSpecs.push({ id: oLyr, targetOpacity: oOp });
+          }
+
+          mountedVariantMap[variantKey] = {
+            sourceIds: srcIds,
+            layerIds: lyrSpecs.map(function (s) {
+              return s.id;
+            }),
+            specs: lyrSpecs
+          };
+        }
+
+        // Si aún estamos en este variantKey como objetivo activo, hacer cross-fade de opacidad
+        if (currentVariantKey !== variantKey) return;
+        Object.keys(mountedVariantMap).forEach(function (vk) {
+          var info = mountedVariantMap[vk];
+          var isTarget = vk === variantKey;
+          (info.specs || []).forEach(function (sp) {
+            if (atlasMap.getLayer(sp.id)) {
+              atlasMap.setPaintProperty(sp.id, "raster-opacity", isTarget ? sp.targetOpacity : 0);
+            }
+          });
+        });
+      });
+    }
+
+    function activateAtlasPlate(plateKey, optionalVariantKey, keepPlaying) {
       if (!plateKey || !ATLAS_PLATES[plateKey]) return;
+      var plateChanged = currentPlateKey !== plateKey;
+      if (!keepPlaying && isPlayingTimeline) {
+        stopTimelinePlayback();
+      }
       var p = ATLAS_PLATES[plateKey];
       var targetVarKey = optionalVariantKey || (currentPlateKey === plateKey ? currentVariantKey : p.defaultVariant);
       var vObj = findVariantObj(p, targetVarKey);
       currentPlateKey = plateKey;
       currentVariantKey = vObj.key;
 
-      renderPlateInfoPanel(currentPlateKey, currentVariantKey);
+      if (plateChanged) {
+        clearMountedVariantsFromOtherPlates(currentPlateKey);
+      }
 
-      if (!atlasMap) return;
-      resolveBasemapTiles(currentVariantKey, function () {
-        atlasMap.setStyle(makeStyle(currentVariantKey));
-        atlasMap.once("styledata", function () {
-          refreshMaskOnAtlasMap(false);
-        });
-      });
+      renderPlateInfoPanel(currentPlateKey, currentVariantKey);
+      mountAndCrossfadeVariantOnAtlasMap(currentVariantKey);
     }
 
     if (toolbarVariantSelectEl) {
       toolbarVariantSelectEl.addEventListener("change", function () {
-        activateAtlasPlate(currentPlateKey, toolbarVariantSelectEl.value);
+        stopTimelinePlayback();
+        activateAtlasPlate(currentPlateKey, toolbarVariantSelectEl.value, false);
       });
     }
     if (panelVariantSelectEl) {
       panelVariantSelectEl.addEventListener("change", function () {
-        activateAtlasPlate(currentPlateKey, panelVariantSelectEl.value);
+        stopTimelinePlayback();
+        activateAtlasPlate(currentPlateKey, panelVariantSelectEl.value, false);
+      });
+    }
+    if (toolbarPlayBtnEl) {
+      toolbarPlayBtnEl.addEventListener("click", function () {
+        toggleTimelinePlayback();
+      });
+    }
+    if (panelPlayBtnEl) {
+      panelPlayBtnEl.addEventListener("click", function () {
+        toggleTimelinePlayback();
+      });
+    }
+    if (stepPrevBtnEl) {
+      stepPrevBtnEl.addEventListener("click", function () {
+        stopTimelinePlayback();
+        stepTimelineBy(-1);
+      });
+    }
+    if (stepNextBtnEl) {
+      stepNextBtnEl.addEventListener("click", function () {
+        stopTimelinePlayback();
+        stepTimelineBy(1);
+      });
+    }
+    if (speedSelectEl) {
+      speedSelectEl.addEventListener("change", function () {
+        if (isPlayingTimeline) {
+          scheduleNextTimelineStep();
+        }
+      });
+    }
+    if (timelineSliderEl) {
+      timelineSliderEl.addEventListener("input", function () {
+        stopTimelinePlayback();
+        var p = ATLAS_PLATES[currentPlateKey] || ATLAS_PLATES["sentinel2-cloudless"];
+        var seq = getTimelineSequence(p, currentVariantKey);
+        var idx = parseInt(timelineSliderEl.value, 10) || 0;
+        if (seq[idx]) {
+          activateAtlasPlate(currentPlateKey, seq[idx], false);
+        }
       });
     }
 
@@ -2538,7 +2865,17 @@
 
     atlasMap = new window.maplibregl.Map({
       container: mapContainer,
-      style: makeStyle(currentVariantKey),
+      style: {
+        version: 8,
+        sources: {},
+        layers: [
+          {
+            id: "atlas-bg-layer",
+            type: "background",
+            paint: { "background-color": "#070D24" }
+          }
+        ]
+      },
       center: currentCenter,
       zoom: currentZoom,
       attributionControl: true,
@@ -2551,11 +2888,11 @@
       atlasMap.addControl(new window.maplibregl.FullscreenControl({ container: shellEl }), "top-right");
     }
 
-    resolveBasemapTiles(currentVariantKey, function () {
-      atlasMap.setStyle(makeStyle(currentVariantKey));
-      atlasMap.once("styledata", function () {
-        refreshMaskOnAtlasMap(false);
-      });
+    atlasMap.once("load", function () {
+      mountAndCrossfadeVariantOnAtlasMap(currentVariantKey);
+      if (currentPerimeterGeoJson) {
+        refreshMaskOnAtlasMap(true);
+      }
     });
 
     plateTabs.forEach(function (btn) {

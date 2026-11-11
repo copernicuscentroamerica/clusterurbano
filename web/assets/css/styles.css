@@ -1667,6 +1667,7 @@ tr:last-child td {
 }
 
 .atlas-copernicus-map-col {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 520px;
@@ -1816,5 +1817,113 @@ tr:last-child td {
   color: var(--c-accent-yellow);
   border-color: var(--c-brand-blue);
 }
+
+.atlas-timeline-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  margin-top: 0.25rem;
+  padding-top: 0.45rem;
+  border-top: 1px dashed #D6C36B;
+}
+
+.atlas-timeline-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+.atlas-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.77rem;
+  font-weight: 700;
+  border-radius: 4px;
+  border: 1px solid var(--c-brand-blue);
+  background: var(--c-brand-blue);
+  color: var(--c-accent-yellow);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.atlas-play-btn:hover {
+  background: var(--c-mesh-blue);
+  color: #FFFFFF;
+}
+
+.atlas-play-btn.is-playing {
+  background: #C62828;
+  border-color: #C62828;
+  color: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.25);
+}
+
+.atlas-step-btn {
+  padding: 0.24rem 0.48rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  border-radius: 4px;
+  border: 1px solid var(--c-border-strong);
+  background: #FFFFFF;
+  color: var(--c-brand-blue);
+  cursor: pointer;
+}
+
+.atlas-step-btn:hover {
+  background: var(--c-surface-alt);
+}
+
+.atlas-speed-select {
+  padding: 0.22rem 0.42rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid var(--c-border-strong);
+  background: #FFFFFF;
+  color: var(--c-brand-blue);
+}
+
+.atlas-map-year-badge {
+  position: absolute;
+  top: 56px;
+  left: 12px;
+  z-index: 15;
+  background: rgba(7, 13, 36, 0.88);
+  color: #FFFFFF;
+  border: 1.5px solid var(--c-accent-yellow);
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  backdrop-filter: blur(4px);
+}
+
+.atlas-map-year-badge-top {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-accent-yellow);
+  font-weight: 700;
+}
+
+.atlas-map-year-badge-main {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #FFFFFF;
+}
+
+.atlas-map-year-badge.is-playing {
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.35), 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
 
 
