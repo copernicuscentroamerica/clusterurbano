@@ -13,116 +13,422 @@
   "use strict";
 
   var BASEMAPS = {
-    "sentinel2-2024": {
-      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2024 · EOX)",
-      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"],
-      attribution: "Sentinel-2 cloudless 2024 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)"
-    },
-    "sentinel2-2023": {
-      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2023 · EOX)",
-      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2023_3857/default/g/{z}/{y}/{x}.jpg"],
-      attribution: "Sentinel-2 cloudless 2023 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2023)"
-    },
-    "sentinel2-2022": {
-      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2022 · EOX)",
-      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpg"],
-      attribution: "Sentinel-2 cloudless 2022 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2022)"
-    },
-    "sentinel2-2021": {
-      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2021 · EOX)",
-      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg"],
-      attribution: "Sentinel-2 cloudless 2021 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2021)"
-    },
-    "sentinel2-2020": {
-      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2020 · EOX)",
-      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"],
-      attribution: "Sentinel-2 cloudless 2020 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020)"
-    },
-    "sentinel2-2019": {
-      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2019 · EOX)",
-      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg"],
-      attribution: "Sentinel-2 cloudless 2019 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2019)"
-    },
-    "sentinel2-2018": {
-      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2018 · EOX)",
-      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2018_3857/default/g/{z}/{y}/{x}.jpg"],
-      attribution: "Sentinel-2 cloudless 2018 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2018)"
-    },
+    // 1. Modelo Digital de Elevación Oficial Copernicus DEM (GLO-30 · 30 m)
     "copernicus-dem-glo30": {
       name: "Copernicus DEM GLO-30 (30 m · Elevación Hipsométrica + Sombreado)",
       tiles: [
-        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&rescale=-100,2600&colormap_name=terrain"
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=cop-dem-glo-30&assets=data&rescale=-100,2600&colormap_name=terrain"
       ],
       overlayTiles: [
-        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=cop-dem-glo-30&assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
       ],
       overlayOpacity: 0.36,
       lowZoomFallbackTiles: [
         "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
       ],
-      attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 (30 m · European Union / ESA)</a> via Planetary Computer STAC"
+      legend: "⛰️ Copernicus DEM GLO-30 (30 m · ESA/UE): Azul/Verde (0–400 m) · Amarillo/Ocre (400–1500 m) · Marrón/Blanco (>1500 m) + Hillshade 30 m",
+      attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 (30 m · European Union / ESA)</a>"
     },
     "copernicus-dem-hillshade": {
       name: "Copernicus DEM GLO-30 (30 m · Sombreado de Relieve / Hillshade)",
       tiles: [
-        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=cop-dem-glo-30&assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
       ],
       lowZoomFallbackTiles: [
         "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
       ],
+      legend: "⛰️ Copernicus DEM GLO-30 Hillshade (30 m): Sombreado analítico de pendientes y laderas (Acimut 315° · Altitud solar 45°)",
       attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 Hillshade (30 m · European Union / ESA)</a>"
     },
     "copernicus-dem-viridis": {
       name: "Copernicus DEM GLO-30 (30 m · Hipsometría Viridis + Curvas de Nivel)",
       tiles: [
-        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&rescale=0,2500&colormap_name=viridis"
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=cop-dem-glo-30&assets=data&rescale=0,2500&colormap_name=viridis"
       ],
       overlayTiles: [
-        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&algorithm=contours&buffer=3&algorithm_params=%7B%22minz%22%3A0%2C%22maxz%22%3A3500%2C%22thickness%22%3A6%7D"
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=cop-dem-glo-30&assets=data&algorithm=contours&buffer=3&algorithm_params=%7B%22minz%22%3A0%2C%22maxz%22%3A3500%2C%22thickness%22%3A6%7D"
       ],
       overlayOpacity: 0.55,
       lowZoomFallbackTiles: [
         "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
       ],
+      legend: "⛰️ Copernicus DEM GLO-30 Viridis + Curvas de nivel dinámicas: Violeta (0 m) → Verde (1000 m) → Amarillo (2500 m s. n. m.)",
       attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 (30 m · European Union / ESA)</a>"
     },
     "copernicus-terrain": {
       name: "Copernicus DEM GLO-30 (30 m · Elevación Hipsométrica + Sombreado)",
       tiles: [
-        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&rescale=-100,2600&colormap_name=terrain"
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=cop-dem-glo-30&assets=data&rescale=-100,2600&colormap_name=terrain"
       ],
       overlayTiles: [
-        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/f458a174b766f6ff265474a520d48884/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=cop-dem-glo-30&assets=data&colormap_name=gray&algorithm=hillshade&buffer=3&algorithm_params=%7B%22azimuth%22%3A315%2C%22angle_altitude%22%3A45%7D"
       ],
       overlayOpacity: 0.36,
       lowZoomFallbackTiles: [
         "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
       ],
+      legend: "⛰️ Copernicus DEM GLO-30 (30 m · ESA/UE): Elevación hipsométrica + sombreado de relieve de 30 m",
       attribution: "&copy; <a href='https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model' target='_blank' rel='noopener'>Copernicus DEM GLO-30 (30 m · European Union / ESA)</a>"
     },
+
+    // 2. Cobertura Terrestre y Mancha Urbana a 10 m derivada de Sentinel-1 y Sentinel-2
+    "esa-worldcover-2021": {
+      name: "ESA WorldCover 10 m (2021 v200 · Derivado de Sentinel-1 y Sentinel-2)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/287434fc0e0024667464141a8cb3f231/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=esa-worldcover&assets=map&colormap_name=esa-worldcover"
+      ],
+      pcRegister: {
+        collections: ["esa-worldcover"],
+        "filter-lang": "cql2-json",
+        filter: { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2021-01-01T00:00:00Z", "2021-12-31T23:59:59Z"] }] }
+      },
+      pcQuery: "collection=esa-worldcover&assets=map&colormap_name=esa-worldcover",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🏙️ ESA WorldCover 10 m (2021): 🟥 Edificado/Mancha Urbana · 🟩 Árboles · 🟨 Pastizal/Arbustos · 🟪 Cultivos · 🟦 Agua Permanente · 🟩 Manglar",
+      attribution: "&copy; <a href='https://esa-worldcover.org' target='_blank' rel='noopener'>ESA WorldCover 10 m 2021 (Copernicus Sentinel-1 &amp; Sentinel-2)</a>"
+    },
+    "esa-worldcover-2020": {
+      name: "ESA WorldCover 10 m (2020 v100 · Derivado de Sentinel-1 y Sentinel-2)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/287434fc0e0024667464141a8cb3f231/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=esa-worldcover&assets=map&colormap_name=esa-worldcover"
+      ],
+      pcRegister: {
+        collections: ["esa-worldcover"],
+        "filter-lang": "cql2-json",
+        filter: { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2020-01-01T00:00:00Z", "2020-12-31T23:59:59Z"] }] }
+      },
+      pcQuery: "collection=esa-worldcover&assets=map&colormap_name=esa-worldcover",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🏙️ ESA WorldCover 10 m (2020): 🟥 Edificado/Mancha Urbana · 🟩 Árboles · 🟨 Pastizal/Arbustos · 🟪 Cultivos · 🟦 Agua Permanente · 🟩 Manglar",
+      attribution: "&copy; <a href='https://esa-worldcover.org' target='_blank' rel='noopener'>ESA WorldCover 10 m 2020 (Copernicus Sentinel-1 &amp; Sentinel-2)</a>"
+    },
+    "s2-lulc-2023": {
+      name: "Uso y Cobertura del Suelo Sentinel-2 10 m (Año 2023 · Mancha Urbana)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/27352be54f5b70ae6eb491be7c2db331/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=io-lulc-annual-v02&assets=data&colormap_name=io-lulc-9-class"
+      ],
+      pcRegister: {
+        collections: ["io-lulc-annual-v02"],
+        "filter-lang": "cql2-json",
+        filter: { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2023-01-01T00:00:00Z", "2023-12-31T23:59:59Z"] }] }
+      },
+      pcQuery: "collection=io-lulc-annual-v02&assets=data&colormap_name=io-lulc-9-class",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2023_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🏙️ Sentinel-2 LULC 10 m (2023): 🟥 Área Construida (Built Area) · 🟩 Árboles · 🟨 Pastizal · 🟧 Cultivos · 🟦 Agua · ⬜ Suelo Desnudo",
+      attribution: "&copy; Impact Observatory / Esri / <a href='https://spacedata.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 10m LULC (2023)</a>"
+    },
+    "s2-lulc-2020": {
+      name: "Uso y Cobertura del Suelo Sentinel-2 10 m (Año 2020 · Mancha Urbana)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/27352be54f5b70ae6eb491be7c2db331/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=io-lulc-annual-v02&assets=data&colormap_name=io-lulc-9-class"
+      ],
+      pcRegister: {
+        collections: ["io-lulc-annual-v02"],
+        "filter-lang": "cql2-json",
+        filter: { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2020-01-01T00:00:00Z", "2020-12-31T23:59:59Z"] }] }
+      },
+      pcQuery: "collection=io-lulc-annual-v02&assets=data&colormap_name=io-lulc-9-class",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🏙️ Sentinel-2 LULC 10 m (2020): 🟥 Área Construida (Built Area) · 🟩 Árboles · 🟨 Pastizal · 🟧 Cultivos · 🟦 Agua",
+      attribution: "&copy; Impact Observatory / Esri / <a href='https://spacedata.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 10m LULC (2020)</a>"
+    },
+    "s2-lulc-2017": {
+      name: "Uso y Cobertura del Suelo Sentinel-2 10 m (Año 2017 · Línea Base)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/27352be54f5b70ae6eb491be7c2db331/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=io-lulc-annual-v02&assets=data&colormap_name=io-lulc-9-class"
+      ],
+      pcRegister: {
+        collections: ["io-lulc-annual-v02"],
+        "filter-lang": "cql2-json",
+        filter: { op: "anyinteracts", args: [{ property: "datetime" }, { interval: ["2017-01-01T00:00:00Z", "2017-12-31T23:59:59Z"] }] }
+      },
+      pcQuery: "collection=io-lulc-annual-v02&assets=data&colormap_name=io-lulc-9-class",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2018_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🏙️ Sentinel-2 LULC 10 m (2017 · Línea base histórica): 🟥 Área Construida · 🟩 Árboles · 🟨 Pastizal · 🟧 Cultivos · 🟦 Agua",
+      attribution: "&copy; Impact Observatory / Esri / <a href='https://spacedata.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 10m LULC (2017)</a>"
+    },
+
+    // 3. Índices Espectrales y Bandas Copernicus Sentinel-2 L2A (10 m / 20 m · Baja nubosidad)
+    "s2-l2a-ndvi": {
+      name: "Copernicus Sentinel-2 L2A · Índice de Vegetación Urbana (NDVI · 10 m)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/832da05b42678505676241b4bc269dda/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=sentinel-2-l2a&nodata=0&expression=(B08-B04)/(B08%2BB04)&rescale=-0.3,0.85&colormap_name=rdylgn&asset_as_band=true"
+      ],
+      pcRegister: {
+        collections: ["sentinel-2-l2a"],
+        "filter-lang": "cql2-json",
+        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+      },
+      pcQuery: "collection=sentinel-2-l2a&nodata=0&expression=(B08-B04)/(B08%2BB04)&rescale=-0.3,0.85&colormap_name=rdylgn&asset_as_band=true",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🌿 Sentinel-2 L2A NDVI ((B08-B04)/(B08+B04)): 🟥/🟨 Superficie Impermeable / Urbana (<0.2) · 🟩 Vegetación Urbana Densa (>0.5)",
+      attribution: "&copy; <a href='https://dataspace.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 L2A (NDVI 10 m · European Union / ESA)</a>"
+    },
+    "s2-l2a-ndbi": {
+      name: "Copernicus Sentinel-2 L2A · Índice de Edificación / Área Construida (NDBI · 20 m)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/832da05b42678505676241b4bc269dda/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=sentinel-2-l2a&nodata=0&expression=(B11-B08)/(B11%2BB08)&rescale=-0.45,0.45&colormap_name=inferno&asset_as_band=true"
+      ],
+      pcRegister: {
+        collections: ["sentinel-2-l2a"],
+        "filter-lang": "cql2-json",
+        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+      },
+      pcQuery: "collection=sentinel-2-l2a&nodata=0&expression=(B11-B08)/(B11%2BB08)&rescale=-0.45,0.45&colormap_name=inferno&asset_as_band=true",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🏗️ Sentinel-2 L2A NDBI ((B11-B08)/(B11+B08)): 🟨/🟧 Alta densidad edificada, techos y suelo impermeable · 🟪/⬛ Vegetación y agua",
+      attribution: "&copy; <a href='https://dataspace.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 L2A (NDBI 20 m · European Union / ESA)</a>"
+    },
+    "s2-l2a-ndwi": {
+      name: "Copernicus Sentinel-2 L2A · Índice de Humedad Superficial (NDWI · 20 m)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/832da05b42678505676241b4bc269dda/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=sentinel-2-l2a&nodata=0&expression=(B8A-B11)/(B8A%2BB11)&rescale=-0.5,0.5&colormap_name=rdbu&asset_as_band=true"
+      ],
+      pcRegister: {
+        collections: ["sentinel-2-l2a"],
+        "filter-lang": "cql2-json",
+        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+      },
+      pcQuery: "collection=sentinel-2-l2a&nodata=0&expression=(B8A-B11)/(B8A%2BB11)&rescale=-0.5,0.5&colormap_name=rdbu&asset_as_band=true",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "💧 Sentinel-2 L2A NDWI ((B8A-B11)/(B8A+B11)): 🟦 Alta humedad / cuerpos de agua · 🟥 Superficies secas / islas de calor urbano",
+      attribution: "&copy; <a href='https://dataspace.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 L2A (NDWI · European Union / ESA)</a>"
+    },
+    "s2-l2a-falsecolor": {
+      name: "Copernicus Sentinel-2 L2A · Falso Color Infrarrojo (B08-B04-B03 · 10 m)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/832da05b42678505676241b4bc269dda/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=sentinel-2-l2a&assets=B08&assets=B04&assets=B03&nodata=0&color_formula=Gamma+RGB+3.7+Saturation+1.5+Sigmoidal+RGB+15+0.35"
+      ],
+      pcRegister: {
+        collections: ["sentinel-2-l2a"],
+        "filter-lang": "cql2-json",
+        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+      },
+      pcQuery: "collection=sentinel-2-l2a&assets=B08&assets=B04&assets=B03&nodata=0&color_formula=Gamma+RGB+3.7+Saturation+1.5+Sigmoidal+RGB+15+0.35",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🛰️ Sentinel-2 L2A Falso Color Infrarrojo (B08-B04-B03): 🟥 Vegetación vigorosa · 🟦/⬜ Tejido urbano denso, techos y vías",
+      attribution: "&copy; <a href='https://dataspace.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 L2A Infrarrojo (European Union / ESA)</a>"
+    },
+    "s2-l2a-swir": {
+      name: "Copernicus Sentinel-2 L2A · SWIR Urbano (B12-B8A-B04 · 20 m)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/832da05b42678505676241b4bc269dda/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=sentinel-2-l2a&assets=B12&assets=B8A&assets=B04&nodata=0&color_formula=Gamma+RGB+3.7+Saturation+1.5+Sigmoidal+RGB+15+0.35"
+      ],
+      pcRegister: {
+        collections: ["sentinel-2-l2a"],
+        "filter-lang": "cql2-json",
+        filter: { op: "<=", args: [{ property: "eo:cloud_cover" }, 10] }
+      },
+      pcQuery: "collection=sentinel-2-l2a&assets=B12&assets=B8A&assets=B04&nodata=0&color_formula=Gamma+RGB+3.7+Saturation+1.5+Sigmoidal+RGB+15+0.35",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🛰️ Sentinel-2 L2A SWIR (B12-B8A-B04): 🟪/🟥 Zonas urbanizadas y suelo expuesto · 🟩 Vegetación · ⬛/🟦 Cuerpos de agua",
+      attribution: "&copy; <a href='https://dataspace.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-2 L2A SWIR (European Union / ESA)</a>"
+    },
+
+    // 4. Radar de Apertura Sintética Copernicus Sentinel-1 SAR RTC (10 m · Todo Tiempo)
+    "s1-rtc-falsecolor": {
+      name: "Copernicus Sentinel-1 SAR RTC (10 m · Compuesto Urbano VV+VH)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/59ff986916cfb3462ca00af73594ca06/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=sentinel-1-rtc&expression=0.03%2Blog(0.001-log(0.05/(0.02%2B2*vv)));0.05%2Bexp(0.25*(log(0.01%2B2*vv)%2Blog(0.02%2B5*vh)));1-log(0.05/(0.045-0.9*vv))&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&asset_as_band=true"
+      ],
+      pcRegister: {
+        collections: ["sentinel-1-rtc"],
+        "filter-lang": "cql2-json",
+        filter: { op: "=", args: [{ property: "sar:polarizations" }, ["VV", "VH"]] }
+      },
+      pcQuery: "collection=sentinel-1-rtc&expression=0.03%2Blog(0.001-log(0.05/(0.02%2B2*vv)));0.05%2Bexp(0.25*(log(0.01%2B2*vv)%2Blog(0.02%2B5*vh)));1-log(0.05/(0.045-0.9*vv))&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&asset_as_band=true",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "📡 Radar Copernicus Sentinel-1 SAR (VV+VH · Penetra nubes): 🟨/⬜ Rebote urbano intenso (edificaciones) · 🟩 Vegetación · 🟦/⬛ Agua e inundación",
+      attribution: "&copy; <a href='https://dataspace.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-1 SAR RTC (10 m · European Union / ESA)</a>"
+    },
+    "s1-rtc-vv": {
+      name: "Copernicus Sentinel-1 SAR RTC (10 m · Polarización VV Escala de Grises)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/59ff986916cfb3462ca00af73594ca06/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=sentinel-1-rtc&assets=vv&rescale=0,0.25&colormap_name=gray"
+      ],
+      pcRegister: {
+        collections: ["sentinel-1-rtc"],
+        "filter-lang": "cql2-json",
+        filter: { op: "=", args: [{ property: "sar:polarizations" }, ["VV", "VH"]] }
+      },
+      pcQuery: "collection=sentinel-1-rtc&assets=vv&rescale=0,0.25&colormap_name=gray",
+      lowZoomFallbackTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "📡 Radar Copernicus Sentinel-1 SAR VV (10 m): ⬜ Alta retrodispersión (infraestructura y laderas) · ⬛ Superficies de agua calma / inundación",
+      attribution: "&copy; <a href='https://dataspace.copernicus.eu' target='_blank' rel='noopener'>Copernicus Sentinel-1 SAR RTC VV (10 m · European Union / ESA)</a>"
+    },
+
+    // 5. Agua Superficial e Inundaciones (JRC Global Surface Water · Comisión Europea / Copernicus)
+    "jrc-gsw-occurrence": {
+      name: "JRC Agua Superficial e Inundación · Ocurrencia Histórica (Comisión Europea)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/83034470b0c048a98eea4583845e3a45/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=jrc-gsw&assets=occurrence&colormap_name=jrc-occurrence&nodata=0"
+      ],
+      pcRegister: {
+        collections: ["jrc-gsw"]
+      },
+      pcQuery: "collection=jrc-gsw&assets=occurrence&colormap_name=jrc-occurrence&nodata=0",
+      underlayTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🌊 JRC Global Surface Water (Comisión Europea): 🟦 Agua permanente (100% ocurrencia) · 🟪/🟥 Zonas de inundación estacional o episódica",
+      attribution: "&copy; <a href='https://global-surface-water.appspot.com' target='_blank' rel='noopener'>EC JRC / Copernicus Global Surface Water</a>"
+    },
+    "jrc-gsw-extent": {
+      name: "JRC Agua Superficial · Extensión Máxima de Agua / Inundación (Comisión Europea)",
+      tiles: [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/83034470b0c048a98eea4583845e3a45/tiles/WebMercatorQuad/{z}/{x}/{y}?collection=jrc-gsw&assets=extent&colormap_name=jrc-extent&nodata=0"
+      ],
+      pcRegister: {
+        collections: ["jrc-gsw"]
+      },
+      pcQuery: "collection=jrc-gsw&assets=extent&colormap_name=jrc-extent&nodata=0",
+      underlayTiles: [
+        "https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
+      ],
+      legend: "🌊 JRC Extensión Máxima de Agua (Comisión Europea): 🟦 Huella máxima histórica de cuerpos de agua y eventos de inundación detectados",
+      attribution: "&copy; <a href='https://global-surface-water.appspot.com' target='_blank' rel='noopener'>EC JRC / Copernicus Global Surface Water</a>"
+    },
+
+    // 6. Mosaicos Anuales Ópticos Copernicus Sentinel-2 Cloudless (2018–2024 · EOX)
+    "sentinel2-2024": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2024 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"],
+      legend: "🛰️ Mosaico anual sin nubes Copernicus Sentinel-2 Cloudless (Año 2024 · Color verdadero)",
+      attribution: "Sentinel-2 cloudless 2024 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)"
+    },
+    "sentinel2-2023": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2023 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2023_3857/default/g/{z}/{y}/{x}.jpg"],
+      legend: "🛰️ Mosaico anual sin nubes Copernicus Sentinel-2 Cloudless (Año 2023 · Color verdadero)",
+      attribution: "Sentinel-2 cloudless 2023 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2023)"
+    },
+    "sentinel2-2022": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2022 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpg"],
+      legend: "🛰️ Mosaico anual sin nubes Copernicus Sentinel-2 Cloudless (Año 2022 · Color verdadero)",
+      attribution: "Sentinel-2 cloudless 2022 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2022)"
+    },
+    "sentinel2-2021": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2021 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg"],
+      legend: "🛰️ Mosaico anual sin nubes Copernicus Sentinel-2 Cloudless (Año 2021 · Color verdadero)",
+      attribution: "Sentinel-2 cloudless 2021 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2021)"
+    },
+    "sentinel2-2020": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2020 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"],
+      legend: "🛰️ Mosaico anual sin nubes Copernicus Sentinel-2 Cloudless (Año 2020 · Color verdadero)",
+      attribution: "Sentinel-2 cloudless 2020 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020)"
+    },
+    "sentinel2-2019": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2019 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg"],
+      legend: "🛰️ Mosaico anual sin nubes Copernicus Sentinel-2 Cloudless (Año 2019 · Color verdadero)",
+      attribution: "Sentinel-2 cloudless 2019 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2019)"
+    },
+    "sentinel2-2018": {
+      name: "Copernicus Sentinel-2 Cloudless (Mosaico 2018 · EOX)",
+      tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2018_3857/default/g/{z}/{y}/{x}.jpg"],
+      legend: "🛰️ Mosaico anual sin nubes Copernicus Sentinel-2 Cloudless (Año 2018 · Color verdadero)",
+      attribution: "Sentinel-2 cloudless 2018 by <a href='https://s2maps.eu' target='_blank' rel='noopener'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2018)"
+    },
+
+    // 7. Mapas Base Vectoriales y Referencia
     "carto-positron": {
       name: "Mapa Claro Vectorial (OpenFreeMap)",
       styleUrl: "https://tiles.openfreemap.org/styles/positron",
       tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      legend: "🗺️ Mapa base vectorial de referencia cartográfica (OpenFreeMap / OpenStreetMap)",
       attribution: "&copy; OpenStreetMap contributors &copy; OpenFreeMap"
     },
     "osm-standard": {
       name: "OpenStreetMap Estándar",
       tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      legend: "🗺️ Cartografía colaborativa OpenStreetMap Estándar",
       attribution: "&copy; OpenStreetMap contributors"
     },
     "carto-dark": {
       name: "Modo Oscuro Vectorial (OpenFreeMap)",
       styleUrl: "https://tiles.openfreemap.org/styles/dark",
       tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      legend: "🗺️ Mapa base vectorial en modo oscuro para alto contraste de capas",
       attribution: "&copy; OpenStreetMap contributors &copy; OpenFreeMap"
     },
     "esri-imagery": {
       name: "Imagen Satelital de Alta Resolución (Esri)",
       tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
+      legend: "🛰️ Mosaico satelital óptico de alta resolución espacial (Esri World Imagery)",
       attribution: "Tiles &copy; Esri &mdash; Referencia visual orientativa"
     }
   };
+
+  var pcSearchIdCache = {};
+
+  function resolveBasemapTiles(basemapKey, callback) {
+    var bm = BASEMAPS[basemapKey] || BASEMAPS["osm-standard"];
+    if (!bm.pcRegister || !bm.pcQuery) {
+      callback();
+      return;
+    }
+    var cacheKey = JSON.stringify(bm.pcRegister);
+    if (pcSearchIdCache[cacheKey]) {
+      bm.tiles = [
+        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/" +
+          pcSearchIdCache[cacheKey] +
+          "/tiles/WebMercatorQuad/{z}/{x}/{y}?" +
+          bm.pcQuery
+      ];
+      callback();
+      return;
+    }
+    fetch("https://planetarycomputer.microsoft.com/api/data/v1/mosaic/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: cacheKey
+    })
+      .then(function (r) {
+        return r.ok ? r.json() : null;
+      })
+      .then(function (data) {
+        if (data && data.searchid) {
+          pcSearchIdCache[cacheKey] = data.searchid;
+          bm.tiles = [
+            "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/" +
+              data.searchid +
+              "/tiles/WebMercatorQuad/{z}/{x}/{y}?" +
+              bm.pcQuery
+          ];
+        }
+        callback();
+      })
+      .catch(function () {
+        callback();
+      });
+  }
 
   var FOLDER_PALETTE = [
     "#007F8B",
@@ -144,7 +450,20 @@
     var sources = {};
     var layers = [];
 
-    if (bm.lowZoomFallbackTiles) {
+    if (bm.underlayTiles) {
+      sources["base-underlay-tiles"] = {
+        type: "raster",
+        tiles: bm.underlayTiles,
+        tileSize: 256
+      };
+      layers.push({
+        id: "base-underlay-tiles-layer",
+        type: "raster",
+        source: "base-underlay-tiles",
+        minzoom: 0,
+        maxzoom: 19
+      });
+    } else if (bm.lowZoomFallbackTiles) {
       sources["base-fallback-tiles"] = {
         type: "raster",
         tiles: bm.lowZoomFallbackTiles,
@@ -820,6 +1139,7 @@
       });
 
       var basemapSelect = document.getElementById("gv-basemap-select");
+      var basemapLegendEl = document.getElementById("gv-basemap-legend");
       var quickBasemapBtns = Array.prototype.slice.call(document.querySelectorAll("[data-basemap-quick]"));
 
       function applyBasemapKey(bmKey) {
@@ -831,9 +1151,14 @@
           var isMatch = btn.getAttribute("data-basemap-quick") === bmKey;
           btn.className = isMatch ? "btn btn-teal btn-xs" : "btn btn-outline btn-xs";
         });
-        mapInstance.setStyle(makeStyle(bmKey));
-        mapInstance.once("styledata", function () {
-          addActiveProjectLayers();
+        if (basemapLegendEl) {
+          basemapLegendEl.textContent = BASEMAPS[bmKey].legend || BASEMAPS[bmKey].name || "";
+        }
+        resolveBasemapTiles(bmKey, function () {
+          mapInstance.setStyle(makeStyle(bmKey));
+          mapInstance.once("styledata", function () {
+            addActiveProjectLayers();
+          });
         });
       }
 
@@ -1265,6 +1590,7 @@
     }
 
     var hubBasemapSelect = document.getElementById("hub-basemap-select");
+    var hubBasemapLegendEl = document.getElementById("hub-basemap-legend");
     var hubQuickBtns = Array.prototype.slice.call(document.querySelectorAll("[data-hub-basemap-quick]"));
     function applyHubBasemap(bmKey) {
       if (!bmKey || !BASEMAPS[bmKey]) return;
@@ -1273,9 +1599,14 @@
       }
       hubQuickBtns.forEach(function (btn) {
         var isMatch = btn.getAttribute("data-hub-basemap-quick") === bmKey;
-        btn.className = isMatch ? "btn btn-teal btn-xs" : "btn btn-outline btn-xs";
+        btn.className = isMatch ? "btn btn-teal btn-xs" : "btn btn-outline-light btn-xs";
       });
-      map.setStyle(makeStyle(bmKey));
+      if (hubBasemapLegendEl) {
+        hubBasemapLegendEl.textContent = BASEMAPS[bmKey].legend || BASEMAPS[bmKey].name || "";
+      }
+      resolveBasemapTiles(bmKey, function () {
+        map.setStyle(makeStyle(bmKey));
+      });
     }
     if (hubBasemapSelect) {
       hubBasemapSelect.addEventListener("change", function () {
