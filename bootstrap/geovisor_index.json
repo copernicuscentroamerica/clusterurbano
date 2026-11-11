@@ -32,12 +32,12 @@
     "zoom": 10.6
   },
   "gt-bethania": {
-    "short_name": "Bethania: asentamientos en alto riesgo",
+    "short_name": "Nueva León de Judá (Bethania): catastro y riesgo",
     "center": [
-      -90.52353,
-      14.67209
+      -90.520353,
+      14.668426
     ],
-    "zoom": 15.2
+    "zoom": 17.4
   },
   "do-santiago": {
     "short_name": "Santiago: zonificación del riesgo de desastres",

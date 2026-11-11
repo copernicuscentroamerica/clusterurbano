@@ -1189,19 +1189,21 @@
 
     function attachFeatureClickPopup(layerId, badgeTitle, defaultTitle) {
       mapInstance.on("click", layerId, function (e) {
+        if (e.originalEvent && e.originalEvent._gvPopupHandled) return;
         if (!e.features || !e.features.length) return;
+        if (e.originalEvent) e.originalEvent._gvPopupHandled = true;
         var props = e.features[0].properties || {};
         var nameVal = props.nombre || props.name || props.NAM || defaultTitle;
         var rows = [];
         Object.keys(props).forEach(function (k) {
-          if (k === "nombre" || k === "name") return;
+          if (k === "nombre" || k === "name" || k === "role" || k === "project_id") return;
           if (props[k] !== null && props[k] !== undefined && String(props[k]).trim() !== "") {
             rows.push([k, String(props[k])]);
           }
         });
         if (!rows.length) rows.push(["Estado", "Capa vectorial cargada"]);
-        var dom = createSafePopupElement(String(nameVal), rows.slice(0, 8), badgeTitle);
-        new window.maplibregl.Popup({ maxWidth: "320px" }).setLngLat(e.lngLat).setDOMContent(dom).addTo(mapInstance);
+        var dom = createSafePopupElement(String(nameVal), rows.slice(0, 10), badgeTitle);
+        new window.maplibregl.Popup({ maxWidth: "340px" }).setLngLat(e.lngLat).setDOMContent(dom).addTo(mapInstance);
       });
       mapInstance.on("mouseenter", layerId, function () {
         mapInstance.getCanvas().style.cursor = "pointer";
@@ -1211,7 +1213,9 @@
       });
     }
 
-    function renderGeoJsonSourceLayers(srcId, prefixId, dataOrUrl, fillColor, fillOpacity, strokeColor, strokeWidth, badgeLabel, layerTitle) {
+    function renderGeoJsonSourceLayers(srcId, prefixId, dataOrUrl, fillColor, fillOpacity, strokeColor, strokeWidth, badgeLabel, layerTitle, styleOpts) {
+      var opts = styleOpts || {};
+      if (mapInstance.getLayer(prefixId + "-label")) mapInstance.removeLayer(prefixId + "-label");
       if (mapInstance.getLayer(prefixId + "-fill")) mapInstance.removeLayer(prefixId + "-fill");
       if (mapInstance.getLayer(prefixId + "-line")) mapInstance.removeLayer(prefixId + "-line");
       if (mapInstance.getLayer(prefixId + "-pt")) mapInstance.removeLayer(prefixId + "-pt");
@@ -1225,11 +1229,33 @@
         filter: ["==", ["geometry-type"], "Polygon"],
         paint: { "fill-color": fillColor, "fill-opacity": fillOpacity }
       });
+
+      var linePaint = {
+        "line-color": strokeColor,
+        "line-width": [
+          "case",
+          ["==", ["get", "TIPO"], "Directora"],
+          Math.max(strokeWidth * 1.45, 2.0),
+          ["==", ["get", "TIPO"], "Normal"],
+          Math.max(strokeWidth * 0.72, 0.85),
+          strokeWidth
+        ],
+        "line-opacity": [
+          "case",
+          ["==", ["get", "TIPO"], "Normal"],
+          0.68,
+          0.95
+        ]
+      };
+      if (Array.isArray(opts.line_dasharray) && opts.line_dasharray.length >= 2) {
+        linePaint["line-dasharray"] = opts.line_dasharray;
+      }
+
       mapInstance.addLayer({
         id: prefixId + "-line",
         type: "line",
         source: srcId,
-        paint: { "line-color": strokeColor, "line-width": strokeWidth }
+        paint: linePaint
       });
       mapInstance.addLayer({
         id: prefixId + "-pt",
@@ -1244,13 +1270,42 @@
         }
       });
 
-      attachFeatureClickPopup(prefixId + "-fill", badgeLabel, layerTitle);
+      if (opts.label_field) {
+        var isLineGeom = opts.geometry_type === "line";
+        var labelFilter = isLineGeom ? ["==", ["get", "TIPO"], "Directora"] : ["has", opts.label_field];
+        mapInstance.addLayer({
+          id: prefixId + "-label",
+          type: "symbol",
+          source: srcId,
+          minzoom: typeof opts.label_min_zoom === "number" ? opts.label_min_zoom : 17,
+          filter: labelFilter,
+          layout: {
+            "text-field": isLineGeom
+              ? ["concat", ["to-string", ["get", opts.label_field]], " m"]
+              : ["to-string", ["get", opts.label_field]],
+            "symbol-placement": isLineGeom ? "line" : "point",
+            "text-size": isLineGeom ? 10 : 10.5,
+            "text-allow-overlap": false
+          },
+          paint: {
+            "text-color": isLineGeom ? "#78350F" : "#0B2545",
+            "text-halo-color": "#FFFFFF",
+            "text-halo-width": 1.6
+          }
+        });
+      }
+
+      if (fillOpacity > 0.01 && opts.interactive_fill !== false) {
+        attachFeatureClickPopup(prefixId + "-fill", badgeLabel, layerTitle);
+      }
+      attachFeatureClickPopup(prefixId + "-line", badgeLabel, layerTitle);
       attachFeatureClickPopup(prefixId + "-pt", badgeLabel, layerTitle);
     }
 
     function addActiveProjectLayers() {
       var layers = Array.isArray(cfg.layers) ? cfg.layers : [];
       var combinedBounds = null;
+      var maxFitZoom = Math.max(18.2, zoom || 15.2);
 
       layers.forEach(function (lyr) {
         if (!lyr.source_path) return;
@@ -1261,11 +1316,72 @@
           ? lyr.source_path
           : new URL(lyr.source_path, window.location.origin + baseUrl).href;
 
-        if (lyr.format === "geojson") {
+        if (lyr.preview_image_path && Array.isArray(lyr.image_coordinates) && lyr.image_coordinates.length === 4) {
+          var resolvedPreview = /^https?:\/\//i.test(lyr.preview_image_path)
+            ? lyr.preview_image_path
+            : new URL(lyr.preview_image_path, window.location.origin + baseUrl).href;
+          var rasterOp = (lyr.style && lyr.style.fill_opacity !== undefined) ? lyr.style.fill_opacity : 0.95;
+
+          if (mapInstance.getLayer(lyr.id + "-raster")) mapInstance.removeLayer(lyr.id + "-raster");
+          if (mapInstance.getSource(srcId)) mapInstance.removeSource(srcId);
+
+          mapInstance.addSource(srcId, {
+            type: "image",
+            url: resolvedPreview,
+            coordinates: lyr.image_coordinates
+          });
+          mapInstance.addLayer({
+            id: lyr.id + "-raster",
+            type: "raster",
+            source: srcId,
+            paint: {
+              "raster-opacity": rasterOp,
+              "raster-resampling": "linear",
+              "raster-fade-duration": 0
+            }
+          });
+
+          var rChk = document.querySelector('[data-layer-toggle="' + lyr.id + '"]');
+          if (rChk) {
+            rChk.disabled = false;
+            rChk.checked = true;
+            rChk.onchange = function () {
+              if (mapInstance.getLayer(lyr.id + "-raster")) {
+                mapInstance.setLayoutProperty(lyr.id + "-raster", "visibility", rChk.checked ? "visible" : "none");
+              }
+            };
+          }
+          var rSlider = document.querySelector('[data-layer-opacity="' + lyr.id + '"]');
+          if (rSlider) {
+            rSlider.disabled = false;
+            rSlider.value = String(rasterOp);
+            rSlider.oninput = function () {
+              var op = parseFloat(rSlider.value);
+              if (mapInstance.getLayer(lyr.id + "-raster")) {
+                mapInstance.setPaintProperty(lyr.id + "-raster", "raster-opacity", op);
+              }
+            };
+          }
+        } else if (lyr.format === "geojson") {
           var fillColor = (lyr.style && lyr.style.fill_color) || "#007F8B";
           var fillOpacity = (lyr.style && lyr.style.fill_opacity) !== undefined ? lyr.style.fill_opacity : 0.22;
           var strokeColor = (lyr.style && lyr.style.stroke_color) || "#14283F";
           var strokeWidth = (lyr.style && lyr.style.stroke_width) || 2;
+          var styleOpts = Object.assign({}, lyr.style || {}, { geometry_type: lyr.geometry_type });
+
+          // Pre-registrar fuente y capas en orden determinista de layers.json
+          renderGeoJsonSourceLayers(
+            srcId,
+            lyr.id,
+            { type: "FeatureCollection", features: [] },
+            fillColor,
+            fillOpacity,
+            strokeColor,
+            strokeWidth,
+            "CAPA DEL PROYECTO · " + (lyr.status || "").toUpperCase(),
+            lyr.title,
+            styleOpts
+          );
 
           fetch(resolvedSource)
             .then(function (r) {
@@ -1273,17 +1389,33 @@
             })
             .then(function (gj) {
               if (!gj) return;
-              renderGeoJsonSourceLayers(
-                srcId,
-                lyr.id,
-                gj,
-                fillColor,
-                fillOpacity,
-                strokeColor,
-                strokeWidth,
-                "CAPA DEL PROYECTO · " + (lyr.status || "").toUpperCase(),
-                lyr.title
-              );
+              var existingSrc = mapInstance.getSource(srcId);
+              if (existingSrc && typeof existingSrc.setData === "function") {
+                existingSrc.setData(gj);
+              } else {
+                renderGeoJsonSourceLayers(
+                  srcId,
+                  lyr.id,
+                  gj,
+                  fillColor,
+                  fillOpacity,
+                  strokeColor,
+                  strokeWidth,
+                  "CAPA DEL PROYECTO · " + (lyr.status || "").toUpperCase(),
+                  lyr.title,
+                  styleOpts
+                );
+              }
+              if (projectPerimeterGeoJson && mapInstance.getLayer("study-area-mask-fill")) {
+                var maskToggleEl2 = document.getElementById("gv-toggle-mask");
+                var maskOpEl2 = document.getElementById("gv-mask-opacity");
+                applyStudyAreaMaskToMap(
+                  mapInstance,
+                  projectPerimeterGeoJson,
+                  maskToggleEl2 ? maskToggleEl2.checked : true,
+                  maskOpEl2 ? parseFloat(maskOpEl2.value) : 0.88
+                );
+              }
               if (!initialBoundsFitted) {
                 var b = computeGeoJsonBounds(gj);
                 if (b) {
@@ -1295,7 +1427,7 @@
                     combinedBounds[1][0] = Math.max(combinedBounds[1][0], b[1][0]);
                     combinedBounds[1][1] = Math.max(combinedBounds[1][1], b[1][1]);
                   }
-                  mapInstance.fitBounds(combinedBounds, { padding: 42, maxZoom: 15.2, duration: 0 });
+                  mapInstance.fitBounds(combinedBounds, { padding: 42, maxZoom: maxFitZoom, duration: 0 });
                 }
               }
             })
@@ -1309,7 +1441,7 @@
             chk.checked = true;
             chk.onchange = function () {
               var vis = chk.checked ? "visible" : "none";
-              ["-fill", "-line", "-pt"].forEach(function (suf) {
+              ["-fill", "-line", "-pt", "-label"].forEach(function (suf) {
                 if (mapInstance.getLayer(lyr.id + suf)) {
                   mapInstance.setLayoutProperty(lyr.id + suf, "visibility", vis);
                 }
@@ -1319,10 +1451,13 @@
           var slider = document.querySelector('[data-layer-opacity="' + lyr.id + '"]');
           if (slider) {
             slider.disabled = false;
+            if (fillOpacity > 0.01) slider.value = String(fillOpacity);
             slider.oninput = function () {
               var op = parseFloat(slider.value);
-              if (mapInstance.getLayer(lyr.id + "-fill")) {
+              if (fillOpacity > 0.01 && mapInstance.getLayer(lyr.id + "-fill")) {
                 mapInstance.setPaintProperty(lyr.id + "-fill", "fill-opacity", op);
+              } else if (mapInstance.getLayer(lyr.id + "-line")) {
+                mapInstance.setPaintProperty(lyr.id + "-line", "line-opacity", op);
               }
             };
           }
@@ -1537,7 +1672,7 @@
           );
           var bbox = computeGeoJsonBounds(gj);
           if (bbox) {
-            mapInstance.fitBounds(bbox, { padding: 48, maxZoom: 15.5 });
+            mapInstance.fitBounds(bbox, { padding: 48, maxZoom: 18.2 });
           }
           btnEl.disabled = false;
           btnEl.textContent = "Quitar del mapa";
@@ -1607,13 +1742,13 @@
 
         var isCloudNativeOnly = fmt === "pmtiles" || fmt === "cog" || fmt === "flatgeobuf" || fmt === "geoparquet";
 
-        if (preloadedFiles[fileObj.name] && !isCloudNativeOnly && fmt !== "geolibre") {
+        if (preloadedFiles[fileObj.name] && fmt !== "geolibre") {
           var alreadyBadge = document.createElement("span");
           alreadyBadge.className = "badge badge-ok";
           alreadyBadge.textContent = "Activa en pestaña Capas";
           actions.appendChild(alreadyBadge);
 
-          if (mapInstance) {
+          if (mapInstance && !isCloudNativeOnly) {
             var zoomBtn = document.createElement("button");
             zoomBtn.type = "button";
             zoomBtn.className = "btn btn-outline btn-xs";
@@ -1623,7 +1758,7 @@
                 .then(function (r) { return r.json(); })
                 .then(function (gj) {
                   var b = computeGeoJsonBounds(gj);
-                  if (b) mapInstance.fitBounds(b, { padding: 45, maxZoom: 15.5 });
+                  if (b) mapInstance.fitBounds(b, { padding: 45, maxZoom: 18.2 });
                 });
             });
             actions.appendChild(zoomBtn);
@@ -2680,7 +2815,7 @@
       if (shouldFit) {
         var b = computeGeoJsonBounds(currentPerimeterGeoJson);
         if (b) {
-          atlasMap.fitBounds(b, { padding: 42, maxZoom: 15.2, duration: 700 });
+          atlasMap.fitBounds(b, { padding: 42, maxZoom: Math.max(17.5, currentZoom || 15.2), duration: 700 });
         }
       }
     }
@@ -3573,7 +3708,7 @@
       fitBtnEl.addEventListener("click", function () {
         if (currentPerimeterGeoJson) {
           var b = computeGeoJsonBounds(currentPerimeterGeoJson);
-          if (b) atlasMap.fitBounds(b, { padding: 42, maxZoom: 15.2 });
+          if (b) atlasMap.fitBounds(b, { padding: 42, maxZoom: Math.max(17.5, currentZoom || 15.2) });
         } else {
           atlasMap.flyTo({ center: currentCenter, zoom: currentZoom });
         }

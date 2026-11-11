@@ -798,111 +798,93 @@
       "schema_version": "1.0.0",
       "id": "gt-bethania-huella-urbana-preliminar",
       "project_id": "gt-bethania",
-      "title": "Huella urbana preliminar y metodología de caracterización en Colonia Bethania (Zona 7)",
-      "summary": "Contribución prevista con la huella construida preliminar de la zona piloto en Bethania y documentación metodológica para priorizar verificaciones técnicas de UDEVIPO.",
-      "product_type": "mapa",
-      "publication_status": "propuesto",
+      "title": "Catastro predial, ortofoto RPAS y exposición a servidumbre eléctrica y laderas en Nueva León de Judá (Bethania, Zona 7)",
+      "summary": "Conjunto geoespacial integrado de la zona acotada de Nueva León de Judá (Zona 7, Ciudad de Guatemala), delimitado por un recuadro derivado de la capa de 105 predios e integrado con ortofoto de dron (~2.4 cm/px), corredor de líneas de alta tensión (39 lotes intersectados) y curvas de nivel de 1 m (1,308–1,439 m s. n. m.).",
+      "product_type": "visor",
+      "publication_status": "publicado",
       "coverage": {
-        "label": "Zona 7, colonia Bethania, Guatemala",
-        "geometry_url": null,
-        "spatial_resolution": "Alta resolución local (ortofoto dron / fotogrametría por confirmar)",
-        "scale_denominator": null
+        "label": "Asentamiento Nueva León de Judá, Zona 7, colonia Bethania, Ciudad de Guatemala (7.15 ha)",
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/recuadro_zona_estudio_leondejuda.geojson",
+        "spatial_resolution": "Ortofoto RPAS ~2.4 cm/px · Curvas de nivel cada 1 m · Catastro a escala predial",
+        "scale_denominator": 1000
       },
       "temporal": {
-        "start": null,
-        "end": null,
-        "reference_date": null
+        "start": "2026-01-01",
+        "end": "2026-11-11",
+        "reference_date": "2026-11-11"
       },
       "indicator": {
-        "name": "Superficie construida identificada en zona piloto",
-        "unit": "ha / m²",
-        "definition": "Delimitación preliminar de huella edificada contrastada con ortofotos y referencias locales.",
-        "aggregation": "Agregación por sector piloto en Colonia Bethania (sin datos nominales por lote)"
+        "name": "Predios levantados e intersección con franja de líneas de alta tensión en Nueva León de Judá",
+        "unit": "predios / m²",
+        "definition": "Conteo y superficie de los 105 predios catastrados (8,089.32 m²) según sector (A, B, C), estado de ocupación (92 ocupados), sistema de desfogue sanitario y traslape geométrico con el corredor de alta tensión (39 predios intersectados).",
+        "aggregation": "Nivel de lote y sector (Sectores A, B y C) dentro del recuadro de estudio de Nueva León de Judá"
       },
       "data_sources": [
         {
-          "title": "Sentinel-2 / óptico multiespectral",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Drones / RPAS",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "LiDAR / modelos digitales de superficie",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Catastro / parcelario",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos locales e institucionales declarados",
-          "provider": null,
-          "url": null,
+          "title": "Predios y lotes catastrados — Nueva León de Judá (lotes_leondejuda.shp)",
+          "provider": "UDEVIPO / Levantamiento técnico Nueva León de Judá",
+          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/lotes_leondejuda.geojson",
           "access": "institucional",
-          "description": "Vuelo con dron, red vial, equipamiento, fotografías, ortofotos.",
+          "description": "105 polígonos prediales (8,089.32 m²) con atributos de lote, sector (A, B, C), estado de ocupación, niveles de edificación y manejo de aguas negras, grises y pluviales.",
+          "status": "declarado"
+        },
+        {
+          "title": "Ortofoto RPAS de alta resolución — Nueva León de Judá (leon_de_juda.tif)",
+          "provider": "Levantamiento aerofotogramétrico con dron (RPAS)",
+          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/ortofoto_leondejuda_cog.tif",
+          "access": "institucional",
+          "description": "Ortofoto RGBA de ~2.4 cm/px publicada como Cloud-Optimized GeoTIFF y textura WebP georreferenciada.",
+          "status": "declarado"
+        },
+        {
+          "title": "Líneas de alta tensión — Servidumbre eléctrica (lineasdealtatension_leondejuda.shp)",
+          "provider": "UDEVIPO / Levantamiento técnico Nueva León de Judá",
+          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/lineas_alta_tension_leondejuda.geojson",
+          "access": "institucional",
+          "description": "3 polígonos (4,303.51 m²) de la franja de servidumbre eléctrica que cruza los sectores A, B y C.",
+          "status": "declarado"
+        },
+        {
+          "title": "Curvas de nivel cada 1 m (leóndejuda_curvas_clip.shp)",
+          "provider": "Levantamiento topográfico / fotogramétrico local",
+          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/curvas_nivel_leondejuda.geojson",
+          "access": "institucional",
+          "description": "536 curvas de nivel normales (1 m) y directoras (5 m) recortadas al recuadro de estudio (1,308–1,439 m s. n. m.).",
           "status": "declarado"
         }
       ],
       "method": {
-        "description": "Vuelo de dron, procesar imágenes, generación de capas, análisis de información, validación de variables, publicación en un dashboard.\n\nHerramientas previstas: No especificado",
-        "version": "0.1.0-propuesta",
-        "code_url": null
+        "description": "Reproyección de capas originales desde EPSG:32615 (UTM Zona 15N) a EPSG:4326, delimitación de la zona de estudio mediante un recuadro envolvente derivado de la capa de predios (+12 m de margen), análisis de intersección espacial entre predios y servidumbre de alta tensión, recorte de curvas de nivel de 1 m y publicación en Geovisor MapLibre GL JS.",
+        "version": "1.0.0",
+        "code_url": "https://github.com/copernicuscentroamerica/urbano-gt-bethania"
       },
       "limitations": [
-        "La ficha indica 21,1 ha del polígono del formulario, pero no adjunta una geometría utilizable.",
-        "La disponibilidad de archivos geoespaciales se declara incierta aunque se mencionan vuelo de dron y ortofotos.",
-        "Las capas de huellas de edificaciones y LiDAR se identifican como faltantes.",
-        "La ficha no define algoritmo ni umbrales de riesgo; no asignar riesgos por vivienda mediante una regla inventada.",
-        "Las decisiones de escrituración y obras requieren revisión institucional y estudios pertinentes."
+        "El recuadro de estudio (7.15 ha) acota específicamente el asentamiento Nueva León de Judá dentro de la Colonia Bethania (Zona 7).",
+        "La intersección con la franja de alta tensión (39 predios) es un insumo técnico de gabinete que debe verificarse con medición topográfica y normativa de servidumbre eléctrica antes de resoluciones de escrituración.",
+        "La evaluación integral del riesgo geotécnico por lote requiere complementar la topografía de 1 m y los datos de desfogue sanitario con estudios de mecánica de suelos y estabilidad de taludes."
       ],
       "validation": {
-        "state": "pendiente",
-        "evidence_url": null,
-        "date": null,
-        "reviewer": null
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/",
+        "date": "2026-11-11",
+        "reviewer": "Equipo Técnico Cluster Urbano"
       },
       "outputs": {
-        "viewer_url": null,
-        "download_url": null,
-        "documentation_url": null,
-        "thumbnail_url": null
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/lotes_leondejuda.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/metodologia/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/data/ortofoto_leondejuda.webp"
       },
       "license": {
-        "name": null,
+        "name": "Uso institucional UDEVIPO / Cluster Urbano",
         "url": null,
-        "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+        "reuse_note": "Capas publicadas sin datos personales nominales para análisis territorial y priorización técnica de gabinete."
       },
       "governance": {
         "institution": "Unidad para el Desarrollo de Vivienda Popular (UDEVIPO)",
-        "maintainer": null,
-        "update_frequency": null,
-        "content_updated_at": null
+        "maintainer": "Rafael Ruiz Urizar",
+        "update_frequency": "Semestral",
+        "content_updated_at": "2026-11-11"
       },
       "provenance": {
         "sources": [
@@ -911,16 +893,23 @@
             "label": "Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.docx",
             "locator": "fuentes/S20_Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.md",
             "url": null
+          },
+          {
+            "id": "S20-LDJ",
+            "label": "Paquete geoespacial Nueva León de Judá (lotes, alta tensión, curvas de nivel 1 m y ortofoto RPAS)",
+            "locator": "geovisor/layers.json",
+            "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/layers.json"
           }
         ],
         "statements": [
           {
             "pointer": "",
-            "status": "propuesta",
+            "status": "declarado",
             "source_ids": [
-              "S20"
+              "S20",
+              "S20-LDJ"
             ],
-            "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+            "note": "Producto geoespacial integrado para la zona acotada de Nueva León de Judá a partir de los levantamientos prediales, topográficos y aerofotogramétricos suministrados."
           }
         ]
       }
