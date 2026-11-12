@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "id": "do-santiago",
-  "title": "Zonificación de Riesgo de Desastre orientada a Instrumentos de Ordenamiento Territorial: municipio de Santiago de los Caballeros",
+  "title": "Expansión urbana multitemporal (2018–2024) y simulación prospectiva al 2036 en Santiago de los Caballeros",
   "country": {
     "code": "DO",
     "name": "República Dominicana"
@@ -9,7 +9,7 @@
   "source_groups": [
     6
   ],
-  "summary": "La iniciativa combina análisis de crecimiento urbano, escenarios de inundación y exposición para apoyar la zonificación y las decisiones de inversión y permisos del municipio de Santiago de los Caballeros.",
+  "summary": "Análisis multitemporal de expansión de la huella urbana construida en el Municipio de Santiago de los Caballeros (429.27 km²) mediante clasificación Sentinel-2 L2A en cortes trienales (2018: 80.02 km², 2021: 88.79 km², 2024: 99.42 km²; validación Jaccard = 0.7205 frente a GHSL 2020) y modelación prospectiva celular MOLUSCE hasta 2036 (140.39 km², +41.2% respecto a 2024) para orientar el Plan Municipal de Ordenamiento Territorial (PMOT).",
   "territory": {
     "label": "Municipio de Santiago de los Caballeros: zona urbana de Santiago y sus 31 secciones rurales, organizadas en 222 barrios/parajes (ONE)",
     "administrative_units": [
@@ -17,7 +17,7 @@
       "Provincia Santiago",
       "Región Cibao Norte"
     ],
-    "geometry_url": null
+    "geometry_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/geovisor/capas/perimetro_zona_estudio.geojson"
   },
   "institutional_use": {
     "problem": "Santiago requiere información de riesgo con detalle territorial y criterios trazables para incorporar amenazas, exposición y vulnerabilidad a su Plan Municipal de Ordenamiento Territorial.",
@@ -31,49 +31,49 @@
     "expected_benefit": "Ofrecer al Ayuntamiento escenarios y productos cartográficos que ayuden a revisar restricciones de ocupación, condiciones de desarrollo y prioridades de inversión, con sus incertidumbres explícitas."
   },
   "pmv": {
-    "description": "Revisar y calibrar los escenarios del demostrador reportado, contrastar la proyección urbana con evidencia disponible, configurar un piloto de deslizamientos y preparar una ficha de lectura para el Ayuntamiento.",
-    "scope_status": "por_confirmar",
+    "description": "Serie espacial armonizada de expansión urbana observada (2018, 2021, 2024) y simulada (2027, 2030, 2033, 2036) a resolución de síntesis de 100 m sobre el límite oficial ONE de Santiago de los Caballeros, validada contra GHSL 2020 y acompañada de métricas trienales y script reproducible.",
+    "scope_status": "declarado",
     "acceptance_criteria": [
       {
         "id": "do-santiago-AC-01",
         "description": "El demostrador y sus datos de entrada son accesibles y reproducibles o se documenta qué componente aún falta.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "do-santiago-AC-02",
         "description": "Los niveles de agua elegidos por el usuario se identifican como escenarios; un periodo de retorno solo se muestra tras una calibración documentada.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "do-santiago-AC-03",
         "description": "Se separan huella observada y proyección hasta 2036, explicando entrenamiento, validación y supuestos.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "do-santiago-AC-04",
         "description": "Las estimaciones de población y pérdidas identifican año, moneda, costos y curvas de daño, junto con incertidumbre.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "do-santiago-AC-05",
         "description": "La ficha para el Ayuntamiento diferencia resultados exploratorios y criterios normativos que requieren aprobación institucional.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       }
     ]
   },
   "status": {
-    "development": "por_confirmar",
-    "demo": "por_confirmar",
+    "development": "demostrable",
+    "demo": "disponible",
     "technical_review": {
-      "state": "pendiente",
-      "evidence_url": null,
-      "date": null,
-      "reviewer": null
+      "state": "en_revision",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/expansion-urbana/",
+      "date": "2026-11-12",
+      "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
     },
     "institutional_validation": {
       "state": "pendiente",
@@ -82,23 +82,23 @@
       "reviewer": null
     },
     "adoption": {
-      "state": "no_documentada",
-      "evidence_url": null,
-      "date": null
+      "state": "piloto",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/aplicacion/",
+      "date": "2026-11-12"
     }
   },
   "links": {
     "repository": "https://github.com/copernicuscentroamerica/urbano-do-santiago",
     "website": "https://copernicuscentroamerica.github.io/urbano-do-santiago/",
-    "demo": "https://claude.ai/artifact/CeTpKKh4j3n7BTKmXQCFEe",
-    "documentation": "https://github.com/copernicuscentroamerica/urbano-do-santiago#readme",
+    "demo": "https://copernicuscentroamerica.github.io/urbano-do-santiago/aplicacion/",
+    "documentation": "https://copernicuscentroamerica.github.io/urbano-do-santiago/expansion-urbana/",
     "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-do-santiago/issues"
   },
   "governance": {
     "technical_owner": null,
-    "content_owner": null,
-    "update_frequency": null,
-    "content_updated_at": "2026-11-10"
+    "content_owner": "Ministerio de la Presidencia (MINPRE)",
+    "update_frequency": "Anual",
+    "content_updated_at": "2026-11-12"
   },
   "provenance": {
     "sources": [
@@ -240,56 +240,56 @@
       "title": "Sentinel-2 L2A (10 m), 2018–2026: huella urbana y cambio (clasificación y proyección)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Sentinel-1 SAR: inundaciones observadas para calibrar escenarios (Global Flood Monitoring, Copernicus EMS)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Copernicus DEM GLO-30: HAND, red de drenaje, pendientes e insumo de CRISIS",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "GHSL (Copernicus/JRC): GHS-POP 2020–2030, GHS-BUILT-S 10 m y GHS-BUILT-H",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Copernicus EMS: activaciones históricas en el Cibao",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "ERA5 / ERA5-Land (Copernicus C3S): lluvias extremas para escenarios de inundación y deslizamiento",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "ESA WorldCover: referencia de cobertura del suelo",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
@@ -311,12 +311,9 @@
     "Simulador web de escenarios (demostrador ya publicado): el usuario fija el nivel del agua en cañadas, tributarios y el Yaque, el año de exposición (2024–2036), el crecimiento poblacional y el costo de reposición, y el visor recalcula la mancha de inundación, la población expuesta y las pérdidas económicas por píxel y por barrio.\nHuella urbana observada y proyectada a 10 m con Sentinel-2 y un modelo de cambio de uso del suelo tipo MOLUSCE (red neuronal + autómata celular) hasta 2036.\nMapa de valor económico del territorio construido por píxel, siguiendo el enfoque del Servicio 12 de CopernicusLAC (desagregación estadística de valores), y mapa de pérdidas probables.\nMódulo de deslizamientos por lluvia y sismo con el modelo abierto CRISIS sobre el Copernicus DEM, para las laderas de la Cordillera Septentrional y la Falla Septentrional.\nAptitud territorial y polígonos normativos para el PMOT, entregados en GeoPackage y servicios OGC, con metodología replicable en un repositorio."
   ],
   "limitations": [
-    "S22 actualizada el 14 de octubre de 2026 cambia el ámbito a Santiago; la ficha Gran Santo Domingo S21 es antecedente y no debe alimentar su mapa.",
-    "F1=0,97, AUC=0,95 y 96 % de cambios a menos de 100 m son métricas reportadas por el perfil, sin archivos de validación adjuntos.",
-    "Las cifras 80 km² (2018), 99 km² (2024) y aproximadamente 140 km² (2036) mezclan observaciones/modelos según el perfil y deben conservar esa distinción.",
-    "El escenario severo reportado de unas 58.000 personas expuestas en 2030 y pérdidas de US$1.320 millones/US$2.020 millones no tiene aquí evidencia independiente ni periodo de retorno calibrado.",
-    "El simulador de niveles HAND no demuestra por sí mismo una simulación hidráulica calibrada. ANUGA y CRISIS se describen como desarrollos a configurar.",
-    "La descarga de capas institucionales y la publicación de indicadores por barrio tienen accesos diferentes."
+    "Las capas publicadas en el geovisor emplean una malla generalizada de 100 m para rendimiento web; los cálculos oficiales de superficie provienen del ráster nativo a 10 m en UTM Zona 19N (EPSG:32619).",
+    "Los horizontes 2027–2036 representan escenarios tendenciales simulados con autómatas celulares (MOLUSCE) bajo supuestos de continuidad histórica, no metas normativas del PMOT.",
+    "La integración con escenarios hidráulicos HAND y susceptibilidad de laderas constituye la Fase II de acoplamiento multiamenaza."
   ],
   "tags": [
     "riesgo",

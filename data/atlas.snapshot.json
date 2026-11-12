@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-11-10T20:41:46Z",
+  "generated_at": "2026-11-12T15:47:30Z",
   "sources": [
     {
       "project_id": "pa-panama-oeste",
@@ -39,7 +39,7 @@
       "error_code": null
     },
     {
-      "project_id": "gt-salud-metropolitana",
+      "project_id": "pa-colon",
       "source_mode": "canonical",
       "sync_state": "ok",
       "error_code": null
@@ -56,151 +56,110 @@
       "schema_version": "1.0.0",
       "id": "pa-panama-oeste-cambio-urbano-candidatos",
       "project_id": "pa-panama-oeste",
-      "title": "Serie multitemporal de cambio urbano y áreas candidatas de revisión en Panamá Oeste",
-      "summary": "Contribución prevista al Atlas Urbano Regional con compuestos multitemporales e identificación preliminar de áreas candidatas de cambio en Arraiján y La Chorrera para priorizar inspecciones técnicas de MIVIOT.",
-      "product_type": "mapa",
-      "publication_status": "propuesto",
+      "title": "Zonificación de probabilidad de ocupación del suelo y detección de cambios 2018–2025 en Arraiján y La Chorrera",
+      "summary": "Modelo espacial preventivo del MIVIOT sobre 121,569.3 ha en Panamá Oeste que integra 13,692 polígonos de nueva construcción y 17,157 de pérdida vegetal (2018–2025) con accesibilidad vial, proyectos formales y red hídrica en 2,353 zonas de probabilidad Baja, Media y Alta.",
+      "product_type": "indicador",
+      "publication_status": "publicado",
       "coverage": {
         "label": "Caso de estudio Distritos de Arraiján y La Chorrera",
-        "geometry_url": null,
-        "spatial_resolution": "10 m (RGB/NIR) y 20 m (NDBI/cambio)",
-        "scale_denominator": null
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/geovisor/capas/probabilidad_ocupacion.geojson",
+        "spatial_resolution": "30 m (ráster multicriterio) y 2,353 polígonos vectoriales",
+        "scale_denominator": 25000
       },
       "temporal": {
-        "start": null,
-        "end": null,
-        "reference_date": null
+        "start": "2018-01-01",
+        "end": "2025-12-31",
+        "reference_date": "2025-12-31"
       },
       "indicator": {
-        "name": "Superficie candidata de cambio urbano por periodo",
-        "unit": "ha",
-        "definition": "Áreas con incremento de NDBI y reducción de NDVI entre ventanas estacionales comparables, filtradas y sujetas a validación muestral.",
-        "aggregation": "Por polígono piloto y distrito (Arraiján y La Chorrera)"
+        "name": "Nivel de probabilidad de ocupación del suelo (Baja, Media, Alta) y cambio construido 2018–2025",
+        "unit": "Clase ordinal (1–3) y hectáreas (ha)",
+        "definition": "Evaluación espacial multicriterio a partir de distancia a vías principales, cercanía a urbanizaciones consolidadas (414 proyectos), buffers hídricos y dinámica satelital Sentinel-2 2018–2025.",
+        "aggregation": "2,353 polígonos clasificados en Arraiján y La Chorrera (EPSG:4326)"
       },
       "data_sources": [
         {
           "title": "Sentinel-2 / óptico multiespectral",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "GHSL / huella urbana global",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos de población y vivienda (censos, WorldPop)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos locales e institucionales declarados",
-          "provider": null,
-          "url": null,
-          "access": "institucional",
-          "description": "Contamos con información censal del 2023, propuesta de zonificación a través del PLOT de Arraiján-La Chorrera",
-          "status": "declarado"
-        },
-        {
-          "title": "Tres polígonos piloto KML/KMZ",
-          "provider": "Equipo de Panamá",
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Área de Proyecto 1, Crecimiento Informal y Zona de Invasión. Geometrías originales transcritas en S33–S38; no equivalen a informalidad confirmada.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         }
       ],
       "method": {
-        "description": "Preparar los tres pilotos KML; acordar periodos y colección compatibles; componer Sentinel-2 y Sentinel-1; calcular NDVI/NDBI y cambios; delimitar candidatos; validar con referencia independiente; exportar productos y documentar parámetros. El script original S29 requiere revisar la línea base 2016 y el manejo de colecciones vacías antes de ejecutar.",
-        "version": "0.1.0-propuesta",
-        "code_url": null
+        "description": "Evaluación espacial multicriterio a partir de distancia a vías principales, cercanía a urbanizaciones consolidadas (414 proyectos), buffers hídricos y dinámica satelital Sentinel-2 2018–2025.",
+        "version": "1.0.0-copernicus-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/assets/descargas/gee_procesamiento_multitemporal_panama_oeste.js"
       },
       "limitations": [
-        "La clasificación espectral identifica candidatos; no demuestra informalidad, titularidad ni ilegalidad.",
-        "El complemento incluye JS, KML/KMZ y manuales, pero no mapas procesados ni exportaciones de resultados.",
-        "S29 consulta Sentinel-2 SR Harmonized para 2016, aunque el catálogo empieza el 28 de marzo de 2017; no tiene manejo explícito de colección vacía.",
-        "El código fija enero–abril de 2026; la descripción más reciente disponible no debe interpretarse como actualización automática hasta noviembre.",
-        "El ámbito distrital aproximado de 89.115 ha de la ficha inicial no equivale a la suma o unión de los tres pilotos KML.",
-        "El encabezado inicial declara cuatro integrantes y la tabla identifica tres; no calcular ni publicar el total del equipo automáticamente.",
-        "S08 repite TS-104.2 y TS-105.1 para tareas distintas. S07 contiene un encabezado con TS-104.* aunque su alcance utiliza TS-105.*; preservar legacy_id y generar ID de importación único."
+        "Los niveles de probabilidad de ocupación (Baja, Media, Alta) constituyen una herramienta preventiva de alerta temprana territorial para el MIVIOT y no acreditan condición jurídica de los predios.",
+        "Las detecciones espectrales de cambio de construcción y pérdida vegetal 2018–2025 requieren contraste con inspecciones de campo y registros actualizados de permisos municipales."
       ],
       "validation": {
-        "state": "pendiente",
-        "evidence_url": null,
-        "date": null,
-        "reviewer": null
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/modelo-ocupacion/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
       },
       "outputs": {
-        "viewer_url": null,
-        "download_url": null,
-        "documentation_url": null,
-        "thumbnail_url": null
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/geovisor/capas/probabilidad_ocupacion.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/modelo-ocupacion/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/assets/img/figuras/01_arquitectura_metodologica.png"
       },
       "license": {
-        "name": null,
-        "url": null,
-        "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+        "name": "Uso técnico, institucional y académico con atribución al Clúster Copernicus Urbano",
+        "url": "https://github.com/copernicuscentroamerica/urbano-pa-panama-oeste",
+        "reuse_note": "Datos agregados libres de información personal sensible; verificar alcances metodológicos antes de uso normativo."
       },
       "governance": {
-        "institution": "Ministerio de Vivienda y Ordenamiento Territorial de Panamá (MIVIOT)",
-        "maintainer": null,
-        "update_frequency": null,
-        "content_updated_at": null
+        "institution": "Ministerio de Vivienda y Ordenamiento Territorial (MIVIOT)",
+        "maintainer": "Equipo Técnico MIVIOT — Iniciativa pa-panama-oeste",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
       },
       "provenance": {
         "sources": [
           {
-            "id": "S02",
-            "label": "Ficha_01_Panama_Asentamientos_Arraijan_La_Chorrera.docx",
-            "locator": "fuentes/S02_Ficha_01_Panama_Asentamientos_Arraijan_La_Chorrera.md",
-            "url": null
-          },
-          {
-            "id": "S28",
-            "label": "Ficha_Proyecto_Copernicus_Panama_Oeste.docx",
-            "locator": "fuentes/S28_Ficha_Proyecto_Copernicus_Panama_Oeste.md",
-            "url": null
-          },
-          {
-            "id": "S29",
-            "label": "01_GEE_Procesamiento_Multitemporal.js",
-            "locator": "fuentes/S29_01_GEE_Procesamiento_Multitemporal.md",
-            "url": null
+            "id": "PROD01",
+            "label": "Zonificación de probabilidad de ocupación del suelo y detección de cambios 2018–2025 en Arraiján y La Chorrera",
+            "locator": "geovisor/capas/probabilidad_ocupacion.geojson",
+            "url": "https://copernicuscentroamerica.github.io/urbano-pa-panama-oeste/geovisor/capas/probabilidad_ocupacion.geojson"
           }
         ],
         "statements": [
           {
             "pointer": "",
-            "status": "propuesta",
+            "status": "declarado",
             "source_ids": [
-              "S02"
+              "PROD01"
             ],
-            "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+            "note": "Producto geoespacial verificado geométricamente en EPSG:4326 e integrado en el Geovisor y Atlas del proyecto."
           }
         ]
       }
@@ -209,143 +168,93 @@
       "schema_version": "1.0.0",
       "id": "sv-amss-expansion-y-valor-suelo",
       "project_id": "sv-amss",
-      "title": "Capas de expansión urbana e indicadores de valor del suelo por distrito en el AMSS",
-      "summary": "Contribución prevista con series de expansión de huella urbana e indicadores agregados asociados a permisos y rangos de valor del suelo en los 14 distritos del Área Metropolitana de San Salvador.",
+      "title": "Indicador integrado de valor del suelo y expansión urbana en las 425 UPDs del AMSS (Observado + Imputación Satelital GEE)",
+      "summary": "Cobertura completa sin vacíos territoriales de las 425 Unidades de Planificación Detallada (UPDs) del AMSS: integra 281 UPDs con evidencia empírica calibrada (oferta inmobiliaria 2025, clusters espaciales LISA y permisos OPAMSS 2007–2026) y 144 UPDs (57,647.5 ha) imputadas mediante Random Forest log-normal sobre Google Satellite Embeddings V1 y capas físicas Copernicus.",
       "product_type": "indicador",
-      "publication_status": "propuesto",
+      "publication_status": "publicado",
       "coverage": {
-        "label": "Área Metropolitana de San Salvador (AMSS) - Zona núcleo/urbana (AMSS) - 14 DISTRITOS",
-        "geometry_url": null,
-        "spatial_resolution": "10 m (huella) / agregación distrital",
-        "scale_denominator": null
+        "label": "Área Metropolitana de San Salvador Ampliada (AMSS · 425 Unidades de Planificación Detallada y 28 distritos)",
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_perimetro.geojson",
+        "spatial_resolution": "Unidades de Planificación Detallada (425 polígonos agregados desde modelo a 20 m)",
+        "scale_denominator": 25000
       },
       "temporal": {
-        "start": null,
-        "end": null,
-        "reference_date": null
+        "start": "2007-01-01",
+        "end": "2025-12-31",
+        "reference_date": "2024-12-31"
       },
       "indicator": {
-        "name": "Expansión urbana y rango de valor de referencia por distrito",
-        "unit": "ha y USD/m² (o USD/v² documentado)",
-        "definition": "Cruce entre crecimiento de mancha urbana observada por satélite y superficies interpoladas de valor de referencia con error RMSE reportado.",
-        "aggregation": "14 distritos del AMSS / UPD 2025"
+        "name": "Valor integrado del suelo urbano y periurbano por UPD sin vacíos de información (VAL_FIN_M2)",
+        "unit": "USD/m²",
+        "definition": "Valor consolidado 2025 en las 281 UPDs con muestra observada (ORIGEN_FIN = OBSERVADO) e imputación estadística desde la superficie continua GEE a 20 m en las 144 UPDs sin trámites o listados recientes (ORIGEN_FIN = IMPUTADO_MODELO_GEE). Correlación empírica en UPDs observadas r = 0.7816 (r_log = 0.7238) y sesgo relativo de mediana de -0.79% ($102.84 vs. $103.66 USD/m²).",
+        "aggregation": "425 Unidades de Planificación Detallada (UPD) y 28 distritos del AMSS"
       },
       "data_sources": [
         {
-          "title": "Sentinel-2 / óptico multiespectral",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "title": "Google Satellite Embeddings V1 Annual (64 bandas latentes A00–A63 a 10 m)",
+          "provider": "Google Earth Engine / AlphaEarth Foundations",
+          "url": "https://developers.google.com/earth-engine/datasets",
+          "access": "abierto",
+          "description": "Representación multimodal anual 2024 (Sentinel-2, Sentinel-1 SAR, Landsat y contexto climático-topográfico) empleada como bloque predictor principal.",
           "status": "declarado"
         },
         {
-          "title": "Sentinel-1 / radar SAR",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "title": "ESA WorldCover 10 m v200 y Copernicus DEM GLO-30",
+          "provider": "Agencia Espacial Europea (ESA) / Programa Copernicus",
+          "url": "https://esa-worldcover.org/",
+          "access": "abierto",
+          "description": "Fracción edificada, cobertura arbórea, cuerpos de agua permanentes, elevación y pendiente topográfica a 10–30 m.",
           "status": "declarado"
         },
         {
-          "title": "GHSL / huella urbana global",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "title": "Google Open Buildings 2.5D Temporal V1 y VIIRS Nighttime Day/Night Band V22",
+          "provider": "Google Research / NOAA Earth Observation Group",
+          "url": "https://sites.research.google/open-buildings/",
+          "access": "abierto",
+          "description": "Presencia y altura media de edificaciones 2.5D (2023) y radiancia nocturna anual media (2024) como proxies de intensidad constructiva y actividad económica.",
           "status": "declarado"
         },
         {
-          "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Luces nocturnas (VIIRS)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Catastro / parcelario",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Límites institucionales o administrativos",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Limites de unidades de planificación detallada (UPD 2025)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Puntos de permisos de construcción de 1990 al 2026",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos locales e institucionales declarados",
-          "provider": null,
-          "url": null,
+          "title": "Registros históricos de permisos OPAMSS (2007–2026) y oferta inmobiliaria 2025 (LISA)",
+          "provider": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+          "url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/LISA_PRECIOS_2025.geojson",
           "access": "institucional",
-          "description": "Base de datos de sistema de trámites\nEsquema director, \nBase de datos de precio de venta obtenidos de webscraping de páginas de ventas inmobiliarias",
+          "description": "Valores agregados y anonimizados por UPD procedentes de trámites institucionales (2007–2019 y 2020–2026) y levantamiento de precios de oferta 2025 con autocorrelación espacial Local Moran's I.",
           "status": "declarado"
         }
       ],
       "method": {
-        "description": "Revisión de datos existentes, integración al análisis de la base de datos de trámites, completar la información faltante referente al valor de suelo, estandarizar datos, desarrollo de script, generar mapa, implementación de aplicativo web map.\nRevisión de los datos existentes de la base de datos de tramites relacionados al valor del suelo y permisos de construcción históricos.\nCompletar vacíos de información faltante mediante web srcapping de valor de suelo\nEstandarización de datos y normalización en el territorio\nElaboración del mapa de expansión urbana mediante imágenes satelitales y scripts \nIdentificar los cambios en la mancha urbana\nInterpolar los precios de valor de suelo (USD/V2 o M2) con base a la data histórica obtenida de los permisos de construcción y el web scrapping.\nGenerar periodos de tiempo de análisis\nGenerar rangos de valor de suelo \nElaborar un mapa de consulta con dashboard\nCruce de información con las variables temporales y rangos de valores de suelo definidos anteriormente.\nIdentificación general de las diferentes tipologías de expansión urbana identificadas en el territorio AMSS\n\nHerramientas previstas: NDVI, NDBI, LST, clasificación supervisada, análisis multicriterio, Google Earth Engine, QGIS, R, Python, JavaScript, ArcGIS Pro y Server, Agentes de IA",
-        "version": "0.1.0-propuesta",
-        "code_url": null
+        "description": "Entrenamiento de un ensamble Random Forest en modo regresión (200 árboles, transformación log-normal ln(USD/m²)) en Google Earth Engine sobre 4,142 muestras estratificadas extraídas de las 281 UPDs con evidencia empírica y anclajes rurales calibrados, evaluando 71 predictores espaciales (64 bandas de Google Satellite Embeddings V1 + 7 covariables físicas EO). La superficie resultante a 20 m se agrega zonalmente sobre las 425 UPDs para imputar las 144 unidades sin cobertura previa (mediana imputada $35.14 USD/m², media $50.69 USD/m², rango $17.75–$267.21 USD/m²).",
+        "version": "1.0.0-gee-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/descargas/gee_modelo_valor_suelo_amss.js"
       },
       "limitations": [
-        "La fuente principal es AV_02; la ficha anterior queda como antecedente y no debe reemplazar el alcance actualizado.",
-        "Los precios proceden de expedientes y web scraping con cobertura limitada y datos de 2025; no equivalen automáticamente a precios de transacciones representativos.",
-        "Los estados del backlog son declaraciones del documento, no una auditoría del avance vigente.",
-        "El encabezado declara cinco integrantes y la tabla contiene seis nombres; confirmar composición antes de mostrar un contador.",
-        "El límite Perimetro_AMSS-14_26_13.zip figura en la ficha pero ese archivo geoespacial no está dentro del ZIP recibido."
+        "Los valores de entrenamiento proceden de registros de trámites y precios de oferta inmobiliaria 2025 agregados a nivel de UPD; representan valores de oferta/referencia y no precios escriturados de compraventa individual.",
+        "El ensamble Random Forest tiende a comprimir las colas extremas superiores (> $450 USD/m²) en subcentros corporativos verticales como San Benito y Santa Elena.",
+        "Los 144 polígonos con ORIGEN_FIN = IMPUTADO_MODELO_GEE constituyen estimaciones estadísticas orientativas para planificación territorial y no sustituyen avalúos periciales individuales."
       ],
       "validation": {
-        "state": "pendiente",
-        "evidence_url": null,
-        "date": null,
-        "reviewer": null
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo técnico PMV sv-amss (pendiente de dictamen formal institucional)"
       },
       "outputs": {
-        "viewer_url": null,
-        "download_url": null,
-        "documentation_url": null,
-        "thumbnail_url": null
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_upd_425_imputadas.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/img/figuras/02_cobertura_territorial_upds_amss.png"
       },
       "license": {
-        "name": null,
-        "url": null,
-        "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+        "name": "Uso técnico y académico con atribución institucional (OPAMSS / Programa Copernicus LAC)",
+        "url": "https://github.com/copernicuscentroamerica/urbano-sv-amss",
+        "reuse_note": "Capas agregadas por UPD libres de datos personales; reutilización sujeta a citar a OPAMSS y al Clúster Urbano Copernicus Centroamérica."
       },
       "governance": {
         "institution": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
-        "maintainer": null,
-        "update_frequency": null,
-        "content_updated_at": null
+        "maintainer": "Equipo Técnico SIG e Inteligencia Territorial — Iniciativa sv-amss",
+        "update_frequency": "Anual (sincronizada con cortes anuales de Google Satellite Embeddings y trámites OPAMSS)",
+        "content_updated_at": "2026-11-12"
       },
       "provenance": {
         "sources": [
@@ -356,26 +265,229 @@
             "url": null
           },
           {
-            "id": "S09",
-            "label": "Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS.docx",
-            "locator": "fuentes/S09_Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS.md",
-            "url": null
+            "id": "GEE01",
+            "label": "Pipeline reproducible Google Earth Engine (gee_modelo_valor_suelo_amss.js) y capa consolidada de 425 UPDs",
+            "locator": "src/gee_modelo_valor_suelo_amss.js",
+            "url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/"
+          }
+        ],
+        "statements": [
+          {
+            "pointer": "/indicator",
+            "status": "declarado",
+            "source_ids": [
+              "S10",
+              "GEE01"
+            ],
+            "note": "Indicador ejecutado y publicado sobre las 425 UPDs del AMSS combinando evidencia empírica local e imputación satelital en Google Earth Engine."
           },
           {
-            "id": "S11",
-            "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_OPAMSS_FINAL.xlsx",
-            "locator": "fuentes/S11_Sprint_Backlog_Marco_Scrum_ProyectoSIG_OPAMSS_FINAL.md",
-            "url": null
+            "pointer": "/outputs",
+            "status": "declarado",
+            "source_ids": [
+              "GEE01"
+            ],
+            "note": "Capa GeoJSON publicada en el geovisor y subpágina metodológica del repositorio canónico."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "id": "sv-amss-malla-continua-valor-suelo-250m",
+      "project_id": "sv-amss",
+      "title": "Malla continua metropolitana de valor estimado del suelo a 250 m en el AMSS (24,292 celdas · Embeddings V1 + EO)",
+      "summary": "Teselación regular continua de 24,292 celdas cuadradas de 250 × 250 m (6.25 ha; 148,875.1 ha totales en 28 distritos del AMSS ampliado, 0 vacíos) con estimación de valor medio, mediano, dispersión intra-celda, régimen morfológico (Urbano Consolidado, Periurbano en Transición, Rural/Reserva), altura edificada 2.5D y pendiente media.",
+      "product_type": "datos",
+      "publication_status": "publicado",
+      "coverage": {
+        "label": "Área Metropolitana de San Salvador Ampliada (AMSS · 24,292 celdas continuas de 250 m en 28 distritos)",
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_malla_continua_250m.geojson",
+        "spatial_resolution": "250 m × 250 m (6.25 ha por celda · agregada desde píxel de 20 m)",
+        "scale_denominator": 15000
+      },
+      "temporal": {
+        "start": "2023-01-01",
+        "end": "2025-12-31",
+        "reference_date": "2024-12-31"
+      },
+      "indicator": {
+        "name": "Valor estimado del suelo en malla continua de 250 m (VAL_EST_M2, VAL_MED_M2 y TIPO_SUELO)",
+        "unit": "USD/m²",
+        "definition": "Media, mediana y desviación estándar zonal en cada celda de 250 m calculadas sobre la superficie de valor del suelo a 20 m. Registra una media metropolitana de $50.04 USD/m² (mediana $32.47, P90 $93.83, máximo $375.90 USD/m²), diferenciando 2,215 celdas urbanas consolidadas (media $187.27/m²), 1,571 periurbanas en transición (media $74.35/m²) y 20,506 rurales o de reserva ambiental (media $33.35/m²).",
+        "aggregation": "Malla continua de 24,292 polígonos (EPSG:4326) enriquecida con distrito y municipio"
+      },
+      "data_sources": [
+        {
+          "title": "Google Satellite Embeddings V1 Annual (64 dimensiones latentes a 10 m)",
+          "provider": "Google Earth Engine",
+          "url": "https://developers.google.com/earth-engine/datasets",
+          "access": "abierto",
+          "description": "Embeddings fundacionales anuales 2024; 58 de las 64 bandas presentan correlación estadísticamente significativa (p < 0.05) con el log-precio del suelo en el AMSS (destacando A13 con r = -0.694, A32 con r = -0.660 y A34 con r = +0.650).",
+          "status": "declarado"
+        },
+        {
+          "title": "Covariables físicas de observación de la Tierra (Copernicus DEM GLO-30, ESA WorldCover 10 m, Open Buildings 2.5D y VIIRS DNB)",
+          "provider": "Programa Copernicus / ESA / Google Research / NOAA",
+          "url": "https://dataspace.copernicus.eu/",
+          "access": "abierto",
+          "description": "Siete predictores biofísicos y morfológicos explícitos (fracción edificada r = +0.621, cobertura arbórea r = -0.625, radiancia nocturna VIIRS r = +0.578, altura constructiva 2.5D, agua permanente, elevación y pendiente).",
+          "status": "declarado"
+        },
+        {
+          "title": "Muestra de calibración por UPD (Oferta 2025 + Permisos OPAMSS 2020–2026 y 2007–2019)",
+          "provider": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+          "url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/upd_consolidado.geojson",
+          "access": "institucional",
+          "description": "Etiquetas de referencia en USD/m² armonizadas sobre las huellas construidas de 281 UPDs del AMSS.",
+          "status": "declarado"
+        }
+      ],
+      "method": {
+        "description": "Generación en Google Earth Engine mediante coveringGrid en proyección métrica EPSG:32616 (celdas exactas de 250 × 250 m recortadas al perímetro oficial del AMSS y reproyectadas a EPSG:4326) y reducción zonal multivariada en una sola pasada (arquitectura Halo = 0 con tileScale = 4) sobre el ráster de predicción Random Forest a 20 m.",
+        "version": "1.0.0-gee-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/descargas/gee_modelo_valor_suelo_amss.js"
+      },
+      "limitations": [
+        "En celdas de borde topográfico (barrancos colindantes con urbanizaciones de alto valor) la desviación estándar intra-celda (VAL_STD_M2) es elevada; se recomienda emplear la mediana intra-celda (VAL_MED_M2) para análisis de valor representativo.",
+        "El modelo refleja atributos morfológicos y de entorno captados desde satélite y luces nocturnas; la incorporación explícita de zonificación normativa e isócronas viales corresponde a la Fase II de refinamiento."
+      ],
+      "validation": {
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo técnico PMV sv-amss (pendiente de dictamen formal institucional)"
+      },
+      "outputs": {
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_malla_continua_250m.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/img/figuras/04_mapa_resultados_malla_continua_250m.png"
+      },
+      "license": {
+        "name": "Uso técnico y académico con atribución institucional (OPAMSS / Programa Copernicus LAC)",
+        "url": "https://github.com/copernicuscentroamerica/urbano-sv-amss",
+        "reuse_note": "Malla vectorial continua libre de información nominal o catastral sensible; apta para estudios de planificación metropolitana e instrumentos de suelo."
+      },
+      "governance": {
+        "institution": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+        "maintainer": "Equipo Técnico SIG e Inteligencia Territorial — Iniciativa sv-amss",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "id": "GEE02",
+            "label": "Malla continua exportada desde Google Earth Engine e integrada en geovisor/capas/amss_malla_continua_250m.geojson",
+            "locator": "src/integrar_resultados_gee_geovisor.py",
+            "url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_malla_continua_250m.geojson"
           }
         ],
         "statements": [
           {
             "pointer": "",
-            "status": "propuesta",
+            "status": "declarado",
             "source_ids": [
-              "S10"
+              "GEE02"
             ],
-            "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+            "note": "Producto geoespacial continuo de 24,292 celdas generado, validado geométricamente en EPSG:4326 y publicado en el repositorio oficial."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "id": "sv-amss-superficie-pixel-20m-valor-suelo",
+      "project_id": "sv-amss",
+      "title": "Superficie continua a nivel de píxel (20 m) de valor estimado del suelo en el AMSS (GeoTIFF COG + Matriz de 71 Predictores)",
+      "summary": "Ráster continuo multibanda a 20 m de resolución espacial (3.85 millones de píxeles válidos; 3.63 millones en suelo urbano y desarrollable con pendiente < 35° libre de cuerpos de agua) con estimación de valor del suelo entre $8.66 y $471.13 USD/m², acompañado de la matriz empírica de correlaciones de las 71 bandas predictoras.",
+      "product_type": "mapa",
+      "publication_status": "publicado",
+      "coverage": {
+        "label": "Área Metropolitana de San Salvador Ampliada (AMSS · Envolvente WGS84 [-89.629, 13.418, -89.025, 13.920])",
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/perimetro_zona_estudio.geojson",
+        "spatial_resolution": "20 m × 20 m por píxel (GeoTIFF COG comprimido con DEFLATE + vistas PNG georreferenciadas)",
+        "scale_denominator": 10000
+      },
+      "temporal": {
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "reference_date": "2024-12-31"
+      },
+      "indicator": {
+        "name": "Superficie continua de valor estimado del suelo a nivel de píxel de 20 m",
+        "unit": "USD/m²",
+        "definition": "Predicción exponencial libre de sesgo por retransformación sobre un apilamiento de 71 bandas satelitales a 20 m: banda 1 para suelo urbano y desarrollable (pendiente < 35° sin lámina de agua; mediana $32.34, P90 $100.22, P95 $176.17, P99 $317.72 USD/m²) y banda 2 de potencial continuo completo en todo el perímetro metropolitano.",
+        "aggregation": "Píxel continuo de 20 m (3,845,824 píxeles válidos)"
+      },
+      "data_sources": [
+        {
+          "title": "Google Satellite Embeddings V1 Annual (A00–A63)",
+          "provider": "Google Earth Engine",
+          "url": "https://developers.google.com/earth-engine/datasets",
+          "access": "abierto",
+          "description": "64 bandas de representación profunda anual 2024 a 10 m remuestreadas a 20 m sin operadores de vecindad para garantizar ejecución libre de errores de memoria en GEE.",
+          "status": "declarado"
+        },
+        {
+          "title": "Copernicus DEM GLO-30, ESA WorldCover 10 m, Open Buildings 2.5D y VIIRS DNB",
+          "provider": "Programa Copernicus / ESA / Google Research / NOAA",
+          "url": "https://dataspace.copernicus.eu/",
+          "access": "abierto",
+          "description": "Capas físicas empleadas tanto en la inferencia del modelo como en la máscara topográfica e hidrológica de aptitud constructiva (pendiente < 35° y exclusión de agua permanente).",
+          "status": "declarado"
+        }
+      ],
+      "method": {
+        "description": "Inferencia píxel a píxel (Halo = 0) en Google Earth Engine mediante Random Forest de 200 árboles en espacio logarítmico, exportada como Cloud-Optimized GeoTIFF (COG DEFLATE de 2 bandas en Float32) y renderizada en rampa perceptualmente graduada YlOrRd-Granate para consulta directa en el Atlas Temático y en el Geovisor GeoLibre.",
+        "version": "1.0.0-gee-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/descargas/gee_modelo_valor_suelo_amss.js"
+      },
+      "limitations": [
+        "La banda de potencial continuo completo evalúa todo el relieve volcánico y rural con fines analíticos; para planificación urbana y edificabilidad debe priorizarse la banda enmascarada de suelo urbano/desarrollable (pendiente < 35° sin cuerpos de agua).",
+        "Resolución de trabajo fijada en 20 m para equilibrar fidelidad espacial intraurbana y estabilidad computacional en todo el ámbito metropolitano de 1,488.8 km²."
+      ],
+      "validation": {
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/descargas/amss_correlaciones_embeddings_suelo.csv",
+        "date": "2026-11-12",
+        "reviewer": "Equipo técnico PMV sv-amss (pendiente de dictamen formal institucional)"
+      },
+      "outputs": {
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/resultados/#atlas-copernicus-zona",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_valor_suelo_pixel_20m.tif",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/descargas/Metodologia_Modelo_Valor_Suelo_AMSS_GEE.docx",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/img/modelo/amss_pixel_20m_urbano.png"
+      },
+      "license": {
+        "name": "Uso técnico y académico con atribución institucional (OPAMSS / Programa Copernicus LAC)",
+        "url": "https://github.com/copernicuscentroamerica/urbano-sv-amss",
+        "reuse_note": "Ráster derivado de fuentes satelitales abiertas y calibración agregada; libre reutilización citando la fuente técnica."
+      },
+      "governance": {
+        "institution": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+        "maintainer": "Equipo Técnico SIG e Inteligencia Territorial — Iniciativa sv-amss",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "id": "GEE03",
+            "label": "Ráster GeoTIFF COG a 20 m y matriz de correlaciones exportados desde Google Earth Engine",
+            "locator": "geovisor/capas/amss_valor_suelo_pixel_20m.tif",
+            "url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_valor_suelo_pixel_20m.tif"
+          }
+        ],
+        "statements": [
+          {
+            "pointer": "",
+            "status": "declarado",
+            "source_ids": [
+              "GEE03"
+            ],
+            "note": "Superficie ráster continua a 20 m y matriz de 71 predictores generadas y publicadas en el repositorio oficial."
           }
         ]
       }
@@ -384,219 +496,111 @@
       "schema_version": "1.0.0",
       "id": "cr-la-carpio-linea-base-indicadores",
       "project_id": "cr-la-carpio",
-      "title": "Ficha territorial, línea base e indicadores para la intervención urbana en La Carpio",
-      "summary": "Contribución prevista con cartografía base normalizada e indicadores ambientales y urbanos de apoyo al Plan Maestro de Intervención Urbanística Integral en San José, Costa Rica.",
+      "title": "Malla hexagonal de población (30,252 hab), índice local de multiamenaza y restricciones urbanísticas — La Carpio",
+      "summary": "Síntesis microterritorial en 304 hexágonos de 30 m sobre La Carpio (~61.0 ha, San José) que integra estimación poblacional calibrada con Open Buildings y encuestas de techos, susceptibilidad a deslizamientos, inundación potencial, incidentes CME (2019–2026) y 281 hexágonos con condicionantes o restricciones.",
       "product_type": "indicador",
-      "publication_status": "propuesto",
+      "publication_status": "publicado",
       "coverage": {
         "label": "Gran Área Metropolitana, San José, Uruca, Asentamiento Informal La Carpio.",
-        "geometry_url": null,
-        "spatial_resolution": "Escala barrial / asentamiento (10 m y cartografía local)",
-        "scale_denominator": null
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local.geojson",
+        "spatial_resolution": "Malla hexagonal de 30 m (~779 m² por celda, EPSG:4326)",
+        "scale_denominator": 2500
       },
       "temporal": {
-        "start": null,
-        "end": null,
-        "reference_date": null
+        "start": "2019-01-01",
+        "end": "2026-11-11",
+        "reference_date": "2026-11-11"
       },
       "indicator": {
-        "name": "Indicadores territoriales de densificación, cobertura vegetal y exposición",
-        "unit": "Por definir tras homologación metodológica",
-        "definition": "Conjunto de variables físicas y ambientales normalizadas para mesas interinstitucionales MSJ–INVU–MIVAH.",
-        "aggregation": "Sectores internos del asentamiento La Carpio (perímetro homologado)"
+        "name": "Índice compuesto local de multiamenaza (0–100), población estimada y aptitud urbanística",
+        "unit": "Puntaje 0–100, habitantes/hexágono y clase de restricción",
+        "definition": "Combinación ponderada areal (50% susceptibilidad a deslizamientos CATEGORIA_ 1–5 y 50% superposición con inundación potencial) cruzada con distribución demográfica (escenario 5.4 hab/viv = 30,252 hab) y retiros fluviales.",
+        "aggregation": "304 hexágonos regulares en EPSG:4326 calculados métricamente en CRTM05 (EPSG:5367)"
       },
       "data_sources": [
         {
           "title": "Sentinel-2 / óptico multiespectral",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Sentinel-1 / radar SAR",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Imágenes de muy alta resolución / ortofotos",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "institucional",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Drones / RPAS",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "LiDAR / modelos digitales de superficie",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Copernicus DEM / elevación",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "GHSL / huella urbana global",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Población (censos, WorldPop)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Catastro / parcelario",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Límites institucionales o administrativos",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos locales e institucionales declarados",
-          "provider": null,
-          "url": null,
           "access": "institucional",
-          "description": "Datos Municipales e institucionales",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         }
       ],
       "method": {
-        "description": "Pendiente de evaluar las condiciones específicas del asentamiento\n\nHerramientas previstas: NDVI, NDBI, LST, clasificación supervisada, análisis multicriterio, Google Earth Engine, QGIS, R, Python.",
-        "version": "0.1.0-propuesta",
-        "code_url": null
+        "description": "Combinación ponderada areal (50% susceptibilidad a deslizamientos CATEGORIA_ 1–5 y 50% superposición con inundación potencial) cruzada con distribución demográfica (escenario 5.4 hab/viv = 30,252 hab) y retiros fluviales.",
+        "version": "1.0.0-copernicus-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/assets/descargas/build_local_multihazard_index.py"
       },
       "limitations": [
-        "El perfil describe aproximadamente 63 ha y más de 50.000 habitantes, mientras la tabla del polígono indica 48,2 ha. Conservar la discrepancia y confirmar ámbito y fuente censal.",
-        "El archivo La_Carpio-15_57_54.zip se menciona en la ficha, pero no está en el ZIP recibido.",
-        "Book.xlsx no contiene celdas con datos.",
-        "El backlog conserva un encabezado de plantilla Ministerio de Hacienda; las instituciones del proyecto son MSJ, INVU y MIVAH.",
-        "S17 contiene 15 tareas sin estimación horaria; las 13 horas registradas corresponden solo a dos tareas y no al esfuerzo total del proyecto.",
-        "S14 conserva contradicciones entre Product Owner por definir y nombres/fechas en validación, y entre estimaciones de encabezado y alcance. No interpretar las casillas DoD vacías como aprobación formal.",
-        "La captura de un visor en la presentación constituye evidencia gráfica de una propuesta o resultado mostrado, sin demostrar que una aplicación accesible esté operando."
+        "El índice de multiamenaza hexagonal aplica una ponderación exploratoria transparente (50% susceptibilidad a deslizamientos y 50% superposición con inundación potencial) que requiere validación geotécnica e hidráulica interinstitucional.",
+        "La cifra de 30,252 habitantes corresponde al escenario demográfico acordado de 5.4 hab/vivienda distribuido espacialmente por densidad edilicia; no sustituye un empadronamiento censal casa por casa.",
+        "El perímetro operativo (~61.0 ha en geometría vectorial frente a 48.2 ha del formulario preliminar) se mantiene sujeto a homologación formal entre MSJ, INVU y MIVAH."
       ],
       "validation": {
-        "state": "pendiente",
-        "evidence_url": null,
-        "date": null,
-        "reviewer": null
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/indice-multiamenaza/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
       },
       "outputs": {
-        "viewer_url": null,
-        "download_url": null,
-        "documentation_url": null,
-        "thumbnail_url": null
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/indice-multiamenaza/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/assets/img/figuras/01_arquitectura_metodologica.png"
       },
       "license": {
-        "name": null,
-        "url": null,
-        "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+        "name": "Uso técnico, institucional y académico con atribución al Clúster Copernicus Urbano",
+        "url": "https://github.com/copernicuscentroamerica/urbano-cr-la-carpio",
+        "reuse_note": "Datos agregados libres de información personal sensible; verificar alcances metodológicos antes de uso normativo."
       },
       "governance": {
-        "institution": "Municipalidad de San José / INVU / MIVAH",
-        "maintainer": null,
-        "update_frequency": null,
-        "content_updated_at": null
+        "institution": "Municipalidad de San José, MIVAH e INVU",
+        "maintainer": "Equipo Interinstitucional MSJ — MIVAH — INVU (cr-la-carpio)",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
       },
       "provenance": {
         "sources": [
           {
-            "id": "S13",
-            "label": "Ficha_03_Costa_Rica_La_Carpio.docx",
-            "locator": "fuentes/S13_Ficha_03_Costa_Rica_La_Carpio.md",
-            "url": null
-          },
-          {
-            "id": "S14",
-            "label": "Ficha_HU_EPACR-GIS-01.pdf.docx",
-            "locator": "fuentes/S14_Ficha_HU_EPACR-GIS-01_pdf.md",
-            "url": null
-          },
-          {
-            "id": "S15",
-            "label": "Presentacion_solucion EPA-PIU LaCarpio COSTA RICA.pdf",
-            "locator": "fuentes/S15_Presentacion_solucion_EPA-PIU_LaCarpio_COSTA_RICA.md",
-            "url": null
-          },
-          {
-            "id": "S16",
-            "label": "Presentacion_solucion EPA-PIU LaCarpio COSTA RICA.pptx",
-            "locator": "fuentes/S16_Presentacion_solucion_EPA-PIU_LaCarpio_COSTA_RICA.md",
-            "url": null
-          },
-          {
-            "id": "S17",
-            "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_Costa Rica.xlsx",
-            "locator": "fuentes/S17_Sprint_Backlog_Marco_Scrum_ProyectoSIG_Costa_Rica.md",
-            "url": null
+            "id": "PROD01",
+            "label": "Malla hexagonal de población (30,252 hab), índice local de multiamenaza y restricciones urbanísticas — La Carpio",
+            "locator": "geovisor/capas/indice_multiamenaza_local.geojson",
+            "url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local.geojson"
           }
         ],
         "statements": [
           {
             "pointer": "",
-            "status": "propuesta",
+            "status": "declarado",
             "source_ids": [
-              "S13"
+              "PROD01"
             ],
-            "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+            "note": "Producto geoespacial verificado geométricamente en EPSG:4326 e integrado en el Geovisor y Atlas del proyecto."
           }
         ]
       }
@@ -605,308 +609,100 @@
       "schema_version": "1.0.0",
       "id": "sv-la-union-caracterizacion-asentamientos",
       "project_id": "sv-la-union",
-      "title": "Inventario y caracterización territorial de asentamientos humanos en Conchagua y La Unión",
-      "summary": "Contribución prevista al Atlas con delimitación actualizada de asentamientos humanos y variables de ocupación del suelo en los distritos de Conchagua y La Unión, El Salvador.",
+      "title": "Serie multitemporal consolidada de crecimiento de asentamientos humanos en Conchagua y La Unión (2019–2025)",
+      "summary": "Integración anual 2019–2025 de 24,417 polígonos de huella y crecimiento de asentamientos humanos sobre 36,577.9 ha del borde costero y entorno portuario de La Unión Sur (pico de expansión en 2021 con 258.77 ha y consolidación sostenida de 207.82 ha en 2025).",
       "product_type": "mapa",
-      "publication_status": "propuesto",
+      "publication_status": "publicado",
       "coverage": {
         "label": "Distritos de Conchagua y La Unión",
-        "geometry_url": null,
-        "spatial_resolution": "10 m (insumos satelitales) / escala distrital",
-        "scale_denominator": null
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/geovisor/capas/crecimiento_ah_consolidado_2019_2025.geojson",
+        "spatial_resolution": "Vectorial anual de alta resolución (EPSG:4326)",
+        "scale_denominator": 20000
       },
       "temporal": {
-        "start": null,
-        "end": null,
-        "reference_date": null
+        "start": "2019-01-01",
+        "end": "2025-12-31",
+        "reference_date": "2025-12-31"
       },
       "indicator": {
-        "name": "Superficie y cambio de asentamientos humanos caracterizados",
-        "unit": "ha",
-        "definition": "Contraste entre el inventario base 2015 y la huella actualizada de asentamientos en Conchagua y La Unión.",
-        "aggregation": "Distritos de Conchagua y La Unión (Municipio de La Unión Sur)"
+        "name": "Superficie anual de crecimiento de asentamientos humanos por distrito (2019–2025)",
+        "unit": "Hectáreas (ha) y número de polígonos por año",
+        "definition": "Cuantificación métrica anual en UTM Zona 16N de los polígonos de crecimiento habitacional y periurbano en los distritos de Conchagua y La Unión.",
+        "aggregation": "Capa consolidada de 24,417 polígonos y serie estadística distrital CSV"
       },
       "data_sources": [
         {
           "title": "Sentinel-2 / óptico multiespectral",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Sentinel-1 / radar SAR",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Landsat",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Imágenes de muy alta resolución / ortofotos",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Copernicus DEM / elevación",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "GHSL / huella urbana global",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Población (censos, WorldPop)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Luces nocturnas (VIIRS)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Catastro / parcelario",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos locales e institucionales declarados",
-          "provider": null,
-          "url": null,
           "access": "institucional",
-          "description": "Mapa de identificación de asentamientos humanos de la Franja Costero Marina 2015, inventario de la red vial existente, base de datos tabulada del Censo Población y Vivienda 2007 y 2024, modelo de uso de suelo Plan Costa",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         }
       ],
       "method": {
-        "description": "Búsqueda de información, sistematización, análisis, aplicación con herramientas de procesamiento, gestión de datos y generación de cartografía\n\nHerramientas previstas: NDVI, Clasificación supervisada y no supervisada, Google Earth Engine, GIS, OpenDroneMap, JavaScript",
-        "version": "0.1.0-propuesta",
-        "code_url": null
+        "description": "Cuantificación métrica anual en UTM Zona 16N de los polígonos de crecimiento habitacional y periurbano en los distritos de Conchagua y La Unión.",
+        "version": "1.0.0-copernicus-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/assets/descargas/sintesis_crecimiento_ah_2019_2025.py"
       },
       "limitations": [
-        "La fuente específica sustituye el alcance regional amplio para la configuración inicial, conservando el antecedente S18.",
-        "La ficha mezcla nivel de acceso Por definir con consulta institucional; no publicar datos detallados sin definir acceso.",
-        "Los segmentos censales 2024 faltan y condicionan los cruces territoriales.",
-        "Las referencias narrativas a migración, expansión y valor del suelo son hipótesis o contexto del perfil; la aplicación debe mostrar evidencia antes de cuantificarlas.",
-        "El archivo geoespacial mencionado en la ficha no está incluido en el ZIP recibido."
-      ],
-      "validation": {
-        "state": "pendiente",
-        "evidence_url": null,
-        "date": null,
-        "reviewer": null
-      },
-      "outputs": {
-        "viewer_url": null,
-        "download_url": null,
-        "documentation_url": null,
-        "thumbnail_url": null
-      },
-      "license": {
-        "name": null,
-        "url": null,
-        "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
-      },
-      "governance": {
-        "institution": "MIVI / FONAVIPO / UCA / UNAB",
-        "maintainer": null,
-        "update_frequency": null,
-        "content_updated_at": null
-      },
-      "provenance": {
-        "sources": [
-          {
-            "id": "S19",
-            "label": "Ficha_04_El_Salvador_La_Union.docx",
-            "locator": "fuentes/S19_Ficha_04_El_Salvador_La_Union.md",
-            "url": null
-          },
-          {
-            "id": "S18",
-            "label": "Ficha_04_El_Salvador_Franja_Costero_Marina.docx",
-            "locator": "fuentes/S18_Ficha_04_El_Salvador_Franja_Costero_Marina.md",
-            "url": null
-          }
-        ],
-        "statements": [
-          {
-            "pointer": "",
-            "status": "propuesta",
-            "source_ids": [
-              "S19"
-            ],
-            "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
-          }
-        ]
-      }
-    },
-    {
-      "schema_version": "1.0.0",
-      "id": "gt-bethania-huella-urbana-preliminar",
-      "project_id": "gt-bethania",
-      "title": "Modelo de elevación, mapa de pendientes y clasificación de riesgo por techo de vivienda (Open Buildings + RPAS) en Nueva León de Judá",
-      "summary": "Producto geoespacial integrado de la zona acotada de Nueva León de Judá (7.15 ha en Zona 7, Ciudad de Guatemala), que articula el Modelo Digital de Elevación (0.5 m), mapa de pendientes, ortofoto RPAS (~2.4 cm/px), 105 predios catastrados y 124 techos de vivienda (Google-Microsoft Open Buildings + RPAS) clasificados por nivel de riesgo multicriterio.",
-      "product_type": "visor",
-      "publication_status": "publicado",
-      "coverage": {
-        "label": "Asentamiento Nueva León de Judá, Zona 7, colonia Bethania, Ciudad de Guatemala (7.15 ha)",
-        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/recuadro_zona_estudio_leondejuda.geojson",
-        "spatial_resolution": "DEM y Mapa de Pendientes 0.5 m · Ortofoto RPAS ~2.4 cm/px · Escala de techo y lote",
-        "scale_denominator": 1000
-      },
-      "temporal": {
-        "start": "2023-01-01",
-        "end": "2026-11-11",
-        "reference_date": "2026-11-11"
-      },
-      "indicator": {
-        "name": "Techos de vivienda y predios según nivel de riesgo multicriterio (pendiente, alta tensión y saneamiento)",
-        "unit": "techos / predios / m²",
-        "definition": "Clasificación de los 124 techos de vivienda (4,752.27 m²) y 105 predios (8,089.32 m²) en cuatro niveles de riesgo (Bajo, Medio, Alto y Muy Alto) integrando la pendiente derivada del DEM de 0.5 m (<12°, 12–22°, 22–32°, >32°), el traslape con la franja de líneas de alta tensión y la descarga de aguas al barranco.",
-        "aggregation": "Nivel de techo individual (id_techo), predio (LOTE) y sector (Sectores A, B y C) en Nueva León de Judá"
-      },
-      "data_sources": [
-        {
-          "title": "Techos de vivienda clasificados por nivel de riesgo (Open Buildings + RPAS)",
-          "provider": "Google-Microsoft Open Buildings (VIDA) + Fotogrametría RPAS UDEVIPO",
-          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson",
-          "access": "abierto",
-          "description": "124 polígonos de techos de vivienda (113 de Google-Microsoft Open Buildings y 11 restituidos sobre ortofoto RPAS) con atributos de área, elevación media, pendiente máxima, intersección con alta tensión, puntaje y nivel de riesgo.",
-          "status": "declarado"
-        },
-        {
-          "title": "Modelo Digital de Elevación (DEM 0.5 m) y Mapa de Pendientes",
-          "provider": "Interpolación TIN Delaunay desde curvas de nivel de 1 m (leóndejuda_curvas_clip.shp)",
-          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/mapa_pendientes_leondejuda_cog.tif",
-          "access": "institucional",
-          "description": "DEM a 0.5 m/px (1,320.55–1,436.00 m s. n. m.), mapa continuo de pendientes en grados y zonificación vectorial en 4 clases de riesgo.",
-          "status": "declarado"
-        },
-        {
-          "title": "Predios y lotes catastrados — Nueva León de Judá (lotes_leondejuda.shp)",
-          "provider": "UDEVIPO / Levantamiento técnico Nueva León de Judá",
-          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/lotes_leondejuda.geojson",
-          "access": "institucional",
-          "description": "105 polígonos prediales (8,089.32 m²) con atributos de lote, sector (A, B, C), ocupación, saneamiento, elevación media, pendiente máxima y nivel de riesgo.",
-          "status": "declarado"
-        },
-        {
-          "title": "Ortofoto RPAS de alta resolución — Nueva León de Judá (leon_de_juda.tif)",
-          "provider": "Levantamiento aerofotogramétrico con dron (RPAS)",
-          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/ortofoto_leondejuda_cog.tif",
-          "access": "institucional",
-          "description": "Ortofoto RGBA de ~2.4 cm/px publicada como Cloud-Optimized GeoTIFF y textura WebP georreferenciada.",
-          "status": "declarado"
-        },
-        {
-          "title": "Líneas de alta tensión — Servidumbre eléctrica (lineasdealtatension_leondejuda.shp)",
-          "provider": "UDEVIPO / Levantamiento técnico Nueva León de Judá",
-          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/lineas_alta_tension_leondejuda.geojson",
-          "access": "institucional",
-          "description": "3 polígonos (4,303.51 m²) de la franja de servidumbre eléctrica que cruza los sectores A, B y C.",
-          "status": "declarado"
-        }
-      ],
-      "method": {
-        "description": "1) Interpolación TIN Delaunay baricéntrica de las curvas de nivel de 1 m para generar un DEM de 0.5 m/px (1,320.55–1,436.00 m s. n. m.). 2) Cálculo de gradientes finitos para obtener el Mapa de Pendientes (0°–72.7°) y clasificación en 4 rangos (<12° Bajo, 12–22° Medio, 22–32° Alto, >32° Muy Alto). 3) Descarga selectiva por HTTP Range de Google-Microsoft Open Buildings sobre el recuadro de estudio, subdivisión por lindero predial y restitución fotogramétrica sobre ortofoto RPAS para completar los 124 techos de vivienda. 4) Clasificación multicriterio de riesgo por techo y lote.",
-        "version": "1.1.0",
-        "code_url": "https://github.com/copernicuscentroamerica/urbano-gt-bethania"
-      },
-      "limitations": [
-        "El recuadro de estudio (7.15 ha) acota específicamente el asentamiento Nueva León de Judá dentro de la Colonia Bethania (Zona 7).",
-        "En asentamientos de alta densidad con techos de lámina contiguos, las huellas satelitales de Open Buildings tienden a agrupar varios techos adyacentes; por ello fueron subdivididas con los linderos catastrales de UDEVIPO y contrastadas con la ortofoto RPAS de 2.4 cm/px.",
-        "La clasificación de riesgo por techo y lote es una herramienta técnica de gabinete que debe complementarse con inspección geotécnica y verificación topográfica en sitio antes de resoluciones de escrituración u obras de mitigación."
+        "Los polígonos anuales 2019–2025 reflejan huellas de crecimiento y densificación detectadas por teledetección y levantamientos técnicos; requieren homologación con el inventario oficial de MIVIVIENDA y CNR.",
+        "Los límites distritales empleados en la vista pública provienen de cartografía abierta referencial acotada estrictamente a Conchagua y La Unión."
       ],
       "validation": {
         "state": "en_revision",
-        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/",
-        "date": "2026-11-11",
-        "reviewer": "Equipo Técnico Cluster Urbano"
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/dinamica-asentamientos/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
       },
       "outputs": {
-        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/",
-        "download_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson",
-        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/metodologia/",
-        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/data/mapa_pendientes_leondejuda.webp"
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/geovisor/capas/crecimiento_ah_consolidado_2019_2025.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/dinamica-asentamientos/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/assets/img/figuras/01_arquitectura_metodologica.png"
       },
       "license": {
-        "name": "Uso institucional UDEVIPO / Cluster Urbano (Open Buildings bajo CC BY 4.0 / ODbL)",
-        "url": null,
-        "reuse_note": "Capas publicadas sin datos personales nominales para análisis territorial y priorización técnica de gabinete."
+        "name": "Uso técnico, institucional y académico con atribución al Clúster Copernicus Urbano",
+        "url": "https://github.com/copernicuscentroamerica/urbano-sv-la-union",
+        "reuse_note": "Datos agregados libres de información personal sensible; verificar alcances metodológicos antes de uso normativo."
       },
       "governance": {
-        "institution": "Unidad para el Desarrollo de Vivienda Popular (UDEVIPO)",
-        "maintainer": "Rafael Ruiz Urizar",
-        "update_frequency": "Semestral",
-        "content_updated_at": "2026-11-11"
+        "institution": "Ministerio de Vivienda (MIVIVIENDA) y Alcaldía de La Unión Sur",
+        "maintainer": "Equipo Técnico sv-la-union — Clúster Copernicus Urbano",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
       },
       "provenance": {
         "sources": [
           {
-            "id": "S20",
-            "label": "Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.docx",
-            "locator": "fuentes/S20_Ficha_05_Guatemala_Asentamientos_Alto_Riesgo.md",
-            "url": null
-          },
-          {
-            "id": "S20-LDJ",
-            "label": "Paquete geoespacial Nueva León de Judá (DEM 0.5 m, pendientes, Open Buildings, lotes, alta tensión y ortofoto RPAS)",
-            "locator": "geovisor/layers.json",
-            "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/layers.json"
+            "id": "PROD01",
+            "label": "Serie multitemporal consolidada de crecimiento de asentamientos humanos en Conchagua y La Unión (2019–2025)",
+            "locator": "geovisor/capas/crecimiento_ah_consolidado_2019_2025.geojson",
+            "url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/geovisor/capas/crecimiento_ah_consolidado_2019_2025.geojson"
           }
         ],
         "statements": [
@@ -914,335 +710,338 @@
             "pointer": "",
             "status": "declarado",
             "source_ids": [
-              "S20",
-              "S20-LDJ"
+              "PROD01"
             ],
-            "note": "Producto geoespacial integrado para Nueva León de Judá con DEM, mapa de pendientes y clasificación de techos de vivienda por nivel de riesgo."
+            "note": "Producto geoespacial verificado geométricamente en EPSG:4326 e integrado en el Geovisor y Atlas del proyecto."
           }
         ]
       }
     },
     {
       "schema_version": "1.0.0",
-      "id": "do-santiago-exposicion-barrios-escenarios",
+      "id": "gt-bethania-riesgo-predial-leondejuda",
+      "project_id": "gt-bethania",
+      "title": "Evaluación multicriterio de riesgo en techos de vivienda y predios — Nueva León de Judá (Bethania)",
+      "summary": "Zonificación de amenaza por pendiente sobre DEM TIN 0.5 m (7.15 ha) y clasificación multicriterio de 124 techos de vivienda (94 en riesgo Alto/Muy Alto) y 105 lotes catastrales en Zona 7, Ciudad de Guatemala.",
+      "product_type": "indicador",
+      "publication_status": "publicado",
+      "coverage": {
+        "label": "Asentamiento Nueva León de Judá, Zona 7, colonia Bethania, Guatemala",
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson",
+        "spatial_resolution": "DEM 0.5 m / Ortofoto RPAS 2.4 cm / Nivel de techo y predio",
+        "scale_denominator": 1000
+      },
+      "temporal": {
+        "start": "2024-01-01",
+        "end": "2026-11-11",
+        "reference_date": "2026-11-11"
+      },
+      "indicator": {
+        "name": "Nivel de riesgo habitacional y predial multicriterio (Bajo, Medio, Alto, Muy Alto)",
+        "unit": "Categoría ordinal (4 niveles) y superficie (m² / ha)",
+        "definition": "Integra pendiente local derivada de curvas cada 1 m (5.57 ha >32° Muy Alto), proximidad a escarpe de barranco y servidumbre de líneas de alta tensión (4,303.5 m²) sobre 124 techos y 105 lotes.",
+        "aggregation": "Polígonos individuales de techo de vivienda (124) y predio catastral (105)"
+      },
+      "data_sources": [
+        {
+          "title": "Techos de vivienda clasificados por riesgo (Google-Microsoft Open Buildings + RPAS)",
+          "provider": "Google-Microsoft Open Buildings (VIDA) / Fotogrametría RPAS UDEVIPO",
+          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson",
+          "access": "abierto",
+          "description": "124 huellas de techos de vivienda (4,752.27 m²; 113 de Google-Microsoft Open Buildings y 11 restituidas de ortofoto RPAS) clasificadas según riesgo multicriterio: Muy Alto (24), Alto (70), Medio (19) y Bajo (11).",
+          "status": "declarado"
+        },
+        {
+          "title": "Modelo Digital de Elevación (DEM 0.5 m) y Mapa de Pendientes derivados de curvas de 1 m",
+          "provider": "Procesamiento topográfico TIN Delaunay desde leóndejuda_curvas_clip.shp",
+          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/mapa_pendientes_leondejuda_cog.tif",
+          "access": "institucional",
+          "description": "DEM a 0.5 m/px (1,320.55–1,436.00 m s. n. m.) y mapa de pendientes (0°–72.7°, media 39.4°) clasificado en 4 niveles de amenaza: Bajo (<12°), Medio (12°–22°), Alto (22°–32°) y Muy Alto (>32°).",
+          "status": "declarado"
+        },
+        {
+          "title": "Catastro predial y variables sanitarias — Nueva León de Judá (lotes_leondejuda.shp)",
+          "provider": "UDEVIPO / Levantamiento técnico Nueva León de Judá",
+          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/lotes_leondejuda.geojson",
+          "access": "institucional",
+          "description": "105 polígonos prediales (8,089.32 m² = 0.81 ha netas) en los Sectores A (50), B (32) y C (22), enriquecidos con elevación media, pendiente máxima y clasificación de riesgo predial (Muy Alto: 18, Alto: 60, Medio: 19, Bajo: 8).",
+          "status": "declarado"
+        },
+        {
+          "title": "Ortofoto RPAS de alta resolución — Nueva León de Judá (leon_de_juda.tif)",
+          "provider": "Levantamiento aerofotogramétrico con dron (RPAS)",
+          "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/ortofoto_leondejuda_cog.tif",
+          "access": "institucional",
+          "description": "Mosaico ortorrectificado RGBA (8087 × 6644 px, ~2.4 cm/px en origen UTM Zona 15N EPSG:32615), convertido a Cloud-Optimized GeoTIFF y vista rápida WebP para el Geovisor.",
+          "status": "declarado"
+        }
+      ],
+      "method": {
+        "description": "Integra pendiente local derivada de curvas cada 1 m (5.57 ha >32° Muy Alto), proximidad a escarpe de barranco y servidumbre de líneas de alta tensión (4,303.5 m²) sobre 124 techos y 105 lotes.",
+        "version": "1.0.0-copernicus-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/assets/descargas/modelo_riesgo_predial_bethania.py"
+      },
+      "limitations": [
+        "La clasificación multicriterio identifica exposición física por pendiente de ladera y servidumbre eléctrica para priorizar inspecciones; no sustituye estudios geotécnicos puntuales de estabilidad de taludes.",
+        "Las huellas de techos combinan detección satelital (Open Buildings) y restitución sobre ortofoto RPAS; subdivisiones internas de vivienda requieren verificación censal en campo por UDEVIPO."
+      ],
+      "validation": {
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/evaluacion-riesgo/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
+      },
+      "outputs": {
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/evaluacion-riesgo/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/assets/img/figuras/01_arquitectura_metodologica.png"
+      },
+      "license": {
+        "name": "Uso técnico, institucional y académico con atribución al Clúster Copernicus Urbano",
+        "url": "https://github.com/copernicuscentroamerica/urbano-gt-bethania",
+        "reuse_note": "Datos agregados libres de información personal sensible; verificar alcances metodológicos antes de uso normativo."
+      },
+      "governance": {
+        "institution": "Unidad para el Desarrollo de Vivienda Popular (UDEVIPO)",
+        "maintainer": "Unidad de Catastro y Equipo Técnico gt-bethania",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "id": "PROD01",
+            "label": "Evaluación multicriterio de riesgo en techos de vivienda y predios — Nueva León de Judá (Bethania)",
+            "locator": "geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson",
+            "url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/geovisor/capas/techos_vivienda_riesgo_leondejuda.geojson"
+          }
+        ],
+        "statements": [
+          {
+            "pointer": "",
+            "status": "declarado",
+            "source_ids": [
+              "PROD01"
+            ],
+            "note": "Producto geoespacial verificado geométricamente en EPSG:4326 e integrado en el Geovisor y Atlas del proyecto."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "id": "do-santiago-expansion-urbana-2018-2036",
       "project_id": "do-santiago",
-      "title": "Huella urbana observada, escenarios de crecimiento e indicadores de exposición por barrio en Santiago",
-      "summary": "Contribución prevista para el municipio de Santiago de los Caballeros con huella urbana multitemporal (2018–2024), escenarios a 2036 e indicadores agregados de exposición ante inundaciones y deslizamientos para apoyar el PMOT.",
-      "product_type": "visor",
-      "publication_status": "propuesto",
+      "title": "Serie multitemporal de expansión urbana (2018–2024) y simulación prospectiva MOLUSCE al 2036 en Santiago de los Caballeros",
+      "summary": "Crecimiento histórico observado mediante Sentinel-2 L2A (de 80.02 km² en 2018 a 99.42 km² en 2024; Jaccard = 0.7205 frente a GHSL 2020) y proyección celular trienal hasta 2036 (140.39 km², +41.2%) sobre los 429.27 km² del municipio.",
+      "product_type": "mapa",
+      "publication_status": "publicado",
       "coverage": {
         "label": "Municipio de Santiago de los Caballeros: zona urbana de Santiago y sus 31 secciones rurales, organizadas en 222 barrios/parajes (ONE)",
-        "geometry_url": null,
-        "spatial_resolution": "10 m (huella Sentinel-2) y 30 m (Copernicus DEM / HAND)",
-        "scale_denominator": null
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/geovisor/capas/santiago_expansion_urbana_100m_vista.geojson",
+        "spatial_resolution": "Malla vectorial de síntesis a 100 m derivada de clasificación a 10 m",
+        "scale_denominator": 25000
       },
       "temporal": {
         "start": "2018-01-01",
-        "end": "2024-12-31",
-        "reference_date": null
+        "end": "2036-12-31",
+        "reference_date": "2024-12-31"
       },
       "indicator": {
-        "name": "Superficie construida y edificaciones expuestas por escenario y barrio/paraje",
-        "unit": "ha / porcentaje expuesto (pérdidas económicas solo tras calibración)",
-        "definition": "Superposición entre huella construida observada/proyectada y escenarios calibrados de amenaza por unidad barrial ONE.",
-        "aggregation": "222 barrios y parajes del municipio de Santiago de los Caballeros"
+        "name": "Superficie urbana construida acumulada observada y proyectada por cohorte trienal",
+        "unit": "km² y porcentaje de crecimiento trienal",
+        "definition": "Clasificación supervisada sobre compuestos Sentinel-2 L2A (2018, 2021, 2024) validada con GHSL 2020, acoplada a un modelo de transición espacial MOLUSCE para los cortes 2027, 2030, 2033 y 2036.",
+        "aggregation": "5,369 polígonos por cohorte trienal dentro del límite municipal ONE"
       },
       "data_sources": [
         {
           "title": "Sentinel-2 L2A (10 m), 2018–2026: huella urbana y cambio (clasificación y proyección)",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Sentinel-1 SAR: inundaciones observadas para calibrar escenarios (Global Flood Monitoring, Copernicus EMS)",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Copernicus DEM GLO-30: HAND, red de drenaje, pendientes e insumo de CRISIS",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "GHSL (Copernicus/JRC): GHS-POP 2020–2030, GHS-BUILT-S 10 m y GHS-BUILT-H",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Copernicus EMS: activaciones históricas en el Cibao",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "ERA5 / ERA5-Land (Copernicus C3S): lluvias extremas para escenarios de inundación y deslizamiento",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "ESA WorldCover: referencia de cobertura del suelo",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos locales e institucionales declarados",
-          "provider": null,
-          "url": null,
-          "access": "institucional",
-          "description": "Límites ONE (municipio, secciones, 222 barrios/parajes) y Censo XCNPV 2022\nCartografía de edificaciones de la ONE (212.909 puntos) para validar la exposición\nAvances del Servicio 12 de CopernicusLAC (cartografía de valor económico) y su tabla de insumos estadísticos\nCostos de construcción por m² (ONE ICDV y referencias de mercado 2025)\nFallas geológicas y geología para parametrizar CRISIS",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         }
       ],
       "method": {
-        "description": "1. Huella urbana: compuestos Sentinel-2 L2A sin nubes (mediana, máscara SCL) de 2018, 2021 y 2024; clasificador entrenado con GHS-BUILT-S 10 m; regla de no reversión del suelo construido.\n2. Crecimiento (tipo MOLUSCE): matriz de transición de Markov; potencial de transición con red neuronal y regresión logística (pendiente, elevación, distancia a vías, al centro y a lo construido, densidad vecinal); autómata celular. Calibración 2018→2021, validación contra 2024 y proyección por pasos de 3 años hasta 2036 (140 km²).\n3. Inundación: HAND sobre el Copernicus DEM GLO-30 con tres clases de drenaje (cañadas < 10 km², tributarios 10–500 km², Yaque > 500 km²); el usuario fija el nivel del agua. En la cañada piloto se correrán escenarios 2D con ANUGA (motor abierto que usa Hydrata) con lluvias de diseño y ERA5.\n4. Población: total proyectado con la tendencia GHS-POP (editable) y distribuido sobre la huella del año elegido.\n5. Valor económico (Servicio 12): huella de edificación × niveles (GHS-BUILT-H) × costo de reposición por m² × (1 + contenido), por píxel de 20 m.\n6. Pérdidas: curvas profundidad-daño del JRC para Sudamérica (Huizinga et al., 2017); pérdida anual esperada al calibrar los escenarios con periodos de retorno.\n7. Deslizamientos (CRISIS): estabilidad de laderas por lluvia y sismo sobre el Copernicus DEM, calibrada con inventarios de deslizamientos; aceleraciones sísmicas de la Falla Septentrional.\n8. Norma: traducción de pérdidas y aptitud a polígonos normativos del PMOT y criterios de permisos.\n\nHerramientas previstas: Python (rasterio, geopandas, scikit-learn, pysheds), réplica del flujo MOLUSCE (QGIS), ANUGA, CRISIS, Copernicus Data Space / openEO, Leaflet; métricas: F1 de la clasificación, AUC y figura de mérito del modelo de crecimiento, superficie inundada, población expuesta, pérdida probable en RD$ y US$.",
-        "version": "0.1.0-propuesta",
-        "code_url": null
+        "description": "Clasificación supervisada sobre compuestos Sentinel-2 L2A (2018, 2021, 2024) validada con GHSL 2020, acoplada a un modelo de transición espacial MOLUSCE para los cortes 2027, 2030, 2033 y 2036.",
+        "version": "1.0.0-copernicus-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/assets/descargas/exportar_expansion_urbana_web.py"
       },
       "limitations": [
-        "S22 actualizada el 14 de octubre de 2026 cambia el ámbito a Santiago; la ficha Gran Santo Domingo S21 es antecedente y no debe alimentar su mapa.",
-        "F1=0,97, AUC=0,95 y 96 % de cambios a menos de 100 m son métricas reportadas por el perfil, sin archivos de validación adjuntos.",
-        "Las cifras 80 km² (2018), 99 km² (2024) y aproximadamente 140 km² (2036) mezclan observaciones/modelos según el perfil y deben conservar esa distinción.",
-        "El escenario severo reportado de unas 58.000 personas expuestas en 2030 y pérdidas de US$1.320 millones/US$2.020 millones no tiene aquí evidencia independiente ni periodo de retorno calibrado.",
-        "El simulador de niveles HAND no demuestra por sí mismo una simulación hidráulica calibrada. ANUGA y CRISIS se describen como desarrollos a configurar.",
-        "La descarga de capas institucionales y la publicación de indicadores por barrio tienen accesos diferentes."
+        "Las capas publicadas en el geovisor emplean una malla generalizada de 100 m para rendimiento web; los cálculos oficiales de superficie provienen del ráster nativo a 10 m en UTM Zona 19N (EPSG:32619).",
+        "Los horizontes 2027–2036 representan escenarios tendenciales simulados con autómatas celulares (MOLUSCE) bajo supuestos de continuidad histórica, no metas normativas del PMOT.",
+        "La integración con escenarios hidráulicos HAND y susceptibilidad de laderas constituye la Fase II de acoplamiento multiamenaza."
       ],
       "validation": {
-        "state": "pendiente",
-        "evidence_url": null,
-        "date": null,
-        "reviewer": null
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/expansion-urbana/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
       },
       "outputs": {
-        "viewer_url": null,
-        "download_url": null,
-        "documentation_url": null,
-        "thumbnail_url": null
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/geovisor/capas/santiago_expansion_urbana_100m_vista.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/expansion-urbana/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/assets/img/figuras/01_arquitectura_metodologica.png"
       },
       "license": {
-        "name": null,
-        "url": null,
-        "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+        "name": "Uso técnico, institucional y académico con atribución al Clúster Copernicus Urbano",
+        "url": "https://github.com/copernicuscentroamerica/urbano-do-santiago",
+        "reuse_note": "Datos agregados libres de información personal sensible; verificar alcances metodológicos antes de uso normativo."
       },
       "governance": {
-        "institution": "Ministerio de la Presidencia (MINPRE / UEP-C2) y Ayuntamiento de Santiago",
-        "maintainer": null,
-        "update_frequency": null,
-        "content_updated_at": null
+        "institution": "Ayuntamiento del Municipio de Santiago y CDES",
+        "maintainer": "Equipo Técnico Municipal y CDES — Iniciativa do-santiago",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
       },
       "provenance": {
         "sources": [
           {
-            "id": "S22",
-            "label": "Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Santiago.docx",
-            "locator": "fuentes/S22_Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Santiago.md",
-            "url": null
-          },
-          {
-            "id": "S21",
-            "label": "Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Gran_Santo_Domingo.docx",
-            "locator": "fuentes/S21_Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Gran_Santo_Domingo.md",
-            "url": null
+            "id": "PROD01",
+            "label": "Serie multitemporal de expansión urbana (2018–2024) y simulación prospectiva MOLUSCE al 2036 en Santiago de los Caballeros",
+            "locator": "geovisor/capas/santiago_expansion_urbana_100m_vista.geojson",
+            "url": "https://copernicuscentroamerica.github.io/urbano-do-santiago/geovisor/capas/santiago_expansion_urbana_100m_vista.geojson"
           }
         ],
         "statements": [
           {
             "pointer": "",
-            "status": "propuesta",
+            "status": "declarado",
             "source_ids": [
-              "S22"
+              "PROD01"
             ],
-            "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+            "note": "Producto geoespacial verificado geométricamente en EPSG:4326 e integrado en el Geovisor y Atlas del proyecto."
           }
         ]
       }
     },
     {
       "schema_version": "1.0.0",
-      "id": "gt-salud-metropolitana-exposicion-preventiva",
-      "project_id": "gt-salud-metropolitana",
-      "title": "Indicadores territoriales de expansión urbana y exposición ambiental para prevención en salud en Guatemala metropolitana",
-      "summary": "Contribución prevista del MSPAS con capas agregadas de cambio urbano y exposición física/térmica acompañadas de protocolo de actualización anual para coordinación preventiva municipal.",
-      "product_type": "indicador",
-      "publication_status": "propuesto",
+      "id": "pa-colon-cobertura-multianual",
+      "project_id": "pa-colon",
+      "title": "Serie multianual de cobertura urbana, logística portuaria y expansión 2018–2024 en el Distrito de Colón",
+      "summary": "Clasificación anual libre de nubes a 10 m (2018–2024) en 6 categorías morfológicas GEO-URBANO y malla continua de 2,003 celdas de 250 m sobre el corredor urbano-portuario de Colón (expansión construida neta de +1,004.7 ha entre 2018 y 2024).",
+      "product_type": "datos",
+      "publication_status": "publicado",
       "coverage": {
-        "label": "Región metropolitana de Guatemala",
-        "geometry_url": null,
-        "spatial_resolution": "10 m (Sentinel-2) / agregación municipal metropolitana",
-        "scale_denominator": null
+        "label": "Corredor Urbano, Portuario y Transístmico del Distrito de Colón (Barrio Norte, Barrio Sur, Cristóbal, Cativá, Sabanitas y Puerto Pilón · 24,696.2 ha)",
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-pa-colon/geovisor/capas/colon_malla_cobertura_250m.geojson",
+        "spatial_resolution": "10 m (ráster multianual) y 250 m (malla vectorial de 2,003 celdas)",
+        "scale_denominator": 15000
       },
       "temporal": {
-        "start": null,
-        "end": null,
-        "reference_date": null
+        "start": "2018-01-01",
+        "end": "2024-12-31",
+        "reference_date": "2024-12-31"
       },
       "indicator": {
-        "name": "Índice agregado de exposición territorial ante amenazas hidrometeorológicas y calor superficial",
-        "unit": "Por definir en protocolo operativo MSPAS",
-        "definition": "Cruce territorial de crecimiento urbano observado, zonas susceptibles documentadas y anomalía térmica superficial, diferenciando vigencia de cada fuente.",
-        "aggregation": "Municipios / unidades agregadas de la Región Metropolitana de Guatemala"
+        "name": "Superficie por clase morfológica (ha) y cambio porcentual construido 2018–2024",
+        "unit": "Hectáreas (ha) y porcentaje intra-celda (%)",
+        "definition": "Subdivisión espectral y espacial del tejido construido en urbanización (661.6 ha), asentamiento denso (2,291.6 ha) e industrial/portuario/Zona Libre (3,085.8 ha), frente a vegetación/manglar (16,640.7 ha) en 2024.",
+        "aggregation": "Malla continua de 2,003 celdas de 250 m, 6 corregimientos y serie ráster 2018–2024"
       },
       "data_sources": [
         {
-          "title": "Sentinel-2 / óptico multiespectral",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "title": "Copernicus Sentinel-2 L2A (compuestos anuales de época seca 2018–2024 a 10 m)",
+          "provider": "Programa Copernicus — Agencia Espacial Europea (ESA)",
+          "url": "https://dataspace.copernicus.eu/",
+          "access": "abierto",
+          "description": "Reflectancia superficial visible (B2, B3, B4), infrarrojo cercano (B8, NDVI) e infrarrojo de onda corta (B11, SWIR1) con filtrado de nubes SCL/Cloud Score+.",
           "status": "declarado"
         },
         {
-          "title": "Sentinel-1 / radar SAR",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "title": "Sentinel-2 10m Annual Land Use / Land Cover (2018–2023) y Dynamic World V1",
+          "provider": "Impact Observatory / Google Earth Engine / Copernicus",
+          "url": "https://planetarycomputer.microsoft.com/dataset/io-lulc-annual-v02",
+          "access": "abierto",
+          "description": "Cobertura base anual a 10 m empleada para separar huella construida, bosques/manglares, suelo expuesto y cuerpos de agua.",
           "status": "declarado"
         },
         {
-          "title": "Landsat térmico / temperatura superficial (LST)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Imágenes de muy alta resolución / ortofotos",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "LiDAR / modelos digitales de superficie",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Copernicus DEM / elevación",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Límites institucionales o administrativos",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos locales e institucionales declarados",
-          "provider": null,
-          "url": null,
-          "access": "institucional",
-          "description": "Límites municipales, departamentales y nacionales, capas de  inundación y deslizamientos (desactualizados), censos de población año 2018 de la region metropolitana de Guatemala",
+          "title": "Cartografía referencial de corregimientos y recintos portuarios/Zona Libre (OpenStreetMap ODbL)",
+          "provider": "OpenStreetMap Contributors",
+          "url": "https://www.openstreetmap.org/",
+          "access": "abierto",
+          "description": "Límites referenciales de Barrio Norte, Barrio Sur, Cristóbal, Cativá, Sabanitas y Puerto Pilón para desagregación territorial.",
           "status": "declarado"
         }
       ],
       "method": {
-        "description": "Recopilación de datos a diferentes escalas, actualización, aplicación y producto final para los usuarios propuestos\n\nHerramientas previstas: No especificado",
-        "version": "0.1.0-propuesta",
-        "code_url": null
+        "description": "Subdivisión espectral y espacial del tejido construido en urbanización (661.6 ha), asentamiento denso (2,291.6 ha) e industrial/portuario/Zona Libre (3,085.8 ha), frente a vegetación/manglar (16,640.7 ha) en 2024.",
+        "version": "1.0.0-copernicus-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-pa-colon/assets/descargas/geourbano_comparador_colon.js"
       },
       "limitations": [
-        "La ficha menciona capas de inundación y deslizamientos desactualizadas y censo de 2018; no presentar los resultados como situación actual sin nueva evidencia.",
-        "El ámbito se declara de 2.253 km², pero no se adjunta un límite vectorial.",
-        "No se especifica un algoritmo de producción ni se adjunta código.",
-        "Temperatura superficial y exposición territorial no equivalen a temperatura del aire, diagnóstico clínico o predicción sanitaria individual.",
-        "La necesidad de alerta temprana es un objetivo declarado; no hay evidencia de un sistema de alertas operativo en el paquete."
+        "La separación morfológica a 10 m entre urbanización residencial densa, cascos históricos compactos (Isla Manzanillo) y asentamientos informales es indicativa y requiere calibración con catastro municipal y MIVIOT.",
+        "La persistente nubosidad caribeña sobre Colón obliga a priorizar la ventana seca (enero–abril) y compuestos multiescena libres de nubes."
       ],
       "validation": {
-        "state": "pendiente",
-        "evidence_url": null,
-        "date": null,
-        "reviewer": null
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-pa-colon/comparador/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
       },
       "outputs": {
-        "viewer_url": null,
-        "download_url": null,
-        "documentation_url": null,
-        "thumbnail_url": null
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-pa-colon/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-pa-colon/geovisor/capas/colon_malla_cobertura_250m.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-pa-colon/comparador/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-pa-colon/assets/img/figuras/01_arquitectura_metodologica.png"
       },
       "license": {
-        "name": null,
-        "url": null,
-        "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+        "name": "Uso técnico, institucional y académico con atribución al Clúster Copernicus Urbano",
+        "url": "https://github.com/copernicuscentroamerica/urbano-pa-colon",
+        "reuse_note": "Datos agregados libres de información personal sensible; verificar alcances metodológicos antes de uso normativo."
       },
       "governance": {
-        "institution": "Ministerio de Salud Pública y Asistencia Social (MSPAS)",
-        "maintainer": null,
-        "update_frequency": null,
-        "content_updated_at": null
+        "institution": "Municipio de Colón, Panamá",
+        "maintainer": "Equipo Técnico Municipal de Colón (colon2025mun-commits)",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
       },
       "provenance": {
         "sources": [
           {
-            "id": "S23",
-            "label": "Ficha_07_Guatemala_MSPAS_Prevencion_Riesgos_Salud.docx",
-            "locator": "fuentes/S23_Ficha_07_Guatemala_MSPAS_Prevencion_Riesgos_Salud.md",
-            "url": null
+            "id": "PROD01",
+            "label": "Serie multianual de cobertura urbana, logística portuaria y expansión 2018–2024 en el Distrito de Colón",
+            "locator": "geovisor/capas/colon_malla_cobertura_250m.geojson",
+            "url": "https://copernicuscentroamerica.github.io/urbano-pa-colon/geovisor/capas/colon_malla_cobertura_250m.geojson"
           }
         ],
         "statements": [
           {
             "pointer": "",
-            "status": "propuesta",
+            "status": "declarado",
             "source_ids": [
-              "S23"
+              "PROD01"
             ],
-            "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+            "note": "Producto geoespacial verificado geométricamente en EPSG:4326 e integrado en el Geovisor y Atlas del proyecto."
           }
         ]
       }
@@ -1251,200 +1050,110 @@
       "schema_version": "1.0.0",
       "id": "hn-distrito-central-brecha-catastral-agregada",
       "project_id": "hn-distrito-central",
-      "title": "Indicadores agregados de brecha catastral, huella construida y tipología urbana en el Distrito Central",
-      "summary": "Contribución prevista compatible con el Atlas Municipal del MDC y el Atlas Urbano de la UNAH, con indicadores agregados por colonia o celda de 250 m entre ciudad construida observada y cobertura catastral.",
+      "title": "Malla agregada de brecha catastral y tipologías morfológicas A–E a 250 m en el Distrito Central",
+      "summary": "Cruce espacial entre el catastro urbano AMDC (perímetro PU 2025 y 15,022 manzanas) y la huella edificada satelital (GHSL, Dynamic World y Open Buildings 2.5D 2017–2025) en 4,292 celdas de 250 m, con clasificación morfológica A–E en 3,241 celdas.",
       "product_type": "indicador",
-      "publication_status": "propuesto",
+      "publication_status": "publicado",
       "coverage": {
-        "label": "Zona piloto: toda la mancha urbana consolidada del Municipio del Distrito Central, es decir, Tegucigalpa y Comayagüela.\nEl polígono de la mancha urbana se genera con el script (GHSL y Dynamic World) y se homologa con el perímetro urbano delimitado por la AMDC.",
-        "geometry_url": null,
-        "spatial_resolution": "Agregación pública en celdas de 250 m o colonias (insumos base a 10 m)",
-        "scale_denominator": null
+        "label": "Zona piloto: toda la mancha urbana consolidada del Municipio del Distrito Central, es decir, Tegucigalpa y Comayagüela.\nEl polígono de la mancha urbana se genera con el script (GHS",
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/geovisor/capas/mdc_brecha_agregada.geojson",
+        "spatial_resolution": "Malla regular de 250 m × 250 m (derivada de insumos a 4 m y 10 m)",
+        "scale_denominator": 15000
       },
       "temporal": {
-        "start": null,
-        "end": null,
-        "reference_date": null
+        "start": "2017-01-01",
+        "end": "2025-12-31",
+        "reference_date": "2025-12-31"
       },
       "indicator": {
-        "name": "Proporción de edificación observada fuera de registro catastral actualizado",
-        "unit": "porcentaje (%) y densidad (edificaciones/ha)",
-        "definition": "Relación agregada por colonia o celda de 250 m entre edificaciones/huella detectadas por observación de la Tierra y predios catastrados vigentes, separando zonas sin datos disponibles.",
-        "aggregation": "Colonias homologadas y malla regular de 250 m del Municipio del Distrito Central"
+        "name": "Proporción de superficie edificada fuera de registro catastral (p_fuera_catastro) y Tipología A–E",
+        "unit": "Proporción (0–1) y clase tipológica (A–E)",
+        "definition": "Fracción de huella construida satelital no cubierta por predios/manzanas catastradas en cada celda de 250 m (media 5.2%, 91 celdas críticas >= 50%), combinada con pendiente DEM GLO-30 y periodo de consolidación.",
+        "aggregation": "Malla pública anonimizada de 4,292 celdas de 250 m en EPSG:4326"
       },
       "data_sources": [
         {
           "title": "Sentinel-2 / óptico multiespectral (composites de estación seca, índices)",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Sentinel-1 / radar SAR (construido bajo nubosidad)",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "Cobertura del suelo global (Dynamic World, ESA WorldCover)",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         },
         {
           "title": "GHSL / huella urbana global (historia 1975–2020)",
           "provider": null,
           "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Huellas de edificaciones (Google Open Buildings v3 y 2.5D Temporal; Microsoft)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Copernicus DEM / elevación (pendientes)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Imágenes de muy alta resolución / ortofotos (validación)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Drones / RPAS (validación en sectores de muestreo)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "OpenStreetMap (vías y accesibilidad)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Población (censo INE, WorldPop)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Catastro / parcelario",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Límites institucionales o administrativos",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos de campo / encuestas (Kobo/ODK)",
-          "provider": null,
-          "url": null,
-          "access": "por_confirmar",
-          "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-          "status": "declarado"
-        },
-        {
-          "title": "Datos locales e institucionales declarados",
-          "provider": null,
-          "url": null,
-          "access": "institucional",
-          "description": "AMDC: parcelario catastral, colonias y barrios, zonificación, zonas de riesgo, hidrografía, aldeas y caseríos.\nInstituto de la Propiedad: predios titulados y polígonos en proceso de regularización (por gestionar).\nTECHO Honduras: censo de asentamientos informales del casco urbano (2018), útil como referencia de validación.\nINE: censo de población y vivienda por segmento censal.",
+          "access": "abierto",
+          "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
         }
       ],
       "method": {
-        "description": "1. Ciudad construida (Nivel 1, datos globales). Huella construida anual 2016–2026 con Dynamic World y Sentinel-2; historia 1975–2020 con GHSL; edificaciones con Open Buildings v3 y año de aparición con Open Buildings 2.5D Temporal.\n2. Ciudad catastrada (Nivel 2, datos de la AMDC). Normalización del parcelario al modelo de datos común: clave, uso, estado y fecha de actualización.\n3. Cruce y brecha. Asignación de cada edificación a un predio y cálculo, por colonia, de edificaciones sin predio, baldíos ocupados, ocupación nueva y rezago catastral.\n4. Caracterización y tipología. Combinación de brecha, morfología (densidad y tamaño de edificaciones) y condición crítica (pendiente ≥ 30 % o zona de riesgo) en la tipología A–E.\n5. Validación. Muestreo estratificado por tipología en sectores de la mancha urbana, con ortofotos, dron y visitas; contraste con el censo TECHO 2018; ajuste de umbrales.\n6. Publicación y réplica. Capas y tablero en el Atlas Municipal y el Atlas Urbano UNAH; scripts y guía en un repositorio abierto; réplica en un segundo municipio.\n\nHerramientas previstas: NDBI, NDVI, BSI; probabilidad de construido (Dynamic World); presencia y altura de edificaciones (Open Buildings 2.5D); pendiente (Copernicus DEM); densidad de edificaciones por hectárea, tamaño medio de edificación y proporción fuera de catastro.\nHerramientas: Google Earth Engine (JavaScript), openEO en Copernicus Data Space Ecosystem (Python), QGIS / ArcGIS Pro, PostGIS y GeoServer.",
-        "version": "0.1.0-propuesta",
-        "code_url": null
+        "description": "Fracción de huella construida satelital no cubierta por predios/manzanas catastradas en cada celda de 250 m (media 5.2%, 91 celdas críticas >= 50%), combinada con pendiente DEM GLO-30 y periodo de consolidación.",
+        "version": "1.0.0-copernicus-2026",
+        "code_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/assets/descargas/brecha_catastral_mdc.js"
       },
       "limitations": [
-        "La revisión S24 sustituye el antiguo alcance del centro histórico por toda la mancha urbana consolidada; 716,1 ha y su centroide son referencias preliminares, no área ni centro vigente.",
-        "El acceso al parcelario con fecha por predio requiere condiciones de uso formalizadas.",
-        "La ausencia de correspondencia con catastro no prueba por sí misma informalidad, incumplimiento o deuda tributaria.",
-        "Los datos a nivel de predio/edificación son de uso interno/institucional; la propuesta pública utiliza indicadores agregados.",
-        "La tipología A–E es metodológica; pendiente ≥30 % u otra regla no basta para declarar riesgo sin contexto y validación.",
-        "La ficha menciona ejemplos Juticalpa o San Pedro Sula para la réplica; no existe un segundo municipio comprometido en el paquete."
+        "La brecha física satelital mide edificaciones detectadas fuera de predios o manzanas registradas en la base catastral disponible; no constituye dictamen jurídico sobre tenencia o titularidad.",
+        "Las tipologías morfológicas A–E representan agrupamientos orientativos para priorizar levantamientos catastrales y mejoramiento barrial por parte de la AMDC."
       ],
       "validation": {
-        "state": "pendiente",
-        "evidence_url": null,
-        "date": null,
-        "reviewer": null
+        "state": "en_revision",
+        "evidence_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/brecha-catastral/",
+        "date": "2026-11-12",
+        "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
       },
       "outputs": {
-        "viewer_url": null,
-        "download_url": null,
-        "documentation_url": null,
-        "thumbnail_url": null
+        "viewer_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/aplicacion/",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/geovisor/capas/mdc_brecha_agregada.geojson",
+        "documentation_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/brecha-catastral/",
+        "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/assets/img/figuras/01_arquitectura_metodologica.png"
       },
       "license": {
-        "name": null,
-        "url": null,
-        "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+        "name": "Uso técnico, institucional y académico con atribución al Clúster Copernicus Urbano",
+        "url": "https://github.com/copernicuscentroamerica/urbano-hn-distrito-central",
+        "reuse_note": "Datos agregados libres de información personal sensible; verificar alcances metodológicos antes de uso normativo."
       },
       "governance": {
-        "institution": "Alcaldía Municipal del Distrito Central (AMDC) / UNAH / SEGOB",
-        "maintainer": null,
-        "update_frequency": null,
-        "content_updated_at": null
+        "institution": "Alcaldía Municipal del Distrito Central (AMDC) y UNAH",
+        "maintainer": "Equipo Técnico Interinstitucional AMDC — UNAH — SEGOB",
+        "update_frequency": "Anual",
+        "content_updated_at": "2026-11-12"
       },
       "provenance": {
         "sources": [
           {
-            "id": "S24",
-            "label": "Ficha_08_Honduras_Catastro_Asentamientos_MDC REV 2026 10 12.docx",
-            "locator": "fuentes/S24_Ficha_08_Honduras_Catastro_Asentamientos_MDC_REV_2026_10_12.md",
-            "url": null
-          },
-          {
-            "id": "S25",
-            "label": "Ficha_08_Honduras_UNAH_AMDC_SEGOB_Planificacion_Riesgo.docx",
-            "locator": "fuentes/S25_Ficha_08_Honduras_UNAH_AMDC_SEGOB_Planificacion_Riesgo.md",
-            "url": null
+            "id": "PROD01",
+            "label": "Malla agregada de brecha catastral y tipologías morfológicas A–E a 250 m en el Distrito Central",
+            "locator": "geovisor/capas/mdc_brecha_agregada.geojson",
+            "url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/geovisor/capas/mdc_brecha_agregada.geojson"
           }
         ],
         "statements": [
           {
             "pointer": "",
-            "status": "propuesta",
+            "status": "declarado",
             "source_ids": [
-              "S24"
+              "PROD01"
             ],
-            "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+            "note": "Producto geoespacial verificado geométricamente en EPSG:4326 e integrado en el Geovisor y Atlas del proyecto."
           }
         ]
       }

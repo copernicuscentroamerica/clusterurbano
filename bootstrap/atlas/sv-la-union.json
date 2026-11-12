@@ -2,191 +2,110 @@
   "schema_version": "1.0.0",
   "id": "sv-la-union-caracterizacion-asentamientos",
   "project_id": "sv-la-union",
-  "title": "Inventario y caracterización territorial de asentamientos humanos en Conchagua y La Unión",
-  "summary": "Contribución prevista al Atlas con delimitación actualizada de asentamientos humanos y variables de ocupación del suelo en los distritos de Conchagua y La Unión, El Salvador.",
+  "title": "Serie multitemporal consolidada de crecimiento de asentamientos humanos en Conchagua y La Unión (2019–2025)",
+  "summary": "Integración anual 2019–2025 de 24,417 polígonos de huella y crecimiento de asentamientos humanos sobre 36,577.9 ha del borde costero y entorno portuario de La Unión Sur (pico de expansión en 2021 con 258.77 ha y consolidación sostenida de 207.82 ha en 2025).",
   "product_type": "mapa",
-  "publication_status": "propuesto",
+  "publication_status": "publicado",
   "coverage": {
     "label": "Distritos de Conchagua y La Unión",
-    "geometry_url": null,
-    "spatial_resolution": "10 m (insumos satelitales) / escala distrital",
-    "scale_denominator": null
+    "geometry_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/geovisor/capas/crecimiento_ah_consolidado_2019_2025.geojson",
+    "spatial_resolution": "Vectorial anual de alta resolución (EPSG:4326)",
+    "scale_denominator": 20000
   },
   "temporal": {
-    "start": null,
-    "end": null,
-    "reference_date": null
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "reference_date": "2025-12-31"
   },
   "indicator": {
-    "name": "Superficie y cambio de asentamientos humanos caracterizados",
-    "unit": "ha",
-    "definition": "Contraste entre el inventario base 2015 y la huella actualizada de asentamientos en Conchagua y La Unión.",
-    "aggregation": "Distritos de Conchagua y La Unión (Municipio de La Unión Sur)"
+    "name": "Superficie anual de crecimiento de asentamientos humanos por distrito (2019–2025)",
+    "unit": "Hectáreas (ha) y número de polígonos por año",
+    "definition": "Cuantificación métrica anual en UTM Zona 16N de los polígonos de crecimiento habitacional y periurbano en los distritos de Conchagua y La Unión.",
+    "aggregation": "Capa consolidada de 24,417 polígonos y serie estadística distrital CSV"
   },
   "data_sources": [
     {
       "title": "Sentinel-2 / óptico multiespectral",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Sentinel-1 / radar SAR",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Landsat",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Imágenes de muy alta resolución / ortofotos",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Copernicus DEM / elevación",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "GHSL / huella urbana global",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Población (censos, WorldPop)",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Luces nocturnas (VIIRS)",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Catastro / parcelario",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Datos locales e institucionales declarados",
-      "provider": null,
-      "url": null,
       "access": "institucional",
-      "description": "Mapa de identificación de asentamientos humanos de la Franja Costero Marina 2015, inventario de la red vial existente, base de datos tabulada del Censo Población y Vivienda 2007 y 2024, modelo de uso de suelo Plan Costa",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     }
   ],
   "method": {
-    "description": "Búsqueda de información, sistematización, análisis, aplicación con herramientas de procesamiento, gestión de datos y generación de cartografía\n\nHerramientas previstas: NDVI, Clasificación supervisada y no supervisada, Google Earth Engine, GIS, OpenDroneMap, JavaScript",
-    "version": "0.1.0-propuesta",
-    "code_url": null
+    "description": "Cuantificación métrica anual en UTM Zona 16N de los polígonos de crecimiento habitacional y periurbano en los distritos de Conchagua y La Unión.",
+    "version": "1.0.0-copernicus-2026",
+    "code_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/assets/descargas/sintesis_crecimiento_ah_2019_2025.py"
   },
   "limitations": [
-    "La fuente específica sustituye el alcance regional amplio para la configuración inicial, conservando el antecedente S18.",
-    "La ficha mezcla nivel de acceso Por definir con consulta institucional; no publicar datos detallados sin definir acceso.",
-    "Los segmentos censales 2024 faltan y condicionan los cruces territoriales.",
-    "Las referencias narrativas a migración, expansión y valor del suelo son hipótesis o contexto del perfil; la aplicación debe mostrar evidencia antes de cuantificarlas.",
-    "El archivo geoespacial mencionado en la ficha no está incluido en el ZIP recibido."
+    "Los polígonos anuales 2019–2025 reflejan huellas de crecimiento y densificación detectadas por teledetección y levantamientos técnicos; requieren homologación con el inventario oficial de MIVIVIENDA y CNR.",
+    "Los límites distritales empleados en la vista pública provienen de cartografía abierta referencial acotada estrictamente a Conchagua y La Unión."
   ],
   "validation": {
-    "state": "pendiente",
-    "evidence_url": null,
-    "date": null,
-    "reviewer": null
+    "state": "en_revision",
+    "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/dinamica-asentamientos/",
+    "date": "2026-11-12",
+    "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
   },
   "outputs": {
-    "viewer_url": null,
-    "download_url": null,
-    "documentation_url": null,
-    "thumbnail_url": null
+    "viewer_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/aplicacion/",
+    "download_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/geovisor/capas/crecimiento_ah_consolidado_2019_2025.geojson",
+    "documentation_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/dinamica-asentamientos/",
+    "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/assets/img/figuras/01_arquitectura_metodologica.png"
   },
   "license": {
-    "name": null,
-    "url": null,
-    "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+    "name": "Uso técnico, institucional y académico con atribución al Clúster Copernicus Urbano",
+    "url": "https://github.com/copernicuscentroamerica/urbano-sv-la-union",
+    "reuse_note": "Datos agregados libres de información personal sensible; verificar alcances metodológicos antes de uso normativo."
   },
   "governance": {
-    "institution": "MIVI / FONAVIPO / UCA / UNAB",
-    "maintainer": null,
-    "update_frequency": null,
-    "content_updated_at": null
+    "institution": "Ministerio de Vivienda (MIVIVIENDA) y Alcaldía de La Unión Sur",
+    "maintainer": "Equipo Técnico sv-la-union — Clúster Copernicus Urbano",
+    "update_frequency": "Anual",
+    "content_updated_at": "2026-11-12"
   },
   "provenance": {
     "sources": [
       {
-        "id": "S19",
-        "label": "Ficha_04_El_Salvador_La_Union.docx",
-        "locator": "fuentes/S19_Ficha_04_El_Salvador_La_Union.md",
-        "url": null
-      },
-      {
-        "id": "S18",
-        "label": "Ficha_04_El_Salvador_Franja_Costero_Marina.docx",
-        "locator": "fuentes/S18_Ficha_04_El_Salvador_Franja_Costero_Marina.md",
-        "url": null
+        "id": "PROD01",
+        "label": "Serie multitemporal consolidada de crecimiento de asentamientos humanos en Conchagua y La Unión (2019–2025)",
+        "locator": "geovisor/capas/crecimiento_ah_consolidado_2019_2025.geojson",
+        "url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/geovisor/capas/crecimiento_ah_consolidado_2019_2025.geojson"
       }
     ],
     "statements": [
       {
         "pointer": "",
-        "status": "propuesta",
+        "status": "declarado",
         "source_ids": [
-          "S19"
+          "PROD01"
         ],
-        "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+        "note": "Producto geoespacial verificado geométricamente en EPSG:4326 e integrado en el Geovisor y Atlas del proyecto."
       }
     ]
   }

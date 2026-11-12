@@ -87,17 +87,17 @@
       "enabled": true
     },
     {
-      "id": "gt-salud-metropolitana",
-      "proposed_owner": "copernicuscentroamerica",
-      "proposed_repository": "urbano-gt-salud-metropolitana",
+      "id": "pa-colon",
+      "enabled": true,
       "source_mode": "canonical",
-      "repository": "copernicuscentroamerica/urbano-gt-salud-metropolitana",
+      "repository": "copernicuscentroamerica/urbano-pa-colon",
+      "proposed_owner": "copernicuscentroamerica",
+      "proposed_repository": "urbano-pa-colon",
       "default_branch": "main",
       "manifest_path": "project.json",
       "content_path": "content/project.md",
-      "bootstrap_manifest": "bootstrap/projects/gt-salud-metropolitana.json",
-      "bootstrap_content": "bootstrap/content/gt-salud-metropolitana.md",
-      "enabled": true
+      "bootstrap_manifest": "bootstrap/projects/pa-colon.json",
+      "bootstrap_content": "bootstrap/content/pa-colon.md"
     },
     {
       "id": "hn-distrito-central",

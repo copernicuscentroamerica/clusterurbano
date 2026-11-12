@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-11-10T20:41:47Z",
+  "generated_at": "2026-11-12T15:32:47Z",
   "source_system": "github",
   "overall_state": "ok",
   "projects": [
@@ -345,55 +345,58 @@
       ]
     },
     {
-      "project_id": "gt-salud-metropolitana",
+      "project_id": "pa-colon",
       "sync_state": "ok",
-      "last_success_at": "2026-11-10T20:41:47Z",
-      "source_updated_at": "2026-11-10T12:42:56Z",
+      "last_success_at": "2026-11-12T15:26:43Z",
+      "source_updated_at": "2026-11-12T15:26:43Z",
       "error_code": null,
       "metrics": {
-        "open_tasks": 2,
-        "completed_tasks": 0,
+        "open_tasks": 1,
+        "completed_tasks": 1,
         "in_review_tasks": 1,
         "blocked_tasks": 0
       },
       "tasks": [
         {
-          "task_id": "copernicuscentroamerica/urbano-gt-salud-metropolitana#1",
-          "project_id": "gt-salud-metropolitana",
-          "repository": "copernicuscentroamerica/urbano-gt-salud-metropolitana",
+          "task_id": "copernicuscentroamerica/urbano-pa-colon#1",
+          "project_id": "pa-colon",
+          "repository": "copernicuscentroamerica/urbano-pa-colon",
           "issue_number": 1,
-          "issue_url": "https://github.com/copernicuscentroamerica/urbano-gt-salud-metropolitana/issues/1",
-          "title": "[PMV-AC1] Publicar límite de los 17 municipios metropolitanos y protocolo base de variables ambientales",
+          "issue_url": "https://github.com/copernicuscentroamerica/urbano-pa-colon/issues/1",
+          "title": "[PMV-AC1] Integrar comparador multianual Sentinel-2 L2A y LULC 10 m (2018–2024) en el corredor de Colón",
+          "workflow_status": "Terminado",
+          "issue_state": "CLOSED",
+          "completion_reason": "completed",
+          "blocked": false,
+          "assignees": [],
+          "priority": "Alta",
+          "iteration": "Sprint 2 · Procesamiento Copernicus",
+          "due_date": null,
+          "evidence_urls": [
+            "https://copernicuscentroamerica.github.io/urbano-pa-colon/comparador/",
+            "https://copernicuscentroamerica.github.io/urbano-pa-colon/aplicacion/"
+          ],
+          "source_updated_at": "2026-11-12T15:26:43Z"
+        },
+        {
+          "task_id": "copernicuscentroamerica/urbano-pa-colon#2",
+          "project_id": "pa-colon",
+          "repository": "copernicuscentroamerica/urbano-pa-colon",
+          "issue_number": 2,
+          "issue_url": "https://github.com/copernicuscentroamerica/urbano-pa-colon/issues/2",
+          "title": "[PMV-AC2] Contrastar transición urbano-portuaria 2018–2024 con zonificación municipal y áreas protegidas de manglar",
           "workflow_status": "En revisión",
           "issue_state": "OPEN",
           "completion_reason": null,
           "blocked": false,
           "assignees": [],
           "priority": "Alta",
-          "iteration": "Sprint 1 · Línea base y datos",
+          "iteration": "Sprint 3 · Geovisor y validación",
           "due_date": null,
           "evidence_urls": [
-            "https://copernicuscentroamerica.github.io/urbano-gt-salud-metropolitana/aplicacion/"
+            "https://copernicuscentroamerica.github.io/urbano-pa-colon/resultados/"
           ],
-          "source_updated_at": "2026-11-10T12:42:49Z"
-        },
-        {
-          "task_id": "copernicuscentroamerica/urbano-gt-salud-metropolitana#2",
-          "project_id": "gt-salud-metropolitana",
-          "repository": "copernicuscentroamerica/urbano-gt-salud-metropolitana",
-          "issue_number": 2,
-          "issue_url": "https://github.com/copernicuscentroamerica/urbano-gt-salud-metropolitana/issues/2",
-          "title": "[PMV-AC2] Procesar compuesto de huella urbana Sentinel-2 y temperatura superficial Landsat para MSPAS",
-          "workflow_status": "En curso",
-          "issue_state": "OPEN",
-          "completion_reason": null,
-          "blocked": false,
-          "assignees": [],
-          "priority": "Alta",
-          "iteration": "Sprint 2 · Procesamiento Copernicus",
-          "due_date": null,
-          "evidence_urls": [],
-          "source_updated_at": "2026-11-10T12:42:56Z"
+          "source_updated_at": "2026-11-12T15:26:43Z"
         }
       ]
     },

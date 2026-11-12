@@ -42,7 +42,7 @@ EXPECTED_IDS = [
     "sv-la-union",
     "gt-bethania",
     "do-santiago",
-    "gt-salud-metropolitana",
+    "pa-colon",
     "hn-distrito-central",
 ]
 

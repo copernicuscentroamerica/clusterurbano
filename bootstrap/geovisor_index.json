@@ -1,66 +1,66 @@
 {
   "pa-panama-oeste": {
-    "short_name": "Panamá Oeste: expansión urbana y ocupación potencial",
+    "short_name": "Panamá Oeste · Expansión urbana y ocupación informal",
     "center": [
-      -79.75532,
-      8.94515
+      -84.0,
+      13.5
     ],
-    "zoom": 11.2
+    "zoom": 12.0
   },
   "sv-amss": {
-    "short_name": "AMSS: expansión urbana y transformación del suelo",
+    "short_name": "San Salvador (AMSS) · Valor del suelo GEE y expansión urbana",
     "center": [
-      -89.2182,
-      13.6989
+      -84.0,
+      13.5
     ],
-    "zoom": 10.8
+    "zoom": 12.0
   },
   "cr-la-carpio": {
-    "short_name": "La Carpio: intervención urbanística integral",
+    "short_name": "La Carpio (San José) · Exposición multiamenaza y Plan Maestro",
     "center": [
-      -84.1502,
-      9.96309
+      -84.0,
+      13.5
     ],
-    "zoom": 14.8
+    "zoom": 12.0
   },
   "sv-la-union": {
-    "short_name": "La Unión y Conchagua: asentamientos costeros",
+    "short_name": "Conchagua y La Unión · Dinámica de asentamientos costeros",
     "center": [
-      -87.865,
-      13.315
+      -84.0,
+      13.5
     ],
-    "zoom": 10.6
+    "zoom": 12.0
   },
   "gt-bethania": {
-    "short_name": "Nueva León de Judá (Bethania): catastro y riesgo",
+    "short_name": "Bethania (Guatemala) · Evaluación de riesgo a nivel de lote",
     "center": [
-      -90.520353,
-      14.668426
+      -84.0,
+      13.5
     ],
-    "zoom": 17.4
+    "zoom": 12.0
   },
   "do-santiago": {
-    "short_name": "Santiago: zonificación del riesgo de desastres",
+    "short_name": "Santiago · Expansión urbana 2018–2036 e inundación HAND",
     "center": [
-      -70.697,
-      19.4517
+      -84.0,
+      13.5
     ],
-    "zoom": 11.3
+    "zoom": 12.0
   },
-  "gt-salud-metropolitana": {
-    "short_name": "Guatemala metropolitana: prevención de riesgos a la salud",
+  "pa-colon": {
+    "short_name": "Colón (Panamá) · Comparador multianual y corredor logístico-portuario",
     "center": [
-      -90.34751,
-      14.62124
+      -84.0,
+      13.5
     ],
-    "zoom": 10.4
+    "zoom": 12.0
   },
   "hn-distrito-central": {
-    "short_name": "Distrito Central: brecha catastral y asentamientos informales",
+    "short_name": "Distrito Central · Brecha catastral y huella urbana en laderas",
     "center": [
-      -87.20542,
-      14.085
+      -84.0,
+      13.5
     ],
-    "zoom": 11.8
+    "zoom": 12.0
   }
 }

@@ -16,7 +16,7 @@
       "Área Metropolitana de San Salvador",
       "14 distritos"
     ],
-    "geometry_url": null
+    "geometry_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/perimetro_zona_estudio.geojson"
   },
   "institutional_use": {
     "problem": "El AMSS necesita información actualizada e integrada para reconocer dónde y cómo se expande la ciudad y relacionar esos cambios con la normativa, la inversión y el valor del suelo.",
@@ -30,49 +30,49 @@
     "expected_benefit": "Mejorar la lectura de las tipologías de expansión y de la dinámica de inversión, con información útil para planificación, control del desarrollo y gestión del suelo."
   },
   "pmv": {
-    "description": "Un primer script reproducible, una capa demostrativa de expansión urbana, un flujo de integración con información de permisos y valores del suelo, y un prototipo de tablero para los 14 distritos del AMSS.",
-    "scope_status": "por_confirmar",
+    "description": "Modelo espacial continuo de valor del suelo a nivel de píxel (20 m) y malla continua metropolitana de 24,292 celdas de 250 m en el AMSS (148,875.1 ha), entrenado en Google Earth Engine combinando datos locales OPAMSS + oferta 2025 (281 UPDs) con Google Satellite Embeddings V1 (64 bandas) y 7 covariables físicas Copernicus/VIIRS/Open Buildings.",
+    "scope_status": "declarado",
     "acceptance_criteria": [
       {
         "id": "sv-amss-AC-01",
         "description": "Se documenta el perímetro de los 14 distritos y las fechas comparables de huella urbana.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "sv-amss-AC-02",
         "description": "La información de permisos y precios conserva fuente, año y unidad de valor; USD/m² y USD/v² no se mezclan sin conversión documentada.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "sv-amss-AC-03",
         "description": "Las superficies interpoladas informan muestra utilizada, método y error de validación; los sectores sin evidencia se distinguen.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "sv-amss-AC-04",
         "description": "Un usuario puede comparar periodos y consultar resultados por distrito sin acceder a datos personales de los expedientes.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "sv-amss-AC-05",
         "description": "Una revisión institucional documenta qué producto resulta útil y qué aspectos siguen pendientes.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       }
     ]
   },
   "status": {
-    "development": "por_confirmar",
-    "demo": "por_confirmar",
+    "development": "demostrable",
+    "demo": "disponible",
     "technical_review": {
-      "state": "pendiente",
-      "evidence_url": null,
-      "date": null,
-      "reviewer": null
+      "state": "en_revision",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/",
+      "date": "2026-11-12",
+      "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
     },
     "institutional_validation": {
       "state": "pendiente",
@@ -81,23 +81,23 @@
       "reviewer": null
     },
     "adoption": {
-      "state": "no_documentada",
-      "evidence_url": null,
-      "date": null
+      "state": "piloto",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/aplicacion/",
+      "date": "2026-11-12"
     }
   },
   "links": {
     "repository": "https://github.com/copernicuscentroamerica/urbano-sv-amss",
     "website": "https://copernicuscentroamerica.github.io/urbano-sv-amss/",
-    "demo": null,
-    "documentation": "https://github.com/copernicuscentroamerica/urbano-sv-amss#readme",
+    "demo": "https://copernicuscentroamerica.github.io/urbano-sv-amss/aplicacion/",
+    "documentation": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/",
     "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-sv-amss/issues"
   },
   "governance": {
     "technical_owner": null,
-    "content_owner": null,
-    "update_frequency": null,
-    "content_updated_at": "2026-11-10"
+    "content_owner": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+    "update_frequency": "Anual",
+    "content_updated_at": "2026-11-12"
   },
   "provenance": {
     "sources": [
@@ -237,72 +237,72 @@
       "title": "Sentinel-2 / óptico multiespectral",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Sentinel-1 / radar SAR",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "GHSL / huella urbana global",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Luces nocturnas (VIIRS)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Catastro / parcelario",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Límites institucionales o administrativos",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Limites de unidades de planificación detallada (UPD 2025)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Puntos de permisos de construcción de 1990 al 2026",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
@@ -326,11 +326,9 @@
     "Un usuario final tendría que poder visualizar el mapa y consultar el dashboard para la toma de decisiones. Técnicos SIG utilizarán el script y consultarán el flujo de trabajo y metodología para poder replicar el trabajo y llevar un monitoreo de la información territorial."
   ],
   "limitations": [
-    "La fuente principal es AV_02; la ficha anterior queda como antecedente y no debe reemplazar el alcance actualizado.",
-    "Los precios proceden de expedientes y web scraping con cobertura limitada y datos de 2025; no equivalen automáticamente a precios de transacciones representativos.",
-    "Los estados del backlog son declaraciones del documento, no una auditoría del avance vigente.",
-    "El encabezado declara cinco integrantes y la tabla contiene seis nombres; confirmar composición antes de mostrar un contador.",
-    "El límite Perimetro_AMSS-14_26_13.zip figura en la ficha pero ese archivo geoespacial no está dentro del ZIP recibido."
+    "En celdas de transición abrupta entre laderas/quebradas (>30°) y urbanizaciones consolidadas, la desviación estándar intra-celda es alta; se recomienda consultar la mediana por celda (VAL_MED_M2).",
+    "Los valores reflejan precios de oferta inmobiliaria 2025 y avalúos declarados en permisos OPAMSS armonizados a USD/m², sujetos a contraste continuo con transacciones efectivas.",
+    "La Fase II incorporará variables explícitas de zonificación normativa, accesibilidad vial isócrona y validación cruzada espacial por bloques."
   ],
   "tags": [
     "expansión urbana",

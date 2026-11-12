@@ -30,7 +30,7 @@
     "expected_benefit": "Facilitar el análisis de gabinete sobre los 105 predios y 124 techos de vivienda clasificados y la priorización de verificaciones técnicas antes de adoptar decisiones sobre cada lote."
   },
   "pmv": {
-    "description": "Geovisor interactivo de la zona acotada de Nueva León de Judá (7.15 ha delimitadas mediante recuadro derivado de la capa de predios), integrando Modelo Digital de Elevación (DEM 0.5 m), mapa de pendientes y zonificación de amenaza (<12°, 12–22°, 22–32°, >32°), ortofoto RPAS (~2.4 cm/px), 124 techos de vivienda (Google-Microsoft Open Buildings + RPAS) y 105 predios clasificados por nivel de riesgo (Bajo, Medio, Alto y Muy Alto), junto con el corredor de líneas de alta tensión.",
+    "description": "Evaluación multicriterio de riesgo predial y habitacional en el asentamiento Nueva León de Judá (7.15 ha, Zona 7, Colonia Bethania), integrando DEM TIN de 0.5 m, mapa continuo y zonificado de pendientes (<12° a >32°), ortofoto RPAS (~2.4 cm/px), 124 huellas de techos clasificadas (24 Muy Alto, 70 Alto, 19 Medio, 11 Bajo), 105 lotes catastrales y franja de servidumbre de alta tensión.",
     "scope_status": "declarado",
     "acceptance_criteria": [
       {
@@ -70,9 +70,9 @@
     "demo": "disponible",
     "technical_review": {
       "state": "en_revision",
-      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/",
-      "date": "2026-11-11",
-      "reviewer": "Equipo Técnico Cluster Urbano"
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/evaluacion-riesgo/",
+      "date": "2026-11-12",
+      "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
     },
     "institutional_validation": {
       "state": "pendiente",
@@ -83,21 +83,21 @@
     "adoption": {
       "state": "piloto",
       "evidence_url": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/",
-      "date": "2026-11-11"
+      "date": "2026-11-12"
     }
   },
   "links": {
     "repository": "https://github.com/copernicuscentroamerica/urbano-gt-bethania",
     "website": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/",
     "demo": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/aplicacion/",
-    "documentation": "https://github.com/copernicuscentroamerica/urbano-gt-bethania#readme",
+    "documentation": "https://copernicuscentroamerica.github.io/urbano-gt-bethania/evaluacion-riesgo/",
     "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-gt-bethania/issues"
   },
   "governance": {
     "technical_owner": "Rafael Ruiz Urizar",
     "content_owner": "UDEVIPO — Unidad de Catastro",
     "update_frequency": "Semestral",
-    "content_updated_at": "2026-11-11"
+    "content_updated_at": "2026-11-12"
   },
   "provenance": {
     "sources": [
@@ -279,9 +279,8 @@
     "Geovisor interactivo con 9 capas superpuestas en Nueva León de Judá"
   ],
   "limitations": [
-    "El levantamiento predial y aerofotogramétrico cubre específicamente el asentamiento acotado Nueva León de Judá (7.15 ha en el recuadro de estudio; 0.81 ha de superficie neta de lotes), dentro del sector general de Colonia Bethania (Zona 7).",
-    "El Modelo Digital de Elevación (0.5 m) y el mapa de pendientes provienen de la interpolación TIN de las curvas de nivel de 1 m; para diseño ejecutivo de muros de contención se recomienda levantamiento topográfico/geotécnico puntual en talud.",
-    "La clasificación de riesgo por techo y lote combina pendiente de terreno, servidumbre eléctrica y desfogue sanitario como instrumento técnico de priorización de gabinete; las resoluciones administrativas de escrituración o reubicación requieren verificación en campo por UDEVIPO."
+    "La clasificación multicriterio identifica exposición física por pendiente de ladera y servidumbre eléctrica para priorizar inspecciones; no sustituye estudios geotécnicos puntuales de estabilidad de taludes.",
+    "Las huellas de techos combinan detección satelital (Open Buildings) y restitución sobre ortofoto RPAS; subdivisiones internas de vivienda requieren verificación censal en campo por UDEVIPO."
   ],
   "tags": [
     "huella urbana",

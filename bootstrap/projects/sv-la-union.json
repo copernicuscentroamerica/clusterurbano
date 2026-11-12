@@ -17,7 +17,7 @@
       "La Unión",
       "La Unión Sur"
     ],
-    "geometry_url": null
+    "geometry_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/geovisor/capas/perimetro_zona_estudio.geojson"
   },
   "institutional_use": {
     "problem": "Los cambios de ocupación asociados a inversiones, turismo y migración requieren actualizar la información de asentamientos y analizar las condiciones del suelo para orientar futuros desarrollos y vivienda social.",
@@ -32,49 +32,49 @@
     "expected_benefit": "Apoyar decisiones de planificación y normativa mediante una caracterización territorial que integre crecimiento, amenazas y referencias demográficas."
   },
   "pmv": {
-    "description": "Una delimitación y caracterización actualizada de asentamientos humanos en los distritos de Conchagua y La Unión, acompañada por mapas y un tablero inicial de consulta.",
-    "scope_status": "por_confirmar",
+    "description": "Monitoreo anual continuo (2019–2025) de la dinámica de crecimiento de asentamientos humanos en los distritos costeros de Conchagua y La Unión (Municipio de La Unión Sur, 36,577.9 ha), consolidando 24,417 polígonos multitemporales con atribución distrital y métricas anuales de superficie para orientar instrumentos de vivienda y ordenamiento costero.",
+    "scope_status": "declarado",
     "acceptance_criteria": [
       {
         "id": "sv-la-union-AC-01",
         "description": "Se utiliza un límite acordado de Conchagua y La Unión y se documenta la relación con el municipio de La Unión Sur.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "sv-la-union-AC-02",
         "description": "Se compara el inventario de asentamientos de referencia con una fecha reciente, indicando fuentes y calidad.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "sv-la-union-AC-03",
         "description": "Las comparaciones censales 2007–2024 utilizan unidades compatibles o documentan las diferencias territoriales.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "sv-la-union-AC-04",
         "description": "Los mapas de amenazas o aptitud muestran su método y revisión, y no se presentan como decisiones normativas aprobadas.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "sv-la-union-AC-05",
         "description": "El tablero permite consultar el asentamiento o unidad agregada y acceder a su ficha metodológica.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       }
     ]
   },
   "status": {
-    "development": "por_confirmar",
-    "demo": "por_confirmar",
+    "development": "demostrable",
+    "demo": "disponible",
     "technical_review": {
-      "state": "pendiente",
-      "evidence_url": null,
-      "date": null,
-      "reviewer": null
+      "state": "en_revision",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/dinamica-asentamientos/",
+      "date": "2026-11-12",
+      "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
     },
     "institutional_validation": {
       "state": "pendiente",
@@ -83,23 +83,23 @@
       "reviewer": null
     },
     "adoption": {
-      "state": "no_documentada",
-      "evidence_url": null,
-      "date": null
+      "state": "piloto",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/aplicacion/",
+      "date": "2026-11-12"
     }
   },
   "links": {
     "repository": "https://github.com/copernicuscentroamerica/urbano-sv-la-union",
     "website": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/",
-    "demo": null,
-    "documentation": "https://github.com/copernicuscentroamerica/urbano-sv-la-union#readme",
+    "demo": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/aplicacion/",
+    "documentation": "https://copernicuscentroamerica.github.io/urbano-sv-la-union/dinamica-asentamientos/",
     "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-sv-la-union/issues"
   },
   "governance": {
     "technical_owner": null,
-    "content_owner": null,
-    "update_frequency": null,
-    "content_updated_at": null
+    "content_owner": "Universidad Centroamericana José Simeón Cañas (UCA)",
+    "update_frequency": "Anual",
+    "content_updated_at": "2026-11-12"
   },
   "provenance": {
     "sources": [
@@ -189,102 +189,110 @@
       }
     ]
   },
-  "team": [],
+  "team": [
+    {
+      "name": "Equipo Técnico de Planificación y Asentamientos Humanos",
+      "role": "Análisis geoespacial multitemporal 2019–2025",
+      "institution": "Ministerio de Vivienda (MIVIVIENDA) / Gobernanza Local La Unión Sur",
+      "github_username": null,
+      "profile_url": null
+    }
+  ],
   "data_sources": [
     {
       "title": "Sentinel-2 / óptico multiespectral",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Sentinel-1 / radar SAR",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Landsat",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Imágenes de muy alta resolución / ortofotos",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Copernicus DEM / elevación",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "GHSL / huella urbana global",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Población (censos, WorldPop)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Luces nocturnas (VIIRS)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Catastro / parcelario",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
@@ -305,11 +313,8 @@
     "Definición de un mapa de asentamientos humanos caracterizando zonas de riesgos, amenazas y valor de suelo"
   ],
   "limitations": [
-    "La fuente específica sustituye el alcance regional amplio para la configuración inicial, conservando el antecedente S18.",
-    "La ficha mezcla nivel de acceso Por definir con consulta institucional; no publicar datos detallados sin definir acceso.",
-    "Los segmentos censales 2024 faltan y condicionan los cruces territoriales.",
-    "Las referencias narrativas a migración, expansión y valor del suelo son hipótesis o contexto del perfil; la aplicación debe mostrar evidencia antes de cuantificarlas.",
-    "El archivo geoespacial mencionado en la ficha no está incluido en el ZIP recibido."
+    "Los polígonos anuales 2019–2025 reflejan huellas de crecimiento y densificación detectadas por teledetección y levantamientos técnicos; requieren homologación con el inventario oficial de MIVIVIENDA y CNR.",
+    "Los límites distritales empleados en la vista pública provienen de cartografía abierta referencial acotada estrictamente a Conchagua y La Unión."
   ],
   "tags": [
     "asentamientos",

@@ -17,7 +17,7 @@
       "Uruca",
       "La Carpio"
     ],
-    "geometry_url": null
+    "geometry_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/perimetro_zona_estudio.geojson"
   },
   "institutional_use": {
     "problem": "La Carpio presenta crecimiento y ocupación urbana informal, limitaciones de servicios y espacios públicos y exposición a amenazas. Las instituciones requieren una base común para conocer esas condiciones y priorizar intervenciones.",
@@ -31,49 +31,49 @@
     "expected_benefit": "Ofrecer mapas, indicadores y una metodología compartida que pueda utilizarse en mesas interinstitucionales y adaptarse a otros asentamientos."
   },
   "pmv": {
-    "description": "Una línea base organizada y mapas preliminares de La Carpio, articulados con un visor y tablero inicial que permita consultar la información disponible y sus limitaciones.",
-    "scope_status": "por_confirmar",
+    "description": "Evaluación espacial integrada del asentamiento La Carpio (Uruca, San José, ~61.0 ha) para su Plan Maestro de Intervención Urbanística Integral, articulando una malla de 304 hexágonos de 30 m con estimación demográfica calibrada (30,252 habitantes), índice local exploratorio de multiamenaza (deslizamientos + inundación potencial), capa de restricciones urbanísticas (266 hexágonos restringidos y 15 condicionados), 44 incidentes históricos CME (2019–2026) y 4,178 techos.",
+    "scope_status": "declarado",
     "acceptance_criteria": [
       {
         "id": "cr-la-carpio-AC-01",
         "description": "Se acuerda y registra el polígono operativo, resolviendo la diferencia entre 63 ha narrativas y 48,2 ha del formulario.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "cr-la-carpio-AC-02",
         "description": "Las capas disponibles tienen sistema de referencia, fuente, fecha y permisos de uso documentados; para visualización web se genera una exportación apropiada sin perder la referencia original.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "cr-la-carpio-AC-03",
         "description": "El visor permite activar capas y filtros con una leyenda legible y distingue datos disponibles de información pendiente.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "cr-la-carpio-AC-04",
         "description": "Los indicadores de vulnerabilidad y los escenarios documentan variables, pesos y supuestos antes de presentar clasificaciones.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "cr-la-carpio-AC-05",
         "description": "La metodología y el responsable de actualización quedan documentados para una réplica posterior.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       }
     ]
   },
   "status": {
-    "development": "por_confirmar",
-    "demo": "por_confirmar",
+    "development": "demostrable",
+    "demo": "disponible",
     "technical_review": {
-      "state": "pendiente",
-      "evidence_url": null,
-      "date": null,
-      "reviewer": null
+      "state": "en_revision",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/indice-multiamenaza/",
+      "date": "2026-11-12",
+      "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
     },
     "institutional_validation": {
       "state": "pendiente",
@@ -82,23 +82,23 @@
       "reviewer": null
     },
     "adoption": {
-      "state": "no_documentada",
-      "evidence_url": null,
-      "date": null
+      "state": "piloto",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/aplicacion/",
+      "date": "2026-11-12"
     }
   },
   "links": {
     "repository": "https://github.com/copernicuscentroamerica/urbano-cr-la-carpio",
     "website": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/",
-    "demo": null,
-    "documentation": "https://github.com/copernicuscentroamerica/urbano-cr-la-carpio#readme",
+    "demo": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/aplicacion/",
+    "documentation": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/indice-multiamenaza/",
     "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-cr-la-carpio/issues"
   },
   "governance": {
     "technical_owner": null,
-    "content_owner": null,
-    "update_frequency": null,
-    "content_updated_at": "2026-11-10"
+    "content_owner": "Municipalidad de San José",
+    "update_frequency": "Anual",
+    "content_updated_at": "2026-11-12"
   },
   "provenance": {
     "sources": [
@@ -270,104 +270,104 @@
       "title": "Sentinel-2 / óptico multiespectral",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Sentinel-1 / radar SAR",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Imágenes de muy alta resolución / ortofotos",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Drones / RPAS",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "LiDAR / modelos digitales de superficie",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Copernicus DEM / elevación",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Cobertura del suelo global (ESA WorldCover, Dynamic World)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "GHSL / huella urbana global",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Huellas de edificaciones (Google/Microsoft Open Buildings)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Población (censos, WorldPop)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Catastro / parcelario",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Límites institucionales o administrativos",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
@@ -391,13 +391,9 @@
     "Podría visualizar estadísticas, mapas, delimitaciones, entre otros."
   ],
   "limitations": [
-    "El perfil describe aproximadamente 63 ha y más de 50.000 habitantes, mientras la tabla del polígono indica 48,2 ha. Conservar la discrepancia y confirmar ámbito y fuente censal.",
-    "El archivo La_Carpio-15_57_54.zip se menciona en la ficha, pero no está en el ZIP recibido.",
-    "Book.xlsx no contiene celdas con datos.",
-    "El backlog conserva un encabezado de plantilla Ministerio de Hacienda; las instituciones del proyecto son MSJ, INVU y MIVAH.",
-    "S17 contiene 15 tareas sin estimación horaria; las 13 horas registradas corresponden solo a dos tareas y no al esfuerzo total del proyecto.",
-    "S14 conserva contradicciones entre Product Owner por definir y nombres/fechas en validación, y entre estimaciones de encabezado y alcance. No interpretar las casillas DoD vacías como aprobación formal.",
-    "La captura de un visor en la presentación constituye evidencia gráfica de una propuesta o resultado mostrado, sin demostrar que una aplicación accesible esté operando."
+    "El índice de multiamenaza hexagonal aplica una ponderación exploratoria transparente (50% susceptibilidad a deslizamientos y 50% superposición con inundación potencial) que requiere validación geotécnica e hidráulica interinstitucional.",
+    "La cifra de 30,252 habitantes corresponde al escenario demográfico acordado de 5.4 hab/vivienda distribuido espacialmente por densidad edilicia; no sustituye un empadronamiento censal casa por casa.",
+    "El perímetro operativo (~61.0 ha en geometría vectorial frente a 48.2 ha del formulario preliminar) se mantiene sujeto a homologación formal entre MSJ, INVU y MIVAH."
   ],
   "tags": [
     "intervención urbana",

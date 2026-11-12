@@ -2,143 +2,93 @@
   "schema_version": "1.0.0",
   "id": "sv-amss-expansion-y-valor-suelo",
   "project_id": "sv-amss",
-  "title": "Capas de expansión urbana e indicadores de valor del suelo por distrito en el AMSS",
-  "summary": "Contribución prevista con series de expansión de huella urbana e indicadores agregados asociados a permisos y rangos de valor del suelo en los 14 distritos del Área Metropolitana de San Salvador.",
+  "title": "Indicador integrado de valor del suelo y expansión urbana en las 425 UPDs del AMSS (Observado + Imputación Satelital GEE)",
+  "summary": "Cobertura completa sin vacíos territoriales de las 425 Unidades de Planificación Detallada (UPDs) del AMSS: integra 281 UPDs con evidencia empírica calibrada (oferta inmobiliaria 2025, clusters espaciales LISA y permisos OPAMSS 2007–2026) y 144 UPDs (57,647.5 ha) imputadas mediante Random Forest log-normal sobre Google Satellite Embeddings V1 y capas físicas Copernicus.",
   "product_type": "indicador",
-  "publication_status": "propuesto",
+  "publication_status": "publicado",
   "coverage": {
-    "label": "Área Metropolitana de San Salvador (AMSS) - Zona núcleo/urbana (AMSS) - 14 DISTRITOS",
-    "geometry_url": null,
-    "spatial_resolution": "10 m (huella) / agregación distrital",
-    "scale_denominator": null
+    "label": "Área Metropolitana de San Salvador Ampliada (AMSS · 425 Unidades de Planificación Detallada y 28 distritos)",
+    "geometry_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_perimetro.geojson",
+    "spatial_resolution": "Unidades de Planificación Detallada (425 polígonos agregados desde modelo a 20 m)",
+    "scale_denominator": 25000
   },
   "temporal": {
-    "start": null,
-    "end": null,
-    "reference_date": null
+    "start": "2007-01-01",
+    "end": "2025-12-31",
+    "reference_date": "2024-12-31"
   },
   "indicator": {
-    "name": "Expansión urbana y rango de valor de referencia por distrito",
-    "unit": "ha y USD/m² (o USD/v² documentado)",
-    "definition": "Cruce entre crecimiento de mancha urbana observada por satélite y superficies interpoladas de valor de referencia con error RMSE reportado.",
-    "aggregation": "14 distritos del AMSS / UPD 2025"
+    "name": "Valor integrado del suelo urbano y periurbano por UPD sin vacíos de información (VAL_FIN_M2)",
+    "unit": "USD/m²",
+    "definition": "Valor consolidado 2025 en las 281 UPDs con muestra observada (ORIGEN_FIN = OBSERVADO) e imputación estadística desde la superficie continua GEE a 20 m en las 144 UPDs sin trámites o listados recientes (ORIGEN_FIN = IMPUTADO_MODELO_GEE). Correlación empírica en UPDs observadas r = 0.7816 (r_log = 0.7238) y sesgo relativo de mediana de -0.79% ($102.84 vs. $103.66 USD/m²).",
+    "aggregation": "425 Unidades de Planificación Detallada (UPD) y 28 distritos del AMSS"
   },
   "data_sources": [
     {
-      "title": "Sentinel-2 / óptico multiespectral",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "title": "Google Satellite Embeddings V1 Annual (64 bandas latentes A00–A63 a 10 m)",
+      "provider": "Google Earth Engine / AlphaEarth Foundations",
+      "url": "https://developers.google.com/earth-engine/datasets",
+      "access": "abierto",
+      "description": "Representación multimodal anual 2024 (Sentinel-2, Sentinel-1 SAR, Landsat y contexto climático-topográfico) empleada como bloque predictor principal.",
       "status": "declarado"
     },
     {
-      "title": "Sentinel-1 / radar SAR",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "title": "ESA WorldCover 10 m v200 y Copernicus DEM GLO-30",
+      "provider": "Agencia Espacial Europea (ESA) / Programa Copernicus",
+      "url": "https://esa-worldcover.org/",
+      "access": "abierto",
+      "description": "Fracción edificada, cobertura arbórea, cuerpos de agua permanentes, elevación y pendiente topográfica a 10–30 m.",
       "status": "declarado"
     },
     {
-      "title": "GHSL / huella urbana global",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "title": "Google Open Buildings 2.5D Temporal V1 y VIIRS Nighttime Day/Night Band V22",
+      "provider": "Google Research / NOAA Earth Observation Group",
+      "url": "https://sites.research.google/open-buildings/",
+      "access": "abierto",
+      "description": "Presencia y altura media de edificaciones 2.5D (2023) y radiancia nocturna anual media (2024) como proxies de intensidad constructiva y actividad económica.",
       "status": "declarado"
     },
     {
-      "title": "OpenStreetMap (vías, edificaciones, equipamientos)",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Luces nocturnas (VIIRS)",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Catastro / parcelario",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Límites institucionales o administrativos",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Limites de unidades de planificación detallada (UPD 2025)",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Puntos de permisos de construcción de 1990 al 2026",
-      "provider": null,
-      "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
-      "status": "declarado"
-    },
-    {
-      "title": "Datos locales e institucionales declarados",
-      "provider": null,
-      "url": null,
+      "title": "Registros históricos de permisos OPAMSS (2007–2026) y oferta inmobiliaria 2025 (LISA)",
+      "provider": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
+      "url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/LISA_PRECIOS_2025.geojson",
       "access": "institucional",
-      "description": "Base de datos de sistema de trámites\nEsquema director, \nBase de datos de precio de venta obtenidos de webscraping de páginas de ventas inmobiliarias",
+      "description": "Valores agregados y anonimizados por UPD procedentes de trámites institucionales (2007–2019 y 2020–2026) y levantamiento de precios de oferta 2025 con autocorrelación espacial Local Moran's I.",
       "status": "declarado"
     }
   ],
   "method": {
-    "description": "Revisión de datos existentes, integración al análisis de la base de datos de trámites, completar la información faltante referente al valor de suelo, estandarizar datos, desarrollo de script, generar mapa, implementación de aplicativo web map.\nRevisión de los datos existentes de la base de datos de tramites relacionados al valor del suelo y permisos de construcción históricos.\nCompletar vacíos de información faltante mediante web srcapping de valor de suelo\nEstandarización de datos y normalización en el territorio\nElaboración del mapa de expansión urbana mediante imágenes satelitales y scripts \nIdentificar los cambios en la mancha urbana\nInterpolar los precios de valor de suelo (USD/V2 o M2) con base a la data histórica obtenida de los permisos de construcción y el web scrapping.\nGenerar periodos de tiempo de análisis\nGenerar rangos de valor de suelo \nElaborar un mapa de consulta con dashboard\nCruce de información con las variables temporales y rangos de valores de suelo definidos anteriormente.\nIdentificación general de las diferentes tipologías de expansión urbana identificadas en el territorio AMSS\n\nHerramientas previstas: NDVI, NDBI, LST, clasificación supervisada, análisis multicriterio, Google Earth Engine, QGIS, R, Python, JavaScript, ArcGIS Pro y Server, Agentes de IA",
-    "version": "0.1.0-propuesta",
-    "code_url": null
+    "description": "Entrenamiento de un ensamble Random Forest en modo regresión (200 árboles, transformación log-normal ln(USD/m²)) en Google Earth Engine sobre 4,142 muestras estratificadas extraídas de las 281 UPDs con evidencia empírica y anclajes rurales calibrados, evaluando 71 predictores espaciales (64 bandas de Google Satellite Embeddings V1 + 7 covariables físicas EO). La superficie resultante a 20 m se agrega zonalmente sobre las 425 UPDs para imputar las 144 unidades sin cobertura previa (mediana imputada $35.14 USD/m², media $50.69 USD/m², rango $17.75–$267.21 USD/m²).",
+    "version": "1.0.0-gee-2026",
+    "code_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/descargas/gee_modelo_valor_suelo_amss.js"
   },
   "limitations": [
-    "La fuente principal es AV_02; la ficha anterior queda como antecedente y no debe reemplazar el alcance actualizado.",
-    "Los precios proceden de expedientes y web scraping con cobertura limitada y datos de 2025; no equivalen automáticamente a precios de transacciones representativos.",
-    "Los estados del backlog son declaraciones del documento, no una auditoría del avance vigente.",
-    "El encabezado declara cinco integrantes y la tabla contiene seis nombres; confirmar composición antes de mostrar un contador.",
-    "El límite Perimetro_AMSS-14_26_13.zip figura en la ficha pero ese archivo geoespacial no está dentro del ZIP recibido."
+    "Los valores de entrenamiento proceden de registros de trámites y precios de oferta inmobiliaria 2025 agregados a nivel de UPD; representan valores de oferta/referencia y no precios escriturados de compraventa individual.",
+    "El ensamble Random Forest tiende a comprimir las colas extremas superiores (> $450 USD/m²) en subcentros corporativos verticales como San Benito y Santa Elena.",
+    "Los 144 polígonos con ORIGEN_FIN = IMPUTADO_MODELO_GEE constituyen estimaciones estadísticas orientativas para planificación territorial y no sustituyen avalúos periciales individuales."
   ],
   "validation": {
-    "state": "pendiente",
-    "evidence_url": null,
-    "date": null,
-    "reviewer": null
+    "state": "en_revision",
+    "evidence_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/",
+    "date": "2026-11-12",
+    "reviewer": "Equipo técnico PMV sv-amss (pendiente de dictamen formal institucional)"
   },
   "outputs": {
-    "viewer_url": null,
-    "download_url": null,
-    "documentation_url": null,
-    "thumbnail_url": null
+    "viewer_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/aplicacion/",
+    "download_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/geovisor/capas/amss_upd_425_imputadas.geojson",
+    "documentation_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/",
+    "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/assets/img/figuras/02_cobertura_territorial_upds_amss.png"
   },
   "license": {
-    "name": null,
-    "url": null,
-    "reuse_note": "Condiciones de reutilización y publicación pendientes de confirmación por la institución custodia."
+    "name": "Uso técnico y académico con atribución institucional (OPAMSS / Programa Copernicus LAC)",
+    "url": "https://github.com/copernicuscentroamerica/urbano-sv-amss",
+    "reuse_note": "Capas agregadas por UPD libres de datos personales; reutilización sujeta a citar a OPAMSS y al Clúster Urbano Copernicus Centroamérica."
   },
   "governance": {
     "institution": "Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)",
-    "maintainer": null,
-    "update_frequency": null,
-    "content_updated_at": null
+    "maintainer": "Equipo Técnico SIG e Inteligencia Territorial — Iniciativa sv-amss",
+    "update_frequency": "Anual (sincronizada con cortes anuales de Google Satellite Embeddings y trámites OPAMSS)",
+    "content_updated_at": "2026-11-12"
   },
   "provenance": {
     "sources": [
@@ -149,26 +99,29 @@
         "url": null
       },
       {
-        "id": "S09",
-        "label": "Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS.docx",
-        "locator": "fuentes/S09_Ficha_02_El_Salvador_OPAMSS_Expansion_Urbana_AMSS.md",
-        "url": null
-      },
-      {
-        "id": "S11",
-        "label": "Sprint_Backlog_Marco_Scrum_ProyectoSIG_OPAMSS_FINAL.xlsx",
-        "locator": "fuentes/S11_Sprint_Backlog_Marco_Scrum_ProyectoSIG_OPAMSS_FINAL.md",
-        "url": null
+        "id": "GEE01",
+        "label": "Pipeline reproducible Google Earth Engine (gee_modelo_valor_suelo_amss.js) y capa consolidada de 425 UPDs",
+        "locator": "src/gee_modelo_valor_suelo_amss.js",
+        "url": "https://copernicuscentroamerica.github.io/urbano-sv-amss/modelo-suelo/"
       }
     ],
     "statements": [
       {
-        "pointer": "",
-        "status": "propuesta",
+        "pointer": "/indicator",
+        "status": "declarado",
         "source_ids": [
-          "S10"
+          "S10",
+          "GEE01"
         ],
-        "note": "Ficha inicial de contribución prevista al Atlas Urbano Regional estructurada a partir del perfil documental del proyecto."
+        "note": "Indicador ejecutado y publicado sobre las 425 UPDs del AMSS combinando evidencia empírica local e imputación satelital en Google Earth Engine."
+      },
+      {
+        "pointer": "/outputs",
+        "status": "declarado",
+        "source_ids": [
+          "GEE01"
+        ],
+        "note": "Capa GeoJSON publicada en el geovisor y subpágina metodológica del repositorio canónico."
       }
     ]
   }

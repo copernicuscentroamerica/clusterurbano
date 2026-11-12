@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": null,
+  "generated_at": "2026-11-12T15:32:47Z",
   "source_system": "github",
   "overall_state": "not_initialized",
   "projects": [
@@ -89,7 +89,7 @@
       "tasks": []
     },
     {
-      "project_id": "gt-salud-metropolitana",
+      "project_id": "pa-colon",
       "sync_state": "not_initialized",
       "last_success_at": null,
       "source_updated_at": null,

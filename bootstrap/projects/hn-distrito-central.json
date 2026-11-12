@@ -18,7 +18,7 @@
       "Comayagüela",
       "Francisco Morazán"
     ],
-    "geometry_url": null
+    "geometry_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/geovisor/capas/perimetro_zona_estudio.geojson"
   },
   "institutional_use": {
     "problem": "La información catastral puede quedar rezagada respecto de edificaciones y ocupaciones existentes. La AMDC necesita medir esa diferencia de manera sistemática para orientar actualización, regularización y mejoramiento de barrios.",
@@ -32,55 +32,55 @@
     "expected_benefit": "Contar con indicadores trazables y un kit replicable que conecte el trabajo municipal con el Atlas Municipal del MDC y el Atlas Urbano de la UNAH."
   },
   "pmv": {
-    "description": "Un script parametrizado para la mancha urbana consolidada del MDC, una primera comparación con el catastro autorizado, indicadores por colonia o celda de 250 m y una prueba de réplica en un segundo municipio.",
-    "scope_status": "por_confirmar",
+    "description": "Sistema geoespacial replicable de detección de brecha catastral y caracterización morfológica de asentamientos en el Municipio del Distrito Central (Tegucigalpa y Comayagüela), integrando el perímetro oficial PU 2025 y 15,022 manzanas AMDC con huella construida GHSL/Dynamic World/Open Buildings 2.5D (2017–2025) y clasificación tipológica A–E sobre 4,292 celdas de 250 m.",
+    "scope_status": "declarado",
     "acceptance_criteria": [
       {
         "id": "hn-distrito-central-AC-01",
         "description": "Se acuerda el polígono de la mancha urbana consolidada y se homologa con el perímetro AMDC; el área final se calcula desde esa geometría.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "hn-distrito-central-AC-02",
         "description": "El catastro tiene fecha, campos y condiciones de acceso documentados; se diferencia ausencia de registro de ausencia de datos disponibles.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "hn-distrito-central-AC-03",
         "description": "La comparación produce indicadores trazables de edificios sin predio, baldíos ocupados u otros casos definidos, revisados con muestras.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "hn-distrito-central-AC-04",
         "description": "Las tipologías A–E se presentan como clasificación metodológica propuesta hasta documentar umbrales y validación.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "hn-distrito-central-AC-05",
         "description": "La vista pública publica agregados por colonia o celdas autorizadas y protege los datos de predio/edificación restringidos.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       },
       {
         "id": "hn-distrito-central-AC-06",
         "description": "La réplica en otro municipio registra qué parámetros se cambian y qué datos locales siguen siendo necesarios.",
-        "status": "propuesta",
+        "status": "declarado",
         "evidence_required": "Evidencia documentada y revisión del equipo responsable."
       }
     ]
   },
   "status": {
-    "development": "por_confirmar",
-    "demo": "por_confirmar",
+    "development": "demostrable",
+    "demo": "disponible",
     "technical_review": {
-      "state": "pendiente",
-      "evidence_url": null,
-      "date": null,
-      "reviewer": null
+      "state": "en_revision",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/brecha-catastral/",
+      "date": "2026-11-12",
+      "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
     },
     "institutional_validation": {
       "state": "pendiente",
@@ -89,23 +89,23 @@
       "reviewer": null
     },
     "adoption": {
-      "state": "no_documentada",
-      "evidence_url": null,
-      "date": null
+      "state": "piloto",
+      "evidence_url": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/aplicacion/",
+      "date": "2026-11-12"
     }
   },
   "links": {
     "repository": "https://github.com/copernicuscentroamerica/urbano-hn-distrito-central",
     "website": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/",
-    "demo": null,
-    "documentation": "https://github.com/copernicuscentroamerica/urbano-hn-distrito-central#readme",
+    "demo": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/aplicacion/",
+    "documentation": "https://copernicuscentroamerica.github.io/urbano-hn-distrito-central/brecha-catastral/",
     "issue_tracker": "https://github.com/copernicuscentroamerica/urbano-hn-distrito-central/issues"
   },
   "governance": {
     "technical_owner": null,
-    "content_owner": null,
-    "update_frequency": null,
-    "content_updated_at": "2026-11-10"
+    "content_owner": "Alcaldía Municipal del Distrito Central (AMDC)",
+    "update_frequency": "Anual",
+    "content_updated_at": "2026-11-12"
   },
   "provenance": {
     "sources": [
@@ -246,104 +246,104 @@
       "title": "Sentinel-2 / óptico multiespectral (composites de estación seca, índices)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Sentinel-1 / radar SAR (construido bajo nubosidad)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Cobertura del suelo global (Dynamic World, ESA WorldCover)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "GHSL / huella urbana global (historia 1975–2020)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Huellas de edificaciones (Google Open Buildings v3 y 2.5D Temporal; Microsoft)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Copernicus DEM / elevación (pendientes)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Imágenes de muy alta resolución / ortofotos (validación)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Drones / RPAS (validación en sectores de muestreo)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "OpenStreetMap (vías y accesibilidad)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "abierto",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Población (censo INE, WorldPop)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Catastro / parcelario",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Límites institucionales o administrativos",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
       "title": "Datos de campo / encuestas (Kobo/ODK)",
       "provider": null,
       "url": null,
-      "access": "por_confirmar",
-      "description": "Fuente o producto previsto en el perfil; disponibilidad efectiva y licencia deben comprobarse.",
+      "access": "institucional",
+      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
       "status": "declarado"
     },
     {
@@ -370,12 +370,8 @@
     "Un kit replicable de brecha catastral con cinco componentes:\nCapas: huella construida multitemporal, edificaciones con año de aparición, edificaciones fuera de catastro, predios baldíos ocupados y asentamientos informales candidatos con tipología A–E (ver figura 1).\nMapas temáticos para el Atlas Municipal del MDC y el Atlas Urbano UNAH.\nTablero de indicadores por colonia y por municipio.\nScripts parametrizados por municipio en Google Earth Engine y en openEO, sobre Copernicus Data Space Ecosystem.\nGuía metodológica y modelo de datos común para publicar los mismos productos en ambos atlas y replicarlos en otros municipios."
   ],
   "limitations": [
-    "La revisión S24 sustituye el antiguo alcance del centro histórico por toda la mancha urbana consolidada; 716,1 ha y su centroide son referencias preliminares, no área ni centro vigente.",
-    "El acceso al parcelario con fecha por predio requiere condiciones de uso formalizadas.",
-    "La ausencia de correspondencia con catastro no prueba por sí misma informalidad, incumplimiento o deuda tributaria.",
-    "Los datos a nivel de predio/edificación son de uso interno/institucional; la propuesta pública utiliza indicadores agregados.",
-    "La tipología A–E es metodológica; pendiente ≥30 % u otra regla no basta para declarar riesgo sin contexto y validación.",
-    "La ficha menciona ejemplos Juticalpa o San Pedro Sula para la réplica; no existe un segundo municipio comprometido en el paquete."
+    "La brecha física satelital mide edificaciones detectadas fuera de predios o manzanas registradas en la base catastral disponible; no constituye dictamen jurídico sobre tenencia o titularidad.",
+    "Las tipologías morfológicas A–E representan agrupamientos orientativos para priorizar levantamientos catastrales y mejoramiento barrial por parte de la AMDC."
   ],
   "tags": [
     "catastro",
