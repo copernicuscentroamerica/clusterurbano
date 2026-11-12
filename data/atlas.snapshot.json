@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-11-12T15:47:30Z",
+  "generated_at": "2026-11-12T17:08:29Z",
   "sources": [
     {
       "project_id": "pa-panama-oeste",
@@ -496,26 +496,26 @@
       "schema_version": "1.0.0",
       "id": "cr-la-carpio-linea-base-indicadores",
       "project_id": "cr-la-carpio",
-      "title": "Malla hexagonal de población (30,252 hab), índice local de multiamenaza y restricciones urbanísticas — La Carpio",
-      "summary": "Síntesis microterritorial en 304 hexágonos de 30 m sobre La Carpio (~61.0 ha, San José) que integra estimación poblacional calibrada con Open Buildings y encuestas de techos, susceptibilidad a deslizamientos, inundación potencial, incidentes CME (2019–2026) y 281 hexágonos con condicionantes o restricciones.",
+      "title": "Malla hexagonal de 20 m (2,470 celdas · 30,252 hab), índice local de multiamenaza, restricciones y tablero de exposición — La Carpio",
+      "summary": "Síntesis microterritorial aprobada en 2,470 hexágonos de 20 m sobre La Carpio (~61.0 ha, Uruca, San José) que integra estimación poblacional calibrada con Open Buildings v3 (ratio 0.988), susceptibilidad a deslizamientos CATEGORIA_ 4–5, inundación potencial, protección fluvial (Ley Forestal 7575 · 4,687 hab en Muy Alto), 1,523 celdas con restricciones, tablero estadístico por sector y línea base censal INEC 2011–2022.",
       "product_type": "indicador",
       "publication_status": "publicado",
       "coverage": {
         "label": "Gran Área Metropolitana, San José, Uruca, Asentamiento Informal La Carpio.",
-        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local.geojson",
-        "spatial_resolution": "Malla hexagonal de 30 m (~779 m² por celda, EPSG:4326)",
+        "geometry_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local_20m.geojson",
+        "spatial_resolution": "Malla hexagonal de 20 m entre vértices opuestos (2,470 celdas, EPSG:5367 → EPSG:4326)",
         "scale_denominator": 2500
       },
       "temporal": {
         "start": "2019-01-01",
-        "end": "2026-11-11",
-        "reference_date": "2026-11-11"
+        "end": "2026-11-12",
+        "reference_date": "2026-11-12"
       },
       "indicator": {
         "name": "Índice compuesto local de multiamenaza (0–100), población estimada y aptitud urbanística",
         "unit": "Puntaje 0–100, habitantes/hexágono y clase de restricción",
-        "definition": "Combinación ponderada areal (50% susceptibilidad a deslizamientos CATEGORIA_ 1–5 y 50% superposición con inundación potencial) cruzada con distribución demográfica (escenario 5.4 hab/viv = 30,252 hab) y retiros fluviales.",
-        "aggregation": "304 hexágonos regulares en EPSG:4326 calculados métricamente en CRTM05 (EPSG:5367)"
+        "definition": "Combinación ponderada areal en hexágonos de 20 m (50% deslizamientos CATEGORIA_ 4–5 con pesos 0.75/1.0 y 50% proporción de inundación potencial), incorporando protección de ríos como condición Muy Alta (puntaje 100; 588 hexágonos y 4,687 habitantes) sobre 30,252 habitantes distribuidos en 9 sectores.",
+        "aggregation": "2,470 hexágonos regulares de 20 m en EPSG:4326 calculados métricamente en CRTM05 (EPSG:5367)"
       },
       "data_sources": [
         {
@@ -549,27 +549,35 @@
           "access": "institucional",
           "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
           "status": "declarado"
+        },
+        {
+          "title": "Población y vivienda (censos INEC, WorldPop)",
+          "provider": "Instituto Nacional de Estadística y Censos (INEC)",
+          "url": "https://inec.cr",
+          "access": "abierto",
+          "description": "Censo 2011 y Estimación de Población y Vivienda 2022 del INEC para el distrito Uruca (código 10107). Promedio de 3,8 personas por vivienda en 2011 y ~3,3 a 3,5 en 2022.",
+          "status": "declarado"
         }
       ],
       "method": {
-        "description": "Combinación ponderada areal (50% susceptibilidad a deslizamientos CATEGORIA_ 1–5 y 50% superposición con inundación potencial) cruzada con distribución demográfica (escenario 5.4 hab/viv = 30,252 hab) y retiros fluviales.",
-        "version": "1.0.0-copernicus-2026",
+        "description": "Combinación ponderada areal en hexágonos de 20 m (50% deslizamientos CATEGORIA_ 4–5 con pesos 0.75/1.0 y 50% proporción de inundación potencial), incorporando protección de ríos como condición Muy Alta (puntaje 100; 588 hexágonos y 4,687 habitantes) sobre 30,252 habitantes distribuidos en 9 sectores.",
+        "version": "2.0.0-copernicus-2026",
         "code_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/assets/descargas/build_local_multihazard_index.py"
       },
       "limitations": [
-        "El índice de multiamenaza hexagonal aplica una ponderación exploratoria transparente (50% susceptibilidad a deslizamientos y 50% superposición con inundación potencial) que requiere validación geotécnica e hidráulica interinstitucional.",
-        "La cifra de 30,252 habitantes corresponde al escenario demográfico acordado de 5.4 hab/vivienda distribuido espacialmente por densidad edilicia; no sustituye un empadronamiento censal casa por casa.",
-        "El perímetro operativo (~61.0 ha en geometría vectorial frente a 48.2 ha del formulario preliminar) se mantiene sujeto a homologación formal entre MSJ, INVU y MIVAH."
+        "El índice local de multiamenaza en hexágonos de 20 m (2,470 celdas) combina 50% susceptibilidad a deslizamientos ALTA/MUY ALTA (CATEGORIA_ 4–5) y 50% inundación potencial, incorporando las áreas de protección de ríos como condición Muy Alta (puntaje 100; Ley Forestal 7575); representa la cartografía fuente y no constituye deslinde jurídico ni decisión individual de reubicación.",
+        "La población distribuida de 30,252 habitantes conserva exactamente los totales de los 9 sectores mediante redondeo de mayores restos sobre viviendas estimadas con Google Open Buildings v3 (ratio 0.988 frente a techos locales); complementa pero no sustituye un censo casa por casa dentro del polígono informal.",
+        "El perímetro operativo (~61.0 ha en geometría vectorial frente a 48.2 ha del formulario preliminar y ~63 ha narrativas) continúa en proceso de homologación formal interinstitucional entre MSJ, INVU y MIVAH."
       ],
       "validation": {
-        "state": "en_revision",
+        "state": "validado",
         "evidence_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/indice-multiamenaza/",
         "date": "2026-11-12",
         "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
       },
       "outputs": {
         "viewer_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/aplicacion/",
-        "download_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local.geojson",
+        "download_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local_20m.geojson",
         "documentation_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/indice-multiamenaza/",
         "thumbnail_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/assets/img/figuras/01_arquitectura_metodologica.png"
       },
@@ -588,9 +596,9 @@
         "sources": [
           {
             "id": "PROD01",
-            "label": "Malla hexagonal de población (30,252 hab), índice local de multiamenaza y restricciones urbanísticas — La Carpio",
-            "locator": "geovisor/capas/indice_multiamenaza_local.geojson",
-            "url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local.geojson"
+            "label": "Malla hexagonal de 20 m (2,470 celdas · 30,252 hab), índice local de multiamenaza, restricciones y tablero de exposición — La Carpio",
+            "locator": "geovisor/capas/indice_multiamenaza_local_20m.geojson",
+            "url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/geovisor/capas/indice_multiamenaza_local_20m.geojson"
           }
         ],
         "statements": [

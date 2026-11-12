@@ -63,7 +63,7 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
     "cr-la-carpio": {
         "subpage_slug": "indice-multiamenaza",
         "subpage_label": "Índice Multiamenaza",
-        "layers_summary": "19 capas activas · Multiamenaza en laderas + Plan Maestro",
+        "layers_summary": "7 capas curadas + Tablero · Malla 20 m (2,470 hex) + Multiamenaza + INEC",
         "atlas_pages": 27,
         "docx_file": "Metodologia_cr-la-carpio.docx",
     },

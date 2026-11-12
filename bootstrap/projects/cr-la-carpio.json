@@ -31,7 +31,7 @@
     "expected_benefit": "Ofrecer mapas, indicadores y una metodología compartida que pueda utilizarse en mesas interinstitucionales y adaptarse a otros asentamientos."
   },
   "pmv": {
-    "description": "Evaluación espacial integrada del asentamiento La Carpio (Uruca, San José, ~61.0 ha) para su Plan Maestro de Intervención Urbanística Integral, articulando una malla de 304 hexágonos de 30 m con estimación demográfica calibrada (30,252 habitantes), índice local exploratorio de multiamenaza (deslizamientos + inundación potencial), capa de restricciones urbanísticas (266 hexágonos restringidos y 15 condicionados), 44 incidentes históricos CME (2019–2026) y 4,178 techos.",
+    "description": "Evaluación espacial microterritorial integrada del asentamiento La Carpio (Uruca, San José, ~61.0 ha) para su Plan Maestro de Intervención Urbanística Integral, articulando una malla de 2,470 hexágonos de 20 m con estimación demográfica calibrada (30,252 habitantes en 9 sectores; factor piecewise calibrado con Google Open Buildings v3, ratio 0.988), índice local de multiamenaza (deslizamientos CATEGORIA_ 4–5 + inundación potencial, incorporando áreas de protección de ríos como condición Muy Alta con 4,687 hab expuestos en 588 hexágonos), capa de restricciones al desarrollo (1,523 hexágonos y 17,529 hab con alerta por protección fluvial o deslizamiento alto/muy alto), tablero estadístico de exposición poblacional, cuaderno reproducible Google Colab v1.1 y línea base censal INEC 2011–2022 del distrito Uruca.",
     "scope_status": "declarado",
     "acceptance_criteria": [
       {
@@ -70,7 +70,7 @@
     "development": "demostrable",
     "demo": "disponible",
     "technical_review": {
-      "state": "en_revision",
+      "state": "validado",
       "evidence_url": "https://copernicuscentroamerica.github.io/urbano-cr-la-carpio/indice-multiamenaza/",
       "date": "2026-11-12",
       "reviewer": "Equipo Técnico Clúster Copernicus Urbano"
@@ -347,11 +347,11 @@
       "status": "declarado"
     },
     {
-      "title": "Población (censos, WorldPop)",
-      "provider": null,
-      "url": null,
-      "access": "institucional",
-      "description": "Insumo geoespacial integrado en el flujo analítico y cartográfico del proyecto.",
+      "title": "Población y vivienda (censos INEC, WorldPop)",
+      "provider": "Instituto Nacional de Estadística y Censos (INEC)",
+      "url": "https://inec.cr",
+      "access": "abierto",
+      "description": "Censo 2011 y Estimación de Población y Vivienda 2022 del INEC para el distrito Uruca (código 10107): promedio de 3,8 personas por vivienda en 2011 (31 728 hab.) y ~3,3 a 3,5 en 2022 (43 484 hab., frente a 3,1 cantonal y nacional).",
       "status": "declarado"
     },
     {
@@ -391,9 +391,9 @@
     "Podría visualizar estadísticas, mapas, delimitaciones, entre otros."
   ],
   "limitations": [
-    "El índice de multiamenaza hexagonal aplica una ponderación exploratoria transparente (50% susceptibilidad a deslizamientos y 50% superposición con inundación potencial) que requiere validación geotécnica e hidráulica interinstitucional.",
-    "La cifra de 30,252 habitantes corresponde al escenario demográfico acordado de 5.4 hab/vivienda distribuido espacialmente por densidad edilicia; no sustituye un empadronamiento censal casa por casa.",
-    "El perímetro operativo (~61.0 ha en geometría vectorial frente a 48.2 ha del formulario preliminar) se mantiene sujeto a homologación formal entre MSJ, INVU y MIVAH."
+    "El índice local de multiamenaza en hexágonos de 20 m (2,470 celdas) combina 50% susceptibilidad a deslizamientos ALTA/MUY ALTA (CATEGORIA_ 4–5) y 50% inundación potencial, incorporando las áreas de protección de ríos como condición Muy Alta (puntaje 100; Ley Forestal 7575); representa la cartografía fuente y no constituye deslinde jurídico ni decisión individual de reubicación.",
+    "La población distribuida de 30,252 habitantes conserva exactamente los totales de los 9 sectores mediante redondeo de mayores restos sobre viviendas estimadas con Google Open Buildings v3 (ratio 0.988 frente a techos locales); complementa pero no sustituye un censo casa por casa dentro del polígono informal.",
+    "El perímetro operativo (~61.0 ha en geometría vectorial frente a 48.2 ha del formulario preliminar y ~63 ha narrativas) continúa en proceso de homologación formal interinstitucional entre MSJ, INVU y MIVAH."
   ],
   "tags": [
     "intervención urbana",
