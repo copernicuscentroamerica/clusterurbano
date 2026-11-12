@@ -1156,7 +1156,7 @@
       );
       var refMarker = new window.maplibregl.Marker({ color: "#007F8B" })
         .setLngLat(refCentroid)
-        .setPopup(new window.maplibregl.Popup({ offset: 24 }).setDOMContent(popupNode))
+        .setPopup(new window.maplibregl.Popup({ offset: 24, focusAfterOpen: false }).setDOMContent(popupNode))
         .addTo(mapInstance);
 
       var toggleRefCheck = document.getElementById("gv-toggle-ref-marker");
@@ -1299,7 +1299,7 @@
         }
         if (!rows.length) rows.push(["Estado", "Capa vectorial cargada"]);
         var dom = createSafePopupElement(String(nameVal), rows.slice(0, 10), badgeTitle);
-        new window.maplibregl.Popup({ maxWidth: "360px" }).setLngLat(e.lngLat).setDOMContent(dom).addTo(mapInstance);
+        new window.maplibregl.Popup({ maxWidth: "360px", focusAfterOpen: false }).setLngLat(e.lngLat).setDOMContent(dom).addTo(mapInstance);
       });
       mapInstance.on("mouseenter", layerId, function () {
         mapInstance.getCanvas().style.cursor = "pointer";
@@ -3153,7 +3153,16 @@
 
     var pointsById = {};
     var hubMarkersById = {};
+    var hubMarkerElsById = {};
     var activePopup = null;
+    var pendingPopupMoveHandler = null;
+
+    function cancelPendingPopupMove() {
+      if (pendingPopupMoveHandler && map) {
+        map.off("moveend", pendingPopupMoveHandler);
+        pendingPopupMoveHandler = null;
+      }
+    }
 
     function clearAllHubMarkers() {
       Object.keys(hubMarkersById).forEach(function (k) {
@@ -3162,21 +3171,62 @@
         }
       });
       hubMarkersById = {};
+      hubMarkerElsById = {};
+    }
+
+    var focusZoneBtns = Array.prototype.slice.call(document.querySelectorAll("[data-hub-focus-zone]"));
+    var focusAllBtns = Array.prototype.slice.call(document.querySelectorAll("[data-hub-focus-all]"));
+    var toolbarFitBtn = document.getElementById("hub-fit-all-zones");
+
+    function updateActiveZoneChips(activePid) {
+      focusAllBtns.forEach(function (b) {
+        b.className = !activePid ? "btn btn-primary btn-xs" : "btn btn-outline btn-xs";
+      });
+      focusZoneBtns.forEach(function (b) {
+        var isAct = b.getAttribute("data-hub-focus-zone") === activePid;
+        if (b.classList.contains("hub-zone-row")) {
+          b.classList.toggle("is-active", isAct);
+          b.setAttribute("aria-pressed", String(isAct));
+        } else {
+          b.className = isAct ? "btn btn-teal btn-xs" : "btn btn-outline btn-xs";
+        }
+      });
+      Object.keys(hubMarkerElsById).forEach(function (k) {
+        if (hubMarkerElsById[k]) {
+          hubMarkerElsById[k].classList.toggle("is-active", k === activePid);
+        }
+      });
     }
 
     function openStudyZonePopup(pt, lngLatOverride) {
       if (!pt) return;
+      var savedScrollX = window.scrollX || window.pageXOffset || 0;
+      var savedScrollY = window.scrollY || window.pageYOffset || 0;
       if (activePopup) {
         activePopup.remove();
         activePopup = null;
       }
       var targetLngLat = lngLatOverride || pt.center;
       if (!isValidStudyZoneCoord(targetLngLat)) return;
+      if (pt.id) {
+        updateActiveZoneChips(pt.id);
+      }
       var dom = buildHubPopupDom(pt);
-      activePopup = new window.maplibregl.Popup({ offset: 14, maxWidth: "350px" })
+      activePopup = new window.maplibregl.Popup({
+        offset: 14,
+        maxWidth: "340px",
+        focusAfterOpen: false
+      })
         .setLngLat(targetLngLat)
         .setDOMContent(dom)
         .addTo(map);
+      if (Math.abs((window.scrollY || window.pageYOffset || 0) - savedScrollY) > 1) {
+        try {
+          window.scrollTo({ left: savedScrollX, top: savedScrollY, behavior: "instant" });
+        } catch (e) {
+          window.scrollTo(savedScrollX, savedScrollY);
+        }
+      }
     }
 
     function mountVerifiedStudyZoneMarkers(allowedFeaturesById) {
@@ -3210,12 +3260,16 @@
         el.appendChild(lbl);
 
         el.addEventListener("click", function (ev) {
+          ev.preventDefault();
           ev.stopPropagation();
+          cancelPendingPopupMove();
           openStudyZonePopup(pt, centerCoord);
         });
         el.addEventListener("keydown", function (ev) {
           if (ev.key === "Enter" || ev.key === " ") {
             ev.preventDefault();
+            ev.stopPropagation();
+            cancelPendingPopupMove();
             openStudyZonePopup(pt, centerCoord);
           }
         });
@@ -3224,6 +3278,7 @@
           .setLngLat(centerCoord)
           .addTo(map);
         hubMarkersById[pt.id] = mk;
+        hubMarkerElsById[pt.id] = el;
       });
     }
 
@@ -3250,21 +3305,8 @@
       return [[minLon, minLat], [maxLon, maxLat]];
     }
 
-    var focusZoneBtns = Array.prototype.slice.call(document.querySelectorAll("[data-hub-focus-zone]"));
-    var focusAllBtns = Array.prototype.slice.call(document.querySelectorAll("[data-hub-focus-all]"));
-    var toolbarFitBtn = document.getElementById("hub-fit-all-zones");
-
-    function updateActiveZoneChips(activePid) {
-      focusAllBtns.forEach(function (b) {
-        b.className = !activePid ? "btn btn-primary btn-xs" : "btn btn-outline btn-xs";
-      });
-      focusZoneBtns.forEach(function (b) {
-        var isAct = b.getAttribute("data-hub-focus-zone") === activePid;
-        b.className = isAct ? "btn btn-teal btn-xs" : "btn btn-outline btn-xs";
-      });
-    }
-
     function fitAllStudyZones(animate) {
+      cancelPendingPopupMove();
       if (activePopup) {
         activePopup.remove();
         activePopup = null;
@@ -3272,8 +3314,12 @@
       updateActiveZoneChips(null);
       var b = computeAllStudyZonesBounds();
       if (b) {
+        var isCompactCanvas = container.clientWidth && container.clientWidth < 680;
+        var pad = isCompactCanvas
+          ? { top: 36, bottom: 36, left: 64, right: 36 }
+          : { top: 44, bottom: 44, left: 156, right: 52 };
         map.fitBounds(b, {
-          padding: { top: 48, bottom: 48, left: 112, right: 86 },
+          padding: pad,
           maxZoom: 6,
           duration: animate ? 650 : 0
         });
@@ -3283,34 +3329,73 @@
     function focusStudyZone(pid, openPopupAfter) {
       var pt = pointsById[pid];
       if (!pt) return;
+      var savedScrollX = window.scrollX || window.pageXOffset || 0;
+      var savedScrollY = window.scrollY || window.pageYOffset || 0;
+      cancelPendingPopupMove();
+      if (activePopup) {
+        activePopup.remove();
+        activePopup = null;
+      }
       updateActiveZoneChips(pid);
+      if (openPopupAfter) {
+        pendingPopupMoveHandler = function () {
+          pendingPopupMoveHandler = null;
+          openStudyZonePopup(pt, pt.center);
+        };
+        map.once("moveend", pendingPopupMoveHandler);
+      }
       if (Array.isArray(pt.bbox) && pt.bbox.length === 4) {
         map.fitBounds(
           [[pt.bbox[0], pt.bbox[1]], [pt.bbox[2], pt.bbox[3]]],
-          { padding: 64, maxZoom: 16.2, duration: 750 }
+          { padding: { top: 96, bottom: 54, left: 56, right: 56 }, maxZoom: 16.2, duration: 680 }
         );
       } else if (isValidStudyZoneCoord(pt.center)) {
-        map.flyTo({ center: pt.center, zoom: pt.zoom || 12.5, duration: 750 });
+        map.flyTo({ center: pt.center, zoom: pt.zoom || 12.5, duration: 680 });
       }
-      if (openPopupAfter) {
-        openStudyZonePopup(pt, pt.center);
+      if (Math.abs((window.scrollY || window.pageYOffset || 0) - savedScrollY) > 1) {
+        try {
+          window.scrollTo({ left: savedScrollX, top: savedScrollY, behavior: "instant" });
+        } catch (e) {
+          window.scrollTo(savedScrollX, savedScrollY);
+        }
       }
     }
 
     if (toolbarFitBtn) {
-      toolbarFitBtn.addEventListener("click", function () {
+      toolbarFitBtn.addEventListener("click", function (ev) {
+        ev.preventDefault();
         fitAllStudyZones(true);
       });
     }
     focusAllBtns.forEach(function (btn) {
-      btn.addEventListener("click", function () {
+      btn.addEventListener("click", function (ev) {
+        ev.preventDefault();
         fitAllStudyZones(true);
       });
     });
+    var directZoneLinks = Array.prototype.slice.call(document.querySelectorAll("[data-zone-direct-link]"));
+    directZoneLinks.forEach(function (lnk) {
+      lnk.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+      });
+    });
     focusZoneBtns.forEach(function (btn) {
-      btn.addEventListener("click", function () {
+      btn.addEventListener("click", function (ev) {
+        if (ev.target && ev.target.closest && ev.target.closest("[data-zone-direct-link]")) {
+          return;
+        }
+        ev.preventDefault();
         focusStudyZone(btn.getAttribute("data-hub-focus-zone"), true);
       });
+      if (btn.classList.contains("hub-zone-row")) {
+        btn.addEventListener("keydown", function (ev) {
+          if (ev.target !== btn) return;
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            focusStudyZone(btn.getAttribute("data-hub-focus-zone"), true);
+          }
+        });
+      }
     });
 
     mountVerifiedStudyZoneMarkers(null);
@@ -4521,7 +4606,7 @@
         }
         if (!rows.length) rows.push(["Estado", "Capa temática activa en el Atlas"]);
         var dom = createSafePopupElement(String(nameVal), rows.slice(0, 9), badgeTitle || "ATLAS TEMÁTICO AMSS");
-        new window.maplibregl.Popup({ maxWidth: "350px" }).setLngLat(e.lngLat).setDOMContent(dom).addTo(atlasMap);
+        new window.maplibregl.Popup({ maxWidth: "350px", focusAfterOpen: false }).setLngLat(e.lngLat).setDOMContent(dom).addTo(atlasMap);
       });
       atlasMap.on("mouseenter", layerId, function () {
         atlasMap.getCanvas().style.cursor = "pointer";

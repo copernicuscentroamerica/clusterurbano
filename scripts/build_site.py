@@ -225,7 +225,7 @@ def render_hub_shell(
         )
         maplibre_scripts = (
             '<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" crossorigin="anonymous"></script>\n'
-            f'  <script src="{html.escape(ctx.site_url("assets/js/geovisor.js"), quote=True)}?v=2.2.0"></script>'
+            f'  <script src="{html.escape(ctx.site_url("assets/js/geovisor.js"), quote=True)}?v=2.3.0"></script>'
         )
 
     hub_repo_url = (
@@ -255,7 +255,7 @@ def render_hub_shell(
   <title>{esc(page_title)} · Clúster Copernicus Urbano Centroamérica</title>
   <meta name="description" content="Portal regional del Clúster Copernicus Urbano (Asentamientos Humanos). Acceso directo a los 8 geovisores interactivos, Atlas temáticos (Parte I + Parte II Copernicus) y metodologías reproducibles en Centroamérica y República Dominicana.">
   {robots_meta}
-  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.2.0">
+  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.3.0">
   {maplibre_head}
 </head>
 <body>
@@ -421,7 +421,7 @@ def build_home_page(
 
     map_points = []
     matrix_rows = []
-    zone_focus_chips = []
+    sidebar_rows_by_id: dict[str, str] = {}
     for it in projects_items:
         p = it["project"]
         pid = p["id"]
@@ -441,6 +441,7 @@ def build_home_page(
         badge_lbl = gv.get("badge_label") or enr.get("badge_label") or f"{p['country']['code']} · {pid}"
         label_dir = enr.get("label_dir", "right")
         insts = p["institutional_use"].get("institutions", [])
+        primary_inst = insts[0] if insts else "Institución contraparte"
         urls = get_project_urls(ctx, pid, p["links"].get("website"))
         short_lbl = SHORT_CARD_TITLES.get(pid) or gv.get("short_name") or p["title"]
 
@@ -454,7 +455,7 @@ def build_home_page(
                     "label_dir": label_dir,
                     "short_name": short_lbl,
                     "territory_label": p["territory"]["label"],
-                    "institution": insts[0] if insts else "Institución contraparte",
+                    "institution": primary_inst,
                     "layers_summary": enr.get("layers_summary", ""),
                     "center": center,
                     "bbox": bbox,
@@ -466,8 +467,20 @@ def build_home_page(
                     "detail_url": urls["detail"],
                 }
             )
-            zone_focus_chips.append(
-                f'<button type="button" class="btn btn-outline btn-xs" data-hub-focus-zone="{esc(pid)}">📍 {esc(badge_lbl)}</button>'
+            sidebar_rows_by_id[pid] = (
+                f'<div class="hub-zone-row" role="button" tabindex="0" aria-pressed="false" data-hub-focus-zone="{esc(pid)}">'
+                f'<div class="hub-zone-row-top">'
+                f'<span class="hub-zone-row-name"><span class="hub-zone-row-country">{esc(p["country"]["code"])}</span>{esc(short_lbl)}</span>'
+                f'</div>'
+                f'<div class="hub-zone-row-bottom">'
+                f'<span class="hub-zone-row-meta">{esc(primary_inst)}</span>'
+                f'<span class="hub-zone-row-links">'
+                f'<a class="hub-mini-link is-gv" href="{html.escape(urls["geovisor"], quote=True)}" target="_blank" rel="noopener noreferrer" data-zone-direct-link="true" title="Abrir Geovisor Interactivo">🗺️ Geovisor</a>'
+                f'<a class="hub-mini-link is-atlas" href="{html.escape(urls["atlas_web"], quote=True)}" target="_blank" rel="noopener noreferrer" data-zone-direct-link="true" title="Abrir Atlas Temático Web">📘 Atlas</a>'
+                f'<a class="hub-mini-link is-pdf" href="{html.escape(urls["atlas_pdf"], quote=True)}" download="Atlas_Copernicus_{esc(pid)}.pdf" data-zone-direct-link="true" title="Descargar Atlas en PDF">📥 PDF</a>'
+                f'</span>'
+                f'</div>'
+                f'</div>'
             )
 
         matrix_rows.append(
@@ -487,93 +500,59 @@ def build_home_page(
             f"</tr>"
         )
 
+    geo_order = [
+        "gt-bethania",
+        "sv-amss",
+        "hn-distrito-central",
+        "sv-la-union",
+        "cr-la-carpio",
+        "pa-colon",
+        "pa-panama-oeste",
+        "do-santiago",
+    ]
+    ordered_sidebar_rows = [sidebar_rows_by_id[k] for k in geo_order if k in sidebar_rows_by_id]
+    for k, v in sidebar_rows_by_id.items():
+        if k not in geo_order:
+            ordered_sidebar_rows.append(v)
+
     safe_points_json = json.dumps(map_points, ensure_ascii=False).replace("</", "<\\/")
     cards_html = "".join(build_project_card_html(ctx, it) for it in projects_items)
 
     hero = f"""
-    <section class="hero">
-      <div class="container">
-        <div class="hero-eyebrow">
-          <span class="badge badge-lime">Clúster Copernicus Urbano · Centroamérica y República Dominicana</span>
-          <span class="badge badge-country">{n_initiatives} Geovisores y Atlas Publicados · {n_countries} Países</span>
+    <section class="hero hero-home-compact">
+      <div class="container hero-home-grid">
+        <div>
+          <div class="hero-eyebrow">
+            <span class="badge badge-lime">Clúster Copernicus Urbano · Centroamérica y República Dominicana</span>
+          </div>
+          <h1>Observación de la Tierra Copernicus y datos locales para decisiones urbanas</h1>
+          <p class="hero-lead">Explora en el mapa regional las <strong>8 zonas de estudio</strong> en 6 países y accede con un clic al <strong>Geovisor interactivo</strong>, <strong>Atlas temático (Parte I + Parte II Copernicus)</strong> y metodología reproducible de cada proyecto.</p>
         </div>
-        <h1>Observación de la Tierra Copernicus y datos locales para decisiones urbanas</h1>
-        <p class="hero-lead">Portal regional del <strong>Clúster de Asentamientos Humanos (Comunidad Urbana Copernicus Centroamérica)</strong>. Explora de forma directa los <strong>8 Geovisores interactivos</strong>, sus <strong>Atlas temáticos estructurados</strong> (con los resultados específicos de cada proyecto en las primeras páginas y el anexo satelital Copernicus) y sus <strong>documentos metodológicos reproducibles</strong>.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#acceso-directo-geovisores-atlas">🗺️ Ir a Geovisores y Atlas de los 8 Proyectos</a>
-          <a class="btn btn-teal" href="{html.escape(ctx.site_url('atlas/'), quote=True)}">📘 Abrir Atlas Urbano Regional</a>
-          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">📂 Catálogo de Proyectos</a>
-          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('recursos/'), quote=True)}">📄 Metodologías (.docx) y Código</a>
+        <div class="hero-kpi-panel" aria-label="Indicadores consolidados y accesos regionales">
+          <div class="hero-kpi-grid">
+            <div class="hero-kpi-pill"><span class="hero-kpi-val">{n_initiatives}</span><span class="hero-kpi-lbl">Geovisores</span></div>
+            <div class="hero-kpi-pill"><span class="hero-kpi-val">{n_countries}</span><span class="hero-kpi-lbl">Países</span></div>
+            <div class="hero-kpi-pill"><span class="hero-kpi-val">83</span><span class="hero-kpi-lbl">Capas activas</span></div>
+            <div class="hero-kpi-pill"><span class="hero-kpi-val">8 + 1</span><span class="hero-kpi-lbl">Atlas Web/PDF</span></div>
+          </div>
+          <div class="hero-quick-links">
+            <a class="btn btn-primary btn-xs" href="{html.escape(ctx.site_url('atlas/'), quote=True)}">📘 Atlas Urbano Regional</a>
+            <a class="btn btn-outline-light btn-xs" href="#acceso-directo-geovisores-atlas">📋 Matriz de los 8 proyectos ↓</a>
+            <a class="btn btn-outline-light btn-xs" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">📂 Catálogo</a>
+            <a class="btn btn-outline-light btn-xs" href="{html.escape(ctx.site_url('recursos/'), quote=True)}">📄 Metodologías y Código</a>
+          </div>
         </div>
       </div>
     </section>
     """
 
     body = f"""
-    <section class="stats-strip" aria-label="Indicadores consolidados del portafolio regional">
-      <div class="stat-card">
-        <div class="stat-value">{n_initiatives}</div>
-        <div class="stat-label">Geovisores interactivos homologados con capas verificadas</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">{n_countries}</div>
-        <div class="stat-label">Países integrados ({esc(', '.join(countries))})</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">83</div>
-        <div class="stat-label">Capas temáticas vectoriales y ráster publicadas en geovisores</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">8 + 1</div>
-        <div class="stat-label">Atlas temáticos por proyecto (Parte I + II) y edición regional en PDF</div>
-      </div>
-    </section>
-
-    <section class="section" id="acceso-directo-geovisores-atlas" aria-labelledby="titulo-acceso-directo">
-      <div class="direct-access-strip">
-        <div class="section-header" style="margin-bottom:0.75rem;">
-          <div>
-            <span class="badge badge-ok">Acceso directo regional · Geovisores y Atlas</span>
-            <h2 id="titulo-acceso-directo" style="margin:0.3rem 0 0.2rem;">Matriz de acceso inmediato a Geovisores Interactivos, Atlas y Metodologías</h2>
-            <p style="margin:0;font-size:0.9rem;color:var(--c-text-muted);">Cada proyecto cuenta con acceso directo desde esta página de inicio tanto a su <strong>Geovisor Interactivo</strong> como a su <strong>Atlas Temático (versión interactiva web y PDF institucional)</strong> y su subpágina de resultados.</p>
-          </div>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-            <a class="btn btn-teal btn-xs" href="{html.escape(ctx.site_url('atlas/'), quote=True)}">📘 Visor del Atlas Regional →</a>
-            <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('assets/descargas/atlas_copernicus_regional.pdf'), quote=True)}" download="Atlas_Urbano_Regional_Copernicus.pdf">📥 Atlas Regional Consolidado (PDF)</a>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>País</th>
-                <th>Proyecto y capas integradas</th>
-                <th>Geovisor Interactivo</th>
-                <th>Atlas (Web Parte I+II y PDF)</th>
-                <th>Resultados y Metodología</th>
-              </tr>
-            </thead>
-            <tbody>
-              {"".join(matrix_rows)}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-header">
-        <div>
-          <h2>Mapa regional interactivo de zonas de estudio y productos Copernicus</h2>
-          <p style="margin:0.15rem 0 0;font-size:0.88rem;color:var(--c-text-muted);">Haz clic sobre cualquier polígono o marcador de las 8 zonas de estudio para abrir directamente su <strong>Geovisor Interactivo</strong> o su <strong>Atlas Temático</strong>.</p>
-        </div>
-        <span class="badge badge-declarado">8 perímetros de estudio en EPSG:4326</span>
-      </div>
+    <section class="section hub-map-first-section" id="mapa-regional" aria-label="Mapa regional interactivo de zonas de estudio">
       <div class="hub-map-card">
-        <div class="geovisor-toolbar" style="border-radius:0;">
-          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.45rem;">
-            <strong style="font-size:0.82rem;">🛰️ Catálogo Copernicus (23 capas):</strong>
-            <select id="hub-basemap-select" aria-label="Seleccionar mapa base o producto Copernicus" style="padding:0.25rem 0.5rem;border-radius:4px;border:1px solid rgba(255,255,255,0.4);font-size:0.78rem;background:#FFFFFF;color:var(--c-brand-blue);font-weight:600;max-width:340px;">
+        <div class="geovisor-toolbar" style="border-radius:0;padding:0.38rem 0.8rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.35rem;">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.35rem;">
+            <strong style="font-size:0.78rem;white-space:nowrap;">🛰️ Capas Copernicus (23):</strong>
+            <select id="hub-basemap-select" aria-label="Seleccionar mapa base o producto Copernicus" style="padding:0.2rem 0.42rem;border-radius:4px;border:1px solid rgba(255,255,255,0.4);font-size:0.75rem;background:#FFFFFF;color:var(--c-brand-blue);font-weight:600;max-width:250px;">
               <optgroup label="1. Modelo Digital de Elevación Oficial Copernicus DEM (GLO-30 · 30 m)">
                 <option value="copernicus-dem-glo30">Copernicus DEM GLO-30 (30 m · Elevación Hipsométrica + Sombreado)</option>
                 <option value="copernicus-dem-hillshade">Copernicus DEM GLO-30 (30 m · Sombreado de Relieve / Hillshade)</option>
@@ -617,40 +596,75 @@ def build_home_page(
                 <option value="esri-imagery">Imagen Satelital de Alta Resolución (Esri)</option>
               </optgroup>
             </select>
-            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="copernicus-dem-glo30">⛰️ DEM GLO-30</button>
-            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="esa-worldcover-2021">🏙️ WorldCover 10m</button>
-            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="s2-lulc-2023">🏙️ LULC 2023</button>
-            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="s2-l2a-ndvi">🌿 NDVI</button>
-            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="s2-l2a-ndbi">🏗️ NDBI</button>
-            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="s1-rtc-falsecolor">📡 Radar S1</button>
-            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="jrc-gsw-occurrence">🌊 JRC Agua</button>
+            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="copernicus-dem-glo30">⛰️ DEM</button>
+            <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="esa-worldcover-2021">🏙️ WorldCover</button>
             <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="sentinel2-2024">🛰️ S2 2024</button>
             <button type="button" class="btn btn-teal btn-xs" data-hub-basemap-quick="carto-positron">🗺️ Vectorial</button>
           </div>
-          <div class="geovisor-toolbar-actions" style="display:flex;flex-wrap:wrap;gap:0.4rem;">
-            <button type="button" id="hub-fit-all-zones" class="btn btn-teal btn-xs">🌎 Encuadrar las 8 zonas</button>
-            <button type="button" id="hub-toggle-fullscreen" class="btn btn-primary btn-xs">⛶ Pantalla completa</button>
+          <div class="geovisor-toolbar-actions" style="display:flex;flex-wrap:wrap;gap:0.35rem;">
+            <button type="button" id="hub-fit-all-zones" class="btn btn-teal btn-xs" style="white-space:nowrap;">🌎 Encuadrar las 8 zonas</button>
+            <button type="button" id="hub-toggle-fullscreen" class="btn btn-primary btn-xs" style="white-space:nowrap;">⛶ Pantalla completa</button>
           </div>
         </div>
-        <div id="hub-basemap-legend" style="padding:0.35rem 0.9rem;background:#1A2766;color:#E8ECF8;font-size:0.76rem;border-bottom:1px solid rgba(255,255,255,0.12);">
-          🗺️ Mapa base vectorial de referencia cartográfica con los perímetros oficiales de las 8 zonas de estudio (OpenFreeMap / OpenStreetMap)
+        <div id="hub-basemap-legend" style="padding:0.24rem 0.85rem;background:#1A2766;color:#E8ECF8;font-size:0.73rem;border-bottom:1px solid rgba(255,255,255,0.12);">
+          🗺️ Mapa base vectorial con los perímetros oficiales de las 8 zonas de estudio · Haz clic en un marcador, polígono o fila lateral para explorar cada territorio
         </div>
-        <div style="padding:0.45rem 0.85rem;background:#F3F6FD;border-bottom:1px solid var(--c-border);display:flex;flex-wrap:wrap;align-items:center;gap:0.35rem;">
-          <strong style="font-size:0.76rem;color:var(--c-brand-blue);margin-right:0.2rem;">🎯 Ir a zona de estudio:</strong>
-          <button type="button" class="btn btn-primary btn-xs" data-hub-focus-all="true">🌎 Ver todas (8)</button>
-          {"".join(zone_focus_chips)}
-        </div>
-        <div id="hub-regional-map" class="hub-map-canvas" role="region" aria-label="Mapa regional interactivo de las ocho zonas de estudio"></div>
-        <div style="padding:0.65rem 1rem;background:var(--c-surface-alt);font-size:0.82rem;color:var(--c-text-muted);">
-          <strong>Nota cartográfica:</strong> El mapa encuadra automáticamente y marca únicamente las <strong>8 zonas de estudio activas</strong> del Clúster Copernicus Urbano (Bethania en Guatemala; AMSS y Conchagua/La Unión en El Salvador; Distrito Central en Honduras; La Carpio en Costa Rica; Colón y Panamá Oeste en Panamá; y Santiago en República Dominicana), con acceso directo en ventana emergente a cada Geovisor y Atlas.
+        <div class="hub-map-workspace">
+          <div class="hub-map-stage">
+            <div id="hub-regional-map" class="hub-map-canvas" role="region" aria-label="Mapa regional interactivo de las ocho zonas de estudio"></div>
+          </div>
+          <aside class="hub-zone-sidebar" aria-label="Selector rápido de las ocho zonas de estudio y accesos directos">
+            <div class="hub-zone-sidebar-head">
+              <div>
+                <div class="hub-zone-sidebar-title">🎯 8 Zonas de Estudio</div>
+                <div class="hub-zone-sidebar-sub">Clic para acercar mapa · Acceso a Geovisor y Atlas</div>
+              </div>
+              <button type="button" class="btn btn-primary btn-xs" data-hub-focus-all="true" style="white-space:nowrap;flex-shrink:0;">🌎 Ver las 8</button>
+            </div>
+            <div class="hub-zone-sidebar-list" id="hub-zone-sidebar-list">
+              {"".join(ordered_sidebar_rows)}
+            </div>
+          </aside>
         </div>
       </div>
       <script id="hub-map-points" type="application/json">{safe_points_json}</script>
     </section>
 
-    <section class="section">
+    <section class="section" id="acceso-directo-geovisores-atlas" aria-labelledby="titulo-acceso-directo">
+      <div class="hub-matrix-card">
+        <div class="section-header" style="margin-bottom:0.75rem;">
+          <div>
+            <span class="badge badge-ok">Matriz regional consolidada · {n_initiatives} proyectos en {n_countries} países</span>
+            <h2 id="titulo-acceso-directo" style="margin:0.3rem 0 0.2rem;">Acceso directo a Geovisores Interactivos, Atlas Temáticos y Metodologías</h2>
+            <p style="margin:0;font-size:0.88rem;color:var(--c-text-muted);">Consulta de un vistazo las capas integradas en cada proyecto y abre directamente su <strong>Geovisor</strong>, su <strong>Atlas Temático (versión interactiva web y PDF institucional)</strong>, su subpágina de resultados y su documento metodológico (<code>.docx</code>).</p>
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <a class="btn btn-teal btn-xs" href="{html.escape(ctx.site_url('atlas/'), quote=True)}">📘 Visor del Atlas Regional →</a>
+            <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('assets/descargas/atlas_copernicus_regional.pdf'), quote=True)}" download="Atlas_Urbano_Regional_Copernicus.pdf">📥 Atlas Regional Consolidado (PDF)</a>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>País</th>
+                <th>Proyecto y capas integradas</th>
+                <th>Geovisor Interactivo</th>
+                <th>Atlas (Web Parte I+II y PDF)</th>
+                <th>Resultados y Metodología</th>
+              </tr>
+            </thead>
+            <tbody>
+              {"".join(matrix_rows)}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="portafolio-proyectos">
       <div class="section-header">
-        <h2>Portafolio activo de proyectos, geovisores y atlas ({n_initiatives})</h2>
+        <h2>Fichas institucionales del portafolio ({n_initiatives})</h2>
         <a class="btn btn-outline btn-xs" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">Filtrar y buscar en catálogo →</a>
       </div>
       <div class="grid-3">
