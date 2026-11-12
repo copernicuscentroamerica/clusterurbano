@@ -1,66 +1,122 @@
 {
   "pa-panama-oeste": {
     "short_name": "Panamá Oeste · Expansión urbana y ocupación informal",
+    "badge_label": "PA · Panamá Oeste",
     "center": [
-      -84.0,
-      13.5
+      -79.75532,
+      8.94515
     ],
-    "zoom": 12.0
+    "bbox": [
+      -79.99104,
+      8.77428,
+      -79.54905,
+      9.18479
+    ],
+    "zoom": 11.2
   },
   "sv-amss": {
     "short_name": "San Salvador (AMSS) · Valor del suelo GEE y expansión urbana",
+    "badge_label": "SV · San Salvador (AMSS)",
     "center": [
-      -84.0,
-      13.5
+      -89.2182,
+      13.6989
     ],
-    "zoom": 12.0
+    "bbox": [
+      -89.62858,
+      13.41821,
+      -89.0253,
+      13.92034
+    ],
+    "zoom": 10.8
   },
   "cr-la-carpio": {
     "short_name": "La Carpio (San José) · Exposición multiamenaza y Plan Maestro",
+    "badge_label": "CR · La Carpio (San José)",
     "center": [
-      -84.0,
-      13.5
+      -84.1502,
+      9.96309
     ],
-    "zoom": 12.0
+    "bbox": [
+      -84.15566,
+      9.95785,
+      -84.14461,
+      9.96671
+    ],
+    "zoom": 14.8
   },
   "sv-la-union": {
     "short_name": "Conchagua y La Unión · Dinámica de asentamientos costeros",
+    "badge_label": "SV · Conchagua / La Unión",
     "center": [
-      -84.0,
-      13.5
+      -87.865,
+      13.315
     ],
-    "zoom": 12.0
+    "bbox": [
+      -87.99621,
+      13.14399,
+      -87.7293,
+      13.39793
+    ],
+    "zoom": 10.6
   },
   "gt-bethania": {
     "short_name": "Bethania (Guatemala) · Evaluación de riesgo a nivel de lote",
+    "badge_label": "GT · Bethania",
     "center": [
-      -84.0,
-      13.5
+      -90.52035,
+      14.66843
     ],
-    "zoom": 12.0
+    "bbox": [
+      -90.52139,
+      14.66695,
+      -90.51931,
+      14.6699
+    ],
+    "zoom": 17.4
   },
   "do-santiago": {
     "short_name": "Santiago · Expansión urbana 2018–2036 e inundación HAND",
+    "badge_label": "DO · Santiago",
     "center": [
-      -84.0,
-      13.5
+      -70.697,
+      19.4517
     ],
-    "zoom": 12.0
+    "bbox": [
+      -70.90852,
+      19.38343,
+      -70.61675,
+      19.65088
+    ],
+    "zoom": 11.3
   },
   "pa-colon": {
-    "short_name": "Colón (Panamá) · Comparador multianual y corredor logístico-portuario",
+    "short_name": "Colón (Panamá) · Comparador multianual y corredor portuario",
+    "badge_label": "PA · Colón",
     "center": [
-      -84.0,
-      13.5
+      -79.858,
+      9.332
     ],
-    "zoom": 12.0
+    "bbox": [
+      -79.935,
+      9.255,
+      -79.775,
+      9.405
+    ],
+    "zoom": 12.1
   },
   "hn-distrito-central": {
-    "short_name": "Distrito Central · Brecha catastral y huella urbana en laderas",
+    "short_name": "Distrito Central · Brecha catastral y huella en laderas",
+    "badge_label": "HN · Distrito Central",
     "center": [
-      -84.0,
-      13.5
+      -87.20542,
+      14.085
     ],
-    "zoom": 12.0
+    "bbox": [
+      -87.48832,
+      13.89506,
+      -87.00542,
+      14.37191
+    ],
+    "zoom": 11.8
   }
 }

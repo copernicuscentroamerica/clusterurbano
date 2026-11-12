@@ -3113,20 +3113,208 @@
       addPopupBtn(pt.geovisor_url, "🗺️ Geovisor", "#000A62", "#FFFFFF", /^https?:/i.test(pt.geovisor_url || ""));
       addPopupBtn(pt.atlas_url, "📚 Atlas Web", "#007F8B", "#FFFFFF", /^https?:/i.test(pt.atlas_url || ""));
       addPopupBtn(pt.atlas_pdf_url, "📥 Atlas PDF", "#FFC800", "#000A62", true);
+      if (pt.subpage_url) {
+        addPopupBtn(pt.subpage_url, "📊 Resultados", "#E0F2FE", "#000A62", /^https?:/i.test(pt.subpage_url || ""));
+      }
       addPopupBtn(pt.detail_url, "📄 Ficha →", "#EEF2FA", "#000A62", false);
+
+      if (pt.id) {
+        var zoomBtn = document.createElement("button");
+        zoomBtn.type = "button";
+        zoomBtn.textContent = "🔍 Acercar a zona";
+        zoomBtn.style.padding = "4px 8px";
+        zoomBtn.style.borderRadius = "5px";
+        zoomBtn.style.border = "1px solid #CBD5E1";
+        zoomBtn.style.fontSize = "0.74rem";
+        zoomBtn.style.fontWeight = "700";
+        zoomBtn.style.cursor = "pointer";
+        zoomBtn.style.background = "#FFFFFF";
+        zoomBtn.style.color = "#000A62";
+        zoomBtn.addEventListener("click", function () {
+          focusStudyZone(pt.id, false);
+        });
+        btnRow.appendChild(zoomBtn);
+      }
+
       wrap.appendChild(btnRow);
       return wrap;
     }
 
+    function isValidStudyZoneCoord(c) {
+      if (!Array.isArray(c) || c.length !== 2) return false;
+      var lon = Number(c[0]);
+      var lat = Number(c[1]);
+      if (!isFinite(lon) || !isFinite(lat)) return false;
+      if (Math.abs(lon - (-84.0)) < 0.001 && (Math.abs(lat - 13.5) < 0.001 || Math.abs(lat - 10.0) < 0.001)) {
+        return false;
+      }
+      return lon >= -95 && lon <= -65 && lat >= 6 && lat <= 22;
+    }
+
     var pointsById = {};
-    points.forEach(function (pt) {
-      if (pt.id) pointsById[pt.id] = pt;
-      var wrap = buildHubPopupDom(pt);
-      new window.maplibregl.Marker({ color: "#000A62" })
-        .setLngLat(pt.center)
-        .setPopup(new window.maplibregl.Popup({ offset: 22, maxWidth: "340px" }).setDOMContent(wrap))
+    var hubMarkersById = {};
+    var activePopup = null;
+
+    function clearAllHubMarkers() {
+      Object.keys(hubMarkersById).forEach(function (k) {
+        if (hubMarkersById[k]) {
+          hubMarkersById[k].remove();
+        }
+      });
+      hubMarkersById = {};
+    }
+
+    function openStudyZonePopup(pt, lngLatOverride) {
+      if (!pt) return;
+      if (activePopup) {
+        activePopup.remove();
+        activePopup = null;
+      }
+      var targetLngLat = lngLatOverride || pt.center;
+      if (!isValidStudyZoneCoord(targetLngLat)) return;
+      var dom = buildHubPopupDom(pt);
+      activePopup = new window.maplibregl.Popup({ offset: 14, maxWidth: "350px" })
+        .setLngLat(targetLngLat)
+        .setDOMContent(dom)
         .addTo(map);
+    }
+
+    function mountVerifiedStudyZoneMarkers(allowedFeaturesById) {
+      clearAllHubMarkers();
+      points.forEach(function (pt) {
+        if (!pt || !pt.id) return;
+        if (allowedFeaturesById && !allowedFeaturesById[pt.id]) return;
+        var fProps = allowedFeaturesById && allowedFeaturesById[pt.id] ? (allowedFeaturesById[pt.id].properties || {}) : {};
+        var centerCoord = isValidStudyZoneCoord(fProps.center) ? fProps.center : pt.center;
+        if (!isValidStudyZoneCoord(centerCoord)) return;
+        pt.center = centerCoord;
+        if (Array.isArray(fProps.bbox) && fProps.bbox.length === 4) {
+          pt.bbox = fProps.bbox;
+        }
+        pointsById[pt.id] = pt;
+
+        var el = document.createElement("div");
+        el.className = "hub-zone-marker";
+        el.setAttribute("role", "button");
+        el.setAttribute("tabindex", "0");
+        el.setAttribute("aria-label", "Zona de estudio: " + (pt.short_name || pt.id));
+
+        var dot = document.createElement("span");
+        dot.className = "hub-zone-dot";
+        el.appendChild(dot);
+
+        var lbl = document.createElement("span");
+        var dir = pt.label_dir || "right";
+        lbl.className = "hub-zone-label is-" + dir;
+        lbl.textContent = pt.badge_label || ((pt.country_code || "") + " · " + (pt.id || ""));
+        el.appendChild(lbl);
+
+        el.addEventListener("click", function (ev) {
+          ev.stopPropagation();
+          openStudyZonePopup(pt, centerCoord);
+        });
+        el.addEventListener("keydown", function (ev) {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            openStudyZonePopup(pt, centerCoord);
+          }
+        });
+
+        var mk = new window.maplibregl.Marker({ element: el, anchor: "center" })
+          .setLngLat(centerCoord)
+          .addTo(map);
+        hubMarkersById[pt.id] = mk;
+      });
+    }
+
+    function computeAllStudyZonesBounds() {
+      if (hubPerimetersCache) {
+        var gjBounds = computeGeoJsonBounds(hubPerimetersCache);
+        if (gjBounds) return gjBounds;
+      }
+      var minLon = Infinity, minLat = Infinity, maxLon = -Infinity, maxLat = -Infinity;
+      points.forEach(function (pt) {
+        if (Array.isArray(pt.bbox) && pt.bbox.length === 4) {
+          if (pt.bbox[0] < minLon) minLon = pt.bbox[0];
+          if (pt.bbox[1] < minLat) minLat = pt.bbox[1];
+          if (pt.bbox[2] > maxLon) maxLon = pt.bbox[2];
+          if (pt.bbox[3] > maxLat) maxLat = pt.bbox[3];
+        } else if (isValidStudyZoneCoord(pt.center)) {
+          if (pt.center[0] < minLon) minLon = pt.center[0];
+          if (pt.center[1] < minLat) minLat = pt.center[1];
+          if (pt.center[0] > maxLon) maxLon = pt.center[0];
+          if (pt.center[1] > maxLat) maxLat = pt.center[1];
+        }
+      });
+      if (!isFinite(minLon)) return null;
+      return [[minLon, minLat], [maxLon, maxLat]];
+    }
+
+    var focusZoneBtns = Array.prototype.slice.call(document.querySelectorAll("[data-hub-focus-zone]"));
+    var focusAllBtns = Array.prototype.slice.call(document.querySelectorAll("[data-hub-focus-all]"));
+    var toolbarFitBtn = document.getElementById("hub-fit-all-zones");
+
+    function updateActiveZoneChips(activePid) {
+      focusAllBtns.forEach(function (b) {
+        b.className = !activePid ? "btn btn-primary btn-xs" : "btn btn-outline btn-xs";
+      });
+      focusZoneBtns.forEach(function (b) {
+        var isAct = b.getAttribute("data-hub-focus-zone") === activePid;
+        b.className = isAct ? "btn btn-teal btn-xs" : "btn btn-outline btn-xs";
+      });
+    }
+
+    function fitAllStudyZones(animate) {
+      if (activePopup) {
+        activePopup.remove();
+        activePopup = null;
+      }
+      updateActiveZoneChips(null);
+      var b = computeAllStudyZonesBounds();
+      if (b) {
+        map.fitBounds(b, {
+          padding: { top: 48, bottom: 48, left: 112, right: 86 },
+          maxZoom: 6,
+          duration: animate ? 650 : 0
+        });
+      }
+    }
+
+    function focusStudyZone(pid, openPopupAfter) {
+      var pt = pointsById[pid];
+      if (!pt) return;
+      updateActiveZoneChips(pid);
+      if (Array.isArray(pt.bbox) && pt.bbox.length === 4) {
+        map.fitBounds(
+          [[pt.bbox[0], pt.bbox[1]], [pt.bbox[2], pt.bbox[3]]],
+          { padding: 64, maxZoom: 16.2, duration: 750 }
+        );
+      } else if (isValidStudyZoneCoord(pt.center)) {
+        map.flyTo({ center: pt.center, zoom: pt.zoom || 12.5, duration: 750 });
+      }
+      if (openPopupAfter) {
+        openStudyZonePopup(pt, pt.center);
+      }
+    }
+
+    if (toolbarFitBtn) {
+      toolbarFitBtn.addEventListener("click", function () {
+        fitAllStudyZones(true);
+      });
+    }
+    focusAllBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        fitAllStudyZones(true);
+      });
     });
+    focusZoneBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        focusStudyZone(btn.getAttribute("data-hub-focus-zone"), true);
+      });
+    });
+
+    mountVerifiedStudyZoneMarkers(null);
+    fitAllStudyZones(false);
 
     var hubBaseUrl = document.body.getAttribute("data-baseurl") || container.getAttribute("data-baseurl") || "";
     if (!hubBaseUrl) {
@@ -3146,6 +3334,7 @@
     if (hubBaseUrl.charAt(hubBaseUrl.length - 1) !== "/") hubBaseUrl = hubBaseUrl + "/";
 
     var hubPerimetersCache = null;
+    var initialBoundsFittedFromGeoJson = false;
     function mountHubPerimeters() {
       if (!hubPerimetersCache || !map || !map.isStyleLoaded()) return;
       if (map.getLayer("hub-perimeters-line")) map.removeLayer("hub-perimeters-line");
@@ -3158,19 +3347,19 @@
         id: "hub-perimeters-glow",
         type: "line",
         source: "hub-perimeters-src",
-        paint: { "line-color": "#00E5FF", "line-width": 6, "line-opacity": 0.42 }
+        paint: { "line-color": "#00E5FF", "line-width": 6, "line-opacity": 0.48 }
       });
       map.addLayer({
         id: "hub-perimeters-fill",
         type: "fill",
         source: "hub-perimeters-src",
-        paint: { "fill-color": "#FFC800", "fill-opacity": 0.24 }
+        paint: { "fill-color": "#FFC800", "fill-opacity": 0.28 }
       });
       map.addLayer({
         id: "hub-perimeters-line",
         type: "line",
         source: "hub-perimeters-src",
-        paint: { "line-color": "#000A62", "line-width": 2.2 }
+        paint: { "line-color": "#000A62", "line-width": 2.4 }
       });
     }
 
@@ -3178,8 +3367,19 @@
     fetch(perimHubUrl)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (gj) {
-        if (!gj) return;
+        if (!gj || !Array.isArray(gj.features)) return;
         hubPerimetersCache = gj;
+        var featById = {};
+        gj.features.forEach(function (f) {
+          if (f && f.properties && f.properties.id) {
+            featById[f.properties.id] = f;
+          }
+        });
+        mountVerifiedStudyZoneMarkers(featById);
+        if (!initialBoundsFittedFromGeoJson) {
+          initialBoundsFittedFromGeoJson = true;
+          fitAllStudyZones(false);
+        }
         if (map.isStyleLoaded()) mountHubPerimeters();
         else map.once("load", mountHubPerimeters);
       })
@@ -3195,8 +3395,7 @@
       if (!e.features || !e.features.length) return;
       var pr = e.features[0].properties || {};
       var ptMatch = pointsById[pr.id] || pr;
-      var dom = buildHubPopupDom(ptMatch);
-      new window.maplibregl.Popup({ maxWidth: "340px" }).setLngLat(e.lngLat).setDOMContent(dom).addTo(map);
+      openStudyZonePopup(ptMatch, e.lngLat);
     });
     map.on("mouseenter", "hub-perimeters-fill", function () { map.getCanvas().style.cursor = "pointer"; });
     map.on("mouseleave", "hub-perimeters-fill", function () { map.getCanvas().style.cursor = ""; });

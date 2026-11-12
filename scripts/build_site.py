@@ -52,6 +52,11 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
         "layers_summary": "11 capas activas · RF + NDBI/NDVI + focos prioritarios MIVIOT",
         "atlas_pages": 27,
         "docx_file": "Metodologia_pa-panama-oeste.docx",
+        "badge_label": "PA · Panamá Oeste",
+        "label_dir": "bottom",
+        "center": [-79.75532, 8.94515],
+        "bbox": [-79.99104, 8.77428, -79.54905, 9.18479],
+        "zoom": 11.2,
     },
     "sv-amss": {
         "subpage_slug": "modelo-suelo",
@@ -59,6 +64,11 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
         "layers_summary": "9 capas activas · AlphaEarth 64D + RF (R² = 83.27 %) + malla 100 m",
         "atlas_pages": 27,
         "docx_file": "Metodologia_sv-amss.docx",
+        "badge_label": "SV · San Salvador (AMSS)",
+        "label_dir": "left",
+        "center": [-89.2182, 13.6989],
+        "bbox": [-89.62858, 13.41821, -89.0253, 13.92034],
+        "zoom": 10.8,
     },
     "cr-la-carpio": {
         "subpage_slug": "indice-multiamenaza",
@@ -66,6 +76,11 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
         "layers_summary": "7 capas curadas + Tablero · Malla 20 m (2,470 hex) + Multiamenaza + INEC",
         "atlas_pages": 27,
         "docx_file": "Metodologia_cr-la-carpio.docx",
+        "badge_label": "CR · La Carpio (San José)",
+        "label_dir": "left",
+        "center": [-84.1502, 9.96309],
+        "bbox": [-84.15566, 9.95785, -84.14461, 9.96671],
+        "zoom": 14.8,
     },
     "sv-la-union": {
         "subpage_slug": "dinamica-asentamientos",
@@ -73,6 +88,11 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
         "layers_summary": "9 capas activas · Huella costera 2019–2025 + susceptibilidad DEM",
         "atlas_pages": 27,
         "docx_file": "Metodologia_sv-la-union.docx",
+        "badge_label": "SV · Conchagua / La Unión",
+        "label_dir": "bottom",
+        "center": [-87.865, 13.315],
+        "bbox": [-87.99621, 13.14399, -87.7293, 13.39793],
+        "zoom": 10.6,
     },
     "gt-bethania": {
         "subpage_slug": "evaluacion-riesgo",
@@ -80,6 +100,11 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
         "layers_summary": "9 capas activas · 199 lotes catastrales + ortofoto UAV + taludes",
         "atlas_pages": 27,
         "docx_file": "Metodologia_gt-bethania.docx",
+        "badge_label": "GT · Bethania",
+        "label_dir": "top",
+        "center": [-90.52035, 14.66843],
+        "bbox": [-90.52139, 14.66695, -90.51931, 14.6699],
+        "zoom": 17.4,
     },
     "do-santiago": {
         "subpage_slug": "expansion-urbana",
@@ -87,6 +112,11 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
         "layers_summary": "8 capas activas · Serie Sentinel-2 2018–2024 + escenario 2036 + HAND",
         "atlas_pages": 27,
         "docx_file": "Metodologia_do-santiago.docx",
+        "badge_label": "DO · Santiago",
+        "label_dir": "left",
+        "center": [-70.697, 19.4517],
+        "bbox": [-70.90852, 19.38343, -70.61675, 19.65088],
+        "zoom": 11.3,
     },
     "pa-colon": {
         "subpage_slug": "comparador",
@@ -94,6 +124,11 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
         "layers_summary": "9 capas activas · Comparador Sentinel-2 + LULC 10 m + huella portuaria",
         "atlas_pages": 15,
         "docx_file": "Metodologia_pa-colon.docx",
+        "badge_label": "PA · Colón",
+        "label_dir": "top",
+        "center": [-79.858, 9.332],
+        "bbox": [-79.935, 9.255, -79.775, 9.405],
+        "zoom": 12.1,
     },
     "hn-distrito-central": {
         "subpage_slug": "brecha-catastral",
@@ -101,6 +136,11 @@ PROJECT_ENRICHMENT: dict[str, dict[str, Any]] = {
         "layers_summary": "9 capas activas · Malla 250 m + contraste catastral AMDC + multiamenaza",
         "atlas_pages": 37,
         "docx_file": "Metodologia_hn-distrito-central.docx",
+        "badge_label": "HN · Distrito Central",
+        "label_dir": "right",
+        "center": [-87.20542, 14.085],
+        "bbox": [-87.48832, 13.89506, -87.00542, 14.37191],
+        "zoom": 11.8,
     },
 }
 
@@ -185,7 +225,7 @@ def render_hub_shell(
         )
         maplibre_scripts = (
             '<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" crossorigin="anonymous"></script>\n'
-            f'  <script src="{html.escape(ctx.site_url("assets/js/geovisor.js"), quote=True)}?v=2.1.0"></script>'
+            f'  <script src="{html.escape(ctx.site_url("assets/js/geovisor.js"), quote=True)}?v=2.2.0"></script>'
         )
 
     hub_repo_url = (
@@ -215,7 +255,7 @@ def render_hub_shell(
   <title>{esc(page_title)} · Clúster Copernicus Urbano Centroamérica</title>
   <meta name="description" content="Portal regional del Clúster Copernicus Urbano (Asentamientos Humanos). Acceso directo a los 8 geovisores interactivos, Atlas temáticos (Parte I + Parte II Copernicus) y metodologías reproducibles en Centroamérica y República Dominicana.">
   {robots_meta}
-  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.1.0">
+  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.2.0">
   {maplibre_head}
 </head>
 <body>
@@ -381,33 +421,54 @@ def build_home_page(
 
     map_points = []
     matrix_rows = []
+    zone_focus_chips = []
     for it in projects_items:
         p = it["project"]
         pid = p["id"]
         gv = it.get("geovisor_summary") or {}
-        center = gv.get("center", [-84.0, 13.5])
-        insts = p["institutional_use"].get("institutions", [])
         enr = PROJECT_ENRICHMENT.get(pid, {})
+        raw_center = gv.get("center")
+        if (
+            not isinstance(raw_center, list)
+            or len(raw_center) != 2
+            or (abs(raw_center[0] - (-84.0)) < 1e-4 and abs(raw_center[1] - 13.5) < 1e-4)
+        ):
+            center = enr.get("center")
+        else:
+            center = raw_center
+        bbox = gv.get("bbox") or enr.get("bbox")
+        zoom = gv.get("zoom") or enr.get("zoom", 12.0)
+        badge_lbl = gv.get("badge_label") or enr.get("badge_label") or f"{p['country']['code']} · {pid}"
+        label_dir = enr.get("label_dir", "right")
+        insts = p["institutional_use"].get("institutions", [])
         urls = get_project_urls(ctx, pid, p["links"].get("website"))
         short_lbl = SHORT_CARD_TITLES.get(pid) or gv.get("short_name") or p["title"]
 
-        map_points.append(
-            {
-                "id": pid,
-                "country_code": p["country"]["code"],
-                "country_name": p["country"]["name"],
-                "short_name": short_lbl,
-                "territory_label": p["territory"]["label"],
-                "institution": insts[0] if insts else "Institución contraparte",
-                "layers_summary": enr.get("layers_summary", ""),
-                "center": center,
-                "geovisor_url": urls["geovisor"],
-                "atlas_url": urls["atlas_web"],
-                "atlas_pdf_url": urls["atlas_pdf"],
-                "subpage_url": urls["subpage"],
-                "detail_url": urls["detail"],
-            }
-        )
+        if center:
+            map_points.append(
+                {
+                    "id": pid,
+                    "country_code": p["country"]["code"],
+                    "country_name": p["country"]["name"],
+                    "badge_label": badge_lbl,
+                    "label_dir": label_dir,
+                    "short_name": short_lbl,
+                    "territory_label": p["territory"]["label"],
+                    "institution": insts[0] if insts else "Institución contraparte",
+                    "layers_summary": enr.get("layers_summary", ""),
+                    "center": center,
+                    "bbox": bbox,
+                    "zoom": zoom,
+                    "geovisor_url": urls["geovisor"],
+                    "atlas_url": urls["atlas_web"],
+                    "atlas_pdf_url": urls["atlas_pdf"],
+                    "subpage_url": urls["subpage"],
+                    "detail_url": urls["detail"],
+                }
+            )
+            zone_focus_chips.append(
+                f'<button type="button" class="btn btn-outline btn-xs" data-hub-focus-zone="{esc(pid)}">📍 {esc(badge_lbl)}</button>'
+            )
 
         matrix_rows.append(
             f"<tr>"
@@ -566,16 +627,22 @@ def build_home_page(
             <button type="button" class="btn btn-outline-light btn-xs" data-hub-basemap-quick="sentinel2-2024">🛰️ S2 2024</button>
             <button type="button" class="btn btn-teal btn-xs" data-hub-basemap-quick="carto-positron">🗺️ Vectorial</button>
           </div>
-          <div class="geovisor-toolbar-actions">
+          <div class="geovisor-toolbar-actions" style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+            <button type="button" id="hub-fit-all-zones" class="btn btn-teal btn-xs">🌎 Encuadrar las 8 zonas</button>
             <button type="button" id="hub-toggle-fullscreen" class="btn btn-primary btn-xs">⛶ Pantalla completa</button>
           </div>
         </div>
         <div id="hub-basemap-legend" style="padding:0.35rem 0.9rem;background:#1A2766;color:#E8ECF8;font-size:0.76rem;border-bottom:1px solid rgba(255,255,255,0.12);">
-          🗺️ Mapa base vectorial de referencia cartográfica con polígonos de las 8 zonas de estudio (OpenFreeMap / OpenStreetMap)
+          🗺️ Mapa base vectorial de referencia cartográfica con los perímetros oficiales de las 8 zonas de estudio (OpenFreeMap / OpenStreetMap)
+        </div>
+        <div style="padding:0.45rem 0.85rem;background:#F3F6FD;border-bottom:1px solid var(--c-border);display:flex;flex-wrap:wrap;align-items:center;gap:0.35rem;">
+          <strong style="font-size:0.76rem;color:var(--c-brand-blue);margin-right:0.2rem;">🎯 Ir a zona de estudio:</strong>
+          <button type="button" class="btn btn-primary btn-xs" data-hub-focus-all="true">🌎 Ver todas (8)</button>
+          {"".join(zone_focus_chips)}
         </div>
         <div id="hub-regional-map" class="hub-map-canvas" role="region" aria-label="Mapa regional interactivo de las ocho zonas de estudio"></div>
         <div style="padding:0.65rem 1rem;background:var(--c-surface-alt);font-size:0.82rem;color:var(--c-text-muted);">
-          <strong>Nota cartográfica:</strong> El mapa despliega los perímetros de estudio y marcadores de las 8 iniciativas activas (incluyendo Panamá Oeste y Colón en Panamá, AMSS y La Unión en El Salvador, Bethania en Guatemala, Distrito Central en Honduras, La Carpio en Costa Rica y Santiago en República Dominicana) con acceso directo en ventana emergente a cada Geovisor y Atlas.
+          <strong>Nota cartográfica:</strong> El mapa encuadra automáticamente y marca únicamente las <strong>8 zonas de estudio activas</strong> del Clúster Copernicus Urbano (Bethania en Guatemala; AMSS y Conchagua/La Unión en El Salvador; Distrito Central en Honduras; La Carpio en Costa Rica; Colón y Panamá Oeste en Panamá; y Santiago en República Dominicana), con acceso directo en ventana emergente a cada Geovisor y Atlas.
         </div>
       </div>
       <script id="hub-map-points" type="application/json">{safe_points_json}</script>

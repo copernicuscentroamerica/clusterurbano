@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-11-12T17:08:29Z",
+  "generated_at": "2026-11-12T18:28:00Z",
   "projects": [
     {
       "project": {
@@ -414,17 +414,24 @@
       "content_markdown": "## Presión metropolitana en Arraiján y La Chorrera\n\nLos distritos de **Arraiján (42,597.2 ha)** y **La Chorrera (78,972.1 ha)** conforman un ámbito de **121,569.3 hectáreas** que absorbe la mayor expansión residencial y periurbana al oeste del Canal de Panamá. El **Ministerio de Vivienda y Ordenamiento Territorial (MIVIOT)** requiere anticipar qué sectores enfrentan mayor presión de ocupación informal y pérdida de cobertura boscosa para orientar el control territorial y la oferta de suelo urbanizado.\n\n## Integración de teledetección Copernicus y cartografía institucional MIVIOT\n\nEl sistema articula detecciones multitemporales **Copernicus Sentinel-2 (2018–2025)** procesadas en Google Earth Engine con el catastro de **414 urbanizaciones formales del MIVIOT**, la red vial estructurante, la red hidrográfica y el mapa institucional de cobertura del suelo para producir una **superficie continua y vectorial de probabilidad de ocupación**.\n",
       "source_repository": "copernicuscentroamerica/urbano-pa-panama-oeste",
       "source_commit": "0cb4f05450fccc72d16aad759e9f072d7ae5e184",
-      "fetched_at": "2026-11-12T17:08:02Z",
+      "fetched_at": "2026-11-12T18:27:30Z",
       "content_updated_at": "2026-11-12",
       "sync_state": "ok",
       "source_mode": "canonical",
       "geovisor_summary": {
         "short_name": "Panamá Oeste · Expansión urbana y ocupación informal",
+        "badge_label": "PA · Panamá Oeste",
         "center": [
-          -84.0,
-          13.5
+          -79.75532,
+          8.94515
         ],
-        "zoom": 12.0
+        "bbox": [
+          -79.99104,
+          8.77428,
+          -79.54905,
+          9.18479
+        ],
+        "zoom": 11.2
       },
       "branding": {
         "schema_version": "1.0.0",
@@ -823,17 +830,24 @@
       "content_markdown": "# AMSS: expansión urbana y transformación del suelo\n\n## Integrantes del equipo técnico (OPAMSS)\n\n- **Fabio Gracias** ([@fabiogracias1979-svg](https://github.com/fabiogracias1979-svg))\n- **Fernando Aguilar** ([@fernando70](https://github.com/fernando70))\n- **Tatiana Miranda**\n\nLa iniciativa integra información de expansión urbana, permisos de construcción y valores del suelo para examinar las transformaciones del Área Metropolitana de San Salvador y apoyar sus instrumentos de planificación y gestión territorial.\n\n## Propósito\n\nEl AMSS necesita información actualizada e integrada para reconocer dónde y cómo se expande la ciudad y relacionar esos cambios con la normativa, la inversión y el valor del suelo.\n\nMejorar la lectura de las tipologías de expansión y de la dinámica de inversión, con información útil para planificación, control del desarrollo y gestión del suelo.\n\n## Instituciones participantes\n\n- Oficina de Planificación del Área Metropolitana de San Salvador (OPAMSS)\n- Ministerio de Gobernación y Desarrollo Territorial\n- Instituto Holandés para la Democracia Multipartidaria (NIMD)\n\n## Territorio\n\nÁrea Metropolitana de San Salvador (AMSS) - Zona núcleo/urbana (AMSS) - 14 DISTRITOS.\n\n## Usuario y decisión\n\nPrincipalmente la Subdirección de Planificación, Subdirección de Control de Desarrollo Urbano, Inteligencia Territorial y departamento de información del Ministerio de Gobernación.\n\nEvaluar la conveniencia de las diferentes tipologías de expansión urbana en el territorio, permitiendo identificar las fortalezas y riesgos de inversión que estas conllevan e identificar las oportunidades de mejora para los criterios de planificación urbana , los instrumentos de gestión del suelo y los procesos de utilización de la data de los permisos de construcción de manera que permita comprender mejor la dinámica de inversión territorial\n\n## Producto mínimo viable previsto\n\nUn primer script reproducible, una capa demostrativa de expansión urbana, un flujo de integración con información de permisos y valores del suelo, y un prototipo de tablero para los 14 distritos del AMSS.\n\nAlcance sujeto a acuerdo y revisión con el equipo. La disponibilidad de la demostración y la aceptación del producto se informarán con evidencia.\n\n## Método previsto y datos\n\nSe propone integrar información de trámites y permisos con cambios de huella urbana observados por satélite y referencias de precios del suelo. El flujo previsto incluye normalización espacial, consultas en PostgreSQL/PostGIS, procesamiento en Earth Engine e interpolación de precios con evaluación del error. La publicación de registros institucionales depende de sus condiciones de acceso.\n\n## Contribución prevista al Atlas\n\nCapas de expansión urbana e indicadores territoriales por distrito, asociados a periodos y a rangos de valor del suelo con metodología y límites de interpretación.\n\n## Estado de la documentación\n\nExiste un perfil de proyecto y los materiales enumerados en la sección de documentación. El estado operativo, la revisión técnica y la validación institucional deben confirmarse por separado.\n\n## Participación\n\nEl repositorio oficial de esta iniciativa se encuentra activo y abierto a la colaboración técnica. Las personas e instituciones participantes trabajan sobre una copia personal (*fork*) vinculada en Google Antigravity, integran capas geoespaciales en `geovisor/capas/` o ejecutan el ejercicio práctico en Google Colab / Google Earth Engine, y envían sus mejoras mediante una solicitud de cambios (*Pull Request*) para revisión técnica antes de su publicación.\n\n## Precedencia documental e identificación\n\n**Perfil documental que orienta esta iniciativa:** *Monitoreo de las dinámicas de expansión urbana y transformación del suelo para la planificación y la gestión sostenible del AMSS* (perfil actualizado `S10` — versión `AV_02` de OPAMSS).\n\n**Articulación del expediente:** Se toma como referencia operativa la versión actualizada `AV_02` (`S10`), conservando la formulación preliminar `AV_01` (`S09`) como antecedente y la matriz de historias de usuario y tareas Scrum (`S11`) como base del backlog técnico.\n",
       "source_repository": "copernicuscentroamerica/urbano-sv-amss",
       "source_commit": "6e79c3db6ce777265b8c9184c47d14ed627197ce",
-      "fetched_at": "2026-11-12T17:08:06Z",
+      "fetched_at": "2026-11-12T18:27:35Z",
       "content_updated_at": "2026-11-12",
       "sync_state": "ok",
       "source_mode": "canonical",
       "geovisor_summary": {
         "short_name": "San Salvador (AMSS) · Valor del suelo GEE y expansión urbana",
+        "badge_label": "SV · San Salvador (AMSS)",
         "center": [
-          -84.0,
-          13.5
+          -89.2182,
+          13.6989
         ],
-        "zoom": 12.0
+        "bbox": [
+          -89.62858,
+          13.41821,
+          -89.0253,
+          13.92034
+        ],
+        "zoom": 10.8
       },
       "branding": {
         "schema_version": "1.0.0",
@@ -1275,17 +1289,24 @@
       "content_markdown": "# La Carpio: evaluación microterritorial en malla de 20 m para el Plan Maestro de Intervención Urbanística Integral\n\n**Equipo técnico interinstitucional colaborador (Costa Rica — MSJ · MIVAH · INVU):** Rodolfo Bolaños Bermúdez, Emiler Segura López, Victoria Delgado Fernández, Jaqueline Vargas Bogantes y Jonnathan Obando Artiaga.\n\nLa iniciativa articula información geoespacial de micro-escala, observación satelital Copernicus y registros municipales de emergencia en **La Carpio (distrito Uruca, San José)** para respaldar la formulación e implementación de su **Plan Maestro de Intervención Urbanística Integral** entre la **Municipalidad de San José (MSJ)**, el **Ministerio de Vivienda y Asentamientos Humanos (MIVAH)** y el **Instituto Nacional de Vivienda y Urbanismo (INVU)**.\n\n## Ámbito territorial y unidad de análisis aprobada\n\n- **Ubicación:** Asentamiento La Carpio, distrito Uruca (`10107`), Cantón Central de San José, sobre el interfluvio confinado entre el **río Virilla** (norte) y el **río Torres** (sur), con ~61.0 ha operativas en geometría vectorial (`EPSG:5367` → `EPSG:4326`).\n- **Malla microterritorial de 20 m:** **2,470 hexágonos regulares** (20 m entre vértices opuestos) recortados al perímetro de estudio en los **9 sectores comunales** (*María Auxiliadora, Central, Roble Norte, Pequeña Gran Ciudad, Las Brisas, Prodesarrollo, La Libertad, Roble Sur y San Vicente*).\n- **Población modelada:** **30,252 habitantes** distribuidos de forma entera mediante mayores restos a partir de **5,460 viviendas estimadas** con Google Open Buildings v3 calibrado con levantamiento local de techos (ratio `0.988`).\n\n### Línea base demográfica y habitacional distrital (INEC 2011 y 2022)\n\nComo marco comparativo oficial documentado en `docs/censo-uruca-linea-base.md`, se incorpora la caracterización intercensal del **distrito de Uruca (código INEC `10107`)** según el Instituto Nacional de Estadística y Censos (INEC):\n\n- **Censo Nacional 2011 (X de Población y VI de Vivienda):** **31,728 habitantes** y **8,389 viviendas individuales ocupadas**, con un promedio de **3.8 personas por vivienda** (superior al 3.5 cantonal y nacional).\n- **Censo / Estimación 2022 (XI de Población y VII de Vivienda):** **43,484 habitantes** (+37.1% intercensal) y un promedio estimado de **~3.3 a 3.5 personas por vivienda** frente a **3.1** a nivel cantonal y nacional, confirmando la mayor densidad habitacional relativa en Uruca y sustentando el uso de factores calibrados específicos (4.5 hab/viv base y escenario de planificación de 5.4 hab/viv = 30,252 hab) dentro de La Carpio.\n\n## Síntesis de resultados en el Geovisor y Tablero de Riesgo\n\n1. **Población en condición Muy Alta / protección fluvial:** **4,687 habitantes (15.49%)** en **588 hexágonos de 20 m**, incorporando las zonas de protección de los ríos Virilla y Torres (Ley Forestal 7575) con puntaje máximo (100).\n2. **Combinación de condicionantes de desarrollo (`1,523` hexágonos · `17,529` hab):** **12,779 hab (42.24%)** en deslizamiento alto/muy alto (`CATEGORIA_` 4–5), **4,475 hab (14.79%)** en solape de protección fluvial + deslizamiento alto/muy alto, y **212 hab (0.70%)** únicamente en protección de río, frente a **12,786 hab (42.26%)** sin intersección identificada en la plataforma central.\n3. **Catálogo depurado en el Geovisor (`/aplicacion/`):** 7 capas temáticas solicitadas por el equipo técnico más el tablero estadístico de exposición poblacional bajo el mapa, complementados con el cuaderno reproducible `src/score_multiamenaza_edificaciones.ipynb` (v1.1).\n",
       "source_repository": "copernicuscentroamerica/urbano-cr-la-carpio",
       "source_commit": "155bd71041a86610a436328653d9beb1659df9a4",
-      "fetched_at": "2026-11-12T17:08:13Z",
+      "fetched_at": "2026-11-12T18:27:41Z",
       "content_updated_at": "2026-11-12",
       "sync_state": "ok",
       "source_mode": "canonical",
       "geovisor_summary": {
         "short_name": "La Carpio (San José) · Exposición multiamenaza y Plan Maestro",
+        "badge_label": "CR · La Carpio (San José)",
         "center": [
-          -84.0,
-          13.5
+          -84.1502,
+          9.96309
         ],
-        "zoom": 12.0
+        "bbox": [
+          -84.15566,
+          9.95785,
+          -84.14461,
+          9.96671
+        ],
+        "zoom": 14.8
       },
       "branding": {
         "schema_version": "1.0.0",
@@ -1680,18 +1701,25 @@
       },
       "content_markdown": "## Dinámica territorial costera en Conchagua y La Unión\n\nLos distritos de **Conchagua (17,693.5 ha)** y **La Unión (18,884.4 ha)**, integrados en el **Municipio de La Unión Sur (36,577.9 ha)** sobre el Golfo de Fonseca, experimentan transformaciones sostenidas en sus asentamientos humanos impulsadas por la infraestructura portuaria, el turismo costero y las dinámicas de migración interna. Contar con una serie anual homogénea resulta indispensable para **MIVIVIENDA** y las autoridades locales.\n\n## Serie anual 2019–2025 y contexto ambiental Copernicus\n\nLa iniciativa consolida **siete cortes anuales consecutivos (2019–2025)** de crecimiento de asentamientos humanos (**24,417 polígonos**) y los integra en el Atlas y Geovisor con las capas ambientales del **Programa Copernicus** (elevación y pendientes DEM GLO-30, manglares y bosques en ESA WorldCover y dinámica hídrica costera).\n",
       "source_repository": "copernicuscentroamerica/urbano-sv-la-union",
-      "source_commit": "3c2f3fd97cab61d916f0e2cd5a40b0fd74c87d8f",
-      "fetched_at": "2026-11-12T17:08:16Z",
+      "source_commit": "65dd06dd2c9c93e539b04b263e5ce332ae267db0",
+      "fetched_at": "2026-11-12T18:27:44Z",
       "content_updated_at": "2026-11-12",
       "sync_state": "ok",
       "source_mode": "canonical",
       "geovisor_summary": {
         "short_name": "Conchagua y La Unión · Dinámica de asentamientos costeros",
+        "badge_label": "SV · Conchagua / La Unión",
         "center": [
-          -84.0,
-          13.5
+          -87.865,
+          13.315
         ],
-        "zoom": 12.0
+        "bbox": [
+          -87.99621,
+          13.14399,
+          -87.7293,
+          13.39793
+        ],
+        "zoom": 10.6
       },
       "branding": {
         "schema_version": "1.0.0",
@@ -2035,17 +2063,24 @@
       "content_markdown": "## Contexto territorial y problema institucional\n\nEl asentamiento **Nueva León de Judá**, ubicado en la Colonia Bethania (Zona 7 de la Ciudad de Guatemala), ocupa una franja de transición abrupta hacia las laderas de barranco sobre un polígono operativo de **7.15 hectáreas**. La **Unidad para el Desarrollo de Vivienda Popular (UDEVIPO)**, a través de su Unidad de Catastro, requiere evidencia espacial de alta precisión para identificar qué viviendas y lotes presentan condiciones críticas por escarpes pronunciados y servidumbre eléctrica antes de emitir dictámenes técnicos de habitabilidad, obras de mitigación o procesos de escrituración.\n\n## Integración de observación de la Tierra y levantamiento local\n\nEn el marco del **Clúster Copernicus Urbano**, el proyecto articula el contexto topográfico y multiespectral regional de **Copernicus (DEM GLO-30 y series Sentinel-2)** con fotogrametría local de ultra-alta resolución (**ortofoto RPAS a 2.4 cm/px**), restitución altimétrica de **536 curvas de nivel cada 1 m** (1,308–1,439 m s. n. m.), huellas abiertas de edificaciones (**Google-Microsoft Open Buildings**) y el catastro predial de **105 lotes** levantados en los Sectores A, B y C.\n",
       "source_repository": "copernicuscentroamerica/urbano-gt-bethania",
       "source_commit": "f54e4df03ab8a20e5eca2818e8f7d9e7c1b23c4f",
-      "fetched_at": "2026-11-12T17:08:19Z",
+      "fetched_at": "2026-11-12T18:27:48Z",
       "content_updated_at": "2026-11-12",
       "sync_state": "ok",
       "source_mode": "canonical",
       "geovisor_summary": {
         "short_name": "Bethania (Guatemala) · Evaluación de riesgo a nivel de lote",
+        "badge_label": "GT · Bethania",
         "center": [
-          -84.0,
-          13.5
+          -90.52035,
+          14.66843
         ],
-        "zoom": 12.0
+        "bbox": [
+          -90.52139,
+          14.66695,
+          -90.51931,
+          14.6699
+        ],
+        "zoom": 17.4
       },
       "branding": {
         "schema_version": "1.0.0",
@@ -2418,17 +2453,24 @@
       "content_markdown": "## Dinámica metropolitana de Santiago de los Caballeros\n\nEl **Municipio de Santiago de los Caballeros** (**429.27 km²** según la cartografía censal de la ONE) experimenta una sostenida expansión horizontal sobre el valle del Cibao y los piedemontes circundantes. El **Ayuntamiento del Municipio de Santiago** y el **Consejo para el Desarrollo Estratégico de Santiago (CDES)** impulsan este sistema de monitoreo satelital y modelación prospectiva como insumo cuantitativo para el **Plan Municipal de Ordenamiento Territorial (PMOT)**.\n\n## Sinergia entre observación satelital Copernicus y modelación prospectiva\n\nEl proyecto emplea compuestos multitemporales **Copernicus Sentinel-2 L2A (10 m)** para medir el crecimiento urbano real entre **2018, 2021 y 2024**, valida su exactitud espacial frente a **GHSL Built-Up Surface 2020** y proyecta cuatro horizontes trienales (**2027, 2030, 2033 y 2036**) mediante autómatas celulares (**MOLUSCE**).\n",
       "source_repository": "copernicuscentroamerica/urbano-do-santiago",
       "source_commit": "cfd92e30f22b296db6e3624fcb8c574c397f44d6",
-      "fetched_at": "2026-11-12T17:08:22Z",
+      "fetched_at": "2026-11-12T18:27:52Z",
       "content_updated_at": "2026-11-12",
       "sync_state": "ok",
       "source_mode": "canonical",
       "geovisor_summary": {
         "short_name": "Santiago · Expansión urbana 2018–2036 e inundación HAND",
+        "badge_label": "DO · Santiago",
         "center": [
-          -84.0,
-          13.5
+          -70.697,
+          19.4517
         ],
-        "zoom": 12.0
+        "bbox": [
+          -70.90852,
+          19.38343,
+          -70.61675,
+          19.65088
+        ],
+        "zoom": 11.3
       },
       "branding": {
         "schema_version": "1.0.0",
@@ -2674,17 +2716,24 @@
       "content_markdown": "## Dinámica territorial del corredor urbano-portuario de Colón\n\nEl **Distrito de Colón**, en la entrada atlántica del Canal de Panamá, articula sobre un corredor costero y transístmico de **24,696.2 hectáreas** el casco histórico de **Isla Manzanillo (Barrio Norte y Barrio Sur)**, la **Zona Libre de Colón**, uno de los mayores complejos portuarios de América Latina (**Cristóbal, Manzanillo International Terminal, Colón Container Terminal y Coco Solo**) y los ejes de expansión urbana e industrial de **Cativá, Sabanitas y Puerto Pilón**. Monitorear anualmente cómo crecen los recintos logísticos, los tejidos residenciales y los asentamientos densos frente a los manglares y bosques húmedos circundantes es crítico para la planificación municipal.\n\n## Integración de Copernicus Sentinel-2 y el motor abierto GEO-URBANO\n\nDesarrollado a partir del flujo metodológico aportado por el equipo técnico de Colón (`colon2025mun-commits`), el proyecto combina series anuales **Copernicus Sentinel-2 L2A (2018–2024 a 10 m)**, coberturas anuales de uso del suelo y reglas morfológico-espectrales reproducibles tanto en el **Geovisor (`/aplicacion/`)** como en el **Comparador Multianual (`/comparador/`)**.\n",
       "source_repository": "copernicuscentroamerica/urbano-pa-colon",
       "source_commit": "a54f444ef1ecf3de84dee13c7884423143ff27e9",
-      "fetched_at": "2026-11-12T17:08:26Z",
+      "fetched_at": "2026-11-12T18:27:56Z",
       "content_updated_at": "2026-11-12",
       "sync_state": "ok",
       "source_mode": "canonical",
       "geovisor_summary": {
-        "short_name": "Colón (Panamá) · Comparador multianual y corredor logístico-portuario",
+        "short_name": "Colón (Panamá) · Comparador multianual y corredor portuario",
+        "badge_label": "PA · Colón",
         "center": [
-          -84.0,
-          13.5
+          -79.858,
+          9.332
         ],
-        "zoom": 12.0
+        "bbox": [
+          -79.935,
+          9.255,
+          -79.775,
+          9.405
+        ],
+        "zoom": 12.1
       },
       "branding": {
         "schema_version": "1.0.0",
@@ -3113,18 +3162,25 @@
       },
       "content_markdown": "## Contexto territorial y desafío catastral en el Distrito Central\n\nEl **Municipio del Distrito Central (Tegucigalpa y Comayagüela)** concentra una rápida transformación constructiva tanto dentro como en los bordes del **Perímetro Urbano Oficial PU 2025 (24,431 ha)** y de sus **15,022 manzanas catastradas**. La **Alcaldía Municipal del Distrito Central (AMDC)**, junto con la **UNAH** y **SEGOB**, desarrolló este flujo geoespacial replicable para responder con datos objetivos dónde y en qué magnitud la ciudad físicamente construida supera los registros catastrales vigentes.\n\n## Articulación de datos Copernicus con el catastro municipal\n\nLa iniciativa cruza la planimetría oficial de la AMDC (sectores, colonias urbanas y rurales, manzanas y zonas declaradas inhabitables) con series satelitales **Copernicus Sentinel-2 / Dynamic World (10 m)**, **GHSL (100 m)**, **Open Buildings 2.5D Temporal (4 m)** y **Copernicus DEM GLO-30**, agregando los resultados en una **malla pública anonimizada de 4,292 celdas de 250 × 250 m**.\n",
       "source_repository": "copernicuscentroamerica/urbano-hn-distrito-central",
-      "source_commit": "31b04916cccd8565ec089ae2edbf93ce51eb7774",
-      "fetched_at": "2026-11-12T17:08:29Z",
+      "source_commit": "70fa590559f6a947b45d496e7ce971f268c8aeea",
+      "fetched_at": "2026-11-12T18:28:00Z",
       "content_updated_at": "2026-11-12",
       "sync_state": "ok",
       "source_mode": "canonical",
       "geovisor_summary": {
-        "short_name": "Distrito Central · Brecha catastral y huella urbana en laderas",
+        "short_name": "Distrito Central · Brecha catastral y huella en laderas",
+        "badge_label": "HN · Distrito Central",
         "center": [
-          -84.0,
-          13.5
+          -87.20542,
+          14.085
         ],
-        "zoom": 12.0
+        "bbox": [
+          -87.48832,
+          13.89506,
+          -87.00542,
+          14.37191
+        ],
+        "zoom": 11.8
       },
       "branding": {
         "schema_version": "1.0.0",
