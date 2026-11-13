@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "project_id": "cr-la-carpio",
   "theme_version": "2.0.0-copernicus-2026",
-  "updated_at": "2026-11-12",
+  "updated_at": "2026-11-13",
   "project_logo": null,
   "institutions": [
     {
@@ -48,18 +48,7 @@
       "alt_text": "Logo de la Presidencia Pro Tempore del SICA Costa Rica",
       "order": 4,
       "aspect_hint": "vertical"
-    },
-    {
-      "id": "4tech-gis-cr",
-      "name": "4Tech GIS",
-      "acronym": "4Tech GIS",
-      "role": "Acompañamiento metodológico y geoespacial",
-      "url": null,
-      "logo_path": "branding/logos/logo-4tech-gis.png",
-      "alt_text": "Logo de 4Tech GIS",
-      "order": 5,
-      "aspect_hint": "square"
     }
   ],
-  "notes": "Incluye los 5 logotipos institucionales extraídos de la presentación original del Grupo 4 (La Carpio, Costa Rica). Se recomienda sustituir los PNG rasterizados por versiones SVG vectoriales cuando las instituciones los faciliten."
+  "notes": "Incluye los 4 logotipos institucionales oficiales del proyecto La Carpio, Costa Rica (MSJ, INVU, MIVAH y PPT-SICA)."
 }
