@@ -1659,30 +1659,18 @@ def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_sna
     """
 
     body = f"""
-    <section class="section" id="objetivo-y-proxima-actividad">
-      <div class="comm-top-split">
-        <article class="comm-objective-card">
-          <div>
-            <span class="comm-eyebrow">01 — Objetivo de la Comunidad</span>
-            <p class="comm-objective-quote">«Mantener los lazos cercanos entre las personas de la región que utilizan herramientas tecnológicas, IA e imágenes satelitales para innovar en metodologías y visualización de información territorial para la toma de decisiones.»</p>
-          </div>
-          <div class="comm-launch-meta">
-            <span>📍 <strong>Taller de uso de imágenes satelitales:</strong> San Salvador (<code>13.69° N · 89.19° W</code>)</span>
-            <span>📅 <strong>Lanzamiento oficial:</strong> 12 de noviembre de 2026</span>
-            <span>🌎 <strong>Base inicial:</strong> 08 iniciativas activas · 06 países</span>
-          </div>
-        </article>
-
-        <aside class="comm-next-event-card" aria-label="Próxima actividad de la Comunidad">
-          <div>
-            <span class="comm-next-event-eyebrow">09 — Próxima actividad</span>
-            <div class="comm-next-event-date-big">07.12</div>
-            <h2 class="comm-next-event-title">Presentación de los servicios Copernicus</h2>
-            <p class="comm-next-event-details">Copernicus Chile · San Salvador · Lunes 7 de diciembre de 2026</p>
-          </div>
-          <p class="comm-next-event-note">🕒 Hora y lugar: por confirmar · Convocatoria y detalles en el espacio de WhatsApp.</p>
-        </aside>
-      </div>
+    <section class="section" id="objetivo-comunidad">
+      <article class="comm-objective-card">
+        <div>
+          <span class="comm-eyebrow">01 — Objetivo de la Comunidad</span>
+          <p class="comm-objective-quote">«Mantener los lazos cercanos entre las personas de la región que utilizan herramientas tecnológicas, IA e imágenes satelitales para innovar en metodologías y visualización de información territorial para la toma de decisiones.»</p>
+        </div>
+        <div class="comm-launch-meta">
+          <span>📍 <strong>Taller de uso de imágenes satelitales:</strong> San Salvador (<code>13.69° N · 89.19° W</code>)</span>
+          <span>📅 <strong>Lanzamiento oficial:</strong> 12 de noviembre de 2026</span>
+          <span>🌎 <strong>Base inicial:</strong> 08 iniciativas activas · 06 países</span>
+        </div>
+      </article>
     </section>
 
     <section class="section" id="canales-y-puertas">
@@ -1848,7 +1836,7 @@ def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_sna
 
     <section class="section" id="requisitos-participacion">
       <div class="comm-section-head">
-        <span class="comm-eyebrow">10 — Participa</span>
+        <span class="comm-eyebrow">09 — Participa</span>
         <h2>Te invitamos a sumarte — Requisitos</h2>
         <p>La comunidad está abierta a profesionales del sector público, academia y equipos técnicos de la región que compartan cuatro compromisos básicos de convivencia y colaboración:</p>
       </div>
