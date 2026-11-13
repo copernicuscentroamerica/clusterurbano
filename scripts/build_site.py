@@ -255,7 +255,7 @@ def render_hub_shell(
   <title>{esc(page_title)} · Clúster Copernicus Urbano Centroamérica</title>
   <meta name="description" content="Portal regional del Clúster Copernicus Urbano (Asentamientos Humanos). Acceso directo a los 8 geovisores interactivos, Atlas temáticos (Parte I + Parte II Copernicus) y metodologías reproducibles en Centroamérica y República Dominicana.">
   {robots_meta}
-  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.3.0">
+  <link rel="stylesheet" href="{html.escape(ctx.site_url('assets/css/styles.css'), quote=True)}?v=2.4.0">
   {maplibre_head}
 </head>
 <body>
@@ -1506,81 +1506,378 @@ def build_recursos_page(ctx: SiteContext, registry: dict[str, Any], catalog_snap
 
 
 def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_snap: dict[str, Any]) -> str:
-    inst_rows = []
-    for it in catalog_snap.get("projects", []):
-        p = it["project"]
-        pid = p["id"]
-        urls = get_project_urls(ctx, pid, p["links"].get("website"))
-        insts = p["institutional_use"].get("institutions", [])
-        inst_rows.append(
-            f"<tr>"
-            f"<td><strong>{esc(p['country']['name'])} ({esc(p['country']['code'])})</strong></td>"
-            f"<td><a href=\"{html.escape(urls['detail'], quote=True)}\"><strong>{esc(SHORT_CARD_TITLES.get(pid, pid))}</strong></a></td>"
-            f"<td>{esc('; '.join(insts) if insts else 'Institución contraparte')}</td>"
-            f"<td style=\"white-space:nowrap;\">"
-            f"<a class=\"btn btn-primary btn-xs\" href=\"{html.escape(urls['geovisor'], quote=True)}\" target=\"_blank\" rel=\"noopener noreferrer\">🗺️ Geovisor ↗</a> "
-            f"<a class=\"btn btn-teal btn-xs\" href=\"{html.escape(urls['atlas_web'], quote=True)}\" target=\"_blank\" rel=\"noopener noreferrer\">📘 Atlas ↗</a>"
-            f"</td>"
-            f"</tr>"
-        )
-
+    proj_map = {it["project"]["id"]: it["project"] for it in catalog_snap.get("projects", [])}
     hub_repo = registry.get("hub", {}).get("repository") or "copernicuscentroamerica/clusterurbano"
     discussions_url = f"https://github.com/{hub_repo}/discussions"
+    hub_repo_url = f"https://github.com/{hub_repo}"
+    whatsapp_url = "https://chat.whatsapp.com/Kow0VLer8eg1XhfMtVHUoQ?s=hd&p=i&mlu=4&ilr=4&iam=2"
+    portal_canonical_url = "https://copernicuscentroamerica.github.io/clusterurbano/"
+    pres_pdf_url = ctx.site_url("assets/descargas/Presentacion_Lanzamiento_Comunidad_Copernicus_Urbano_2026-11-12.pdf")
+    qr_wa_src = ctx.site_url("assets/img/comunidad/qr-whatsapp-comunidad.png")
+    qr_portal_src = ctx.site_url("assets/img/comunidad/qr-portal-comunidad.png")
+
+    country_network = [
+        {
+            "code": "SV · 2",
+            "country": "El Salvador",
+            "territories": "AMSS · Conchagua y La Unión",
+            "institutions": [
+                ("OPAMSS", "Oficina de Planificación del Área Metropolitana de San Salvador"),
+                ("UCA", "Universidad Centroamericana José Simeón Cañas"),
+                ("UNAB", "Universidad Dr. Andrés Bello"),
+                ("MIVI", "Ministerio de Vivienda"),
+            ],
+            "projects": [
+                ("sv-amss", "AMSS · San Salvador"),
+                ("sv-la-union", "Conchagua y La Unión"),
+            ],
+        },
+        {
+            "code": "HN · 1",
+            "country": "Honduras",
+            "territories": "Distrito Central",
+            "institutions": [
+                ("AMDC", "Alcaldía Municipal del Distrito Central"),
+                ("UNAH · MODUS", "Universidad Nacional Autónoma de Honduras; grupo Movilidad y Desarrollo Urbano Sostenible"),
+                ("SEGOB", "Secretaría de Gobernación, Justicia y Descentralización"),
+            ],
+            "projects": [
+                ("hn-distrito-central", "Distrito Central"),
+            ],
+        },
+        {
+            "code": "GT · 1",
+            "country": "Guatemala",
+            "territories": "Bethania · Nueva León de Judá",
+            "institutions": [
+                ("UDEVIPO", "Unidad para el Desarrollo de Vivienda Popular"),
+            ],
+            "projects": [
+                ("gt-bethania", "Bethania · Ciudad de Guatemala"),
+            ],
+        },
+        {
+            "code": "CR · 1",
+            "country": "Costa Rica",
+            "territories": "La Carpio · San José",
+            "institutions": [
+                ("Municipalidad de San José", "Gobierno local del cantón central"),
+                ("INVU", "Instituto Nacional de Vivienda y Urbanismo"),
+                ("MIVAH", "Ministerio de Vivienda y Asentamientos Humanos"),
+            ],
+            "projects": [
+                ("cr-la-carpio", "La Carpio · San José"),
+            ],
+        },
+        {
+            "code": "PA · 2",
+            "country": "Panamá",
+            "territories": "Panamá Oeste · Colón",
+            "institutions": [
+                ("MIVIOT", "Ministerio de Vivienda y Ordenamiento Territorial"),
+                ("Municipio de Colón", "Alcaldía del Distrito de Colón"),
+                ("MIVIOT", "Regional Colón"),
+            ],
+            "projects": [
+                ("pa-panama-oeste", "Panamá Oeste"),
+                ("pa-colon", "Colón · Corredor portuario"),
+            ],
+        },
+        {
+            "code": "DO · 1",
+            "country": "República Dominicana",
+            "territories": "Santiago de los Caballeros",
+            "institutions": [
+                ("MINPRE", "Ministerio de la Presidencia"),
+                ("UEP-C2", "Unidad Ejecutora del Proyecto, Componente 2"),
+                ("Usuario principal", "Ayuntamiento de Santiago"),
+            ],
+            "projects": [
+                ("do-santiago", "Santiago de los Caballeros"),
+            ],
+        },
+    ]
+
+    country_cards_html = []
+    for c_item in country_network:
+        inst_lis = "".join(
+            f"<li><strong>{esc(sigla)}</strong> · {esc(desc)}</li>"
+            for sigla, desc in c_item["institutions"]
+        )
+        proj_rows_mini = []
+        for pid, short_lbl in c_item["projects"]:
+            p_obj = proj_map.get(pid, {})
+            urls = get_project_urls(ctx, pid, p_obj.get("links", {}).get("website"))
+            proj_rows_mini.append(
+                f'<div class="comm-proj-mini-row">'
+                f'<a class="comm-proj-mini-title" href="{html.escape(urls["detail"], quote=True)}">{esc(short_lbl)}</a>'
+                f'<span class="comm-proj-mini-links">'
+                f'<a class="btn btn-primary btn-xs" href="{html.escape(urls["geovisor"], quote=True)}" target="_blank" rel="noopener noreferrer">🗺️ Geovisor ↗</a>'
+                f'<a class="btn btn-teal btn-xs" href="{html.escape(urls["atlas_web"], quote=True)}" target="_blank" rel="noopener noreferrer">📘 Atlas ↗</a>'
+                f"</span>"
+                f"</div>"
+            )
+        country_cards_html.append(
+            f'<article class="comm-country-card">'
+            f"<div>"
+            f'<div class="comm-country-top">'
+            f"<div>"
+            f'<h3 class="comm-country-name">{esc(c_item["country"])}</h3>'
+            f'<p class="comm-country-territories">{esc(c_item["territories"])}</p>'
+            f"</div>"
+            f'<span class="comm-country-badge">{esc(c_item["code"])}</span>'
+            f"</div>"
+            f'<ul class="comm-inst-ul" style="margin-top:0.75rem;">{inst_lis}</ul>'
+            f"</div>"
+            f'<div class="comm-country-projects">{"".join(proj_rows_mini)}</div>'
+            f"</article>"
+        )
+
+    hn_urls = get_project_urls(
+        ctx,
+        "hn-distrito-central",
+        proj_map.get("hn-distrito-central", {}).get("links", {}).get("website"),
+    )
 
     hero = f"""
     <section class="hero">
       <div class="container">
         <div class="hero-eyebrow">
-          <span class="badge badge-lime">Comunidad de Práctica Regional</span>
-          <span class="badge badge-ok">Red Interinstitucional y Académica</span>
+          <span class="badge badge-lime">Comunidad de Práctica · Clúster Copernicus Urbano</span>
+          <span class="badge badge-ok">Lanzamiento · San Salvador · 12 de noviembre de 2026</span>
         </div>
-        <h1>Gobernanza colaborativa e instituciones del Clúster Copernicus Urbano</h1>
-        <p class="hero-lead">Articulación de ministerios de vivienda y urbanismo, oficinas metropolitanas de planificación, alcaldías, institutos catastrales y universidades de Centroamérica y República Dominicana en torno al uso operativo de Copernicus.</p>
+        <h1>Comunidad de Práctica Regional · Centroamérica y República Dominicana</h1>
+        <p class="hero-lead"><strong>8 iniciativas activas · 6 países.</strong> Imágenes satelitales, inteligencia artificial y visualización territorial para la toma de decisiones en Costa Rica, El Salvador, Guatemala, Honduras, Panamá y República Dominicana.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="{html.escape(discussions_url, quote=True)}" target="_blank" rel="noopener noreferrer">Abrir Foro Técnico en GitHub Discussions ↗</a>
-          <a class="btn btn-teal" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">Explorar los 8 Proyectos →</a>
+          <a class="btn btn-primary" href="{html.escape(whatsapp_url, quote=True)}" target="_blank" rel="noopener noreferrer">💬 Unirse al Espacio de WhatsApp ↗</a>
+          <a class="btn btn-teal" href="{html.escape(pres_pdf_url, quote=True)}" download="Presentacion_Lanzamiento_Comunidad_Copernicus_Urbano_2026-11-12.pdf">📥 Presentación de lanzamiento (PDF)</a>
+          <a class="btn btn-outline-light" href="{html.escape(discussions_url, quote=True)}" target="_blank" rel="noopener noreferrer">💻 Foro técnico en GitHub ↗</a>
+          <a class="btn btn-outline-light" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">🗺️ Explorar los 8 Proyectos →</a>
         </div>
       </div>
     </section>
     """
 
     body = f"""
-    <section class="section">
-      <h2>Instituciones participantes y contrapartes por zona de estudio</h2>
-      <p>Cada iniciativa responde a una demanda institucional concreta de planificación urbana, regularización, valoración territorial o gestión de riesgo:</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>País</th>
-              <th>Proyecto</th>
-              <th>Instituciones contrapartes y usuarias</th>
-              <th>Productos Interactivos</th>
-            </tr>
-          </thead>
-          <tbody>{"".join(inst_rows)}</tbody>
-        </table>
+    <section class="section" id="objetivo-y-proxima-actividad">
+      <div class="comm-top-split">
+        <article class="comm-objective-card">
+          <div>
+            <span class="comm-eyebrow">01 — Objetivo de la Comunidad</span>
+            <p class="comm-objective-quote">«Mantener los lazos cercanos entre las personas de la región que utilizan herramientas tecnológicas, IA e imágenes satelitales para innovar en metodologías y visualización de información territorial para la toma de decisiones.»</p>
+          </div>
+          <div class="comm-launch-meta">
+            <span>📍 <strong>Taller de uso de imágenes satelitales:</strong> San Salvador (<code>13.69° N · 89.19° W</code>)</span>
+            <span>📅 <strong>Lanzamiento oficial:</strong> 12 de noviembre de 2026</span>
+            <span>🌎 <strong>Base inicial:</strong> 08 iniciativas activas · 06 países</span>
+          </div>
+        </article>
+
+        <aside class="comm-next-event-card" aria-label="Próxima actividad de la Comunidad">
+          <div>
+            <span class="comm-next-event-eyebrow">09 — Próxima actividad</span>
+            <div class="comm-next-event-date-big">07.12</div>
+            <h2 class="comm-next-event-title">Presentación de los servicios Copernicus</h2>
+            <p class="comm-next-event-details">Copernicus Chile · San Salvador · Lunes 7 de diciembre de 2026</p>
+          </div>
+          <p class="comm-next-event-note">🕒 Hora y lugar: por confirmar · Convocatoria y detalles en el espacio de WhatsApp.</p>
+        </aside>
       </div>
     </section>
 
-    <section class="section">
-      <h2>Principios de gobernanza técnica y datos abiertos</h2>
+    <section class="section" id="canales-y-puertas">
+      <div class="comm-section-head">
+        <span class="comm-eyebrow">06 &amp; 07 — Canales de comunicación y puertas de entrada</span>
+        <h2>Cómo nos mantenemos conectados</h2>
+        <p>Tres espacios complementarios articulan el intercambio cotidiano, la documentación técnica reproducible y los encuentros regionales de seguimiento.</p>
+      </div>
+
+      <div class="comm-channels-grid">
+        <article class="comm-channel-card">
+          <span class="comm-status-pill is-active">Activo</span>
+          <h3>💬 Espacio de WhatsApp</h3>
+          <p>Asuntos de mapeo y herramientas de análisis de imágenes satelitales; convocatorias a congresos, eventos, programas, podcasts y webinars.</p>
+        </article>
+        <article class="comm-channel-card">
+          <span class="comm-status-pill is-active">Activo</span>
+          <h3>🌐 Portal y GitHub</h3>
+          <p>Proyectos, geovisores, Atlas, metodologías y código. Foro técnico en <a href="{html.escape(discussions_url, quote=True)}" target="_blank" rel="noopener noreferrer">GitHub Discussions ↗</a> para preguntas y <a href="{html.escape(hub_repo_url, quote=True)}" target="_blank" rel="noopener noreferrer">repositorios abiertos ↗</a> para contribuir.</p>
+        </article>
+        <article class="comm-channel-card">
+          <span class="comm-status-pill is-quarterly">Trimestral</span>
+          <h3>🤝 Encuentros de la comunidad</h3>
+          <p>Sesiones presenciales o virtuales para presentar avances de las ciudades y equipos técnicos, resolver dudas metodológicas y planear actividades conjuntas.</p>
+        </article>
+      </div>
+
+      <div class="comm-doors-grid">
+        <article class="comm-qr-card">
+          <div class="comm-qr-frame">
+            <img src="{html.escape(qr_wa_src, quote=True)}" alt="Código QR oficial para unirse al espacio de WhatsApp de la Comunidad de Práctica del Clúster Copernicus Urbano" loading="lazy">
+          </div>
+          <div class="comm-qr-body">
+            <span class="comm-qr-code-tag">QR-01 // WHATSAPP</span>
+            <h3>WhatsApp para participar en el intercambio</h3>
+            <p>Escanea el código QR con tu teléfono o utiliza el enlace directo para integrarte al canal regional de especialistas, instituciones y universidades.</p>
+            <div class="comm-qr-actions">
+              <a class="btn btn-primary" href="{html.escape(whatsapp_url, quote=True)}" target="_blank" rel="noopener noreferrer">Abrir WhatsApp ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="comm-qr-card">
+          <div class="comm-qr-frame">
+            <img src="{html.escape(qr_portal_src, quote=True)}" alt="Código QR oficial para acceder al Portal del Clúster Copernicus Urbano con proyectos, Atlas y recursos" loading="lazy">
+          </div>
+          <div class="comm-qr-body">
+            <span class="comm-qr-code-tag">QR-02 // PORTAL</span>
+            <h3>Portal para consultar proyectos, Atlas y recursos</h3>
+            <p>Punto de acceso unificado a los 8 geovisores interactivos, láminas del Atlas Urbano Regional y documentos metodológicos (<code>clusterurbano</code>).</p>
+            <div class="comm-qr-actions">
+              <a class="btn btn-primary" href="{html.escape(ctx.site_url('proyectos/'), quote=True)}">Explorar proyectos →</a>
+              <a class="btn btn-outline-light" href="{html.escape(portal_canonical_url, quote=True)}" target="_blank" rel="noopener noreferrer">Portal oficial ↗</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="plan-anual-actividades">
+      <div class="comm-section-head">
+        <span class="comm-eyebrow">08 — Plan de actividades</span>
+        <h2>Cuatro actividades mínimas al año</h2>
+        <p>Ciclo anual de intercambio continuo entre equipos institucionales, universidades y especialistas en observación de la Tierra de la región.</p>
+      </div>
+
+      <div class="comm-quarters-grid">
+        <article class="comm-quarter-card">
+          <div class="comm-quarter-head">
+            <span class="comm-quarter-code">T1</span>
+            <span class="comm-quarter-months">ENE — MAR</span>
+          </div>
+          <h3>Encuentro de la comunidad</h3>
+          <p>Arranque del año: integración de miembros, presentación de avances territoriales y definición de la agenda común.</p>
+        </article>
+
+        <article class="comm-quarter-card">
+          <div class="comm-quarter-head">
+            <span class="comm-quarter-code">T2</span>
+            <span class="comm-quarter-months">ABR — JUN</span>
+          </div>
+          <h3>Webinar técnico</h3>
+          <p>Sesión abierta enfocada en una herramienta, dataset o método reproducible: Copernicus, Google Earth Engine e IA aplicada.</p>
+        </article>
+
+        <article class="comm-quarter-card">
+          <div class="comm-quarter-head">
+            <span class="comm-quarter-code">T3</span>
+            <span class="comm-quarter-months">JUL — SEP</span>
+          </div>
+          <h3>Presentación en simposio o congreso</h3>
+          <p>Ponencia o mesa conjunta para visibilizar los hallazgos y desarrollos aplicados generados por la comunidad regional.</p>
+        </article>
+
+        <article class="comm-quarter-card">
+          <div class="comm-quarter-head">
+            <span class="comm-quarter-code">T4</span>
+            <span class="comm-quarter-months">OCT — DIC</span>
+          </div>
+          <h3>Taller práctico</h3>
+          <p>Ejercicio aplicado sobre un caso territorial concreto de Centroamérica o República Dominicana y balance de cierre anual.</p>
+        </article>
+      </div>
+
+      <div class="comm-quarters-note">
+        <strong>Flexibilidad operativa:</strong> formatos intercambiables según la agenda regional del año — encuentros, simposios, talleres prácticos o webinars técnicos.
+      </div>
+    </section>
+
+    <section class="section" id="red-instituciones">
+      <div class="comm-section-head">
+        <span class="comm-eyebrow">02 &amp; 03 — Cartera actual y red de instituciones</span>
+        <h2>Una base inicial en seis países (8 iniciativas activas)</h2>
+        <p>Ministerios de vivienda y ordenamiento territorial, oficinas metropolitanas de planificación, gobiernos locales y grupos académicos que impulsan las primeras ocho iniciativas del portal.</p>
+      </div>
+
+      <div class="comm-countries-grid">
+        {"".join(country_cards_html)}
+      </div>
+
+      <div class="comm-open-network-banner">
+        <div>
+          <span class="comm-open-network-tag">+ RED ABIERTA</span>
+          <strong>Ciudades, universidades y especialistas interesados pueden sumarse a la comunidad.</strong>
+        </div>
+        <a class="btn btn-teal btn-sm" href="{html.escape(whatsapp_url, quote=True)}" target="_blank" rel="noopener noreferrer">Sumarse en WhatsApp ↗</a>
+      </div>
+    </section>
+
+    <section class="section" id="articulacion-y-metodos">
       <div class="grid-2">
         <article class="card">
-          <h3>Coherencia entre Geovisor, Atlas y Metodología</h3>
-          <ul>
-            <li><strong>Capas verificadas:</strong> los geovisores publican únicamente capas activas documentadas en <code>geovisor/layers.json</code> con simbología legible y atributos saneados sin datos personales.</li>
-            <li><strong>Atlas en dos partes:</strong> las primeras páginas presentan los hallazgos propios del equipo combinando Copernicus y datos locales, seguidas del anexo satelital estandarizado.</li>
-            <li><strong>Reproducibilidad abierta:</strong> cada repositorio incluye los scripts en Google Earth Engine o Python junto con su memoria metodológica descargable.</li>
+          <span class="comm-eyebrow">04 — Articulación regional</span>
+          <h2 style="margin-top:0.2rem;font-size:1.35rem;color:var(--c-brand-blue);">Un marco institucional común</h2>
+          <p style="color:var(--c-text-muted);font-size:0.92rem;">La Comunidad de Práctica se articula dentro de la institucionalidad regional de integración social y asentamientos humanos, con acompañamiento técnico internacional especializado:</p>
+
+          <h3 class="comm-articulation-subhead">Marco Regional</h3>
+          <ul class="comm-pillar-list">
+            <li><span class="comm-pillar-acronym">SICA</span> <span>Sistema de la Integración Centroamericana</span></li>
+            <li><span class="comm-pillar-acronym">SISCA</span> <span>Secretaría de la Integración Social Centroamericana</span></li>
+            <li><span class="comm-pillar-acronym">CCVAH</span> <span>Consejo Centroamericano de Vivienda y Asentamientos Humanos</span></li>
+          </ul>
+
+          <h3 class="comm-articulation-subhead">Apoyo Técnico</h3>
+          <ul class="comm-pillar-list">
+            <li><span class="comm-pillar-acronym">GIZ</span> <span>Cooperación Alemana</span></li>
+            <li><span class="comm-pillar-acronym">Copernicus LAC</span> <span>Centro regional · Chile</span></li>
           </ul>
         </article>
+
         <article class="card">
-          <h3>Distinción entre evidencia técnica y validación oficial</h3>
+          <span class="comm-eyebrow">05 — Lo que compartimos</span>
+          <h2 style="margin-top:0.2rem;font-size:1.35rem;color:var(--c-brand-blue);">Métodos en construcción y código abierto</h2>
+          <p style="color:var(--c-text-muted);font-size:0.92rem;">Compartimos flujos de trabajo transparentes y adaptables a otros municipios de la región, combinando datos satelitales Copernicus con cartografía local:</p>
           <ul>
-            <li><strong>Transparencia de estado:</strong> los manifiestos <code>project.json</code> distinguen rigurosamente entre resultados técnicos publicados y procesos formales de validación institucional.</li>
-            <li><strong>Intercambio regional:</strong> las metodologías de embeddings satelitales, brecha catastral, índices multiamenaza y comparadores multianuales son reutilizables entre los seis países.</li>
+            <li><strong>Caso compartido en el lanzamiento (<a href="{html.escape(hn_urls['detail'], quote=True)}">Distrito Central, Honduras</a>):</strong> detección multianual de aparición de nueva huella construida (<code>2016–2026</code>) en Google Earth Engine y tipología preliminar de brecha catastral sobre grilla de <code>250 m</code> consultable en su <a href="{html.escape(hn_urls['geovisor'], quote=True)}" target="_blank" rel="noopener noreferrer">Geovisor interactivo ↗</a>.</li>
+            <li><strong>Modelos replicables en la cartera:</strong> estimación de valor de suelo con embeddings satelitales e IA (AMSS), expansión urbana y presión sobre áreas verdes (Panamá Oeste y Santiago), criticidad socioespacial e índices multiamenaza (La Carpio, Bethania, Colón y La Unión).</li>
+            <li><strong>Documentación abierta:</strong> acceso libre a <a href="{html.escape(ctx.site_url('recursos/'), quote=True)}">memorias metodológicas y scripts</a>, <a href="{html.escape(ctx.site_url('atlas/'), quote=True)}">Atlas Regional en dos partes</a> y <a href="{html.escape(ctx.site_url('ejercicio/'), quote=True)}">cuaderno base con Sentinel-2</a>.</li>
           </ul>
         </article>
+      </div>
+    </section>
+
+    <section class="section" id="requisitos-participacion">
+      <div class="comm-section-head">
+        <span class="comm-eyebrow">10 — Participa</span>
+        <h2>Te invitamos a sumarte — Requisitos</h2>
+        <p>La comunidad está abierta a profesionales del sector público, academia y equipos técnicos de la región que compartan cuatro compromisos básicos de convivencia y colaboración:</p>
+      </div>
+
+      <div class="comm-req-grid">
+        <article class="comm-req-card">
+          <span class="comm-req-num">01</span>
+          <p>Interés en capacitarse o innovar en la temática.</p>
+        </article>
+        <article class="comm-req-card">
+          <span class="comm-req-num">02</span>
+          <p>Respeto y apertura a las ideas de los demás.</p>
+        </article>
+        <article class="comm-req-card">
+          <span class="comm-req-num">03</span>
+          <p>Compartir solo temas relacionados con la comunidad.</p>
+        </article>
+        <article class="comm-req-card">
+          <span class="comm-req-num">04</span>
+          <p>Intención de conectar y participar con otras personas que innovan en el tema.</p>
+        </article>
+      </div>
+
+      <div class="comm-join-cta-strip">
+        <p><strong>¿Listo para conectar con equipos de los seis países?</strong> Descarga la presentación del taller de lanzamiento en San Salvador o intégrate directamente al canal activo de la comunidad.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.6rem;">
+          <a class="btn btn-primary" href="{html.escape(whatsapp_url, quote=True)}" target="_blank" rel="noopener noreferrer">💬 Unirse en WhatsApp ↗</a>
+          <a class="btn btn-outline-light" href="{html.escape(pres_pdf_url, quote=True)}" download="Presentacion_Lanzamiento_Comunidad_Copernicus_Urbano_2026-11-12.pdf">📥 Descargar PDF del lanzamiento</a>
+        </div>
       </div>
     </section>
     """
@@ -1588,7 +1885,7 @@ def build_comunidad_page(ctx: SiteContext, registry: dict[str, Any], catalog_sna
     return render_hub_shell(
         ctx=ctx,
         registry=registry,
-        page_title="Comunidad e Instituciones",
+        page_title="Comunidad de Práctica",
         active_nav="comunidad",
         hero_html=hero,
         body_html=body,
